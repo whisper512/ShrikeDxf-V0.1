@@ -3,7 +3,15 @@
 #include "ShrikeDxf.h"
 
 CMenu::CMenu(QWidget* parent) : 
-	QWidget(parent)
+	QWidget(parent),
+	m_pMenuFile(nullptr),
+	m_pMenuHelp(nullptr),
+	m_pMenuTool(nullptr),
+	m_pMenuSetting(nullptr),
+	m_pActionOpen(nullptr),
+	m_pActionSave(nullptr),
+	m_pActionClose(nullptr),
+	m_pActionAbout(nullptr)
 {
 	m_pParent = this->parentWidget();
 	InitMenuBar();
@@ -11,6 +19,14 @@ CMenu::CMenu(QWidget* parent) :
 
 CMenu::~CMenu()
 {
+	delete m_pMenuFile;
+	delete m_pMenuHelp;
+	delete m_pMenuTool;
+	delete m_pMenuSetting;
+	delete m_pActionOpen;
+	delete m_pActionSave;
+	delete m_pActionClose;
+	delete m_pActionAbout;
 }
 
 void CMenu::InitMenuBar()
@@ -29,8 +45,13 @@ void CMenu::InitMenuBar()
 	m_pMenuHelp = new QMenu("Help", this);
 	m_pActionAbout = new QAction("About", this);
 	m_pMenuHelp->addAction(m_pActionAbout);
+
 	m_pMenuTool = new QMenu("Tool", this);
+
 	m_pMenuSetting = new QMenu("Setting", this);
+
+
+
 	
 	m_pParent = this->parentWidget();
 	if (m_pParent)

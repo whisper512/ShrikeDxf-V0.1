@@ -2,13 +2,10 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ShrikeDxf.h"
-
-#include <QMenuBar.h>
-#include <QMenu.h>
-#include <QAction.h>
 #include <QTreeView>
 #include <QFileSystemModel>
 
+#include "Menu.h"
 
 class ShrikeDxf : public QMainWindow
 {
@@ -27,15 +24,12 @@ public:
 private:
     Ui::ShrikeDxfClass ui;
 
-    //主菜单
-    QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting;
-	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose;
-	QAction* m_pActionAbout;
+    CMenu* pMenu;
 
     //文件结构栏
     QTreeView* m_pTreeView;
 
-    //QFileSystemModel* model = new QFileSystemModel;
+   
     
 
 };
