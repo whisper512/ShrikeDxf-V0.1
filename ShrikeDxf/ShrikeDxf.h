@@ -18,6 +18,8 @@ public:
     ShrikeDxf(QWidget *parent = nullptr);
     ~ShrikeDxf();
 
+	QMenuBar* GetMenuBar() { return ui.menuBar; }
+
     void InitWindow();
     void InitMenuBar();
     void InitTreeView();
