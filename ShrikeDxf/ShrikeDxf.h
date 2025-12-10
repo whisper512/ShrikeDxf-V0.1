@@ -4,6 +4,7 @@
 #include "ui_ShrikeDxf.h"
 #include <QTreeView>
 #include <QFileSystemModel>
+#include <QTimer.h>
 
 #include "Menu.h"
 
@@ -17,20 +18,20 @@ public:
 
 	QMenuBar* GetMenuBar() { return ui.menuBar; }
 
-    void InitWindow();
+    //初始化界面组件
+    void InitWindowComponents();
+
     void InitMenuBar();
     void InitTreeView();
 
 private:
     Ui::ShrikeDxfClass ui;
 
-    CMenu* pMenu;
+    //菜单栏
+    CMenu* m_pMenu;
 
     //文件结构栏
     QTreeView* m_pTreeView;
-
-   
-    
 
 };
 

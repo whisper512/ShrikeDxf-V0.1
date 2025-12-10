@@ -13,18 +13,20 @@ class CMenu : public QWidget
 	~CMenu();
 	
 	void InitMenuBar();
-
+	void InitMenu();
+	void InitAction();
+	void AddToBar();
 	
 
 private:
 	QWidget* m_pParent;
 
-	//主菜单
-	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting;
+	//menu
+	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting, * m_pMenuView;
+	//文件action
 	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose;
+	//帮助action
 	QAction* m_pActionAbout;
-	
-
 };
 
 #endif // !_MENU_H

@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="ShrikeDxf">
+    <qresource prefix="/ShrikeDxf">
+        <file>res/Main.png</file>
     </qresource>
 </RCC>
