@@ -8,6 +8,9 @@
 
 #include "Menu.h"
 
+#include "CommonDataManger.h"
+#include "DxfDataManger.h"
+
 class ShrikeDxf : public QMainWindow
 {
     Q_OBJECT
@@ -20,16 +23,21 @@ public:
 
     //初始化界面组件
     void InitWindowComponents();
+    //初始化数据管理类
+    void InitDataManagers();
 
     void InitMenuBar();
     void InitTreeView();
 
-private:
+public:
     Ui::ShrikeDxfClass ui;
 
     //菜单栏
     CMenu* m_pMenu;
-
+    //界面通用数据管理
+    CCommonDataManager* m_pDataManager;
+    //Dxf数据管理
+    CDxfDataManger* m_pDxfDataManger;
     //文件结构栏
     QTreeView* m_pTreeView;
 

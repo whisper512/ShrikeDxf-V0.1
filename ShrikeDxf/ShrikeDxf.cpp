@@ -1,5 +1,6 @@
 #include "ShrikeDxf.h"
 
+
 ShrikeDxf::ShrikeDxf(QWidget *parent)
     : QMainWindow(parent),
 	m_pMenu(nullptr),
@@ -9,6 +10,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 	setWindowIcon(QIcon(":/ShrikeDxf/res/Main.png"));
 
 	InitWindowComponents();
+	InitDataManagers();
 }
 
 ShrikeDxf::~ShrikeDxf()
@@ -27,6 +29,15 @@ void ShrikeDxf::InitWindowComponents()
 	});
 }
 
+void ShrikeDxf::InitDataManagers()
+{
+	QTimer::singleShot(0, this, [this]()
+	{
+		m_pDataManager = new CCommonDataManager();
+		m_pDxfDataManger = new CDxfDataManger();
+	});
+}
+
 
 void ShrikeDxf::InitMenuBar()
 {
@@ -35,13 +46,10 @@ void ShrikeDxf::InitMenuBar()
 	{
 		m_pMenu->InitMenuBar();
 	}
-	
 }
 
 void ShrikeDxf::InitTreeView()
 {
 
 }
-
-
 

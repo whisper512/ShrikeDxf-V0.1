@@ -95,11 +95,15 @@
     <QtRcc Include="ShrikeDxf.qrc" />
     <QtUic Include="ShrikeDxf.ui" />
     <QtMoc Include="ShrikeDxf.h" />
+    <ClCompile Include="CommonDataManger.cpp" />
+    <ClCompile Include="DxfDataManger.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommonDataManger.h" />
+    <ClInclude Include="DxfDataManger.h" />
     <ClInclude Include="Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

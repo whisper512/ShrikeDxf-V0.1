@@ -1,5 +1,8 @@
 #include "Menu.h"
 #include <QWidget>
+#include <QFileDialog>
+#include <QDebug>
+
 #include "ShrikeDxf.h"
 
 CMenu::CMenu(QWidget* parent) : 
@@ -12,7 +15,9 @@ CMenu::CMenu(QWidget* parent) :
 	m_pActionOpen(nullptr),
 	m_pActionSave(nullptr),
 	m_pActionClose(nullptr),
-	m_pActionAbout(nullptr)
+	m_pActionAbout(nullptr),
+	m_pActionLightTheme(nullptr),
+	m_pActionDarkTheme(nullptr)
 {
 	m_pParent = this->parentWidget();
 }
@@ -28,6 +33,8 @@ CMenu::~CMenu()
 	delete m_pActionSave;
 	delete m_pActionClose;
 	delete m_pActionAbout;
+	delete m_pActionLightTheme;
+	delete m_pActionDarkTheme;
 }
 
 void CMenu::InitMenuBar()
@@ -35,6 +42,7 @@ void CMenu::InitMenuBar()
 	InitMenu();
 	InitAction();
 	AddToBar();
+	ConnectSolt();
 }
 
 void CMenu::InitMenu()
@@ -68,7 +76,10 @@ void CMenu::InitAction()
 	{
 		if (m_pMenuView->actions().isEmpty())
 		{
-
+			m_pActionLightTheme = new QAction("Light Theme", this);
+			m_pMenuView->addAction(m_pActionLightTheme);
+			m_pActionDarkTheme = new QAction("Dark Theme", this);
+			m_pMenuView->addAction(m_pActionDarkTheme);
 		}
 	}
 
@@ -98,5 +109,72 @@ void CMenu::AddToBar()
 	}
 }
 
+void CMenu::ConnectSolt()
+{
+	if (m_pActionOpen)
+	{
+		connect(m_pActionOpen, &QAction::triggered,this, &CMenu::OnOpen);
+	}
+	if (m_pActionSave)
+	{
+		connect(m_pActionSave, &QAction::triggered, this, &CMenu::OnSave);
+	}
+	if (m_pActionClose)
+	{
+		connect(m_pActionClose, &QAction::triggered, this, &CMenu::OnClose);
+	}
 
+	if (m_pActionLightTheme)
+	{
+        connect(m_pActionLightTheme, &QAction::triggered, this, &CMenu::OnLightTheme);
+	}
+	if (m_pActionDarkTheme)
+	{
+		connect(m_pActionDarkTheme, &QAction::triggered, this, &CMenu::OnDarkTheme);
+	}
+}
 
+void CMenu::OnOpen()
+{
+	if (m_pParent)
+	{
+		QString filePath = QFileDialog::getOpenFileName(
+			this,
+			"Select DXF File",
+			QDir::homePath(),
+			"DXF File (*.dxf);;All Files (*.*)"
+		);
+		if (!filePath.isEmpty())
+		{
+			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+			pShrikeDxf->m_pDxfDataManger->SeterDxfFilePath(filePath);
+		}
+	}
+}
+
+void CMenu::OnSave()
+{
+}
+
+void CMenu::OnClose()
+{
+}
+
+void CMenu::OnLightTheme()
+{
+	if (m_pParent)
+	{
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		qApp->setPalette(*(pShrikeDxf->m_pDataManager->getPaletteLight(eThremColor_Light)));
+		// 为菜单添加样式表
+	}
+}
+
+void CMenu::OnDarkTheme()
+{
+	if (m_pParent)
+	{
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		qApp->setPalette(*(pShrikeDxf->m_pDataManager->getPaletteLight(eThremColor_Dark)));
+	}
+}

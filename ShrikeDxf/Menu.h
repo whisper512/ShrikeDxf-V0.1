@@ -16,7 +16,7 @@ class CMenu : public QWidget
 	void InitMenu();
 	void InitAction();
 	void AddToBar();
-	
+	void ConnectSolt();
 
 private:
 	QWidget* m_pParent;
@@ -25,8 +25,19 @@ private:
 	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting, * m_pMenuView;
 	//文件action
 	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose;
+	//外观action
+	QAction* m_pActionLightTheme, *m_pActionDarkTheme;
 	//帮助action
 	QAction* m_pActionAbout;
+
+private:
+	//槽函数
+	void OnOpen();
+	void OnSave();
+    void OnClose();
+
+	void OnLightTheme();
+    void OnDarkTheme();
 };
 
 #endif // !_MENU_H
