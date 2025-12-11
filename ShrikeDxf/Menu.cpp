@@ -147,6 +147,7 @@ void CMenu::OnOpen()
 		if (!filePath.isEmpty())
 		{
 			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+			pShrikeDxf->m_pDataManager->m_strDxfPath = filePath;
 			//pShrikeDxf->m_pDxfDataManger->SeterDxfFilePath(filePath);
 		}
 	}

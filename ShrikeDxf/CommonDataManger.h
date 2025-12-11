@@ -3,7 +3,7 @@
 #define DATAMANGER_H
 
 #include <QPalette>
-
+#include <QString.h>
 
 //管理通用数据
 
@@ -21,8 +21,13 @@ public:
 
 	QPalette* getPaletteLight(eThremColor color);
 
+public:
+	QString m_strDxfPath;
+
 private:
 	QPalette m_paletteLight , m_paletteDark;
+
+
 
 private:
 	void InitPalette();

@@ -1,6 +1,7 @@
 #include "CommonDataManger.h"
 
-CCommonDataManager::CCommonDataManager()
+CCommonDataManager::CCommonDataManager():
+    m_paletteLight("")
 {
     InitPalette();
 }
