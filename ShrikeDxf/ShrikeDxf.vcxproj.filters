@@ -46,7 +46,7 @@
     <ClCompile Include="CommonDataManger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DxfDataManger.cpp">
+    <ClCompile Include="DxfMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,7 +57,10 @@
     <ClInclude Include="CommonDataManger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DxfDataManger.h">
+    <ClInclude Include="DxfMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

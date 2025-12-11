@@ -1,13 +1,13 @@
 /****************************************************************************
-** Copyright (C) 2001-2011 RibbonSoft. All rights reserved.
+** Copyright (C) 2001-2013 RibbonSoft, GmbH. All rights reserved.
 ** Copyright (C) 2001 Robert J. Campbell Jr.
 **
 ** This file is part of the dxflib project.
 **
-** This file may be distributed and/or modified under the terms of the
-** GNU General Public License version 2 as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL included in the
-** packaging of this file.
+** This file is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
 **
 ** Licensees holding valid dxflib Professional Edition licenses may use 
 ** this file in accordance with the dxflib Commercial License
@@ -26,6 +26,8 @@
 #ifndef DL_WRITER_ASCII_H
 #define DL_WRITER_ASCII_H
 
+#include "dl_global.h"
+
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -33,7 +35,6 @@
 #include "dl_writer.h"
 #include <fstream>
 #include <string>
-using std::string;
 
 /**
  * Implements functions defined in DL_Writer for writing low
@@ -45,21 +46,21 @@ using std::string;
  * @todo What if \c fname is NULL?  Or \c fname can't be opened for
  * another reason?
  */
-class DL_WriterA : public DL_Writer {
+class DXFLIB_EXPORT DL_WriterA : public DL_Writer {
 public:
     DL_WriterA(const char* fname, DL_Codes::version version=DL_VERSION_2000)
             : DL_Writer(version), m_ofile(fname) {}
     virtual ~DL_WriterA() {}
 
-	bool openFailed() const;
+    bool openFailed() const;
     void close() const;
     void dxfReal(int gc, double value) const;
     void dxfInt(int gc, int value) const;
     void dxfHex(int gc, int value) const;
     void dxfString(int gc, const char* value) const;
-    void dxfString(int gc, const string& value) const;
+    void dxfString(int gc, const std::string& value) const;
 
-	static void strReplace(char* str, char src, char dest);
+    static void strReplace(char* str, char src, char dest);
 
 private:
     /**

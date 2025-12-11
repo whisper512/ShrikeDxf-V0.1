@@ -1,13 +1,13 @@
 /****************************************************************************
-** Copyright (C) 2001-2011 RibbonSoft. All rights reserved.
+** Copyright (C) 2001-2013 RibbonSoft, GmbH. All rights reserved.
 ** Copyright (C) 2001 Robert J. Campbell Jr.
 **
 ** This file is part of the dxflib project.
 **
-** This file may be distributed and/or modified under the terms of the
-** GNU General Public License version 2 as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL included in the
-** packaging of this file.
+** This file is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
 **
 ** Licensees holding valid dxflib Professional Edition licenses may use 
 ** this file in accordance with the dxflib Commercial License
@@ -26,18 +26,19 @@
 #ifndef DL_WRITER_H
 #define DL_WRITER_H
 
-//编译不通过,暂时屏蔽
-//#include <strings.h>
+#include "dl_global.h"
+
+#ifndef _WIN32
+#include <strings.h>
+#endif
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-#if defined(__OS2__)||defined(__EMX__)||defined(_WIN32)
-#define strcasecmp(s,t) stricmp(s,t)
-#endif
-
+#include <cstring>
 #include <iostream>
+#include <algorithm>
 
 #include "dl_attributes.h"
 #include "dl_codes.h"
@@ -54,10 +55,10 @@
  *
  * @todo Add error checking for string/entry length.
  */
-class DL_Writer {
+class DXFLIB_EXPORT DL_Writer {
 public:
     /**
-     * @para version DXF version. Defaults to DL_VERSION_2002.
+     * @param version DXF version. Defaults to DL_VERSION_2002.
      */
     DL_Writer(DL_Codes::version version) : m_handle(0x30) {
         this->version = version;
@@ -191,11 +192,16 @@ public:
      *   num
      * </pre>
      */
-    void table(const char* name, int num, int handle) const {
+    void table(const char* name, int num, int h=0) const {
         dxfString(0, "TABLE");
         dxfString(2, name);
         if (version>=DL_VERSION_2000) {
-            dxfHex(5, handle);
+            if (h==0) {
+                handle();
+            }
+            else {
+                dxfHex(5, h);
+            }
             dxfString(100, "AcDbSymbolTable");
         }
         dxfInt(70, num);
@@ -231,8 +237,8 @@ public:
      *      num
      * </pre>
      */
-    void tableLineTypes(int num) const {
-        //lineTypeHandle = 5;
+    void tableLinetypes(int num) const {
+        //linetypeHandle = 5;
         table("LTYPE", num, 5);
     }
 
@@ -251,6 +257,23 @@ public:
      */
     void tableAppid(int num) const {
         table("APPID", num, 9);
+    }
+
+    /** Table for text style.
+     *
+     * @param num Number of text styles.
+     *
+     * <pre>
+     *   0
+     *  TABLE
+     *   2
+     *  STYLE
+     *   70
+     *      num
+     * </pre>
+     */
+    void tableStyle(int num) const {
+        table("STYLE", num, 3);
     }
 
     /**
@@ -296,8 +319,8 @@ public:
      *   0
      *  entTypeName
      * </pre>
-	 *
-	 * @return Unique handle or 0.
+     *
+     * @return Unique handle or 0.
      */
     void entity(const char* entTypeName) const {
         dxfString(0, entTypeName);
@@ -321,25 +344,29 @@ public:
      * </pre>
      */
     void entityAttributes(const DL_Attributes& attrib) const {
-	
-		// layer name:
+    
+        // layer name:
         dxfString(8, attrib.getLayer());
-		
-		// R12 doesn't accept BYLAYER values. The value has to be missing
-		//   in that case.
+        
+        // R12 doesn't accept BYLAYER values. The value has to be missing
+        //   in that case.
         if (version>=DL_VERSION_2000 || attrib.getColor()!=256) {
-        	dxfInt(62, attrib.getColor());
-		}
+            dxfInt(62, attrib.getColor());
+        }
         if (version>=DL_VERSION_2000 && attrib.getColor24()!=-1) {
             dxfInt(420, attrib.getColor24());
         }
         if (version>=DL_VERSION_2000) {
             dxfInt(370, attrib.getWidth());
         }
-        if (version>=DL_VERSION_2000 || 
-			strcasecmp(attrib.getLineType().c_str(), "BYLAYER")) {
-	        dxfString(6, attrib.getLineType());
-		}
+        if (version>=DL_VERSION_2000) {
+            dxfReal(48, attrib.getLinetypeScale());
+        }
+        std::string linetype = attrib.getLinetype();
+        std::transform(linetype.begin(), linetype.end(), linetype.begin(), ::toupper);
+        if (version>=DL_VERSION_2000 || linetype=="BYLAYER") {
+            dxfString(6, attrib.getLinetype());
+        }
     }
 
     /**
@@ -378,7 +405,7 @@ public:
      *  LTYPE
      * </pre>
      */
-    void tableLineTypeEntry(unsigned long int h=0)  const {
+    void tableLinetypeEntry(unsigned long int h=0)  const {
         dxfString(0, "LTYPE");
         if (version>=DL_VERSION_2000) {
             if (h==0) {
@@ -469,10 +496,10 @@ public:
     void color(int col=256) const {
         dxfInt(62, col);
     }
-    void lineType(const char *lt) const {
+    void linetype(const char *lt) const {
         dxfString(6, lt);
     }
-    void lineTypeScale(double scale) const {
+    void linetypeScale(double scale) const {
         dxfReal(48, scale);
     }
     void lineWeight(int lw) const {
@@ -512,50 +539,7 @@ public:
     unsigned long getNextHandle() const {
         return m_handle;
     }
-	
-    /**
-     * Increases handle, so that the handle returned remains available.
-     */
-    unsigned long incHandle() const {
-        return m_handle++;
-    }
-
-    /**
-     * Sets the handle of the model space. Entities refer to 
-     * this handle.
-     */
-    void setModelSpaceHandle(unsigned long h) {
-        modelSpaceHandle = h;
-    }
-
-    unsigned long getModelSpaceHandle() {
-        return modelSpaceHandle;
-    }
-
-    /**
-     * Sets the handle of the paper space. Some special blocks refer to 
-     * this handle.
-     */
-    void setPaperSpaceHandle(unsigned long h) {
-        paperSpaceHandle = h;
-    }
-
-    unsigned long getPaperSpaceHandle() {
-        return paperSpaceHandle;
-    }
-
-    /**
-     * Sets the handle of the paper space 0. Some special blocks refer to 
-     * this handle.
-     */
-    void setPaperSpace0Handle(unsigned long h) {
-        paperSpace0Handle = h;
-    }
-
-    unsigned long getPaperSpace0Handle() {
-        return paperSpace0Handle;
-    }
-
+    
     /**
      * Must be overwritten by the implementing class to write a
      * real value to the file.
@@ -573,6 +557,17 @@ public:
      * @param value The int value.
      */
     virtual void dxfInt(int gc, int value) const = 0;
+
+    /**
+     * Can be overwritten by the implementing class to write a
+     * bool value to the file.
+     *
+     * @param gc Group code.
+     * @param value The bool value.
+     */
+    virtual void dxfBool(int gc, bool value) const {
+        dxfInt(gc, (int)value);
+    }
 
     /**
      * Must be overwritten by the implementing class to write an
@@ -599,7 +594,7 @@ public:
      * @param gc Group code.
      * @param value The string.
      */
-    virtual void dxfString(int gc, const string& value) const = 0;
+    virtual void dxfString(int gc, const std::string& value) const = 0;
 
 protected:
     mutable unsigned long m_handle;

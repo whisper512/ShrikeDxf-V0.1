@@ -63,6 +63,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalLibraryDirectories>..\dxf\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxflib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\dxf\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -96,15 +105,16 @@
     <QtUic Include="ShrikeDxf.ui" />
     <QtMoc Include="ShrikeDxf.h" />
     <ClCompile Include="CommonDataManger.cpp" />
-    <ClCompile Include="DxfDataManger.cpp" />
+    <ClCompile Include="DxfMapping.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonDataManger.h" />
-    <ClInclude Include="DxfDataManger.h" />
+    <ClInclude Include="DxfMapping.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Primitive.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

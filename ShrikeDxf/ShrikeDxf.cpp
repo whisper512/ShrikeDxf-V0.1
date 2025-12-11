@@ -34,7 +34,7 @@ void ShrikeDxf::InitDataManagers()
 	QTimer::singleShot(0, this, [this]()
 	{
 		m_pDataManager = new CCommonDataManager();
-		m_pDxfDataManger = new CDxfDataManger();
+		m_pDxfDataManger = new CDxfMapping();
 	});
 }
 
