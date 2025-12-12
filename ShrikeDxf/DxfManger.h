@@ -11,7 +11,6 @@ public:
 
 public:
 	bool LoadDxfFile(const QString& strPath);
-	int GetDxfPointCount();
 
 private:
 	//dxf”≥…‰¿‡

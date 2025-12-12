@@ -149,7 +149,6 @@ void CMenu::OnOpen()
 			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
 			pShrikeDxf->m_pDataManager->m_strDxfPath = filePath;
 			pShrikeDxf->m_pDxfDataManger->LoadDxfFile(filePath);
-			pShrikeDxf->m_pDxfDataManger->GetDxfPointCount();
 		}
 	}
 }

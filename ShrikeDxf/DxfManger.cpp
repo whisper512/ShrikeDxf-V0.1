@@ -21,8 +21,3 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
 
 	return true;
 }
-
-int CDxfManger::GetDxfPointCount()
-{
-    return m_DxfMapping.GetPointCount();
-}
