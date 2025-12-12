@@ -9,7 +9,7 @@
 #include "Menu.h"
 
 #include "CommonDataManger.h"
-#include "DxfMapping.h"
+#include "DxfManger.h"
 
 class ShrikeDxf : public QMainWindow
 {
@@ -37,7 +37,7 @@ public:
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;
     //Dxf数据管理
-    CDxfMapping* m_pDxfDataManger;
+    CDxfManger* m_pDxfDataManger;
     //文件结构栏
     QTreeView* m_pTreeView;
 

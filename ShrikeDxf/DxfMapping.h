@@ -19,13 +19,13 @@ public:
 	CDxfMapping();
 	~CDxfMapping();
 
-public:
 	
 private:
 	vector<Point> m_vecPoints;
-private:
+public:
 	//重写DL_CreationAdapter中的中的函数
 	//每次解析到point会执行addPoint函数
+	int GetPointCount();
 	virtual void addPoint(const DL_PointData& data) override;
 	
 private:

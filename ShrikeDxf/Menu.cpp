@@ -148,7 +148,8 @@ void CMenu::OnOpen()
 		{
 			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
 			pShrikeDxf->m_pDataManager->m_strDxfPath = filePath;
-			//pShrikeDxf->m_pDxfDataManger->SeterDxfFilePath(filePath);
+			pShrikeDxf->m_pDxfDataManger->LoadDxfFile(filePath);
+			pShrikeDxf->m_pDxfDataManger->GetDxfPointCount();
 		}
 	}
 }
@@ -166,7 +167,7 @@ void CMenu::OnLightTheme()
 	if (m_pParent)
 	{
 		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-		qApp->setPalette(*(pShrikeDxf->m_pDataManager->getPaletteLight(eThremColor_Light)));
+		qApp->setPalette((pShrikeDxf->m_pDataManager->getPaletteLight()));
 		// 为菜单添加样式表
 	}
 }
@@ -176,6 +177,6 @@ void CMenu::OnDarkTheme()
 	if (m_pParent)
 	{
 		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-		qApp->setPalette(*(pShrikeDxf->m_pDataManager->getPaletteLight(eThremColor_Dark)));
+		qApp->setPalette((pShrikeDxf->m_pDataManager->getPaletteDark()));
 	}
 }
