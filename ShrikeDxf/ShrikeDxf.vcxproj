@@ -101,16 +101,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DxfManger.cpp" />
-    <ClCompile Include="StyleSheet.cpp" />
     <QtRcc Include="ShrikeDxf.qrc" />
     <QtUic Include="ShrikeDxf.ui" />
-    <QtMoc Include="ShrikeDxf.h" />
-    <ClCompile Include="CommonDataManger.cpp" />
-    <ClCompile Include="DxfMapping.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="ShrikeDxf.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonDataManger.h" />
@@ -119,6 +111,16 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="StyleSheet.h" />
+    <QtMoc Include="ShrikeDxf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CommonDataManger.cpp" />
+    <ClCompile Include="DxfManger.cpp" />
+    <ClCompile Include="DxfMapping.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="ShrikeDxf.cpp" />
+    <ClCompile Include="StyleSheet.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
