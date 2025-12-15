@@ -70,7 +70,6 @@ public:
     virtual void addMText(const DL_MTextData&) {}
     virtual void addMTextChunk(const std::string&) {}
     virtual void addText(const DL_TextData&) {}
-    virtual void addArcAlignedText(const DL_ArcAlignedTextData&) {}
     virtual void addAttribute(const DL_AttributeData&) {}
     
     virtual void addDimAlign(const DL_DimensionData&,
@@ -82,7 +81,7 @@ public:
     virtual void addDimDiametric(const DL_DimensionData&,
                               const DL_DimDiametricData&) {}
     virtual void addDimAngular(const DL_DimensionData&,
-                              const DL_DimAngular2LData&) {}
+                              const DL_DimAngularData&) {}
     virtual void addDimAngular3P(const DL_DimensionData&,
                               const DL_DimAngular3PData&) {}
     virtual void addDimOrdinate(const DL_DimensionData&,

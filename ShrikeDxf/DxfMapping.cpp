@@ -49,7 +49,8 @@ void CDxfMapping::addPolyline(const DL_PolylineData& data)
 
 void CDxfMapping::addVertex(const DL_VertexData& data)
 {
-	if (inPolyline) {
+	if (inPolyline) 
+	{
 		currentPolyline.vertices.push_back({ data.x, data.y, data.z });
 	}
 }

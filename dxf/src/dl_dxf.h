@@ -27,7 +27,6 @@
 
 #include "dl_global.h"
 
-#include <limits>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -49,19 +48,15 @@
 #define M_PI 3.1415926535897932384626433832795
 #endif
 
-#ifndef DL_NANDOUBLE
-#define DL_NANDOUBLE std::numeric_limits<double>::quiet_NaN()
-#endif
-
 class DL_CreationInterface;
 class DL_WriterA;
 
 
-#define DL_VERSION "3.26.4.0"
+#define DL_VERSION "3.7.5.0"
 
 #define DL_VERSION_MAJOR    3
-#define DL_VERSION_MINOR    26
-#define DL_VERSION_REV      4
+#define DL_VERSION_MINOR    7
+#define DL_VERSION_REV      5
 #define DL_VERSION_BUILD    0
 
 #define DL_UNKNOWN               0
@@ -96,8 +91,7 @@ class DL_WriterA;
 #define DL_ENTITY_3DFACE       122
 #define DL_ENTITY_XLINE        123
 #define DL_ENTITY_RAY          124
-#define DL_ENTITY_ARCALIGNEDTEXT 125
-#define DL_ENTITY_SEQEND       126
+#define DL_ENTITY_SEQEND       125
 #define DL_XRECORD             200
 #define DL_DICTIONARY          210
 
@@ -129,16 +123,16 @@ public:
     bool readDxfGroups(FILE* fp,
                        DL_CreationInterface* creationInterface);
     static bool getStrippedLine(std::string& s, unsigned int size,
-                               FILE* stream, bool stripSpace = true);
+                               FILE* stream);
     
-    bool readDxfGroups(std::istream& stream,
+    bool readDxfGroups(std::stringstream& stream,
                        DL_CreationInterface* creationInterface);
-    bool in(std::istream &stream,
+    bool in(std::stringstream &stream,
             DL_CreationInterface* creationInterface);
     static bool getStrippedLine(std::string& s, unsigned int size,
-                               std::istream& stream, bool stripSpace = true);
+                               std::stringstream& stream);
 
-    static bool stripWhiteSpace(char** s, bool stripSpaces = true);
+    static bool stripWhiteSpace(char** s);
 
     bool processDXFGroup(DL_CreationInterface* creationInterface,
                          int groupCode, const std::string& groupValue);
@@ -170,7 +164,6 @@ public:
 
     void addMText(DL_CreationInterface* creationInterface);
     void addText(DL_CreationInterface* creationInterface);
-    void addArcAlignedText(DL_CreationInterface* creationInterface);
 
     void addAttribute(DL_CreationInterface* creationInterface);
 
@@ -294,9 +287,9 @@ public:
                            const DL_DimensionData& data,
                            const DL_DimDiametricData& edata,
                            const DL_Attributes& attrib);
-    void writeDimAngular2L(DL_WriterA& dw,
+    void writeDimAngular(DL_WriterA& dw,
                          const DL_DimensionData& data,
-                         const DL_DimAngular2LData& edata,
+                         const DL_DimAngularData& edata,
                          const DL_Attributes& attrib);
     void writeDimAngular3P(DL_WriterA& dw,
                            const DL_DimensionData& data,
@@ -311,8 +304,6 @@ public:
                      const DL_Attributes& attrib);
     void writeLeaderVertex(DL_WriterA& dw,
                            const DL_LeaderVertexData& data);
-    void writeLeaderEnd(DL_WriterA& dw,
-                     const DL_LeaderData& data);
     void writeHatch1(DL_WriterA& dw,
                      const DL_HatchData& data,
                      const DL_Attributes& attrib);
@@ -326,7 +317,7 @@ public:
     void writeHatchEdge(DL_WriterA& dw,
                         const DL_HatchEdgeData& data);
 
-    unsigned long writeImage(DL_WriterA& dw,
+    int writeImage(DL_WriterA& dw,
                    const DL_ImageData& data,
                    const DL_Attributes& attrib);
 
@@ -357,7 +348,7 @@ public:
     void writeBlockRecord(DL_WriterA& dw, const std::string& name);
     void writeObjects(DL_WriterA& dw, const std::string& appDictionaryName = "");
     void writeAppDictionary(DL_WriterA& dw);
-    unsigned long writeDictionaryEntry(DL_WriterA& dw, const std::string& name);
+    int writeDictionaryEntry(DL_WriterA& dw, const std::string& name);
     void writeXRecord(DL_WriterA& dw, int handle, int value);
     void writeXRecord(DL_WriterA& dw, int handle, double value);
     void writeXRecord(DL_WriterA& dw, int handle, bool value);
@@ -422,18 +413,6 @@ public:
         return strtol(str.c_str(), &p, 10);
     }
 
-    int getInt16Value(int code, int def) {
-        if (!hasValue(code)) {
-            return def;
-        }
-        return toInt16(values[code]);
-    }
-
-    int toInt16(const std::string& str) {
-        char* p;
-        return strtol(str.c_str(), &p, 16);
-    }
-
     bool toBool(const std::string& str) {
         char* p;
         return (bool)strtol(str.c_str(), &p, 10);
@@ -460,7 +439,7 @@ public:
         std::replace(str2.begin(), str2.end(), ',', '.');
         // make sure c++ expects '.' not ',':
         std::istringstream istr(str2);
-        //istr.imbue(std::locale("C"));
+        istr.imbue(std::locale("C"));
         istr >> ret;
         return ret;
     }

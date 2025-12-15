@@ -38,17 +38,16 @@ struct DXFLIB_EXPORT DL_LayerData {
      * Constructor.
      * Parameters: see member variables.
      */
-    DL_LayerData(const std::string& name,
-                 int flags, bool off = false) :
-        name(name), flags(flags), off(off) {
+    DL_LayerData(const std::string& lName,
+                 int lFlags) {
+        name = lName;
+        flags = lFlags;
     }
 
     /** Layer name. */
     std::string name;
     /** Layer flags. (1 = frozen, 2 = frozen by default, 4 = locked) */
     int flags;
-    /** Layer is off */
-    bool off;
 };
 
 
@@ -384,11 +383,10 @@ struct DXFLIB_EXPORT DL_PolylineData {
      * Constructor.
      * Parameters: see member variables.
      */
-    DL_PolylineData(int pNumber, int pMVerteces, int pNVerteces, int pFlags, double pElevation = 0.0) {
+    DL_PolylineData(int pNumber, int pMVerteces, int pNVerteces, int pFlags) {
         number = pNumber;
         m = pMVerteces;
         n = pNVerteces;
-        elevation = pElevation;
         flags = pFlags;
     }
 
@@ -400,9 +398,6 @@ struct DXFLIB_EXPORT DL_PolylineData {
 
     /*! Number of vertices in n direction if polyline is a polygon mesh. */
     unsigned int n;
-
-    /*! elevation of the polyline. */
-    double elevation;
 
     /*! Flags */
     int flags;
@@ -864,85 +859,6 @@ struct DXFLIB_EXPORT DL_TextData {
     double angle;
 };
 
-/**
- * Arc Aligned Text Data.
- */
-struct DXFLIB_EXPORT DL_ArcAlignedTextData {
-
-    /*! Text string */
-    std::string text;
-    /*! Font name */
-    std::string font;
-    /*! Style */
-    std::string style;
-
-    /*! X coordinate of arc center point. */
-    double cx;
-    /*! Y coordinate of arc center point. */
-    double cy;
-    /*! Z coordinate of arc center point. */
-    double cz;
-    /*! Arc radius. */
-    double radius;
-
-    /*! Relative X scale factor. */
-    double xScaleFactor;
-    /*! Text height */
-    double height;
-    /*! Character spacing */
-    double spacing;
-    /*! Offset from arc */
-    double offset;
-    /*! Right offset */
-    double rightOffset;
-    /*! Left offset */
-    double leftOffset;
-    /*! Start angle (radians) */
-    double startAngle;
-    /*! End angle (radians) */
-    double endAngle;
-    /*! Reversed character order:
-     * false: normal
-     * true: reversed
-     */
-    bool reversedCharacterOrder;
-    /*! Direction
-     * 1: outward from center
-     * 2: inward from center
-     */
-    int direction;
-    /*! Alignment:
-     * 1: fit
-     * 2: left
-     * 3: right
-     * 4: center
-     */
-    int alignment;
-    /*! Side
-     * 1: convex
-     * 2: concave
-     */
-    int side;
-    /*! Bold flag */
-    bool bold;
-    /*! Italic flag */
-    bool italic;
-    /*! Underline flag */
-    bool underline;
-    /*! Character set value. Windows character set identifier. */
-    int characerSet;
-    /*! Pitch and family value. Windows pitch and character family identifier. */
-    int pitch;
-    /*! Font type:
-     * false: TTF
-     * true: SHX
-     */
-    bool shxFont;
-    /*! Wizard flag */
-    bool wizard;
-    /*! Arc handle/ID */
-    int arcHandle;
-};
 
 /**
  * Block attribute data.
@@ -1001,8 +917,7 @@ struct DXFLIB_EXPORT DL_DimensionData {
                      const std::string& text,
                      const std::string& style,
                      double angle,
-                     double linearFactor = 1.0,
-                     double dimScale = 1.0) :
+                     double linearFactor = 1.0) :
         dpx(dpx), dpy(dpy), dpz(dpz),
         mpx(mpx), mpy(mpy), mpz(mpz),
         type(type),
@@ -1012,8 +927,7 @@ struct DXFLIB_EXPORT DL_DimensionData {
         text(text),
         style(style),
         angle(angle),
-        linearFactor(linearFactor),
-        dimScale(dimScale) {
+        linearFactor(linearFactor) {
 
     }
 
@@ -1086,12 +1000,6 @@ struct DXFLIB_EXPORT DL_DimensionData {
      * Linear factor style override.
      */
     double linearFactor;
-    /**
-     * Dimension scale (dimscale) style override.
-     */
-    double dimScale;
-    bool arrow1Flipped;
-    bool arrow2Flipped;
 };
 
 
@@ -1240,12 +1148,12 @@ struct DXFLIB_EXPORT DL_DimDiametricData {
 /**
  * Angular Dimension Data.
  */
-struct DXFLIB_EXPORT DL_DimAngular2LData {
+struct DXFLIB_EXPORT DL_DimAngularData {
     /**
      * Constructor.
      * Parameters: see member variables.
      */
-    DL_DimAngular2LData(double ddpx1, double ddpy1, double ddpz1,
+    DL_DimAngularData(double ddpx1, double ddpy1, double ddpz1,
                       double ddpx2, double ddpy2, double ddpz2,
                       double ddpx3, double ddpy3, double ddpz3,
                       double ddpx4, double ddpy4, double ddpz4) {
@@ -1322,21 +1230,21 @@ struct DXFLIB_EXPORT DL_DimAngular3PData {
         dpz3 = ddpz3;
     }
 
-    /*! X Coordinate of definition point 1 (extension line 1 end). */
+    /*! X Coordinate of definition point 1. */
     double dpx1;
     /*! Y Coordinate of definition point 1. */
     double dpy1;
     /*! Z Coordinate of definition point 1. */
     double dpz1;
 
-    /*! X Coordinate of definition point 2 (extension line 2 end). */
+    /*! X Coordinate of definition point 2. */
     double dpx2;
     /*! Y Coordinate of definition point 2. */
     double dpy2;
     /*! Z Coordinate of definition point 2. */
     double dpz2;
 
-    /*! X Coordinate of definition point 3 (center). */
+    /*! X Coordinate of definition point 3. */
     double dpx3;
     /*! Y Coordinate of definition point 3. */
     double dpy3;
@@ -1397,25 +1305,23 @@ struct DXFLIB_EXPORT DL_LeaderData {
      * Constructor.
      * Parameters: see member variables.
      */
-    DL_LeaderData(int arrowHeadFlag,
-                  int leaderPathType,
-                  int leaderCreationFlag,
-                  int hooklineDirectionFlag,
-                  int hooklineFlag,
-                  double textAnnotationHeight,
-                  double textAnnotationWidth,
-                  int number,
-                  double dimScale = 1.0) :
-        arrowHeadFlag(arrowHeadFlag),
-        leaderPathType(leaderPathType),
-        leaderCreationFlag(leaderCreationFlag),
-        hooklineDirectionFlag(hooklineDirectionFlag),
-        hooklineFlag(hooklineFlag),
-        textAnnotationHeight(textAnnotationHeight),
-        textAnnotationWidth(textAnnotationWidth),
-        number(number),
-        dimScale(dimScale) {
+    DL_LeaderData(int lArrowHeadFlag,
+                  int lLeaderPathType,
+                  int lLeaderCreationFlag,
+                  int lHooklineDirectionFlag,
+                  int lHooklineFlag,
+                  double lTextAnnotationHeight,
+                  double lTextAnnotationWidth,
+                  int lNumber) {
 
+        arrowHeadFlag = lArrowHeadFlag;
+        leaderPathType = lLeaderPathType;
+        leaderCreationFlag = lLeaderCreationFlag;
+        hooklineDirectionFlag = lHooklineDirectionFlag;
+        hooklineFlag = lHooklineFlag;
+        textAnnotationHeight = lTextAnnotationHeight;
+        textAnnotationWidth = lTextAnnotationWidth;
+        number = lNumber;
     }
 
     /*! Arrow head flag (71). */
@@ -1434,8 +1340,6 @@ struct DXFLIB_EXPORT DL_LeaderData {
     double textAnnotationWidth;
     /*! Number of vertices in leader (76). */
     int number;
-    /*! Dimension scale (dimscale) style override. */
-    double dimScale;
 };
 
 

@@ -26,6 +26,9 @@ private:
 	Polyline currentPolyline;
 	bool inPolyline = false;
 
+    //忽略边界线
+    bool bIgnoreViewportLines = true;
+
 
 public:
 
@@ -57,6 +60,8 @@ public:
     // 处理文本
     virtual void addText(const DL_TextData & data) override;
 
+   
+    
 	
 private:
 

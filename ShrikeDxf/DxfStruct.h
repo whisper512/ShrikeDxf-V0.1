@@ -28,6 +28,8 @@ private:
 	map<string, vector<DxfEntity>> m_mapAllLayerEntities;
 	// 辅助数据结构：快速统计
 	map<string, int> m_mapAllLayerEntityCount;
+	//viewport数据
+    vector<ViewPort> m_vecViewPorts;
 
 public:
 	//添加图层数据

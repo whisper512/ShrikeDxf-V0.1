@@ -2,7 +2,7 @@
 #ifndef PRIMITIVE_H
 #define PRIMITIVE_H
 
-//Dxf映射类中的图元
+//Dxf图元类
 
 struct Point
 {
@@ -55,6 +55,14 @@ struct Text {
     double height;
     std::string type = "TEXT";
     Text(Point pCenter, std::string content, double height) :pointCenter(pCenter), content(content), height(height) {};
+};
+
+//dxf的viewpoint
+struct ViewPort
+{
+    double left, right, bottom, top;
+    ViewPort() :left(0.0), right(0.0), bottom(0.0), top(0.0) {};
+    ViewPort(double left, double right, double button, double top) :left(left), right(right), bottom(button), top(top) {};
 };
 
 

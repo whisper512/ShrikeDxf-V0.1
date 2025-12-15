@@ -31,7 +31,8 @@
 
 
 /**
- * Extrusion direction.
+ * Storing and passing around attributes. Attributes
+ * are the layer name, color, width and line type.
  *
  * @author Andrew Mustun
  */
