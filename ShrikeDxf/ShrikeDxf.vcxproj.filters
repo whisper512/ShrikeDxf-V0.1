@@ -52,9 +52,6 @@
     <ClInclude Include="Primitive.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="DxfManger.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
     <ClInclude Include="DxfMapping.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
@@ -74,6 +71,12 @@
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
       <Filter>Header Files\Common</Filter>
+    </QtMoc>
+    <QtMoc Include="DxfManger.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="TreeView.h">
+      <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="DxfStruct.cpp">
       <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeView.cpp">
+      <Filter>Source Files\WeightView</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

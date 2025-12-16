@@ -7,6 +7,7 @@
 #include <QTimer.h>
 
 #include "Menu.h"
+#include "TreeView.h"
 
 #include "CommonDataManger.h"
 #include "DxfManger.h"
@@ -28,18 +29,23 @@ public:
 
     void InitMenuBar();
     void InitTreeView();
+    //链接信号和槽
+    void ConnectSignalsAndSlots();
 
 public:
     Ui::ShrikeDxfClass ui;
 
     //菜单栏
     CMenu* m_pMenu;
+    //文件结构栏
+    CTreeView* m_pTreeView;
+
+
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;
     //Dxf数据管理
     CDxfManger* m_pDxfDataManger;
-    //文件结构栏
-    QTreeView* m_pTreeView;
+
 
 };
 

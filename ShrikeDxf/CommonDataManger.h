@@ -14,11 +14,12 @@ class CCommonDataManager
 {
 public:
 	CCommonDataManager();
+	CCommonDataManager(QWidget* pMainWindow);
 	~CCommonDataManager();
 
 public:
 	QString m_strDxfPath;
-
+	QWidget* m_pMainWindow;
 
 public:
 	//¾²Ì¬³ÉÔ±º¯Êý

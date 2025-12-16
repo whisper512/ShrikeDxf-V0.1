@@ -20,14 +20,14 @@ public:
 	~CDxfMapping();
 
 	
-private:
+public:
+    //存放dxf文件数文件中所有的数据
 	CDxfStruct m_DxfStruct;
 	DL_Attributes currentAttrib;
 	Polyline currentPolyline;
 	bool inPolyline = false;
 
-    //忽略边界线
-    bool bIgnoreViewportLines = true;
+
 
 
 public:

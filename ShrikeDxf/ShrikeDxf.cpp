@@ -11,12 +11,14 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 
 	InitWindowComponents();
 	InitDataManagers();
+	ConnectSignalsAndSlots();
 }
 
 ShrikeDxf::~ShrikeDxf()
 {
 	delete m_pMenu;
-    delete m_pTreeView;
+	//Õ»Òç³ö
+	//delete m_pTreeView;
 }
 
 void ShrikeDxf::InitWindowComponents()
@@ -33,8 +35,8 @@ void ShrikeDxf::InitDataManagers()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
-		m_pDataManager = new CCommonDataManager();
-		m_pDxfDataManger = new CDxfManger();
+		m_pDataManager = new CCommonDataManager(this);
+		m_pDxfDataManger = new CDxfManger(this);
 	});
 }
 
@@ -50,6 +52,24 @@ void ShrikeDxf::InitMenuBar()
 
 void ShrikeDxf::InitTreeView()
 {
+	m_pTreeView = new CTreeView(this);
+	if (m_pTreeView)
+	{
+		//Ìí¼Ótreeview
+		m_pTreeView->CreateTreeView();
+	}
+}
+
+void ShrikeDxf::ConnectSignalsAndSlots()
+{
+	QTimer::singleShot(0, this, [this]()
+		{
+			if (m_pDxfDataManger && m_pTreeView)
+			{
+				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview, m_pTreeView, &CTreeView::RefreshTree);
+			}
+		});
+
 
 }
 
