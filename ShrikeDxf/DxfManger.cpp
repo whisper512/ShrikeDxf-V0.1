@@ -26,6 +26,7 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
     else
     {
         //Í¨ÖªtreeviewË¢ÐÂ
+        int icount = m_DxfMapping.m_mapDxfEntities.size();
         emit RefreshTreeview();
         return true;
     }

@@ -43,17 +43,29 @@ struct Arc
 
 struct Polyline 
 {
-    std::vector<Point> vertices;
-    bool closed;
+    //顶点数
+    int numVertices;
+    //M方向顶点数
+    int numVertices_M;
+    //N方向顶点数
+    int numVertices_N;
+    //多段线标志位
+    int flag;
+    //凸值
+    double dBulge;
+    std::vector<Point> vecVertices;
     std::string type = "POLYLINE";
-    Polyline() :closed(false) {}
+    
+    Polyline() :numVertices(0), numVertices_M(0), numVertices_N(0), flag(0), dBulge(0.0) {};
 };
 
-struct Text {
+struct Text 
+{
     Point pointCenter;
     std::string content;
     double height;
     std::string type = "TEXT";
+    Text() :height(0.0) {};
     Text(Point pCenter, std::string content, double height) :pointCenter(pCenter), content(content), height(height) {};
 };
 
@@ -64,6 +76,7 @@ struct ViewPort
     ViewPort() :left(0.0), right(0.0), bottom(0.0), top(0.0) {};
     ViewPort(double left, double right, double button, double top) :left(left), right(right), bottom(button), top(top) {};
 };
+
 
 
 #endif // PRIMITIVE_H

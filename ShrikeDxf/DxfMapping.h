@@ -21,21 +21,16 @@ public:
 
 	
 public:
-    //存放dxf文件数文件中所有的数据
-	CDxfStruct m_DxfStruct;
-	DL_Attributes currentAttrib;
-	Polyline currentPolyline;
-	bool inPolyline = false;
 
+    // 存放dxf文件中所有的数据
+    map<string, stuLayout> m_mapDxfEntities;
 
 
 
 public:
 
-    //virtual void setAttributes(const DL_Attributes& attrib) override 
-    //{
-    //    currentAttrib = attrib;
-    //}
+    // 处理图层
+    virtual void addLayer(const DL_LayerData& data) override;
 
     // 处理点
     virtual void addPoint(const DL_PointData& data) override;
@@ -55,17 +50,18 @@ public:
     // 处理多段线顶点
     virtual void addVertex(const DL_VertexData& data) override;
 
-    virtual void endEntity() override;
 
     // 处理文本
     virtual void addText(const DL_TextData & data) override;
 
+    //清空数据
+    void ClearDxfData();
    
     
 	
 private:
-
-	
+    //当前多段线信息
+    Polyline* m_pCurPolyline;
 };
 
 #endif // DXF_MAPPING_H
