@@ -7,9 +7,8 @@
 
 #include "DxfStruct.h"
 
-//#include "stuLayout.h"  // 假设stuLayout和相关几何类已定义
 
-//用于显示dxf的treeview的model
+//用于treeview的model
 class CDxfTreeviewModel : public QStandardItemModel
 {
 	Q_OBJECT

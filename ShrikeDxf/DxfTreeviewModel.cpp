@@ -11,15 +11,15 @@ CDxfTreeviewModel::~CDxfTreeviewModel()
 void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& layer)
 {
 
-    clear();
-    m_layer.clear();
+    ClearModel();
     
+    //添加根节点
     QStandardItem* rootItem = new QStandardItem(QString("DXF"));
     appendRow(rootItem);
     
-
-
     QString qstr;
+
+    //遍历图层
     for (auto it = layer.begin(); it != layer.end(); it++)
     {
         QStandardItem* item = new QStandardItem(QString::fromStdString(it->first));

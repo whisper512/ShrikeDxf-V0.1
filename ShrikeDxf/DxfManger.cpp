@@ -25,9 +25,8 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
     }
     else
     {
-        //通知treeview刷新
+        //更新model,通知treeview
         m_DxfTreeviewModel.UpdateLayoutItem(m_DxfMapping.m_mapDxfEntities);
-
         emit RefreshTreeview(&m_DxfTreeviewModel);
         return true;
     }

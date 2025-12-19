@@ -26,8 +26,9 @@ public:
     void InitWindowComponents();
     //初始化数据管理类
     void InitDataManagers();
-
+    //初始化menu
     void InitMenuBar();
+    //初始化treeview
     void InitTreeView();
     //链接信号和槽
     void ConnectSignalsAndSlots();

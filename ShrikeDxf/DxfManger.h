@@ -21,10 +21,11 @@ private:
 	QWidget* m_pMainWnd;
 	//dxf映射类
 	CDxfMapping m_DxfMapping;
-	//dxfmodel
+	//用于显示treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;
 
 signals:
+	//用来通知treeview
 	void RefreshTreeview(CDxfTreeviewModel* pModel);
 
 

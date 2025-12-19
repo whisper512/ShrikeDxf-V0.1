@@ -22,7 +22,7 @@ void CDxfMapping::addLayer(const DL_LayerData& data)
 void CDxfMapping::addPoint(const DL_PointData& data)
 {
 	Point point{ data.x, data.y, data.z };
-
+	//获取当前的图层
 	std::string strCurrentLayer = getAttributes().getLayer();
 
 	 auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
