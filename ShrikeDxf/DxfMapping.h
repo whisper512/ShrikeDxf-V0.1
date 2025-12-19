@@ -23,7 +23,7 @@ public:
 public:
 
     // 存放dxf文件中所有的数据
-    map<string, stuLayout> m_mapDxfEntities;
+    map<string, stuLayer> m_mapDxfEntities;
 
 
 

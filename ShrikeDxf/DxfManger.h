@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "DxfMapping.h"
-
+#include "DxfTreeviewModel.h"
 
 
 //dxf管理类,包含映射,操作，绘图
@@ -21,9 +21,11 @@ private:
 	QWidget* m_pMainWnd;
 	//dxf映射类
 	CDxfMapping m_DxfMapping;
+	//dxfmodel
+	CDxfTreeviewModel m_DxfTreeviewModel;
 
 signals:
-	void RefreshTreeview();
+	void RefreshTreeview(CDxfTreeviewModel* pModel);
 
 
 };

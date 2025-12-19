@@ -18,7 +18,7 @@ using namespace std;
 using DxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
 
 //Õº≤„¿‡
-struct stuLayout
+struct stuLayer
 {
 	vector<Point> vecPoints;
     vector<Line> vecLines;

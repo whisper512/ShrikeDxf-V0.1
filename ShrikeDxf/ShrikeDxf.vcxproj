@@ -110,6 +110,7 @@
     <QtMoc Include="DxfManger.h" />
     <ClInclude Include="DxfMapping.h" />
     <ClInclude Include="DxfStruct.h" />
+    <QtMoc Include="DxfTreeviewModel.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="StyleSheet.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="DxfManger.cpp" />
     <ClCompile Include="DxfMapping.cpp" />
     <ClCompile Include="DxfStruct.cpp" />
+    <ClCompile Include="DxfTreeviewModel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />

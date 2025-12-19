@@ -1,6 +1,7 @@
 #pragma once
 #include <QObject>
 #include <QTreeView>
+#include "DxfTreeviewModel.h"
 
 class CTreeView : public QObject
 {
@@ -19,7 +20,7 @@ private:
 
 public slots:
 
-	void RefreshTree();
+	void RefreshTree(CDxfTreeviewModel* pModel);
 
 
 };
