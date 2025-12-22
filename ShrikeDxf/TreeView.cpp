@@ -25,7 +25,6 @@ void CTreeView::CreateTreeView()
 		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
 		pWnd->ui.verticalLayout_FileStructure->addWidget(m_pTreeView);
 	}
-	m_pTreeView->header()->setVisible(false);
 }
 
 void CTreeView::RefreshTree(CDxfTreeviewModel* pModel)
@@ -34,5 +33,11 @@ void CTreeView::RefreshTree(CDxfTreeviewModel* pModel)
 	if (pModel)
 	{
 		m_pTreeView->setModel(pModel);
+
+		QHeaderView* pHeader = m_pTreeView->header();
+		int iWidth = m_pTreeView->width();
+		pHeader->resizeSection(0, iWidth * 0.3);
+        pHeader->resizeSection(1, iWidth * 0.3);
+		pHeader->resizeSection(2, iWidth * 0.4);
 	}
 }
