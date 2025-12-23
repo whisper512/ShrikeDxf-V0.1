@@ -13,12 +13,7 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
 
     ClearModel();
     
-    this->setHorizontalHeaderLabels(QStringList() << "FILE" << "LAYER" << "ENTITIES");
-
-    QList<QStandardItem*> listRootItems;
-    listRootItems << new QStandardItem("DXF") << new QStandardItem("") << new QStandardItem("");
-    appendRow(listRootItems);
-    
+    this->setHorizontalHeaderLabels(QStringList() << "LAYER" << "ENTITIES");
     QString qstr;
 
     //遍历图层
@@ -26,8 +21,11 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
     {
         
         QList<QStandardItem*> listItemLayer;
-        listItemLayer << new QStandardItem("") << new QStandardItem(QString::fromStdString(it->first)) << new QStandardItem("");
-        listRootItems.first()->appendRow(listItemLayer);
+        QStandardItem* itemLayer = new QStandardItem(QString::fromStdString(it->first));
+        QStandardItem* itemLayerBooth = new QStandardItem("");
+        itemLayerBooth->setFlags(itemLayerBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+        listItemLayer << itemLayer << itemLayerBooth;
+        appendRow(listItemLayer);
 
         int indexPoint = 1,indexLine = 1, indexCircle = 1, indexArc = 1, indexPolyline = 1, indexText = 1;
         //遍历图层内的point
@@ -35,7 +33,10 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
         {
             qstr= QString("point%1").arg(indexPoint);
             QList<QStandardItem*> listItemPoint;
-            listItemPoint << new QStandardItem("") << new QStandardItem("") << new QStandardItem(qstr);
+            QStandardItem* itemPoint = new QStandardItem(qstr);
+            QStandardItem* itemPointBooth = new QStandardItem("");
+            itemPointBooth->setFlags(itemPointBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            listItemPoint << itemPointBooth << itemPoint;
             listItemLayer.first()->appendRow(listItemPoint);
             indexPoint++;
         }
@@ -45,7 +46,10 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
         {
             qstr = QString("line%1").arg(indexLine);
             QList<QStandardItem*> listItemLine;
-            listItemLine << new QStandardItem("") << new QStandardItem("") << new QStandardItem(qstr);
+            QStandardItem* itemLine = new QStandardItem(qstr);
+            QStandardItem* itemLineBooth = new QStandardItem("");
+            itemLineBooth->setFlags(itemLineBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            listItemLine << itemLineBooth  << itemLine;
             listItemLayer.first()->appendRow(listItemLine);
             indexLine++;
         }
@@ -54,7 +58,10 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
         {
             qstr = QString("circle%1").arg(indexCircle);
             QList<QStandardItem*> listItemCircle;
-            listItemCircle << new QStandardItem("") << new QStandardItem("") << new QStandardItem(qstr);
+            QStandardItem* itemCircle = new QStandardItem(qstr);
+            QStandardItem* itemCircleBooth = new QStandardItem("");
+            itemCircleBooth->setFlags(itemCircleBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            listItemCircle << itemCircleBooth  << itemCircle;
             listItemLayer.first()->appendRow(listItemCircle);
             indexCircle++;
         }
@@ -63,7 +70,10 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
         {
             qstr = QString("arc-%1").arg(indexArc);
             QList<QStandardItem*> listItemArc;
-            listItemArc << new QStandardItem("") << new QStandardItem("") << new QStandardItem(qstr);
+            QStandardItem* itemArc = new QStandardItem(qstr);
+            QStandardItem* itemArcBooth = new QStandardItem("");
+            itemArcBooth->setFlags(itemArcBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            listItemArc << itemArcBooth  << itemArc;
             listItemLayer.first()->appendRow(listItemArc);
             indexArc++;
         }
@@ -72,7 +82,10 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
         {
             qstr = QString("polyline-%1").arg(indexPolyline);
             QList<QStandardItem*> listItemPolyline;
-            listItemPolyline << new QStandardItem("") << new QStandardItem("") << new QStandardItem(qstr);
+            QStandardItem* itemPolyline = new QStandardItem(qstr);
+            QStandardItem* itemPolylineBooth = new QStandardItem("");
+            itemPolylineBooth->setFlags(itemPolylineBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            listItemPolyline << itemPolylineBooth  << itemPolyline;
             listItemLayer.first()->appendRow(listItemPolyline);
             indexPolyline++;
         }
@@ -81,7 +94,10 @@ void CDxfTreeviewModel::UpdateLayoutItem(const std::map<std::string, stuLayer>& 
         {
             qstr = QString("text-%1").arg(indexText);
             QList<QStandardItem*> listItemText;
-            listItemText << new QStandardItem("") << new QStandardItem("") << new QStandardItem(qstr);
+            QStandardItem* itemText = new QStandardItem(qstr);
+            QStandardItem* itemTextBooth = new QStandardItem("");
+            itemTextBooth->setFlags(itemTextBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            listItemText << itemTextBooth  << itemText;
             listItemLayer.first()->appendRow(listItemText);
             indexText++;
         }

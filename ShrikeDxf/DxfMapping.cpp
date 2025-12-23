@@ -108,6 +108,14 @@ void CDxfMapping::addText(const DL_TextData& data)
 	text.pointCenter = point;
     text.content = data.text;
     text.height = data.height;
+
+	std::string strCurrentLayer = getAttributes().getLayer();
+	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		CurLayer->second.vecTexts.push_back(text);
+	}
+
 }
 
 void CDxfMapping::ClearDxfData()

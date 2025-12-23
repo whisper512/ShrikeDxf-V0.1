@@ -36,8 +36,10 @@ void CTreeView::RefreshTree(CDxfTreeviewModel* pModel)
 
 		QHeaderView* pHeader = m_pTreeView->header();
 		int iWidth = m_pTreeView->width();
-		pHeader->resizeSection(0, iWidth * 0.3);
-        pHeader->resizeSection(1, iWidth * 0.3);
-		pHeader->resizeSection(2, iWidth * 0.4);
+		pHeader->resizeSection(0, iWidth * 0.5);
+        pHeader->resizeSection(1, iWidth * 0.5);
+
+
+		m_pTreeView->expandAll();
 	}
 }

@@ -50,7 +50,6 @@ public:
     // 处理多段线顶点
     virtual void addVertex(const DL_VertexData& data) override;
 
-
     // 处理文本
     virtual void addText(const DL_TextData & data) override;
 
