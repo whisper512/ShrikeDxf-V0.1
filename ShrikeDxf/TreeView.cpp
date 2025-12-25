@@ -25,7 +25,15 @@ void CTreeView::CreateTreeView()
 		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
 		pWnd->ui.verticalLayout_FileStructure->addWidget(m_pTreeView);
 	}
+	// 设置样式表，包括背景色和其他外观属性
+	m_pTreeView->setStyleSheet(
+		"QTreeView {"
+		"	background-color: #f0f0f0;"  // 设置背景色为淡灰色
+		"}"
+	);
 
+
+	//添加menu右键
 	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_pTreeView,&QTreeView::customContextMenuRequested,this,&CTreeView::ShowContextMenu);
 }
@@ -70,7 +78,7 @@ void CTreeView::handleReturnEntityInfo(QString strInfo)
 
 
 
-void CTreeView::RefreshTree(CDxfTreeviewModel* pModel)
+void CTreeView::handleRefreshTree(CDxfTreeviewModel* pModel)
 {
 	//从映射类中取数据显示
 	if (pModel)

@@ -108,9 +108,11 @@
   <ItemGroup>
     <ClInclude Include="CommonDataManger.h" />
     <QtMoc Include="DxfManger.h" />
+    <QtMoc Include="DxfGraphicsScene.h" />
     <ClInclude Include="DxfMapping.h" />
     <ClInclude Include="DxfStruct.h" />
     <QtMoc Include="DxfTreeviewModel.h" />
+    <QtMoc Include="GraphicsView.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="StyleSheet.h" />
@@ -119,10 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommonDataManger.cpp" />
+    <ClCompile Include="DxfGraphicsScene.cpp" />
     <ClCompile Include="DxfManger.cpp" />
     <ClCompile Include="DxfMapping.cpp" />
     <ClCompile Include="DxfStruct.cpp" />
     <ClCompile Include="DxfTreeviewModel.cpp" />
+    <ClCompile Include="GraphicsView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />

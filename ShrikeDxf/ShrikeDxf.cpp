@@ -4,8 +4,9 @@
 ShrikeDxf::ShrikeDxf(QWidget *parent)
     : QMainWindow(parent),
 	m_pMenu(nullptr),
-	m_pTreeView(nullptr)
-{
+	m_pTreeView(nullptr),
+	m_pGraphicsView(nullptr)
+{	
     ui.setupUi(this);
 	setWindowIcon(QIcon(":/ShrikeDxf/res/Main.png"));
 
@@ -28,6 +29,7 @@ void ShrikeDxf::InitWindowComponents()
 	{
 		InitMenuBar();
 		InitTreeView();
+		InitGraphicsView();
 	});
 }
 
@@ -60,17 +62,31 @@ void ShrikeDxf::InitTreeView()
 	}
 }
 
+void ShrikeDxf::InitGraphicsView()
+{
+	m_pGraphicsView = new CGraphicsView(this);
+	if (m_pGraphicsView)
+	{
+	}
+
+}
+
 void ShrikeDxf::ConnectSignalsAndSlots()
 {
 	QTimer::singleShot(0, this, [this]()
 		{
 			if (m_pDxfDataManger && m_pTreeView)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview,m_pTreeView, &CTreeView::RefreshTree);
+				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview,m_pTreeView, &CTreeView::handleRefreshTree);
 				connect(m_pTreeView, &CTreeView::GetEntityData, m_pDxfDataManger, &CDxfManger::handleGetEntityData);
 				connect(m_pDxfDataManger,&CDxfManger::ReturnEntityInfo,m_pTreeView,&CTreeView::handleReturnEntityInfo);
 			}
-		});
+
+			if (m_pDxfDataManger && m_pGraphicsView)
+			{
+				connect(m_pDxfDataManger,&CDxfManger::RefreshGraphicsview,m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+			}
+	});
 
 
 }

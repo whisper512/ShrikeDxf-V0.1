@@ -8,7 +8,7 @@ CDxfTreeviewModel::~CDxfTreeviewModel()
 {
 }
 
-void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLayer>& layer)
+void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLayer>& mapDxf)
 {
 
     ClearModel();
@@ -17,7 +17,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
     QString qstr;
 
     //±éÀúÍ¼²ã
-    for (auto it = layer.begin(); it != layer.end(); it++)
+    for (auto it = mapDxf.begin(); it != mapDxf.end(); it++)
     {
         
         QList<QStandardItem*> listItemLayer;
@@ -107,7 +107,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
 void CDxfTreeviewModel::ClearModel()
 {
     clear();
-    m_layer.clear();
+    m_mapDxf.clear();
 }
 
 

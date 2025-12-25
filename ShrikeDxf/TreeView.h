@@ -24,7 +24,7 @@ signals:
 
 public slots:
 	//获取模型用于刷新
-	void RefreshTree(CDxfTreeviewModel* pModel);
+	void handleRefreshTree(CDxfTreeviewModel* pModel);
 	//右键显示menu
 	void ShowContextMenu(const QPoint &pos);
 	//显示menu

@@ -81,6 +81,12 @@
     <QtMoc Include="DxfTreeviewModel.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
+    <QtMoc Include="DxfGraphicsScene.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="GraphicsView.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManger.cpp">
@@ -111,6 +117,12 @@
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="DxfTreeviewModel.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsView.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfGraphicsScene.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
   </ItemGroup>

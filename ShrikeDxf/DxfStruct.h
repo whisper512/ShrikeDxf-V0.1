@@ -20,12 +20,15 @@ using DxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
 //图层类
 struct stuLayer
 {
+    //QColor color;
+
 	vector<Point> vecPoints;
     vector<Line> vecLines;
     vector<Circle> vecCircles;
     vector<Arc> vecArcs;
     vector<Polyline> vecPolylines;
     vector<Text> vecTexts;
+
 };
 
 //图层类,图元不做区分

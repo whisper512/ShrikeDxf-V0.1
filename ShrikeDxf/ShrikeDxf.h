@@ -8,6 +8,7 @@
 
 #include "Menu.h"
 #include "TreeView.h"
+#include "GraphicsView.h"
 
 #include "CommonDataManger.h"
 #include "DxfManger.h"
@@ -30,6 +31,8 @@ public:
     void InitMenuBar();
     //初始化treeview
     void InitTreeView();
+    //初始化graphicsView
+    void InitGraphicsView();
     //链接信号和槽
     void ConnectSignalsAndSlots();
 
@@ -40,7 +43,8 @@ public:
     CMenu* m_pMenu;
     //文件结构栏
     CTreeView* m_pTreeView;
-
+    //图形界面
+    CGraphicsView* m_pGraphicsView;
 
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;

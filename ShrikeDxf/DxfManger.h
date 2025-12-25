@@ -5,6 +5,7 @@
 
 #include "DxfMapping.h"
 #include "DxfTreeviewModel.h"
+#include "DxfGraphicsScene.h"
 
 
 //dxf管理类,包含映射,操作，绘图
@@ -26,12 +27,16 @@ private:
 	CDxfMapping m_DxfMapping;
 	//用于显示treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;
+	//用于graphicview
+	CDxfGraphicsScene m_DxfGraphicsScene;
 
 signals:
 	//用来通知treeview
 	void RefreshTreeview(CDxfTreeviewModel* pModel);
 	//用来返回获取到的entity信息
 	void ReturnEntityInfo(QString strInfo);
+	//通知graphicsview
+	void RefreshGraphicsview(CDxfGraphicsScene* pScene);
 
  public slots:
 	QString handleGetEntityData(const QString& strLayer, const QString& strEntity);
