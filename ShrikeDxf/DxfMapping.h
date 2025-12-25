@@ -28,6 +28,7 @@ public:
 
 
 public:
+    //dxflib中的回调函数
 
     // 处理图层
     virtual void addLayer(const DL_LayerData& data) override;
@@ -57,6 +58,12 @@ public:
     void ClearDxfData();
    
     
+public:
+    //获取entity数据
+    QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
+    
+
+
 	
 private:
     //当前多段线信息

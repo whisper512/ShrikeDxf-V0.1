@@ -1,5 +1,7 @@
 #pragma once
 #include <QWidget>
+#include <QRegularExpression>
+
 
 #include "DxfMapping.h"
 #include "DxfTreeviewModel.h"
@@ -15,6 +17,7 @@ public:
 
 public:
 	bool LoadDxfFile(const QString& strPath);
+	void ClearDxfMappingData();
 
 private:
 	//mainwindow指针
@@ -27,7 +30,10 @@ private:
 signals:
 	//用来通知treeview
 	void RefreshTreeview(CDxfTreeviewModel* pModel);
+	//用来返回获取到的entity信息
+	void ReturnEntityInfo(QString strInfo);
 
+ public slots:
+	QString handleGetEntityData(const QString& strLayer, const QString& strEntity);
 
 };
-

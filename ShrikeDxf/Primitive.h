@@ -2,6 +2,21 @@
 #ifndef PRIMITIVE_H
 #define PRIMITIVE_H
 
+//Í¼Ôª×Ö·û
+#define STR_POINT "POINT"
+#define STR_LINE "LINE"
+#define STR_CIRCLE "CIRCLE"
+#define STR_ARC "ARC"
+#define STR_POLYLINE "POLYLINE"
+#define STR_TEXT "TEXT"
+
+#define STR_POINT_LOWERCASE "point"
+#define STR_LINE_LOWERCASE "line"
+#define STR_CIRCLE_LOWERCASE "circle"
+#define STR_ARC_LOWERCASE "arc"
+#define STR_POLYLINE_LOWERCASE "polyline"
+#define STR_TEXT_LOWERCASE "text"
+
 //DxfÍ¼ÔªÀà
 
 struct Point

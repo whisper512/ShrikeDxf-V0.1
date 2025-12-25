@@ -18,9 +18,17 @@ private:
 
 	QTreeView* m_pTreeView;
 
+signals:
+	//通知dafmanger获取具体信息
+	void GetEntityData(const QString& strLayer, const QString& strEntity);
+
 public slots:
-
+	//获取模型用于刷新
 	void RefreshTree(CDxfTreeviewModel* pModel);
-
-
+	//右键显示menu
+	void ShowContextMenu(const QPoint &pos);
+	//显示menu
+	void ShowModelData();
+	//显示返回的entity的数据
+	void handleReturnEntityInfo(QString strInfo );
 };

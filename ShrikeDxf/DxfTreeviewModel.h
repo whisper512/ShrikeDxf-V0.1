@@ -18,7 +18,7 @@ public:
 	~CDxfTreeviewModel();
 
 	// ¸üÐÂmodel
-	void UpdateLayoutItem(const std::map<std::string, stuLayer>& layer);
+	void UpdateLayoutItemModel(const std::map<std::string, stuLayer>& layer);
 	void ClearModel();
 
 private:
