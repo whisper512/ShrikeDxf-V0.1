@@ -2,6 +2,9 @@
 
 #include <QObject>
 #include <QGraphicsView>
+#include <QGraphicsItem>
+#include <QWheelEvent>
+#include <QScrollBar>
 
 #include "DxfGraphicsScene.h"
 
@@ -21,4 +24,8 @@ public:
 
 public slots:
 	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene);
+
+protected:
+	void wheelEvent(QWheelEvent* pEvent) override;
+
 };

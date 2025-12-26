@@ -49,7 +49,7 @@ struct Arc
 {
     Point pointCenter;
     double radius;
-    double startAngle, endAngle;
+    double startAngle, endAngle;//单位为度
     std::string type = "ARC";
    // Arc() :radius(0.0), strrtAngle(0.0), endAngle2(0.0) {}
    Arc(Point pCenter, double r, double startAngle, double endAngle) 

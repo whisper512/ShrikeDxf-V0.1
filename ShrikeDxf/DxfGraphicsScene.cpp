@@ -1,3 +1,5 @@
+#include<QPainterPath>
+
 #include "DxfGraphicsScene.h"
 
 
@@ -24,13 +26,7 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
 
         for (auto itPoint = layer.vecPoints.begin(); itPoint != layer.vecPoints.end(); ++itPoint)
         {
-            //DrawPoint(*itPoint, Qt::red);
-            Point testPoint1 = { 0, 0 ,0};
-            Point testPoint2 = { 100, 100,0 };
-            Point testPoint3 = { -100, -100,0 };
-            DrawPoint(testPoint1, Qt::red);
-            DrawPoint(testPoint2, Qt::blue);
-            DrawPoint(testPoint3, Qt::green);
+            //DrawPoint(*itPoint, layer.color);
         }
         for (auto itLine = layer.vecLines.begin(); itLine != layer.vecLines.end(); ++itLine)
         {
@@ -42,7 +38,7 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
         }
         for (auto itArc = layer.vecArcs.begin(); itArc != layer.vecArcs.end(); ++itArc)
         {
-            //DrawArc(*itArc, layer.color);
+            DrawArc(*itArc, Qt::red);
         }
         for (auto itPolyline = layer.vecPolylines.begin(); itPolyline != layer.vecPolylines.end(); ++itPolyline)
         {
@@ -64,32 +60,45 @@ void CDxfGraphicsScene::ClearScene()
 
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 {
-    //addEllipse(point.x-1, (-point.y)-1, 50, 50, QPen(color), QBrush(color));
-     // 使用更大的尺寸和更明显的样式
-    qreal size = 20;  // 增大点的尺寸
-    addEllipse(point.x - size / 2, point.y - size / 2, size, size,
-        QPen(color, 2), QBrush(color));
+    qreal size = 1;
+    addEllipse(point.x - size / 2, point.y - size / 2, size, size,QPen(color, 2), QBrush(color));
 
     // 添加十字标记使点更加明显
-    qreal crossSize = size;
-    addLine(point.x - crossSize / 2, point.y,
-        point.x + crossSize / 2, point.y, QPen(color, 2));
-    addLine(point.x, point.y - crossSize / 2,
-        point.x, point.y + crossSize / 2, QPen(color, 2));
+    qreal crossSize = size + size * 10;
+    addLine(point.x - crossSize / 2, point.y,point.x + crossSize / 2, point.y, QPen(color, 2));
+    addLine(point.x, point.y - crossSize / 2,point.x, point.y + crossSize / 2, QPen(color, 2));
 }
 
 void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
 {
-    //addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color));
+    addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color));
 }
 
 void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
 {
-    //addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color), QBrush(color));
+    addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color), Qt::NoBrush);
 }
 
 void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
 {
+    // 创建一个矩形作为圆弧的边界框
+
+    //50,50为左下坐标位置
+
+    QRectF rectAngle(50,50,100,100);
+    QPainterPath path;
+    //path.moveTo(50 + 100*cos(290), 50+100*sin(290));  // 矩形右边中点
+    path.moveTo(100, 100);
+    
+    path.arcTo(rectAngle,290, 270);  // 起始角度0度，跨越90度
+
+    // 将路径添加到场景中
+    addPath(path, QPen(Qt::red, 2), Qt::NoBrush);
+    
+
+
+    // 将路径添加到场景中
+    addPath(path, QPen(Qt::red, 2), Qt::NoBrush);
 }
 
 void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& color)

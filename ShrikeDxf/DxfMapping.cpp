@@ -14,12 +14,23 @@ CDxfMapping::~CDxfMapping()
 
 void CDxfMapping::addLayer(const DL_LayerData& data)
 {
+
 	if (m_mapDxfEntities.find(data.name) == m_mapDxfEntities.end())
 	{
 		//添加图层名作为键
 		m_mapDxfEntities[data.name];
 	}
-	//添加图层名作为键
+
+	//添加图层颜色
+	std::string strCurrentLayer = getAttributes().getLayer();
+	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
+	//初始化dxf颜色索引和颜色的对应
+	const auto& mapDxfColor = DxfColorMap::getColorMap();
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		CurLayer->second.color = mapDxfColor.at(getAttributes().getColor());
+	}
+	
 }
 
 void CDxfMapping::addPoint(const DL_PointData& data)
@@ -27,6 +38,7 @@ void CDxfMapping::addPoint(const DL_PointData& data)
 	Point point{ data.x, data.y, data.z };
 	//获取当前的图层
 	std::string strCurrentLayer = getAttributes().getLayer();
+
 
 	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
 	if(CurLayer != m_mapDxfEntities.end())
@@ -180,7 +192,5 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 		}
 	}
 	
-
-
 	return strInfo;
 }
