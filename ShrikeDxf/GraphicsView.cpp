@@ -68,5 +68,4 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene)
 
     }
     return;
-
 }

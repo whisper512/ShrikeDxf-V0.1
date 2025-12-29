@@ -112,7 +112,8 @@ void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
 
 void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& color)
 {
-    if (polyline.vecVertices.size() < 2) {
+    if (polyline.vecVertices.size() < 2) 
+    {
         return; // 如果点数少于2个，无法绘制多段线
     }
 
