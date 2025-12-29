@@ -98,7 +98,6 @@ void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
     double spanLength = endAngle - startAngle;
     if (spanLength < 0)
     {
-        //y轴镜像,起始角度取负
         //如果spanLength为负数，则表示弧线跨越了0度，需要将其调整为正数,顺时针画弧
         spanLength += 360;
         // 顺时针画过0度的弧线
