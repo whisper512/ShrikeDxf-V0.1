@@ -26,23 +26,23 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
 
         for (auto itPoint = layer.vecPoints.begin(); itPoint != layer.vecPoints.end(); ++itPoint)
         {
-            //DrawPoint(*itPoint, layer.color);
+            DrawPoint(*itPoint, layer.color);
         }
         for (auto itLine = layer.vecLines.begin(); itLine != layer.vecLines.end(); ++itLine)
         {
-            //DrawLine(*itLine, layer.color);
+            DrawLine(*itLine, layer.color);
         }
         for (auto itCircle = layer.vecCircles.begin(); itCircle != layer.vecCircles.end(); ++itCircle)
         {
-            //DrawCircle(*itCircle, layer.color);
+            DrawCircle(*itCircle, layer.color);
         }
         for (auto itArc = layer.vecArcs.begin(); itArc != layer.vecArcs.end(); ++itArc)
         {
-            DrawArc(*itArc, Qt::red);
+            DrawArc(*itArc, layer.color);
         }
         for (auto itPolyline = layer.vecPolylines.begin(); itPolyline != layer.vecPolylines.end(); ++itPolyline)
         {
-            //DrawPolyline(*itPolyline, layer.color);
+            DrawPolyline(*itPolyline, layer.color);
         }
         for (auto itText = layer.vecTexts.begin(); itText != layer.vecTexts.end(); ++itText)
         {
@@ -81,28 +81,61 @@ void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
 
 void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
 {
-    // 创建一个矩形作为圆弧的边界框
-
-    //50,50为左下坐标位置
-
-    QRectF rectAngle(50,50,100,100);
+    //daxflib中读取到的坐标y轴向上为正方向,需要翻转y坐标
     QPainterPath path;
-    //path.moveTo(50 + 100*cos(290), 50+100*sin(290));  // 矩形右边中点
-    path.moveTo(100, 100);
+    // 翻转y坐标
+    QPointF flippedCenter(arc.pointCenter.x, arc.pointCenter.y);
+    //弧形外界矩形
+    QRectF flippedRect(flippedCenter.x() - arc.radius, flippedCenter.y() - arc.radius, arc.radius * 2, arc.radius * 2);
     
-    path.arcTo(rectAngle,290, 270);  // 起始角度0度，跨越90度
+    double startAngleRad = qDegreesToRadians(-arc.startAngle);
+    path.moveTo(flippedCenter + QPointF(arc.radius * cos(startAngleRad), -arc.radius * sin(startAngleRad)));
 
-    // 将路径添加到场景中
-    addPath(path, QPen(Qt::red, 2), Qt::NoBrush);
-    
+    double startAngle = fmod(arc.startAngle, 360);
+    double endAngle = fmod(arc.endAngle, 360);
 
-
-    // 将路径添加到场景中
-    addPath(path, QPen(Qt::red, 2), Qt::NoBrush);
+    //在dxflib和scene中，都以逆时针方向为角度正方向,0度在x轴正方向
+    double spanLength = endAngle - startAngle;
+    if (spanLength < 0)
+    {
+        //y轴镜像,起始角度取负
+        //如果spanLength为负数，则表示弧线跨越了0度，需要将其调整为正数,顺时针画弧
+        spanLength += 360;
+        // 顺时针画过0度的弧线
+        path.arcTo(flippedRect, -startAngle, -spanLength);
+    }
+    else
+    {
+        path.arcTo(flippedRect, -startAngle, -spanLength);
+    }
+    addPath(path, QPen(color, 1), Qt::NoBrush);
 }
 
 void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& color)
 {
+    if (polyline.vecVertices.size() < 2) {
+        return; // 如果点数少于2个，无法绘制多段线
+    }
+
+    QPen pen(color);
+    QPainterPath path;
+
+    // 移动到第一个点
+    path.moveTo(polyline.vecVertices[0].x, polyline.vecVertices[0].y);
+
+    // 连接后续所有点
+    for (size_t i = 1; i < polyline.vecVertices.size(); ++i) 
+    {
+        path.lineTo(polyline.vecVertices[i].x, polyline.vecVertices[i].y);
+    }
+
+    // 如果多段线是闭合的，连接最后一个点和第一个点
+    if (polyline.flag & 1) 
+    {
+        path.lineTo(polyline.vecVertices[0].x, polyline.vecVertices[0].y);
+    }
+
+    addPath(path, pen);
 }
 
 void CDxfGraphicsScene::DrawText(const Text& text, const QColor& color)

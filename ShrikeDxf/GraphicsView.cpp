@@ -19,7 +19,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
 
         setAutoFillBackground(true);
 
-        setStyleSheet("background-color:#f0f0f0;");
+        setStyleSheet("background-color:#d0d0d0;");
 
         //·­×ªyÖá
         setTransform(QTransform(1, 0, 0, -1, 0, 0));

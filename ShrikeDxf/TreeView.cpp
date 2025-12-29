@@ -28,7 +28,7 @@ void CTreeView::CreateTreeView()
 	// 设置样式表，包括背景色和其他外观属性
 	m_pTreeView->setStyleSheet(
 		"QTreeView {"
-		"	background-color: #f0f0f0;"  // 设置背景色为淡灰色
+		"	background-color: #d0d0d0;"  // 设置背景色为淡灰色
 		"}"
 	);
 
