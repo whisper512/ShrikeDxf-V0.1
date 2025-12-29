@@ -4,9 +4,27 @@ Shrike-Dxf v0.1
 
 (https://www.qcad.org/en/dxflib-downloads)
 
+treeview::
 添加图元的图标
+禁用编辑,仅查看
+表头颜色调整
 
-考虑绘图相关的事项
+graphicView::
+右键menu：
+锁定幅面，
+还原，
+显示鼠标位置，
+镜像x轴
+镜像y轴
+text绘制暂时不考虑
+
+顶部菜单栏：文件
+打开完成
+保存
+关闭
+
+顶部菜单栏：view
+设置幅面
 
 
 
