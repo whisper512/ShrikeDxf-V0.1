@@ -4,23 +4,35 @@ Shrike-Dxf v0.1
 
 (https://www.qcad.org/en/dxflib-downloads)
 
+1.
 treeview::
 添加图元的图标，
 禁用编辑仅查看，
 表头颜色调整，
 
+2.
 graphicView::
 右键menu：
-还原，
+还原默认缩放，
 显示鼠标位置，
 镜像时会影响当前缩放的视图
+
+添加标尺
 text绘制暂时不考虑
 
+4.
+右侧图层属性设置：
+
+5.
+右侧图元信息显示：
+
+6.
 顶部菜单栏：文件
 打开完成
 保存
 关闭
 
+7.
 顶部菜单栏：view
 设置幅面
 
