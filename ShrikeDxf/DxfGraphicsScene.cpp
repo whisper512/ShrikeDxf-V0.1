@@ -79,34 +79,35 @@ void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
     addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color), Qt::NoBrush);
 }
 
+
 void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
 {
-    //daxflib中读取到的坐标y轴向上为正方向,需要翻转y坐标
+
     QPainterPath path;
-    // 翻转y坐标
-    QPointF flippedCenter(arc.pointCenter.x, arc.pointCenter.y);
-    //弧形外界矩形
-    QRectF flippedRect(flippedCenter.x() - arc.radius, flippedCenter.y() - arc.radius, arc.radius * 2, arc.radius * 2);
-    
-    double startAngleRad = qDegreesToRadians(-arc.startAngle);
-    path.moveTo(flippedCenter + QPointF(arc.radius * cos(startAngleRad), -arc.radius * sin(startAngleRad)));
+    QPointF center(arc.pointCenter.x, arc.pointCenter.y);
+    //圆弧外接矩形
+    QRectF rect(center.x() - arc.radius,center.y() - arc.radius,arc.radius * 2, arc.radius * 2);
 
-    double startAngle = fmod(arc.startAngle, 360);
-    double endAngle = fmod(arc.endAngle, 360);
+    //计算起点,起始角度是针对圆形中心的角度
+    double startAngleRad = qDegreesToRadians(arc.startAngle);
+    QPointF startPoint(center.x() + arc.radius * cos(startAngleRad),center.y() + arc.radius * sin(startAngleRad));
+    path.moveTo(startPoint);
+    //取整
+    double startAngle = fmod(arc.startAngle, 360.0);
+    double endAngle = fmod(arc.endAngle, 360.0);
 
-    //在dxflib和scene中，都以逆时针方向为角度正方向,0度在x轴正方向
+    //计算跨度-保持DXF的逆时针方向画弧
     double spanLength = endAngle - startAngle;
-    if (spanLength < 0)
+    if (spanLength < 0) 
     {
-        //如果spanLength为负数，则表示弧线跨越了0度，需要将其调整为正数,顺时针画弧
-        spanLength += 360;
-        // 顺时针画过0度的弧线
-        path.arcTo(flippedRect, -startAngle, -spanLength);
+        spanLength += 360.0;
     }
-    else
-    {
-        path.arcTo(flippedRect, -startAngle, -spanLength);
-    }
+
+    //由于View做了Y轴镜像，角度需要转换
+    // Qt起始角 = (360° - DXF起始角) % 360°
+    double qtStartAngle = fmod(360.0 - startAngle, 360.0);
+    //转为顺时针绘制圆弧
+    path.arcTo(rect, qtStartAngle, -spanLength);
     addPath(path, QPen(color, 1), Qt::NoBrush);
 }
 

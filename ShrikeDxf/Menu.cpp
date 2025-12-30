@@ -15,9 +15,7 @@ CMenu::CMenu(QWidget* parent) :
 	m_pActionOpen(nullptr),
 	m_pActionSave(nullptr),
 	m_pActionClose(nullptr),
-	m_pActionAbout(nullptr),
-	m_pActionLightTheme(nullptr),
-	m_pActionDarkTheme(nullptr)
+	m_pActionAbout(nullptr)
 {
 	m_pParent = this->parentWidget();
 }
@@ -33,8 +31,6 @@ CMenu::~CMenu()
 	delete m_pActionSave;
 	delete m_pActionClose;
 	delete m_pActionAbout;
-	delete m_pActionLightTheme;
-	delete m_pActionDarkTheme;
 }
 
 void CMenu::InitMenuBar()
@@ -76,10 +72,7 @@ void CMenu::InitAction()
 	{
 		if (m_pMenuView->actions().isEmpty())
 		{
-			m_pActionLightTheme = new QAction("Light Theme", this);
-			m_pMenuView->addAction(m_pActionLightTheme);
-			m_pActionDarkTheme = new QAction("Dark Theme", this);
-			m_pMenuView->addAction(m_pActionDarkTheme);
+			
 		}
 	}
 
@@ -123,15 +116,6 @@ void CMenu::ConnectSolt()
 	{
 		connect(m_pActionClose, &QAction::triggered, this, &CMenu::OnClose);
 	}
-
-	if (m_pActionLightTheme)
-	{
-        connect(m_pActionLightTheme, &QAction::triggered, this, &CMenu::OnLightTheme);
-	}
-	if (m_pActionDarkTheme)
-	{
-		connect(m_pActionDarkTheme, &QAction::triggered, this, &CMenu::OnDarkTheme);
-	}
 }
 
 void CMenu::OnOpen()
@@ -159,23 +143,4 @@ void CMenu::OnSave()
 
 void CMenu::OnClose()
 {
-}
-
-void CMenu::OnLightTheme()
-{
-	if (m_pParent)
-	{
-		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-		qApp->setPalette((pShrikeDxf->m_pDataManager->getPaletteLight()));
-		// 为菜单添加样式表
-	}
-}
-
-void CMenu::OnDarkTheme()
-{
-	if (m_pParent)
-	{
-		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-		qApp->setPalette((pShrikeDxf->m_pDataManager->getPaletteDark()));
-	}
 }
