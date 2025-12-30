@@ -5,11 +5,12 @@ Shrike-Dxf v0.1
 (https://www.qcad.org/en/dxflib-downloads)
 
 treeview::
-添加图元的图标
-禁用编辑,仅查看
-表头颜色调整
+添加图元的图标，
+禁用编辑仅查看，
+表头颜色调整，
 
 graphicView::
+arc修改理解，
 右键menu：
 锁定幅面，
 还原，
