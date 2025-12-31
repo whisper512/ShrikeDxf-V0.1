@@ -67,6 +67,12 @@
     <ClInclude Include="DxfStruct.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
+    <ClInclude Include="StackedWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
+    <ClInclude Include="TableView.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
@@ -125,5 +131,16 @@
     <ClCompile Include="DxfGraphicsScene.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
+    <ClCompile Include="StackedWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="TableView.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="EntityAttribute.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

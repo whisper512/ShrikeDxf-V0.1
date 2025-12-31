@@ -3,12 +3,12 @@
 #include <QTreeView>
 #include "DxfTreeviewModel.h"
 
-class CTreeView : public QObject
+class CTreeViewManger : public QObject
 {
 	Q_OBJECT
 public:
-	CTreeView(QWidget* pMainwnd);
-	~CTreeView();
+	CTreeViewManger(QWidget* pMainwnd);
+	~CTreeViewManger();
 
 	void CreateTreeView();
 

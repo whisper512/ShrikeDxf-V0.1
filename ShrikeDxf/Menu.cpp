@@ -5,7 +5,7 @@
 
 #include "ShrikeDxf.h"
 
-CMenu::CMenu(QWidget* parent) : 
+CMenuManger::CMenuManger(QWidget* parent) : 
 	QWidget(parent),
 	m_pMenuFile(nullptr),
 	m_pMenuHelp(nullptr),
@@ -20,7 +20,7 @@ CMenu::CMenu(QWidget* parent) :
 	m_pParent = this->parentWidget();
 }
 
-CMenu::~CMenu()
+CMenuManger::~CMenuManger()
 {
 	delete m_pMenuFile;
 	delete m_pMenuHelp;
@@ -33,7 +33,7 @@ CMenu::~CMenu()
 	delete m_pActionAbout;
 }
 
-void CMenu::InitMenuBar()
+void CMenuManger::InitMenuBar()
 {
 	InitMenu();
 	InitAction();
@@ -41,7 +41,7 @@ void CMenu::InitMenuBar()
 	ConnectSolt();
 }
 
-void CMenu::InitMenu()
+void CMenuManger::InitMenu()
 {
 	m_pMenuFile = new QMenu("File", this);
 	m_pMenuTool = new QMenu("Tool", this);
@@ -50,7 +50,7 @@ void CMenu::InitMenu()
 	m_pMenuView = new QMenu("View", this);
 }
 
-void CMenu::InitAction()
+void CMenuManger::InitAction()
 {
 	if (m_pMenuFile)
 	{
@@ -86,7 +86,7 @@ void CMenu::InitAction()
 	}
 }
 
-void CMenu::AddToBar()
+void CMenuManger::AddToBar()
 {
 	if (m_pParent)
 	{
@@ -102,23 +102,23 @@ void CMenu::AddToBar()
 	}
 }
 
-void CMenu::ConnectSolt()
+void CMenuManger::ConnectSolt()
 {
 	if (m_pActionOpen)
 	{
-		connect(m_pActionOpen, &QAction::triggered,this, &CMenu::OnOpen);
+		connect(m_pActionOpen, &QAction::triggered,this, &CMenuManger::OnOpen);
 	}
 	if (m_pActionSave)
 	{
-		connect(m_pActionSave, &QAction::triggered, this, &CMenu::OnSave);
+		connect(m_pActionSave, &QAction::triggered, this, &CMenuManger::OnSave);
 	}
 	if (m_pActionClose)
 	{
-		connect(m_pActionClose, &QAction::triggered, this, &CMenu::OnClose);
+		connect(m_pActionClose, &QAction::triggered, this, &CMenuManger::OnClose);
 	}
 }
 
-void CMenu::OnOpen()
+void CMenuManger::OnOpen()
 {
 	if (m_pParent)
 	{
@@ -137,10 +137,10 @@ void CMenu::OnOpen()
 	}
 }
 
-void CMenu::OnSave()
+void CMenuManger::OnSave()
 {
 }
 
-void CMenu::OnClose()
+void CMenuManger::OnClose()
 {
 }

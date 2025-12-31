@@ -4,21 +4,22 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-CTreeView::CTreeView(QWidget* pMainwnd):
+CTreeViewManger::CTreeViewManger(QWidget* pMainwnd):
 	m_pMainwnd(pMainwnd),
 	m_pTreeView(nullptr)
 {
 }
 
-CTreeView::~CTreeView()
+CTreeViewManger::~CTreeViewManger()
 {
 	delete m_pTreeView;
 }
 
-void CTreeView::CreateTreeView()
+void CTreeViewManger::CreateTreeView()
 {
 	m_pTreeView = new QTreeView(m_pMainwnd);
-	
+	m_pTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
 	if (m_pMainwnd)
 	{
 		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
@@ -34,20 +35,20 @@ void CTreeView::CreateTreeView()
 
 	//添加menu右键
 	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_pTreeView,&QTreeView::customContextMenuRequested,this,&CTreeView::ShowContextMenu);
+	connect(m_pTreeView,&QTreeView::customContextMenuRequested,this,&CTreeViewManger::ShowContextMenu);
 }
 
-void CTreeView::ShowContextMenu(const QPoint& pos)
+void CTreeViewManger::ShowContextMenu(const QPoint& pos)
 {
 	QMenu* pContextMenu = new QMenu(m_pTreeView);
 	QAction *ActionShowData = new QAction("Show Data", this);
-    connect(ActionShowData, &QAction::triggered, this, &CTreeView::ShowModelData);
+    connect(ActionShowData, &QAction::triggered, this, &CTreeViewManger::ShowModelData);
 	pContextMenu->addAction(ActionShowData);
 	pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
 }
 
 
-void CTreeView::ShowModelData()
+void CTreeViewManger::ShowModelData()
 {
 	QModelIndex index = m_pTreeView->currentIndex();
 	if (index.isValid())
@@ -70,14 +71,14 @@ void CTreeView::ShowModelData()
 	}
 }
 
-void CTreeView::handleReturnEntityInfo(QString strInfo)
+void CTreeViewManger::handleReturnEntityInfo(QString strInfo)
 {
     QMessageBox::information(m_pTreeView, "Entity Data", strInfo);
 }
 
 
 
-void CTreeView::handleRefreshTree(CDxfTreeviewModel* pModel)
+void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)
 {
 	//从映射类中取数据显示
 	if (pModel)

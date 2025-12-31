@@ -104,10 +104,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc" />
+    <QtUic Include="EntityAttribute.ui" />
     <QtUic Include="ShrikeDxf.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonDataManger.h" />
+    <ClInclude Include="TableView.h" />
     <QtMoc Include="DxfManger.h" />
     <QtMoc Include="DxfGraphicsScene.h" />
     <ClInclude Include="DxfMapping.h" />
@@ -116,6 +118,7 @@
     <QtMoc Include="GraphicsView.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Primitive.h" />
+    <ClInclude Include="StackedWidget.h" />
     <ClInclude Include="StyleSheet.h" />
     <QtMoc Include="TreeView.h" />
     <QtMoc Include="ShrikeDxf.h" />
@@ -131,7 +134,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
+    <ClCompile Include="StackedWidget.cpp" />
     <ClCompile Include="StyleSheet.cpp" />
+    <ClCompile Include="TableView.cpp" />
     <ClCompile Include="TreeView.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

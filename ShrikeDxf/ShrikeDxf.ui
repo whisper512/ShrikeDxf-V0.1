@@ -19,7 +19,7 @@
      <layout class="QVBoxLayout" name="verticalLayout_Main"/>
     </item>
     <item row="0" column="2">
-     <layout class="QVBoxLayout" name="verticalLayout_Layer"/>
+     <layout class="QVBoxLayout" name="verticalLayout_Layer" stretch=""/>
     </item>
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_FileStructure"/>
