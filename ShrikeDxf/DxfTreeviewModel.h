@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QStandardItemModel>
 #include <QString>
@@ -8,7 +8,7 @@
 #include "DxfStruct.h"
 
 
-//ÓÃÓÚtreeviewµÄmodel
+//ç”¨äºŽtreeviewçš„model
 class CDxfTreeviewModel : public QStandardItemModel
 {
 	Q_OBJECT
@@ -17,7 +17,7 @@ public:
 	explicit CDxfTreeviewModel(QObject* parent = nullptr);
 	~CDxfTreeviewModel();
 
-	// ¸üÐÂmodel
+	// æ›´æ–°model
 	void UpdateLayoutItemModel(const std::map<std::string, stuLayer>& mapDxf);
 	void ClearModel();
 

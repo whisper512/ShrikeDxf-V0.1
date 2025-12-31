@@ -1,4 +1,4 @@
-#include "StyleSheet.h"
+﻿#include "StyleSheet.h"
 
 QPalette StyleSheet::CreatePaletteLigth()
 {

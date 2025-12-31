@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef _MENU_H
 #define _MENU_H
 
@@ -23,15 +23,15 @@ private:
 
 	//menu
 	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting, * m_pMenuView;
-	//ÎÄ¼þaction
+	//æ–‡ä»¶action
 	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose;
-	//Íâ¹Ûaction
+	//å¤–è§‚action
 	//QAction* m_pActionLightTheme, *m_pActionDarkTheme;
-	//°ïÖúaction
+	//å¸®åŠ©action
 	QAction* m_pActionAbout;
 
 private:
-	//²Ûº¯Êý
+	//æ§½å‡½æ•°
 	void OnOpen();
 	void OnSave();
     void OnClose();

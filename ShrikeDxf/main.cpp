@@ -1,4 +1,4 @@
-#include "ShrikeDxf.h"
+﻿#include "ShrikeDxf.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])

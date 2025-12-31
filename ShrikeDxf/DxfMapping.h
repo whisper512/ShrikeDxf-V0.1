@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef DXF_MAPPING_H
 #define DXF_MAPPING_H
 #include <iostream>
@@ -11,7 +11,7 @@
 #include "DxfStruct.h"
 using namespace std;
 
-//dxfÎÄ¼şµÄÓ³ÉäÀà,¼Ì³ĞDL_CreationAdapterÀ´¶ÁÈ¡dxfÎÄ¼ş
+//dxfæ–‡ä»¶çš„æ˜ å°„ç±»,ç»§æ‰¿DL_CreationAdapteræ¥è¯»å–dxfæ–‡ä»¶
 
 class CDxfMapping : public DL_CreationAdapter
 {
@@ -22,51 +22,51 @@ public:
 	
 public:
 
-    // ´æ·ÅdxfÎÄ¼şÖĞËùÓĞµÄÊı¾İ
+    // å­˜æ”¾dxfæ–‡ä»¶ä¸­æ‰€æœ‰çš„æ•°æ®
     map<string, stuLayer> m_mapDxfEntities;
 
 
 
 public:
-    //dxflibÖĞµÄ»Øµ÷º¯Êı
+    //dxflibä¸­çš„å›è°ƒå‡½æ•°
 
-    // ´¦ÀíÍ¼²ã
+    // å¤„ç†å›¾å±‚
     virtual void addLayer(const DL_LayerData& data) override;
 
-    // ´¦Àíµã
+    // å¤„ç†ç‚¹
     virtual void addPoint(const DL_PointData& data) override;
 
-    // ´¦ÀíÖ±Ïß
+    // å¤„ç†ç›´çº¿
     virtual void addLine(const DL_LineData& data) override;
 
-    // ´¦ÀíÔ²
+    // å¤„ç†åœ†
     virtual void addCircle(const DL_CircleData& data) override;
 
-    // ´¦ÀíÔ²»¡
+    // å¤„ç†åœ†å¼§
     virtual void addArc(const DL_ArcData& data) override;
 
-    // ´¦Àí¶à¶ÎÏß
+    // å¤„ç†å¤šæ®µçº¿
     virtual void addPolyline(const DL_PolylineData& data) override;
 
-    // ´¦Àí¶à¶ÎÏß¶¥µã
+    // å¤„ç†å¤šæ®µçº¿é¡¶ç‚¹
     virtual void addVertex(const DL_VertexData& data) override;
 
-    // ´¦ÀíÎÄ±¾
+    // å¤„ç†æ–‡æœ¬
     virtual void addText(const DL_TextData & data) override;
 
-    //Çå¿ÕÊı¾İ
+    //æ¸…ç©ºæ•°æ®
     void ClearDxfData();
    
     
 public:
-    //»ñÈ¡entityÊı¾İ
+    //è·å–entityæ•°æ®
     QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
     
 
 
 	
 private:
-    //µ±Ç°¶à¶ÎÏßĞÅÏ¢
+    //å½“å‰å¤šæ®µçº¿ä¿¡æ¯
     Polyline* m_pCurPolyline;
 };
 

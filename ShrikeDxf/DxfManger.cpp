@@ -1,4 +1,4 @@
-#include "DxfManger.h"
+ï»¿#include "DxfManger.h"
 #include "CommonDataManger.h"
 #include <QMessageBox>
 
@@ -20,17 +20,17 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
     ClearDxfMappingData();
     if (!dxf.in(CCommonDataManager::QStringToStdString(strPath), &m_DxfMapping)) 
     {
-        //´ò¿ªÎÄ¼þÊ§°Ü
+        //æ‰“å¼€æ–‡ä»¶å¤±è´¥
         QMessageBox::warning(nullptr, "Load File", "Open Dxf file failed");
         return false;
     }
     else
     {
-        //¸üÐÂmodel,Í¨Öªtreeview
+        //æ›´æ–°model,é€šçŸ¥treeview
         m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
         emit RefreshTreeview(&m_DxfTreeviewModel);
 
-        //»æÖÆÍ¼ÐÎ
+        //ç»˜åˆ¶å›¾å½¢
         m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
         emit RefreshGraphicsview(&m_DxfGraphicsScene);
         return true;

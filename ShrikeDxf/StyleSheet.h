@@ -1,6 +1,6 @@
-#pragma once
+Ôªø#pragma once
 
-//—˘ Ω±Ì
+//Ê†∑ÂºèË°®
 #include <QPalette>
 
 #define BACKGROUND_GRAY "background-color:#d0d0d0;"

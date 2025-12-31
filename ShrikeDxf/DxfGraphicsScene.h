@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <QString>
 #include <map>
 #include <vector>
@@ -14,7 +14,7 @@ public:
 	explicit CDxfGraphicsScene(QObject *parent = nullptr);
 	~CDxfGraphicsScene();
 
-	//»ñÈ¡Êı¾İ²¢ÇÒ»æÖÆ
+	//è·å–æ•°æ®å¹¶ä¸”ç»˜åˆ¶
 	void DxfDraw(const map<string, stuLayer> &mapdxf);
 	void ClearScene();
 	double GetScale() { return m_scale; }
@@ -22,7 +22,7 @@ public:
 
 
 public:
-	//Ëõ·Å±ÈÀı
+	//ç¼©æ”¾æ¯”ä¾‹
 	double m_scale;
 
 public:

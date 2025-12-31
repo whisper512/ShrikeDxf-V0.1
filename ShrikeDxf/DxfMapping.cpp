@@ -1,4 +1,4 @@
-#include "DxfMapping.h"
+ï»¿#include "DxfMapping.h"
 
 
 CDxfMapping::CDxfMapping()
@@ -17,14 +17,14 @@ void CDxfMapping::addLayer(const DL_LayerData& data)
 
 	if (m_mapDxfEntities.find(data.name) == m_mapDxfEntities.end())
 	{
-		//Ìí¼ÓÍ¼²ãÃû×÷Îª¼ü
+		//æ·»åŠ å›¾å±‚åä½œä¸ºé”®
 		m_mapDxfEntities[data.name];
 	}
 
-	//Ìí¼ÓÍ¼²ãÑÕÉ«
+	//æ·»åŠ å›¾å±‚é¢œè‰²
 	std::string strCurrentLayer = getAttributes().getLayer();
 	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	//³õÊ¼»¯dxfÑÕÉ«Ë÷ÒýºÍÑÕÉ«µÄ¶ÔÓ¦
+	//åˆå§‹åŒ–dxfé¢œè‰²ç´¢å¼•å’Œé¢œè‰²çš„å¯¹åº”
 	const auto& mapDxfColor = DxfColorMap::getColorMap();
 	if (CurLayer != m_mapDxfEntities.end())
 	{
@@ -36,7 +36,7 @@ void CDxfMapping::addLayer(const DL_LayerData& data)
 void CDxfMapping::addPoint(const DL_PointData& data)
 {
 	Point point{ data.x, data.y, data.z };
-	//»ñÈ¡µ±Ç°µÄÍ¼²ã
+	//èŽ·å–å½“å‰çš„å›¾å±‚
 	std::string strCurrentLayer = getAttributes().getLayer();
 
 
@@ -117,7 +117,7 @@ void CDxfMapping::addVertex(const DL_VertexData& data)
 
 void CDxfMapping::addText(const DL_TextData& data)
 {
-	//text Êý¾Ý½á¹¹´æÔÚÒÉ»óµã, Ã»ÓÐ¶ÁÈ¡µ½£¬ÔÝÊ±ºöÂÔ
+	//text æ•°æ®ç»“æž„å­˜åœ¨ç–‘æƒ‘ç‚¹, æ²¡æœ‰è¯»å–åˆ°ï¼Œæš‚æ—¶å¿½ç•¥
 	Point point{ data.ipx, data.ipy, data.ipz };
 	Text text;
 	text.pointCenter = point;
@@ -147,7 +147,7 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
 	if (CurLayer != m_mapDxfEntities.end())
 	{
-		//»ñÈ¡Í¼²ãÄÚµÄ¾ßÌåÍ¼ÔªÐÅÏ¢
+		//èŽ·å–å›¾å±‚å†…çš„å…·ä½“å›¾å…ƒä¿¡æ¯
 		if (strType == STR_POINT_LOWERCASE)
 		{
 			Point point = CurLayer->second.vecPoints.at(strNum.toInt() - 1);

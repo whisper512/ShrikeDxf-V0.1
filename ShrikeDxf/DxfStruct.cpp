@@ -1,4 +1,4 @@
-#include "DxfStruct.h"
+﻿#include "DxfStruct.h"
 
 CDxfStruct::CDxfStruct()
 {

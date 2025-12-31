@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #ifndef PRIMITIVE_H
 #define PRIMITIVE_H
 
-//Í¼Ôª×Ö·û
+//å›¾å…ƒå­—ç¬¦
 #define STR_POINT "POINT"
 #define STR_LINE "LINE"
 #define STR_CIRCLE "CIRCLE"
@@ -17,7 +17,7 @@
 #define STR_POLYLINE_LOWERCASE "polyline"
 #define STR_TEXT_LOWERCASE "text"
 
-//DxfÍ¼ÔªÀà
+//Dxfå›¾å…ƒç±»
 
 struct Point
 {
@@ -49,7 +49,7 @@ struct Arc
 {
     Point pointCenter;
     double radius;
-    double startAngle, endAngle;//µ¥Î»Îª¶È
+    double startAngle, endAngle;//å•ä½ä¸ºåº¦
     std::string type = "ARC";
    // Arc() :radius(0.0), strrtAngle(0.0), endAngle2(0.0) {}
    Arc(Point pCenter, double r, double startAngle, double endAngle) 
@@ -58,15 +58,15 @@ struct Arc
 
 struct Polyline 
 {
-    //¶¥µãÊı
+    //é¡¶ç‚¹æ•°
     int numVertices;
-    //M·½Ïò¶¥µãÊı
+    //Mæ–¹å‘é¡¶ç‚¹æ•°
     int numVertices_M;
-    //N·½Ïò¶¥µãÊı
+    //Næ–¹å‘é¡¶ç‚¹æ•°
     int numVertices_N;
-    //¶à¶ÎÏß±êÖ¾Î»
+    //å¤šæ®µçº¿æ ‡å¿—ä½
     int flag;
-    //Í¹Öµ
+    //å‡¸å€¼
     double dBulge;
     std::vector<Point> vecVertices;
     std::string type = "POLYLINE";
@@ -84,7 +84,7 @@ struct Text
     Text(Point pCenter, std::string content, double height) :pointCenter(pCenter), content(content), height(height) {};
 };
 
-//dxfµÄviewpoint
+//dxfçš„viewpoint
 struct ViewPort
 {
     double left, right, bottom, top;

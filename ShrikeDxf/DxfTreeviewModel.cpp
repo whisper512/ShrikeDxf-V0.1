@@ -1,4 +1,4 @@
-#include "DxfTreeviewModel.h"
+ï»¿#include "DxfTreeviewModel.h"
 
 CDxfTreeviewModel::CDxfTreeviewModel(QObject* parent)
 {
@@ -16,7 +16,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
     this->setHorizontalHeaderLabels(QStringList() << "LAYER" << "ENTITIES");
     QString qstr;
 
-    //±éÀúÍ¼²ã
+    //éåŽ†å›¾å±‚
     for (auto it = mapDxf.begin(); it != mapDxf.end(); it++)
     {
         
@@ -28,7 +28,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
         appendRow(listItemLayer);
 
         int indexPoint = 1,indexLine = 1, indexCircle = 1, indexArc = 1, indexPolyline = 1, indexText = 1;
-        //±éÀúÍ¼²ãÄÚµÄpoint
+        //éåŽ†å›¾å±‚å†…çš„point
         for (auto itPoint = it->second.vecPoints.begin(); itPoint != it->second.vecPoints.end(); itPoint++)
         {
             qstr= QString("%1%2").arg(STR_POINT_LOWERCASE).arg(indexPoint);
@@ -41,7 +41,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             indexPoint++;
         }
 
-        //±éÀúÍ¼²ãÄÚµÄline
+        //éåŽ†å›¾å±‚å†…çš„line
         for(auto itLine = it->second.vecLines.begin(); itLine != it->second.vecLines.end(); itLine++)
         {
             qstr = QString("%1%2").arg(STR_LINE_LOWERCASE).arg(indexLine);
@@ -53,7 +53,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             listItemLayer.first()->appendRow(listItemLine);
             indexLine++;
         }
-        //±éÀúÍ¼²ãÄÚµÄcircle
+        //éåŽ†å›¾å±‚å†…çš„circle
         for (auto itCircle = it->second.vecCircles.begin(); itCircle != it->second.vecCircles.end(); itCircle++)
         {
             qstr = QString("%1%2").arg(STR_CIRCLE_LOWERCASE).arg(indexCircle);
@@ -65,7 +65,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             listItemLayer.first()->appendRow(listItemCircle);
             indexCircle++;
         }
-        //±éÀúÍ¼²ãÄÚµÄarc
+        //éåŽ†å›¾å±‚å†…çš„arc
         for (auto itArc = it->second.vecArcs.begin(); itArc != it->second.vecArcs.end(); itArc++)
         {
             qstr = QString("%1%2").arg(STR_ARC_LOWERCASE).arg(indexArc);
@@ -77,7 +77,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             listItemLayer.first()->appendRow(listItemArc);
             indexArc++;
         }
-        //±éÀúÍ¼²ãÄÚµÄpolyline
+        //éåŽ†å›¾å±‚å†…çš„polyline
         for (auto itPolyline = it->second.vecPolylines.begin(); itPolyline != it->second.vecPolylines.end(); itPolyline++)
         {
             qstr = QString("%1%2").arg(STR_POLYLINE_LOWERCASE).arg(indexPolyline);
@@ -89,7 +89,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             listItemLayer.first()->appendRow(listItemPolyline);
             indexPolyline++;
         }
-        //±éÀúÍ¼²ãÄÚµÄtext
+        //éåŽ†å›¾å±‚å†…çš„text
         for (auto itText = it->second.vecTexts.begin(); itText != it->second.vecTexts.end(); itText++)
         {
             qstr = QString("%1%2").arg(STR_TEXT_LOWERCASE).arg(indexText);

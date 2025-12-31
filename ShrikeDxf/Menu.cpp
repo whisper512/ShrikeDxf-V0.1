@@ -1,4 +1,4 @@
-#include "Menu.h"
+﻿#include "Menu.h"
 #include <QWidget>
 #include <QFileDialog>
 #include <QDebug>
