@@ -236,7 +236,18 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
         QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',1).arg(posScene.y(),0,'f',1);
         m_pLabelMousePos->setText(strPos);
         m_pLabelMousePos->adjustSize();
+        // 计算标签位置，考虑边界限制
         QPoint posLabel = pEvent->pos() + QPoint(15, -20);
+        QRect labelRect = m_pLabelMousePos->rect();
+        QRect viewRect = viewport()->rect();
+
+        // 检查右边界
+        if (posLabel.x() + labelRect.width() > viewRect.right())
+            posLabel.setX(pEvent->pos().x() - labelRect.width() - 15);
+        // 检查上边界
+        if (posLabel.y() < viewRect.top())
+            posLabel.setY(pEvent->pos().y() + 20);
+
         m_pLabelMousePos->move(posLabel);
     }
 
