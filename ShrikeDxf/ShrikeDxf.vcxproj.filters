@@ -139,7 +139,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="EntityAttribute.ui">
+    <QtUic Include="PointAttribute.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

@@ -104,7 +104,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc" />
-    <QtUic Include="EntityAttribute.ui" />
+    <QtUic Include="PointAttribute.ui" />
     <QtUic Include="ShrikeDxf.ui" />
   </ItemGroup>
   <ItemGroup>
