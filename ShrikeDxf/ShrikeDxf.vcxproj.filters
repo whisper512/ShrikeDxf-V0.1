@@ -58,7 +58,7 @@
     <ClInclude Include="CommonDataManger.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
+    <ClInclude Include="TopMenu.h">
       <Filter>Header Files\WeightView</Filter>
     </ClInclude>
     <ClInclude Include="StyleSheet.h">
@@ -70,8 +70,8 @@
     <ClInclude Include="StackedWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </ClInclude>
-    <ClInclude Include="TableView.h">
-      <Filter>Header Files\WeightView</Filter>
+    <ClInclude Include="DxfLayerTableviewModel.h">
+      <Filter>Header Files\Dxf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +81,7 @@
     <QtMoc Include="DxfManger.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
-    <QtMoc Include="TreeView.h">
+    <QtMoc Include="DxfTreeView.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="DxfTreeviewModel.h">
@@ -91,6 +91,9 @@
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="GraphicsView.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="LayerTableView.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
@@ -107,7 +110,7 @@
     <ClCompile Include="ShrikeDxf.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
+    <ClCompile Include="TopMenu.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="StyleSheet.cpp">
@@ -119,7 +122,7 @@
     <ClCompile Include="DxfStruct.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
-    <ClCompile Include="TreeView.cpp">
+    <ClCompile Include="DxfTreeView.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="DxfTreeviewModel.cpp">
@@ -134,8 +137,11 @@
     <ClCompile Include="StackedWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
-    <ClCompile Include="TableView.cpp">
+    <ClCompile Include="LayerTableView.cpp">
       <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfLayerTableviewModel.cpp">
+      <Filter>Source Files\Dxf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

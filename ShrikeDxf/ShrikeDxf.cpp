@@ -29,11 +29,11 @@ void ShrikeDxf::InitWindowComponents()
 	//初始化组件需要在确定ui界面加载完毕后进行,在进入消息循环后定时器开启执行初始化
 	QTimer::singleShot(0, this, [this]()
 	{
-		InitMenuBar();
-		InitTreeView();
-		InitGraphicsView();
-		InitStackedWidget();
-		InitTableView();
+		InitAndCreateMenuBar();
+		InitAndCreateTreeView();
+		InitAndCreateGraphicsView();
+		InitAndCreateStackedWidget();
+		InitAndCreateTableView();
 	});
 }
 
@@ -47,7 +47,7 @@ void ShrikeDxf::InitDataManagers()
 }
 
 
-void ShrikeDxf::InitMenuBar()
+void ShrikeDxf::InitAndCreateMenuBar()
 {
 	m_pMenuManger = new CMenuManger(this);
 	if (m_pMenuManger)
@@ -56,7 +56,7 @@ void ShrikeDxf::InitMenuBar()
 	}
 }
 
-void ShrikeDxf::InitTreeView()
+void ShrikeDxf::InitAndCreateTreeView()
 {
 	m_pTreeViewManger = new CTreeViewManger(this);
 	if (m_pTreeViewManger)
@@ -66,12 +66,12 @@ void ShrikeDxf::InitTreeView()
 	}
 }
 
-void ShrikeDxf::InitGraphicsView()
+void ShrikeDxf::InitAndCreateGraphicsView()
 {
 	m_pGraphicsView = new CGraphicsView(this);
 }
 
-void ShrikeDxf::InitStackedWidget()
+void ShrikeDxf::InitAndCreateStackedWidget()
 {
 	m_pStackedWidgetManger = new CStackedWidgetManger(this);
 	if (m_pStackedWidgetManger)
@@ -80,9 +80,9 @@ void ShrikeDxf::InitStackedWidget()
 	}
 }
 
-void ShrikeDxf::InitTableView()
+void ShrikeDxf::InitAndCreateTableView()
 {
-	m_pTableViewManger = new CTableViewManger(this);
+	m_pTableViewManger = new CLayerTableViewManger(this);
 	if (m_pTableViewManger)
 	{
 		m_pTableViewManger->CreateTableView();
@@ -100,10 +100,17 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pTreeViewManger, &CTreeViewManger::GetEntityData, m_pDxfDataManger, &CDxfManger::handleGetEntityData);
 				connect(m_pDxfDataManger,&CDxfManger::ReturnEntityInfo,m_pTreeViewManger,&CTreeViewManger::handleReturnEntityInfo);
 			}
-
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
 				connect(m_pDxfDataManger,&CDxfManger::RefreshGraphicsview,m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+			}
+			if (m_pDxfDataManger && m_pStackedWidgetManger)
+			{
+
+			}
+			if (m_pDxfDataManger && m_pTableViewManger)
+			{
+				connect(m_pDxfDataManger, &CDxfManger::RefreshLayerTableview, m_pTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
 			}
 	});
 

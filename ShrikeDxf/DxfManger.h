@@ -6,6 +6,7 @@
 #include "DxfMapping.h"
 #include "DxfTreeviewModel.h"
 #include "DxfGraphicsScene.h"
+#include "DxfLayerTableviewModel.h"
 
 
 //dxf管理类,包含映射,操作，绘图
@@ -25,9 +26,11 @@ private:
 	QWidget* m_pMainWnd;
 	//dxf映射类
 	CDxfMapping m_DxfMapping;
-	//用于显示treeview的model
+	//treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;
-	//用于graphicview
+	//图层tableview的model
+	CDxfLayerTableviewModel m_DxfLayerTableviewModel;
+	//graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 
 signals:
@@ -37,6 +40,8 @@ signals:
 	void ReturnEntityInfo(QString strInfo);
 	//通知graphicsview
 	void RefreshGraphicsview(CDxfGraphicsScene* pScene);
+	//通知layerTableview
+	void RefreshLayerTableview(CDxfLayerTableviewModel* pModel);
 
  public slots:
 	QString handleGetEntityData(const QString& strLayer, const QString& strEntity);

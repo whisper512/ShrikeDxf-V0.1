@@ -109,35 +109,37 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonDataManger.h" />
-    <ClInclude Include="TableView.h" />
+    <ClInclude Include="DxfLayerTableviewModel.h" />
+    <QtMoc Include="LayerTableView.h" />
     <QtMoc Include="DxfManger.h" />
     <QtMoc Include="DxfGraphicsScene.h" />
     <ClInclude Include="DxfMapping.h" />
     <ClInclude Include="DxfStruct.h" />
     <QtMoc Include="DxfTreeviewModel.h" />
     <QtMoc Include="GraphicsView.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="StackedWidget.h" />
     <ClInclude Include="StyleSheet.h" />
-    <QtMoc Include="TreeView.h" />
+    <QtMoc Include="DxfTreeView.h" />
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommonDataManger.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />
+    <ClCompile Include="DxfLayerTableviewModel.cpp" />
     <ClCompile Include="DxfManger.cpp" />
     <ClCompile Include="DxfMapping.cpp" />
     <ClCompile Include="DxfStruct.cpp" />
     <ClCompile Include="DxfTreeviewModel.cpp" />
     <ClCompile Include="GraphicsView.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="TopMenu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="StackedWidget.cpp" />
     <ClCompile Include="StyleSheet.cpp" />
-    <ClCompile Include="TableView.cpp" />
-    <ClCompile Include="TreeView.cpp" />
+    <ClCompile Include="LayerTableView.cpp" />
+    <ClCompile Include="DxfTreeView.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

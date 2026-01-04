@@ -1,4 +1,4 @@
-﻿#include "TreeView.h"
+﻿#include "DxfTreeView.h"
 #include "ShrikeDxf.h"
 
 #include <QHeaderView>
@@ -32,6 +32,17 @@ void CTreeViewManger::CreateTreeView()
 		"}"
 	);
 
+
+	//设置临时模型来显示列名
+	QStandardItemModel* pHeaderModel = new QStandardItemModel(0, 2, m_pTreeView);
+	pHeaderModel->setHeaderData(0, Qt::Horizontal, "LAYER");
+    pHeaderModel->setHeaderData(1, Qt::Horizontal, "ENTITIES");
+
+	
+	m_pTreeView->setModel(pHeaderModel);
+	QHeaderView* pHeader = m_pTreeView->header();
+	pHeader->setSectionResizeMode(0, QHeaderView::Stretch);
+	pHeader->setSectionResizeMode(1, QHeaderView::Stretch);
 
 	//添加menu右键
 	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -84,11 +95,6 @@ void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)
 	if (pModel)
 	{
 		m_pTreeView->setModel(pModel);
-
-		QHeaderView* pHeader = m_pTreeView->header();
-		int iWidth = m_pTreeView->width();
-		pHeader->resizeSection(0, iWidth * 0.5);
-		pHeader->resizeSection(1, iWidth * 0.5);
 		m_pTreeView->expandAll();
 	}
 }

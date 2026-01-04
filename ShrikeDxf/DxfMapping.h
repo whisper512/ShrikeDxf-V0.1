@@ -23,6 +23,7 @@ public:
 public:
 
     // 存放dxf文件中所有的数据
+    // 图层名 图层数据
     map<string, stuLayer> m_mapDxfEntities;
 
 

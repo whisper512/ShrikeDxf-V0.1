@@ -6,11 +6,11 @@
 #include <QFileSystemModel>
 #include <QTimer.h>
 
-#include "Menu.h"
-#include "TreeView.h"
+#include "TopMenu.h"
+#include "DxfTreeView.h"
 #include "GraphicsView.h"
 #include "StackedWidget.h"
-#include "TableView.h"
+#include "LayerTableView.h"
 
 #include "CommonDataManger.h"
 #include "DxfManger.h"
@@ -30,15 +30,15 @@ public:
     //初始化数据管理类
     void InitDataManagers();
     //初始化menu
-    void InitMenuBar();
+    void InitAndCreateMenuBar();
     //初始化treeview
-    void InitTreeView();
+    void InitAndCreateTreeView();
     //初始化graphicsView
-    void InitGraphicsView();
+    void InitAndCreateGraphicsView();
     //初始化stackedWidget
-    void InitStackedWidget();
+    void InitAndCreateStackedWidget();
     //初始化tableView
-    void InitTableView();
+    void InitAndCreateTableView();
 
     //链接信号和槽
     void ConnectSignalsAndSlots();
@@ -55,7 +55,7 @@ public:
     //stackedWidget
     CStackedWidgetManger* m_pStackedWidgetManger;
     //tableview
-    CTableViewManger* m_pTableViewManger;
+    CLayerTableViewManger* m_pTableViewManger;
 
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;

@@ -30,6 +30,10 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
         m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
         emit RefreshTreeview(&m_DxfTreeviewModel);
 
+        //更新通知tableview
+        m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);
+        emit RefreshLayerTableview(&m_DxfLayerTableviewModel);
+
         //绘制图形
         m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
         emit RefreshGraphicsview(&m_DxfGraphicsScene);
