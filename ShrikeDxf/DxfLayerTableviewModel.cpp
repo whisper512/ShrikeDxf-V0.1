@@ -19,15 +19,18 @@ void CDxfLayerTableviewModel::UpdateLayerTableViewModel(const std::map<std::stri
 	for (auto it = mapDxf.begin(); it != mapDxf.end(); ++it)
 	{
 		QStandardItem* pItemNo = new QStandardItem(QString::number(Index + 1));
+		pItemNo->setTextAlignment(Qt::AlignCenter);
 		listItems.append(pItemNo);
 
         QStandardItem* pItemLayerName = new QStandardItem(QString::fromStdString(it->first));
+		pItemLayerName->setTextAlignment(Qt::AlignCenter);
 		listItems.append(pItemLayerName);
 
 		QStandardItem* pItemColor = new QStandardItem();
 		pItemColor->setBackground(QBrush(it->second.color));
 		QString strColor = it->second.color.name();
 		pItemColor->setText(strColor);
+		pItemColor->setTextAlignment(Qt::AlignCenter);
 		listItems.append(pItemColor);
 
 		appendRow(listItems);

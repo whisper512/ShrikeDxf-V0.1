@@ -99,6 +99,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview,m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
 				connect(m_pTreeViewManger, &CTreeViewManger::GetEntityData, m_pDxfDataManger, &CDxfManger::handleGetEntityData);
 				connect(m_pDxfDataManger,&CDxfManger::ReturnEntityInfo,m_pTreeViewManger,&CTreeViewManger::handleReturnEntityInfo);
+				connect(m_pTreeViewManger, &CTreeViewManger::ChangeEntityWidget, m_pDxfDataManger, &CDxfManger::handleChangeEntityWidget);
 			}
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{

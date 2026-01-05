@@ -32,15 +32,21 @@ void CLayerTableViewManger::InitTableView()
 		"}"
 		"QTableView::item {"
 		"    text-align: center;"
+		"    padding: 5px;"
+		"}"
+		"QHeaderView::section {"
+		"    background-color: #e0e0e0;"
+		"    padding: 4px;"
+		"    border: 1px solid #e0e0e0;"
 		"}"
 	);
 
 	QStandardItemModel* pHeaderModel = new QStandardItemModel(0,3, m_pTableView);
 	pHeaderModel->setHorizontalHeaderLabels({"NO","NAME","COLOR"});
 	m_pTableView->setModel(pHeaderModel);
+	
 
 	m_pTableView->verticalHeader()->hide();
-
 	m_pTableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	m_pTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 	m_pTableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
@@ -52,5 +58,9 @@ void CLayerTableViewManger::handleRefreshLayerTableview(CDxfLayerTableviewModel*
 	if (pModel)
 	{
 		m_pTableView->setModel(pModel);
+		for (int col = 0; col < pModel->columnCount(); col++)
+		{
+			m_pTableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
+		}
 	}
 }

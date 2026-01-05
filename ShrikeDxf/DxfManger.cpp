@@ -64,3 +64,18 @@ QString CDxfManger::handleGetEntityData(const QString& strLayer, const QString& 
 
 }
 
+QString CDxfManger::handleChangeEntityWidget(const QString& strLayer, const QString& strEntity)
+{
+    QString strEntityData;
+    QString strEntityInfo;
+
+    QRegularExpression re("(\\w+)(\\d+)");
+    QRegularExpressionMatch match = re.match(strEntity);
+    if (match.hasMatch())
+    {
+        //strEntityInfo = m_DxfMapping.GetEntityInfo(strLayer, match.captured(1), match.captured(2));
+        //emit ReturnEntityInfo(strEntityInfo);
+    }
+
+    return strEntityData;
+}

@@ -45,5 +45,5 @@ signals:
 
  public slots:
 	QString handleGetEntityData(const QString& strLayer, const QString& strEntity);
-
+	QString handleChangeEntityWidget(const QString& strLayer, const QString& strEntity);
 };

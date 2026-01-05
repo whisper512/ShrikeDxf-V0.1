@@ -21,6 +21,8 @@ private:
 signals:
 	//通知dafmanger获取具体信息
 	void GetEntityData(const QString& strLayer, const QString& strEntity);
+	//通知dxfmanger图元属性界面
+	void ChangeEntityWidget(const QString& strLayer, const QString& strEntity);
 
 public slots:
 	//获取模型用于刷新
@@ -31,4 +33,6 @@ public slots:
 	void ShowModelData();
 	//显示返回的entity的数据
 	void handleReturnEntityInfo(QString strInfo );
+	//获取左键选取的行
+	void handleOnItemClicked(const QModelIndex& index);
 };

@@ -19,7 +19,6 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
     //遍历图层
     for (auto it = mapDxf.begin(); it != mapDxf.end(); it++)
     {
-        
         QList<QStandardItem*> listItemLayer;
         QStandardItem* itemLayer = new QStandardItem(QString::fromStdString(it->first));
         QStandardItem* itemLayerPlaceHolder = new QStandardItem("");

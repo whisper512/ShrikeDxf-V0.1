@@ -104,7 +104,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc" />
-    <QtUic Include="PointAttribute.ui" />
+    <QtUic Include="PointAttributeClass.ui" />
     <QtUic Include="ShrikeDxf.ui" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +117,7 @@
     <ClInclude Include="DxfStruct.h" />
     <QtMoc Include="DxfTreeviewModel.h" />
     <QtMoc Include="GraphicsView.h" />
+    <QtMoc Include="PointAttributeClass.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="StackedWidget.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="DxfTreeviewModel.cpp" />
     <ClCompile Include="GraphicsView.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PointAttributeClass.cpp" />
     <ClCompile Include="TopMenu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="StackedWidget.cpp" />

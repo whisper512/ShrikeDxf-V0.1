@@ -25,10 +25,20 @@ void CTreeViewManger::CreateTreeView()
 		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
 		pWnd->ui.verticalLayout_FileStructure->addWidget(m_pTreeView);
 	}
+	else
+	{
+        QMessageBox::information(m_pTreeView, "TreeView Error", "MainWnd is null");
+		return;
+	}
 	// 设置样式表，包括背景色和其他外观属性
 	m_pTreeView->setStyleSheet(
 		"QTreeView {"
 		"	background-color: #d0d0d0;"  // 设置背景色为淡灰色
+		"}"
+		"QHeaderView::section {"
+		"    background-color: #e0e0e0;"  // 设置表头颜色
+		"    padding: 4px;"
+		"    border: 1px solid #e0e0e0;"
 		"}"
 	);
 
@@ -47,7 +57,10 @@ void CTreeViewManger::CreateTreeView()
 	//添加menu右键
 	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_pTreeView,&QTreeView::customContextMenuRequested,this,&CTreeViewManger::ShowContextMenu);
+	//数百左键选择
+	connect(m_pTreeView, &QTreeView::clicked, this, &CTreeViewManger::handleOnItemClicked);
 }
+
 
 void CTreeViewManger::ShowContextMenu(const QPoint& pos)
 {
@@ -87,6 +100,26 @@ void CTreeViewManger::handleReturnEntityInfo(QString strInfo)
     QMessageBox::information(m_pTreeView, "Entity Data", strInfo);
 }
 
+void CTreeViewManger::handleOnItemClicked(const QModelIndex& index)
+{
+	if (index.isValid())
+	{
+		QAbstractItemModel* model = m_pTreeView->model();
+		QModelIndex ParentIndex = index.parent();
+		QString strLayer;
+
+		if (ParentIndex.isValid())
+		{
+			strLayer = model->data(ParentIndex, Qt::DisplayRole).toString();
+		}
+		else
+		{
+			//选择到了图层本身
+		}
+		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
+		emit ChangeEntityWidget(strLayer, strEntity);
+	}
+}
 
 
 void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)
