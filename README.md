@@ -7,7 +7,6 @@ Shrike-Dxf v0.1
 1.treeview::
 添加图元的图标，
 禁用编辑仅查看，
-表头颜色调整，
 
 2.graphicView::
 
@@ -24,6 +23,8 @@ text绘制暂时不考虑
 4.右侧图元信息显示：
 
 添加各种图元的的widget
+
+添加点位的widget，考虑怎么通知数据到stackedwidget
 
 5.顶部菜单栏：文件
 打开完成
