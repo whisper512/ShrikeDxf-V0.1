@@ -83,8 +83,9 @@ public:
 
 
 
-//层图实体数据
+//某个图元
 using DxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
+
 
 //图层类
 struct stuLayer

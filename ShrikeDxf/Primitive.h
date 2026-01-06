@@ -33,6 +33,7 @@ struct Line
 {
     Point pointStart, pointEnd;
     std::string type = "LINE";
+    Line() : pointStart(0.0, 0.0, 0.0), pointEnd(0.0, 0.0, 0.0) {};
     Line(Point pStart,Point pEnd) :pointStart(pStart), pointEnd(pEnd) {};
 };
 
@@ -41,7 +42,7 @@ struct Circle
     Point pointCenter;
     double radius;
     std::string type = "CIRCLE";
-    Circle() :radius(0.0) {}
+    Circle() :pointCenter(0.0,0.0,0.0), radius(0.0) {}
     Circle(Point pCenter, double r) :pointCenter(pCenter), radius(r) {};
 };
 
@@ -51,7 +52,7 @@ struct Arc
     double radius;
     double startAngle, endAngle;//单位为度
     std::string type = "ARC";
-   // Arc() :radius(0.0), strrtAngle(0.0), endAngle2(0.0) {}
+    Arc() :pointCenter(0.0,0.0,0.0), radius(0.0), startAngle(0.0), endAngle(0.0) {};
    Arc(Point pCenter, double r, double startAngle, double endAngle) 
        :pointCenter(pCenter), radius(r), startAngle(startAngle), endAngle(endAngle) {};
 };

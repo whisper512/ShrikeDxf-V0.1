@@ -67,9 +67,6 @@
     <ClInclude Include="DxfStruct.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="StackedWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </ClInclude>
     <ClInclude Include="DxfLayerTableviewModel.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
@@ -98,6 +95,9 @@
     </QtMoc>
     <QtMoc Include="PointAttributeClass.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StackedWidget.h">
+      <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

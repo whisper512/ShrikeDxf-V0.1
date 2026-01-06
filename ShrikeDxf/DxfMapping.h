@@ -62,7 +62,8 @@ public:
 public:
     //获取entity数据
     QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
-    
+    //获取特定的entity
+    DxfEntity GetEntity(QString strLayer,QString strType,QString strNum);
 
 
 	

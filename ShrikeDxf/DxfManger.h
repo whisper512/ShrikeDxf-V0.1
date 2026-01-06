@@ -42,6 +42,8 @@ signals:
 	void RefreshGraphicsview(CDxfGraphicsScene* pScene);
 	//通知layerTableview
 	void RefreshLayerTableview(CDxfLayerTableviewModel* pModel);
+	//通知stackedwidget
+	void RefreshStackedWidget(DxfEntity dxfentity);
 
  public slots:
 	QString handleGetEntityData(const QString& strLayer, const QString& strEntity);

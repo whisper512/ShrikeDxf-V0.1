@@ -96,14 +96,14 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 		{
 			if (m_pDxfDataManger && m_pTreeViewManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview,m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
+				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
 				connect(m_pTreeViewManger, &CTreeViewManger::GetEntityData, m_pDxfDataManger, &CDxfManger::handleGetEntityData);
-				connect(m_pDxfDataManger,&CDxfManger::ReturnEntityInfo,m_pTreeViewManger,&CTreeViewManger::handleReturnEntityInfo);
+				connect(m_pDxfDataManger, &CDxfManger::ReturnEntityInfo, m_pTreeViewManger, &CTreeViewManger::handleReturnEntityInfo);
 				connect(m_pTreeViewManger, &CTreeViewManger::ChangeEntityWidget, m_pDxfDataManger, &CDxfManger::handleChangeEntityWidget);
 			}
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
-				connect(m_pDxfDataManger,&CDxfManger::RefreshGraphicsview,m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+				connect(m_pDxfDataManger, &CDxfManger::RefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -113,8 +113,11 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 				connect(m_pDxfDataManger, &CDxfManger::RefreshLayerTableview, m_pTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
 			}
-	});
-
-
+			if (m_pDxfDataManger && m_pStackedWidgetManger)
+			{
+				connect(m_pDxfDataManger, &CDxfManger::RefreshStackedWidget, m_pStackedWidgetManger, &CStackedWidgetManger::handleRefreshStackedWidget);
+			}
+		});
 }
+
 

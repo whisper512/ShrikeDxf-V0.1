@@ -194,3 +194,37 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 	
 	return strInfo;
 }
+
+DxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QString strNum)
+{
+	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		//获取图层内的具体图元信息
+		if (strType == STR_POINT_LOWERCASE)
+		{
+			return CurLayer->second.vecPoints.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_LINE_LOWERCASE)
+		{
+			return CurLayer->second.vecLines.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_CIRCLE_LOWERCASE)
+		{
+			return CurLayer->second.vecCircles.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_ARC_LOWERCASE)
+		{
+			return CurLayer->second.vecArcs.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_POLYLINE_LOWERCASE)
+		{
+			return CurLayer->second.vecPolylines.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_TEXT_LOWERCASE)
+		{
+			return CurLayer->second.vecTexts.at(strNum.toInt() - 1);
+		}
+	}
+	return DxfEntity();
+}

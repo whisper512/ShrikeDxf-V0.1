@@ -120,7 +120,7 @@
     <QtMoc Include="PointAttributeClass.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
-    <ClInclude Include="StackedWidget.h" />
+    <QtMoc Include="StackedWidget.h" />
     <ClInclude Include="StyleSheet.h" />
     <QtMoc Include="DxfTreeView.h" />
     <QtMoc Include="ShrikeDxf.h" />
