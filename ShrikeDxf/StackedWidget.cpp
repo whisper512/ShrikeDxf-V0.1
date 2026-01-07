@@ -9,6 +9,7 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pStackedWidget(nullptr),
 	m_pPointAttributeWidget(nullptr),
 	m_pLineAttributeWidget(nullptr),
+	m_pCircleAttributeWidget(nullptr),
 	m_entityType(enumEntity_None)
 {
 	
@@ -50,6 +51,11 @@ void CStackedWidgetManger::AddPages()
 	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
 	m_pLineAttributeWidget->hide();
 	m_mapPages[1] = STR_LINE;
+
+    m_pCircleAttributeWidget = new CCircleAttributeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pCircleAttributeWidget);
+    m_pCircleAttributeWidget->hide();
+	m_mapPages[2] = STR_CIRCLE_LOWERCASE;
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -64,6 +70,10 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::NoticeLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
 			}
+			if (m_pStackedWidget && m_pCircleAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::NoticeCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
+			}
 	});
 }
 
@@ -76,6 +86,18 @@ void CStackedWidgetManger::AdjustWidget()
 		{
 			m_pPointAttributeWidget->resize(size);
 		}
+
+		size = m_pLineAttributeWidget->size();
+		if (m_pLineAttributeWidget)
+		{
+			m_pLineAttributeWidget->resize(size);
+		}
+
+		size = m_pCircleAttributeWidget->size();
+		if (m_pCircleAttributeWidget)
+		{
+			m_pCircleAttributeWidget->resize(size);
+		}
 	}
 }
 
@@ -83,6 +105,7 @@ void CStackedWidgetManger::ChangeWidgets()
 {
 	m_pPointAttributeWidget->hide();
 	m_pLineAttributeWidget->hide();
+	m_pCircleAttributeWidget->hide();
 
 	switch (m_entityType)
 	{
@@ -95,6 +118,7 @@ void CStackedWidgetManger::ChangeWidgets()
 		m_pLineAttributeWidget->show();
 		break;
 	case enumEntity_Circle:
+        m_pCircleAttributeWidget->show();
 		break;
 	case enumEntity_Arc:
 		break;

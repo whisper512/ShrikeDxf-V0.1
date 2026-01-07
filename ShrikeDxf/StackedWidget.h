@@ -5,6 +5,7 @@
 
 #include "PointAttribute.h"
 #include "LineAttribute.h"
+#include "CircleAttributeWidget.h"
 
 
 #include "DxfStruct.h"
@@ -29,6 +30,7 @@ private:
 	QStackedWidget* m_pStackedWidget;
 	CPointAttributeWidget* m_pPointAttributeWidget;
 	CLineAttributeWidget* m_pLineAttributeWidget;
+	CCircleAttributeWidget* m_pCircleAttributeWidget;
 
 	enumEntity m_entityType;
 

@@ -104,12 +104,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc" />
+    <QtUic Include="CircleAttributeWidget.ui" />
     <QtUic Include="LineAttribute.ui" />
     <QtUic Include="PointAttribute.ui" />
     <QtUic Include="ShrikeDxf.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LineAttribute.h" />
+    <QtMoc Include="CircleAttributeWidget.h" />
     <ClInclude Include="CommonDataManger.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
@@ -128,6 +130,7 @@
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CircleAttributeWidget.cpp" />
     <ClCompile Include="LineAttribute.cpp" />
     <ClCompile Include="CommonDataManger.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />
