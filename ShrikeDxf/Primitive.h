@@ -17,8 +17,18 @@
 #define STR_POLYLINE_LOWERCASE "polyline"
 #define STR_TEXT_LOWERCASE "text"
 
-//Dxf图元类
+enum enumEntity
+{
+    enumEntity_None = -1,
+    enumEntity_Point = 0,
+    enumEntity_Line = 1,
+    enumEntity_Circle = 2,
+    enumEntity_Arc = 3,
+    enumEntity_Polyline = 4,
+    enumEntity_Text = 5
+};
 
+//Dxf图元类
 struct Point
 {
 	double x;

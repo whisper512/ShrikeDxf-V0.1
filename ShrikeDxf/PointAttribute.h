@@ -16,7 +16,7 @@ private:
 	Point m_point;
 
 private:
-	Ui::PointAttributeClassClass ui;
+	Ui::CPointAttribute ui;
 
 public slots:
 	void handleNoticePointAttribute(Point point);

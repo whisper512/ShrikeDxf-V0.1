@@ -7,8 +7,9 @@
 CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pMainwnd(pMainwnd),
 	m_pStackedWidget(nullptr),
-	m_pPointAttributeClass(nullptr),
-	m_indexEntity(-1)
+	m_pPointAttributeWidget(nullptr),
+	m_pLineAttributeWidget(nullptr),
+	m_entityType(enumEntity_None)
 {
 	
 }
@@ -40,21 +41,70 @@ void CStackedWidgetManger::CreateStackedWidget()
 
 void CStackedWidgetManger::AddPages()
 {
-	m_pPointAttributeClass = new CPointAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pPointAttributeClass);
-	m_pPointAttributeClass->hide();
+	m_pPointAttributeWidget = new CPointAttributeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pPointAttributeWidget);
+	m_pPointAttributeWidget->hide();
 	m_mapPages[0] = STR_POINT;
+
+	m_pLineAttributeWidget = new CLineAttributeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
+	m_pLineAttributeWidget->hide();
+	m_mapPages[1] = STR_LINE;
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
-			if (m_pStackedWidget && m_pPointAttributeClass)
+			if (m_pStackedWidget && m_pPointAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::NoticePointAttribute, m_pPointAttributeClass, &CPointAttributeWidget::handleNoticePointAttribute);
+				connect(this, &CStackedWidgetManger::NoticePointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
+			}
+			if (m_pStackedWidget && m_pLineAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::NoticeLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
 			}
 	});
+}
+
+void CStackedWidgetManger::AdjustWidget()
+{
+	if (m_pStackedWidget)
+	{
+		QSize size = m_pStackedWidget->size();
+		if (m_pPointAttributeWidget)
+		{
+			m_pPointAttributeWidget->resize(size);
+		}
+	}
+}
+
+void CStackedWidgetManger::ChangeWidgets()
+{
+	m_pPointAttributeWidget->hide();
+	m_pLineAttributeWidget->hide();
+
+	switch (m_entityType)
+	{
+	case enumEntity_None:
+		break;
+	case enumEntity_Point:
+		m_pPointAttributeWidget->show();
+		break;
+	case enumEntity_Line:
+		m_pLineAttributeWidget->show();
+		break;
+	case enumEntity_Circle:
+		break;
+	case enumEntity_Arc:
+		break;
+	case enumEntity_Polyline:
+		break;
+	case enumEntity_Text:
+		break;
+	default:
+		break;
+	}
 }
 
 void CStackedWidgetManger::handleRefreshStackedWidget(DxfEntity dxfentity )
@@ -64,7 +114,7 @@ void CStackedWidgetManger::handleRefreshStackedWidget(DxfEntity dxfentity )
 	Circle circle;
 	Arc arc;
 	Polyline polyline;
-
+	
 
 	// 使用 Lambda 捕获外部变量引用
 	std::visit([&](auto&& arg) {
@@ -72,32 +122,62 @@ void CStackedWidgetManger::handleRefreshStackedWidget(DxfEntity dxfentity )
 
 		if constexpr (std::is_same_v<T, Point>) 
 		{
-			point = arg;  // 直接赋值给外部变量
-			m_indexEntity = 0;
+			point = arg;
+			m_entityType = enumEntity_Point;
 		}
 		else if constexpr (std::is_same_v<T, Line>) 
 		{
 			line = arg;
-			m_indexEntity = 1;
+			m_entityType = enumEntity_Line;
 		}
 		else if constexpr (std::is_same_v<T, Circle>) 
 		{
-			
+			circle = arg;
+			m_entityType = enumEntity_Circle;
+		}
+		else if constexpr (std::is_same_v<T, Arc>)
+		{
+			arc = arg;
+			m_entityType = enumEntity_Arc;
+		}
+		else if constexpr (std::is_same_v<T, Polyline>)
+		{
+			polyline = arg;
+			m_entityType = enumEntity_Polyline;
+		}
+		else if constexpr (std::is_same_v<T, Text>)
+		{
 			
 		}
-		
-		}
+	}
 	,dxfentity);
 
 
-	switch (m_indexEntity)
+	AdjustWidget();
+
+	switch (m_entityType)
 	{
-	case 0:
-		m_pPointAttributeClass->show();
+	case enumEntity_Point:
+		ChangeWidgets();
 		emit NoticePointAttribute(point);
+		break;
+	case enumEntity_Line:
+		ChangeWidgets();
+		emit NoticeLineAttribute(line);
+		break;
+	case enumEntity_Circle:
+		ChangeWidgets();
+		emit NoticeCircleAttribute(circle);
+		break;
+	case enumEntity_Arc:
+		ChangeWidgets();
+		emit NoticeArcAttribute(arc);
+		break;
+	case enumEntity_Polyline:
+		ChangeWidgets();
+		emit NoticePolylineAttribute(polyline);
+		break;
 	default:
 		break;
 	}
-	
-
 }
