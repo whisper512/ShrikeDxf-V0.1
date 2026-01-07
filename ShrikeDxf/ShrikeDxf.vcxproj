@@ -104,10 +104,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc" />
-    <QtUic Include="PointAttributeClass.ui" />
+    <QtUic Include="CLineAttribute.ui" />
+    <QtUic Include="PointAttribute.ui" />
     <QtUic Include="ShrikeDxf.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="CLineAttribute.h" />
     <ClInclude Include="CommonDataManger.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
@@ -117,7 +119,7 @@
     <ClInclude Include="DxfStruct.h" />
     <QtMoc Include="DxfTreeviewModel.h" />
     <QtMoc Include="GraphicsView.h" />
-    <QtMoc Include="PointAttributeClass.h" />
+    <QtMoc Include="PointAttribute.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
@@ -126,6 +128,7 @@
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CLineAttribute.cpp" />
     <ClCompile Include="CommonDataManger.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />
     <ClCompile Include="DxfLayerTableviewModel.cpp" />
@@ -135,7 +138,7 @@
     <ClCompile Include="DxfTreeviewModel.cpp" />
     <ClCompile Include="GraphicsView.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PointAttributeClass.cpp" />
+    <ClCompile Include="PointAttribute.cpp" />
     <ClCompile Include="TopMenu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="StackedWidget.cpp" />

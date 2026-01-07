@@ -1,16 +1,16 @@
 #pragma once
 #include <QWidget>
 
-#include "ui_PointAttributeClass.h"
+#include "ui_PointAttribute.h"
 #include "Primitive.h"
 
-class PointAttributeClass : public QWidget
+class CPointAttributeWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	PointAttributeClass(QWidget *parent = nullptr);
-	~PointAttributeClass();
+	CPointAttributeWidget(QWidget *parent = nullptr);
+	~CPointAttributeWidget();
 
 private:
 	Point m_point;

@@ -36,12 +36,11 @@ void CStackedWidgetManger::CreateStackedWidget()
 	AddPages();
 
 	ConnectSignalAndSlot();
-
 }
 
 void CStackedWidgetManger::AddPages()
 {
-	m_pPointAttributeClass = new PointAttributeClass(m_pStackedWidget);
+	m_pPointAttributeClass = new CPointAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pPointAttributeClass);
 	m_pPointAttributeClass->hide();
 	m_mapPages[0] = STR_POINT;
@@ -53,9 +52,8 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 	{
 			if (m_pStackedWidget && m_pPointAttributeClass)
 			{
-				connect(this, &CStackedWidgetManger::NoticePointAttribute, m_pPointAttributeClass, &PointAttributeClass::handleNoticePointAttribute);
+				connect(this, &CStackedWidgetManger::NoticePointAttribute, m_pPointAttributeClass, &CPointAttributeWidget::handleNoticePointAttribute);
 			}
-
 	});
 }
 
@@ -90,6 +88,7 @@ void CStackedWidgetManger::handleRefreshStackedWidget(DxfEntity dxfentity )
 		
 		}
 	,dxfentity);
+
 
 	switch (m_indexEntity)
 	{

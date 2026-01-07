@@ -93,10 +93,13 @@
     <QtMoc Include="LayerTableView.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
-    <QtMoc Include="PointAttributeClass.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="StackedWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="CLineAttribute.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="PointAttribute.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
@@ -146,12 +149,18 @@
     <ClCompile Include="DxfLayerTableviewModel.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
-    <ClCompile Include="PointAttributeClass.cpp">
+    <ClCompile Include="PointAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CLineAttribute.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="PointAttributeClass.ui">
+    <QtUic Include="PointAttribute.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CLineAttribute.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

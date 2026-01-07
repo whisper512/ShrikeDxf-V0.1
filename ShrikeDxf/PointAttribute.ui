@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>PointAttributeClass</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -48,6 +48,9 @@
       <property name="decimals">
        <number>3</number>
       </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
      </widget>
     </item>
     <item row="2" column="0">
@@ -64,6 +67,9 @@
      <widget class="QDoubleSpinBox" name="doubleSpinBox_Y">
       <property name="decimals">
        <number>3</number>
+      </property>
+      <property name="maximum">
+       <double>10000.000000000000000</double>
       </property>
      </widget>
     </item>

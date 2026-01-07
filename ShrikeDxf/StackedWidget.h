@@ -3,7 +3,7 @@
 #include <QStackedWidget>
 #include <map>
 
-#include "PointAttributeClass.h"
+#include "PointAttribute.h"
 #include "DxfStruct.h"
 
 class CStackedWidgetManger : public QObject
@@ -22,7 +22,7 @@ private:
 private:
 	QWidget* m_pMainwnd;
 	QStackedWidget* m_pStackedWidget;
-	PointAttributeClass* m_pPointAttributeClass;
+	CPointAttributeWidget* m_pPointAttributeClass;
 	int m_indexEntity;
 
 	std::map<int, QString> m_mapPages;
