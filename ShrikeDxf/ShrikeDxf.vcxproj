@@ -104,14 +104,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc" />
+    <QtUic Include="ArcAttritubeWidget.ui" />
     <QtUic Include="CircleAttributeWidget.ui" />
     <QtUic Include="LineAttribute.ui" />
     <QtUic Include="PointAttribute.ui" />
+    <QtUic Include="PolylineAttributeWidget.ui" />
     <QtUic Include="ShrikeDxf.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LineAttribute.h" />
     <QtMoc Include="CircleAttributeWidget.h" />
+    <QtMoc Include="ArcAttritubeWidget.h" />
     <ClInclude Include="CommonDataManger.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
@@ -122,6 +125,7 @@
     <QtMoc Include="DxfTreeviewModel.h" />
     <QtMoc Include="GraphicsView.h" />
     <QtMoc Include="PointAttribute.h" />
+    <QtMoc Include="PolylineAttributeWidget.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
@@ -130,6 +134,7 @@
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArcAttritubeWidget.cpp" />
     <ClCompile Include="CircleAttributeWidget.cpp" />
     <ClCompile Include="LineAttribute.cpp" />
     <ClCompile Include="CommonDataManger.cpp" />
@@ -142,6 +147,7 @@
     <ClCompile Include="GraphicsView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PointAttribute.cpp" />
+    <ClCompile Include="PolylineAttributeWidget.cpp" />
     <ClCompile Include="TopMenu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="StackedWidget.cpp" />

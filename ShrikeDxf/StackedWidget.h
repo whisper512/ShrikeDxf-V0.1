@@ -6,7 +6,8 @@
 #include "PointAttribute.h"
 #include "LineAttribute.h"
 #include "CircleAttributeWidget.h"
-
+#include "ArcAttritubeWidget.h"
+#include "PolylineAttributeWidget.h"
 
 #include "DxfStruct.h"
 
@@ -31,6 +32,8 @@ private:
 	CPointAttributeWidget* m_pPointAttributeWidget;
 	CLineAttributeWidget* m_pLineAttributeWidget;
 	CCircleAttributeWidget* m_pCircleAttributeWidget;
+	CArcAttritubeWidget* m_pArcAttributeWidget;
+	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
 
 	enumEntity m_entityType;
 
@@ -45,7 +48,6 @@ signals:
 	void NoticeArcAttribute(Arc arc);
 	void NoticePolylineAttribute(Polyline polyline);
     void NoticeTextAttribute(Text text);
-
 public slots:
 	void handleRefreshStackedWidget(DxfEntity dxfentity);
 

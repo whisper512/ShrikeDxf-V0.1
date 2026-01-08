@@ -10,6 +10,8 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pPointAttributeWidget(nullptr),
 	m_pLineAttributeWidget(nullptr),
 	m_pCircleAttributeWidget(nullptr),
+	m_pArcAttributeWidget(nullptr),
+	m_pPolylineAttributeWidget(nullptr),
 	m_entityType(enumEntity_None)
 {
 	
@@ -35,6 +37,7 @@ void CStackedWidgetManger::CreateStackedWidget()
 
 	m_pStackedWidget->setStyleSheet("background-color: #d0d0d0;");
 
+
 	AddPages();
 
 	ConnectSignalAndSlot();
@@ -56,6 +59,16 @@ void CStackedWidgetManger::AddPages()
 	m_pStackedWidget->addWidget(m_pCircleAttributeWidget);
     m_pCircleAttributeWidget->hide();
 	m_mapPages[2] = STR_CIRCLE_LOWERCASE;
+
+	m_pArcAttributeWidget = new CArcAttritubeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pArcAttributeWidget);
+	m_pArcAttributeWidget->hide();
+	m_mapPages[3] = STR_ARC_LOWERCASE;
+
+	m_pPolylineAttributeWidget = new CPolylineAttributeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pPolylineAttributeWidget);
+	m_pPolylineAttributeWidget->hide();
+    m_mapPages[4] = STR_POLYLINE_LOWERCASE;
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -74,6 +87,14 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::NoticeCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
 			}
+			if (m_pStackedWidget && m_pArcAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::NoticeArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
+			}
+			if (m_pStackedWidget && m_pPolylineAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::NoticePolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+			}
 	});
 }
 
@@ -86,17 +107,21 @@ void CStackedWidgetManger::AdjustWidget()
 		{
 			m_pPointAttributeWidget->resize(size);
 		}
-
-		size = m_pLineAttributeWidget->size();
 		if (m_pLineAttributeWidget)
 		{
 			m_pLineAttributeWidget->resize(size);
 		}
-
-		size = m_pCircleAttributeWidget->size();
 		if (m_pCircleAttributeWidget)
 		{
 			m_pCircleAttributeWidget->resize(size);
+		}
+		if (m_pArcAttributeWidget)
+		{
+			m_pArcAttributeWidget->resize(size);
+		}
+		if (m_pPolylineAttributeWidget)
+		{
+			m_pPolylineAttributeWidget->resize(size);
 		}
 	}
 }
@@ -106,6 +131,8 @@ void CStackedWidgetManger::ChangeWidgets()
 	m_pPointAttributeWidget->hide();
 	m_pLineAttributeWidget->hide();
 	m_pCircleAttributeWidget->hide();
+	m_pArcAttributeWidget->hide();
+	m_pPolylineAttributeWidget->hide();
 
 	switch (m_entityType)
 	{
@@ -121,8 +148,10 @@ void CStackedWidgetManger::ChangeWidgets()
         m_pCircleAttributeWidget->show();
 		break;
 	case enumEntity_Arc:
+		m_pArcAttributeWidget->show();
 		break;
 	case enumEntity_Polyline:
+		m_pPolylineAttributeWidget->show();
 		break;
 	case enumEntity_Text:
 		break;
