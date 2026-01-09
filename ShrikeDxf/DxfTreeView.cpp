@@ -4,8 +4,10 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-CTreeViewManger::CTreeViewManger(QWidget* pMainwnd):
+CTreeViewManger::CTreeViewManger(QWidget* pMainwnd) :
 	m_pMainwnd(pMainwnd),
+	m_pContextMenu(nullptr),
+	m_pActionDelete(nullptr),
 	m_pTreeView(nullptr)
 {
 }
@@ -27,7 +29,7 @@ void CTreeViewManger::CreateTreeView()
 	}
 	else
 	{
-        QMessageBox::information(m_pTreeView, "TreeView Error", "MainWnd is null");
+		QMessageBox::information(m_pTreeView, "TreeView Error", "MainWnd is null");
 		return;
 	}
 	// 设置样式表，包括背景色和其他外观属性
@@ -46,9 +48,9 @@ void CTreeViewManger::CreateTreeView()
 	//设置临时模型来显示列名
 	QStandardItemModel* pHeaderModel = new QStandardItemModel(0, 2, m_pTreeView);
 	pHeaderModel->setHeaderData(0, Qt::Horizontal, "LAYER");
-    pHeaderModel->setHeaderData(1, Qt::Horizontal, "ENTITIES");
+	pHeaderModel->setHeaderData(1, Qt::Horizontal, "ENTITIES");
 
-	
+
 	m_pTreeView->setModel(pHeaderModel);
 	QHeaderView* pHeader = m_pTreeView->header();
 	pHeader->setSectionResizeMode(0, QHeaderView::Stretch);
@@ -56,23 +58,32 @@ void CTreeViewManger::CreateTreeView()
 
 	//添加menu右键
 	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_pTreeView,&QTreeView::customContextMenuRequested,this,&CTreeViewManger::ShowContextMenu);
-	//数百左键选择
+	connect(m_pTreeView, &QTreeView::customContextMenuRequested, this, &CTreeViewManger::handleShowContextMenu);
+	//左键选择
 	connect(m_pTreeView, &QTreeView::clicked, this, &CTreeViewManger::handleOnItemClicked);
 }
 
 
-void CTreeViewManger::ShowContextMenu(const QPoint& pos)
+void CTreeViewManger::handleShowContextMenu(const QPoint& pos)
 {
-	QMenu* pContextMenu = new QMenu(m_pTreeView);
-	QAction *ActionShowData = new QAction("Show Data", this);
-    connect(ActionShowData, &QAction::triggered, this, &CTreeViewManger::ShowModelData);
-	pContextMenu->addAction(ActionShowData);
-	pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
+	InitContextMenu();
+
+	m_pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
 }
 
+void CTreeViewManger::InitContextMenu()
+{
+	if (m_pTreeView)
+	{
+		m_pContextMenu = new QMenu(m_pTreeView);
+		m_pActionDelete = new QAction("Delete", this);
+		m_pContextMenu->addAction(m_pActionDelete);
+		connect(m_pActionDelete,&QAction::triggered, this, &CTreeViewManger::DeleteEntity);
 
-void CTreeViewManger::ShowModelData()
+	}
+}
+
+void CTreeViewManger::DeleteEntity()
 {
 	QModelIndex index = m_pTreeView->currentIndex();
 	if (index.isValid())
@@ -83,7 +94,7 @@ void CTreeViewManger::ShowModelData()
 
 		if (ParentIndex.isValid())
 		{
-            strLayer = model->data(ParentIndex, Qt::DisplayRole).toString();
+			strLayer = model->data(ParentIndex, Qt::DisplayRole).toString();
 		}
 		else
 		{
@@ -91,9 +102,10 @@ void CTreeViewManger::ShowModelData()
 		}
 		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
 		//获取详细信息
-		emit GetEntityData(strLayer, strEntity);
+		emit signalDeleteEntityData(strLayer, strEntity);
 	}
 }
+
 
 void CTreeViewManger::handleReturnEntityInfo(QString strInfo)
 {
@@ -117,9 +129,10 @@ void CTreeViewManger::handleOnItemClicked(const QModelIndex& index)
 			//选择到了图层本身
 		}
 		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-		emit ChangeEntityWidget(strLayer, strEntity);
+		emit signalChangeEntityWidget(strLayer, strEntity);
 	}
 }
+
 
 
 void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)

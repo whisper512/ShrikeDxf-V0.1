@@ -64,8 +64,8 @@ public:
     QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
     //获取特定的entity
     DxfEntity GetEntity(QString strLayer,QString strType,QString strNum);
-
-
+    //删除entity
+    int DeleteEntity(QString strLayer, QString strType, QString strNum);
 	
 private:
     //当前多段线信息

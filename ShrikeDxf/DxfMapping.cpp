@@ -151,7 +151,7 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 		if (strType == STR_POINT_LOWERCASE)
 		{
 			Point point = CurLayer->second.vecPoints.at(strNum.toInt() - 1);
-            strInfo = QString("point%1\nx:%2,y:%3,z:%4").arg(strNum).arg(point.x).arg(point.y).arg(point.z);
+			strInfo = QString("point%1\nx:%2,y:%3,z:%4").arg(strNum).arg(point.x).arg(point.y).arg(point.z);
 		}
 		else if (strType == STR_LINE_LOWERCASE)
 		{
@@ -162,16 +162,16 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 		}
 		else if (strType == STR_CIRCLE_LOWERCASE)
 		{
-            Circle cycle = CurLayer->second.vecCircles.at(strNum.toInt() - 1);
+			Circle cycle = CurLayer->second.vecCircles.at(strNum.toInt() - 1);
 			strInfo = QString("circle%1\nCenterPoint  x:%2,y:%3,z:%4\nRadius - %5  ").
 				arg(strNum).arg(cycle.pointCenter.x).arg(cycle.pointCenter.y).arg(cycle.pointCenter.z).arg(cycle.radius);
 		}
 		else if (strType == STR_ARC_LOWERCASE)
 		{
-            Arc arc = CurLayer->second.vecArcs.at(strNum.toInt() - 1);
-            strInfo = QString("arc%1\nCenterPoint  x:%2,y:%3,z:%4\nRadius - %5\nStartAngle)%6\nEndAngle - %7  ").
-                arg(strNum).arg(arc.pointCenter.x).arg(arc.pointCenter.y).arg(arc.pointCenter.z).arg(arc.radius).
-                arg(arc.startAngle).arg(arc.endAngle);
+			Arc arc = CurLayer->second.vecArcs.at(strNum.toInt() - 1);
+			strInfo = QString("arc%1\nCenterPoint  x:%2,y:%3,z:%4\nRadius - %5\nStartAngle)%6\nEndAngle - %7  ").
+				arg(strNum).arg(arc.pointCenter.x).arg(arc.pointCenter.y).arg(arc.pointCenter.z).arg(arc.radius).
+				arg(arc.startAngle).arg(arc.endAngle);
 		}
 		else if (strType == STR_POLYLINE_LOWERCASE)
 		{
@@ -186,12 +186,12 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 		}
 		else if (strType == STR_TEXT_LOWERCASE)
 		{
-            Text text = CurLayer->second.vecTexts.at(strNum.toInt() - 1);
-            strInfo = QString("text%1\nCenterPoint  x:%2,y:%3,z:%4\nContent - %5\nHeight - %6").
+			Text text = CurLayer->second.vecTexts.at(strNum.toInt() - 1);
+			strInfo = QString("text%1\nCenterPoint  x:%2,y:%3,z:%4\nContent - %5\nHeight - %6").
 				arg(strNum).arg(text.pointCenter.x).arg(text.pointCenter.y).arg(text.pointCenter.z).arg(text.content).arg(text.height);
 		}
 	}
-	
+
 	return strInfo;
 }
 
@@ -227,4 +227,33 @@ DxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QString strN
 		}
 	}
 	return DxfEntity();
+}
+
+int CDxfMapping::DeleteEntity(QString strLayer, QString strType, QString strNum)
+{
+	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		if (strType == STR_POINT_LOWERCASE)
+		{
+			CurLayer->second.vecPoints.erase(CurLayer->second.vecPoints.begin() + strNum.toInt() - 1);
+		}
+		else if (strType == STR_LINE_LOWERCASE)
+		{
+			CurLayer->second.vecLines.erase(CurLayer->second.vecLines.begin() + strNum.toInt() - 1);
+		}
+		else if (strType == STR_CIRCLE_LOWERCASE)
+		{
+			CurLayer->second.vecCircles.erase(CurLayer->second.vecCircles.begin() + strNum.toInt() - 1);
+		}
+		else if (strType == STR_ARC_LOWERCASE)
+		{
+			CurLayer->second.vecArcs.erase(CurLayer->second.vecArcs.begin() + strNum.toInt() - 1);
+		}
+		else if (strType == STR_POLYLINE_LOWERCASE)
+		{
+			CurLayer->second.vecPolylines.erase(CurLayer->second.vecPolylines.begin() + strNum.toInt() - 1);
+		}
+	}
+	return 0;
 }

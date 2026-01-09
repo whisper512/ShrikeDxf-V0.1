@@ -33,6 +33,10 @@ private:
 	//graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 
+private:
+	//刷新树状图和绘图的model
+	void RefreshTreeModelAndGraphicsview();
+
 signals:
 	//用来通知treeview
 	void RefreshTreeview(CDxfTreeviewModel* pModel);
@@ -46,6 +50,6 @@ signals:
 	void RefreshStackedWidget(DxfEntity dxfentity);
 
  public slots:
-	QString handleGetEntityData(const QString& strLayer, const QString& strEntity);
 	QString handleChangeEntityWidget(const QString& strLayer, const QString& strEntity);
+	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
 };
