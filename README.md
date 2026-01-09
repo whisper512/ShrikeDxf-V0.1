@@ -4,6 +4,8 @@ Shrike-Dxf v0.1
 
 (https://www.qcad.org/en/dxflib-downloads)
 
+复制粘贴中的粘贴没有实现
+
 1.treeview::
 添加图元的图标，
 禁用编辑仅查看，
