@@ -84,7 +84,7 @@ public:
 
 
 //某个图元
-using DxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
+using variantDxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
 
 
 //图层类
@@ -102,7 +102,7 @@ struct stuLayer
 //图层类,图元不做区分
 struct stuLayoutMix
 {
-	vector<DxfEntity> vecEntities;
+	vector<variantDxfEntity> vecEntities;
 };
 
 class CDxfStruct

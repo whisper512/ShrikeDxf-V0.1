@@ -160,7 +160,7 @@ void CStackedWidgetManger::ChangeWidgets()
 	}
 }
 
-void CStackedWidgetManger::handleRefreshStackedWidget(DxfEntity dxfentity )
+void CStackedWidgetManger::handleRefreshStackedWidget(variantDxfEntity dxfentity )
 {
 	Point point;
 	Line line;

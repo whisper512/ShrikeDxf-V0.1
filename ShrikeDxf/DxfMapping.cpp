@@ -195,7 +195,7 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 	return strInfo;
 }
 
-DxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QString strNum)
+variantDxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QString strNum)
 {
 	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
 	if (CurLayer != m_mapDxfEntities.end())
@@ -226,7 +226,7 @@ DxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QString strN
 			return CurLayer->second.vecTexts.at(strNum.toInt() - 1);
 		}
 	}
-	return DxfEntity();
+	return variantDxfEntity();
 }
 
 int CDxfMapping::DeleteEntity(QString strLayer, QString strType, QString strNum)
@@ -256,4 +256,120 @@ int CDxfMapping::DeleteEntity(QString strLayer, QString strType, QString strNum)
 		}
 	}
 	return 0;
+}
+
+int CDxfMapping::SaveCopyingEntity(QString strLayer, QString strType, QString strNum)
+{
+	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		m_strCopyingLayer = strLayer;
+		if (strType == STR_POINT_LOWERCASE)
+		{
+			m_CopyingEntity = CurLayer->second.vecPoints.at(strNum.toInt() - 1);
+
+		}
+		else if (strType == STR_LINE_LOWERCASE)
+		{
+			m_CopyingEntity = CurLayer->second.vecLines.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_CIRCLE_LOWERCASE)
+		{
+			m_CopyingEntity = CurLayer->second.vecCircles.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_ARC_LOWERCASE)
+		{
+			m_CopyingEntity = CurLayer->second.vecArcs.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_POLYLINE_LOWERCASE)
+		{
+			m_CopyingEntity = CurLayer->second.vecPolylines.at(strNum.toInt() - 1);
+		}
+	}
+	return 0;
+}
+
+
+int CDxfMapping::PasteEntity(QPointF pos)
+{
+	Point point;
+	Line line;
+	Circle circle;
+	Arc arc;
+	Polyline polyline;
+	enumEntity enumEntityType;
+
+	if (m_CopyingEntity.index() != 0)
+	{
+		
+		// 使用 Lambda 捕获外部变量引用
+		std::visit([&](auto&& arg) 
+		{
+			using T = std::decay_t<decltype(arg)>;
+
+			if constexpr (std::is_same_v<T, Point>)
+			{
+				point = arg;
+				point.x = pos.x();
+				point.y = pos.y();
+				enumEntityType = enumEntity_Point;
+			}
+			else if constexpr (std::is_same_v<T, Line>)
+			{
+				line = arg;
+				enumEntityType = enumEntity_Line;
+			}
+			else if constexpr (std::is_same_v<T, Circle>)
+			{
+				circle = arg;
+				enumEntityType = enumEntity_Circle;
+			}
+			else if constexpr (std::is_same_v<T, Arc>)
+			{
+				arc = arg;
+				enumEntityType = enumEntity_Arc;
+			}
+			else if constexpr (std::is_same_v<T, Polyline>)
+			{
+				polyline = arg;
+				enumEntityType = enumEntity_Polyline;
+			}
+			else if constexpr (std::is_same_v<T, Text>)
+			{
+
+			}
+		}
+		, m_CopyingEntity);
+
+
+		auto CurLayer = m_mapDxfEntities.find(m_strCopyingLayer.toStdString());
+		if (CurLayer != m_mapDxfEntities.end())
+		{
+			switch (enumEntityType)
+			{
+			case enumEntity_None:
+				break;
+			case enumEntity_Point:
+				CurLayer->second.vecPoints.push_back(point);
+				break;
+			case enumEntity_Line:
+				break;
+			case enumEntity_Circle:
+				break;
+			case enumEntity_Arc:
+				break;
+			case enumEntity_Polyline:
+				break;
+			case enumEntity_Text:
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
+	else
+	{
+		return -1;
+	}
 }

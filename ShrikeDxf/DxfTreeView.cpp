@@ -8,6 +8,7 @@ CTreeViewManger::CTreeViewManger(QWidget* pMainwnd) :
 	m_pMainwnd(pMainwnd),
 	m_pContextMenu(nullptr),
 	m_pActionDelete(nullptr),
+	m_pActionCopy(nullptr),
 	m_pTreeView(nullptr)
 {
 }
@@ -76,10 +77,13 @@ void CTreeViewManger::InitContextMenu()
 	if (m_pTreeView)
 	{
 		m_pContextMenu = new QMenu(m_pTreeView);
+
+		m_pActionCopy = new QAction("Copy", this);
+		m_pContextMenu->addAction(m_pActionCopy);
+		connect(m_pActionCopy, &QAction::triggered, this, &CTreeViewManger::CopyEntity);
 		m_pActionDelete = new QAction("Delete", this);
 		m_pContextMenu->addAction(m_pActionDelete);
 		connect(m_pActionDelete,&QAction::triggered, this, &CTreeViewManger::DeleteEntity);
-
 	}
 }
 
@@ -101,8 +105,29 @@ void CTreeViewManger::DeleteEntity()
 			//选择到了图层本身
 		}
 		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-		//获取详细信息
 		emit signalDeleteEntityData(strLayer, strEntity);
+	}
+}
+
+void CTreeViewManger::CopyEntity()
+{
+    QModelIndex index = m_pTreeView->currentIndex();
+	if (index.isValid())
+	{
+        QAbstractItemModel* model = m_pTreeView->model();
+		QModelIndex ParentIndex = index.parent();
+		QString strLayer;
+
+		if (ParentIndex.isValid())
+		{
+			strLayer = model->data(ParentIndex, Qt::DisplayRole).toString();
+		}
+		else
+		{
+
+		}
+		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
+		emit signalCopyEntityData(strLayer, strEntity);
 	}
 }
 

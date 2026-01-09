@@ -65,7 +65,7 @@ void CDxfGraphicsScene::ClearScene()
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 {
     qreal size = 1;
-    addEllipse(point.x - size / 2, point.y - size / 2, size, size,QPen(color, CalculateDynamicPenWidth(1)), QBrush(color));
+    addEllipse(point.x - size / 2, point.y - size / 2, size, size,QPen(color, CalculateDynamicPenWidth()), QBrush(color));
 
     // 获取场景尺寸
     QRectF sceneRect = this->sceneRect();
@@ -77,18 +77,18 @@ void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
     // 确保十字标记有最小尺寸
     crossSize = qMax(crossSize, size * 2);
 
-    addLine(point.x - crossSize / 2, point.y, point.x + crossSize / 2, point.y, QPen(color, CalculateDynamicPenWidth(1)));
-    addLine(point.x, point.y - crossSize / 2, point.x, point.y + crossSize / 2, QPen(color, CalculateDynamicPenWidth(1)));
+    addLine(point.x - crossSize / 2, point.y, point.x + crossSize / 2, point.y, QPen(color, CalculateDynamicPenWidth()));
+    addLine(point.x, point.y - crossSize / 2, point.x, point.y + crossSize / 2, QPen(color, CalculateDynamicPenWidth()));
 }
 
 void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
 {
-    addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color,CalculateDynamicPenWidth(1)));
+    addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color,CalculateDynamicPenWidth()));
 }
 
 void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
 {
-    addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color,CalculateDynamicPenWidth(1)), Qt::NoBrush);
+    addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color,CalculateDynamicPenWidth()), Qt::NoBrush);
 }
 
 
@@ -120,7 +120,7 @@ void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
     double qtStartAngle = fmod(360.0 - startAngle, 360.0);
     //转为顺时针绘制圆弧
     path.arcTo(rect, qtStartAngle, -spanLength);
-    addPath(path, QPen(color, CalculateDynamicPenWidth(1)), Qt::NoBrush);
+    addPath(path, QPen(color, CalculateDynamicPenWidth()), Qt::NoBrush);
 }
 
 void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& color)
@@ -130,7 +130,7 @@ void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& col
         return; // 如果点数少于2个，无法绘制多段线
     }
 
-    QPen pen(color,CalculateDynamicPenWidth(1));
+    QPen pen(color,CalculateDynamicPenWidth());
     QPainterPath path;
 
     // 移动到第一个点
@@ -157,11 +157,11 @@ void CDxfGraphicsScene::DrawText(const Text& text, const QColor& color)
 
 
 
-qreal CDxfGraphicsScene::CalculateDynamicPenWidth(qreal basewidth)
+qreal CDxfGraphicsScene::CalculateDynamicPenWidth()
 {
     QRectF sceneRect = this->sceneRect();
     qreal sceneSize = qMin(sceneRect.width(), sceneRect.height());
-    return qMin(basewidth, sceneSize * 0.001);
+    return sceneSize * 0.001;
 }
 
 

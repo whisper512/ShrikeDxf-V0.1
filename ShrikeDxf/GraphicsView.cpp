@@ -13,6 +13,7 @@ CGraphicsView::~CGraphicsView()
 CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_pMainWnd(pMainwnd),
     m_pGraphicsViewMenu(nullptr),
+    m_pGraphicsOperateMenu(nullptr),
     m_pLabelMousePos(nullptr),
     m_pActionLockZoom(nullptr),
     m_pActionFilpX(nullptr),
@@ -20,15 +21,18 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_pActionResetView(nullptr),
     m_pActionShowMousePos(nullptr),
     m_pActionDrag(nullptr),
+    m_pActionPasteEntity(nullptr),
     m_bLockZoom(false),
     m_bFilpAlongX(false),
     m_bFilpAlongY(false),
     m_bShowMousePos(false),
     m_bDrag(false),
+    m_bCopyingEntity(false),
     m_tranformInitial(1, 0, 0, -1, 0, 0),
     m_rectInitialScene(0, 0, 0, 0),
     m_pointLastPos(0, 0),
-    m_rectLastScene(0, 0, 0, 0)
+    m_rectLastScene(0, 0, 0, 0),
+    m_pointRightClickPos(0, 0)
 {
     //添加graphicsview到layout
     ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
@@ -52,19 +56,30 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
 void CGraphicsView::InitMenu(QWidget* pParent)
 {
     m_pGraphicsViewMenu = new QMenu();
+    m_pGraphicsOperateMenu = new QMenu();
 
     setContextMenuPolicy(Qt::CustomContextMenu);
+    InitGraphicsOperateAction();
+    InitGraphicsViewAction();
     connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
-    InitAction();
+    
 }
 
 void CGraphicsView::ShowMenu(const QPoint& pos)
 {
-    m_pGraphicsViewMenu->popup(mapToGlobal(pos));
+    m_pointRightClickPos = pos;
+    if (m_bCopyingEntity)
+    {
+        m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
+    }
+    else
+    {
+        m_pGraphicsViewMenu->popup(mapToGlobal(pos));
+    }
 }
 
 
-void CGraphicsView::InitAction()
+void CGraphicsView::InitGraphicsViewAction()
 {
     m_pActionShowMousePos = new QAction("Show Pos", this);
     m_pActionShowMousePos->setCheckable(true);
@@ -82,7 +97,6 @@ void CGraphicsView::InitAction()
     m_pActionFilpY->setCheckable(true);
     m_pActionFilpY->setChecked(false);
 
-
     m_pActionResetView = new QAction("Reset View", this);
 
     m_pGraphicsViewMenu->addAction(m_pActionShowMousePos);
@@ -98,6 +112,15 @@ void CGraphicsView::InitAction()
     connect(m_pActionFilpX, &QAction::toggled, this, &CGraphicsView::handleFilpAlongX);
     connect(m_pActionFilpY, &QAction::toggled, this, &CGraphicsView::handleFilpAlongY);
     connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
+}
+
+void CGraphicsView::InitGraphicsOperateAction()
+{
+    m_pActionPasteEntity = new QAction("Paste", this);
+
+    m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
+
+    connect(m_pActionPasteEntity,&QAction::triggered,this,&CGraphicsView::handlePasteEntity);
 }
 
 void CGraphicsView::InitPosLabel()
@@ -141,6 +164,12 @@ void CGraphicsView::FilpView()
     setTransform(transform);
 }
 
+
+void CGraphicsView::handlelCopyintEntity()
+{
+    m_bCopyingEntity = true;
+}
+
 void CGraphicsView::handleFilpAlongX(bool bChecked)
 {
     m_bFilpAlongX = bChecked;
@@ -157,6 +186,13 @@ void CGraphicsView::handleFilpAlongY(bool bChecked)
 void CGraphicsView::handleLockZoom(bool bChecked)
 {
     m_bLockZoom = bChecked;
+}
+
+void CGraphicsView::handlePasteEntity()
+{
+    //重置
+    m_bCopyingEntity = false;
+    emit signalPaste(mapToScene(m_pointRightClickPos));
 }
 
 void CGraphicsView::wheelEvent(QWheelEvent* pEvent)

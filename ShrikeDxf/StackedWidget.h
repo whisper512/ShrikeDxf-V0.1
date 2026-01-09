@@ -49,7 +49,7 @@ signals:
 	void NoticePolylineAttribute(Polyline polyline);
     void NoticeTextAttribute(Text text);
 public slots:
-	void handleRefreshStackedWidget(DxfEntity dxfentity);
+	void handleRefreshStackedWidget(variantDxfEntity dxfentity);
 
 
 };

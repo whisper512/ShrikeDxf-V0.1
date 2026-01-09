@@ -4,6 +4,7 @@
 #include <iostream>
 #include <QString>
 #include <vector>
+#include <QPointF>
 
 #include "dl_dxf.h"
 #include "dl_creationadapter.h"
@@ -25,7 +26,10 @@ public:
     // 存放dxf文件中所有的数据
     // 图层名 图层数据
     map<string, stuLayer> m_mapDxfEntities;
-
+    //复制操作临时存储的图元
+    variantDxfEntity m_CopyingEntity;
+    //复制操作临时存储的图元所在图层
+    QString m_strCopyingLayer;
 
 
 public:
@@ -63,13 +67,18 @@ public:
     //获取entity数据
     QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
     //获取特定的entity
-    DxfEntity GetEntity(QString strLayer,QString strType,QString strNum);
+    variantDxfEntity GetEntity(QString strLayer,QString strType,QString strNum);
     //删除entity
     int DeleteEntity(QString strLayer, QString strType, QString strNum);
-	
+	//保存复制entity
+    int SaveCopyingEntity(QString strLayer, QString strType, QString strNum);
+    //粘贴entity
+    int PasteEntity(QPointF pos);
+
 private:
-    //当前多段线信息
+    //当前多段线,用来读取dxf文档中的多段线
     Polyline* m_pCurPolyline;
+   
 };
 
 #endif // DXF_MAPPING_H

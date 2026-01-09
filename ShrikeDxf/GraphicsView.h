@@ -8,6 +8,7 @@
 #include <QLabel>
 
 #include "DxfGraphicsScene.h"
+#include "DxfStruct.h"
 
 class CGraphicsView : public QGraphicsView
 {
@@ -22,14 +23,19 @@ public:
 private:
 	//右键菜单
 	QMenu* m_pGraphicsViewMenu;
+	QMenu* m_pGraphicsOperateMenu;
 	QLabel* m_pLabelMousePos;
 
+	//view的操作
 	QAction* m_pActionLockZoom;
 	QAction* m_pActionFilpX;
 	QAction* m_pActionFilpY;
 	QAction* m_pActionResetView;
 	QAction* m_pActionShowMousePos;
 	QAction* m_pActionDrag;
+	//针对view中图元的操作
+	QAction* m_pActionPasteEntity;
+
 
 	//锁定缩放
 	bool m_bLockZoom;
@@ -41,6 +47,8 @@ private:
 	bool m_bShowMousePos;
 	//左键拖拽
 	bool m_bDrag;
+	//开启复制图元中
+	bool m_bCopyingEntity;
 	//初始transform
 	QTransform m_tranformInitial;
 	//初始场景矩阵
@@ -48,9 +56,13 @@ private:
 	QPoint m_pointLastPos;
 	//上次的场景矩阵
     QRectF m_rectLastScene;
+	//右键鼠标位置
+    QPoint m_pointRightClickPos;
+	
 
 	void InitMenu(QWidget* pParent);
-	void InitAction();
+	void InitGraphicsViewAction();
+	void InitGraphicsOperateAction();
 	void InitPosLabel();
 	void FilpView();
 
@@ -58,17 +70,22 @@ public:
 	QWidget* m_pMainWnd;
 
 signals:
+	void signalPaste(QPointF pos);
 
 public slots:
+	//类外交互
 	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene,bool bResetViewRect);
+	void handlelCopyintEntity();
+	//viewmenu动作
 	void handleFilpAlongX(bool bChecked);
     void handleFilpAlongY(bool bChecked);
 	void handleResetView();
 	void handleShowMousePos(bool bChecked);
 	void handleDrag(bool bChecked);
-
 	void ShowMenu(const QPoint& pos);
 	void handleLockZoom(bool bChecked);
+	//operate动作
+	void handlePasteEntity();
 
 protected:
 	void wheelEvent(QWheelEvent* pEvent) override;

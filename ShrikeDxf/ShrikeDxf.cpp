@@ -96,14 +96,19 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 		{
 			if (m_pDxfDataManger && m_pTreeViewManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::RefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
-				connect(m_pDxfDataManger, &CDxfManger::ReturnEntityInfo, m_pTreeViewManger, &CTreeViewManger::handleReturnEntityInfo);
+				connect(m_pDxfDataManger, &CDxfManger::signalRefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
+				connect(m_pDxfDataManger, &CDxfManger::signalReturnEntityInfo, m_pTreeViewManger, &CTreeViewManger::handleReturnEntityInfo);
 				connect(m_pTreeViewManger, &CTreeViewManger::signalChangeEntityWidget, m_pDxfDataManger, &CDxfManger::handleChangeEntityWidget);
 				connect(m_pTreeViewManger,&CTreeViewManger::signalDeleteEntityData,m_pDxfDataManger, &CDxfManger::handleDeleteEntity);
+				connect(m_pTreeViewManger, &CTreeViewManger::signalCopyEntityData, m_pDxfDataManger, &CDxfManger::handleCopyEntity);
 			}
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::RefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+				connect(m_pDxfDataManger, &CDxfManger::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+				//manger通知view正在进行复制,切换menu
+				connect(m_pDxfDataManger, &CDxfManger::signalCopyintEntity, m_pGraphicsView, &CGraphicsView::handlelCopyintEntity);
+				//view通知manger鼠标位置
+				connect(m_pGraphicsView,&CGraphicsView::signalPaste,m_pDxfDataManger, &CDxfManger::handlePaste);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -111,11 +116,11 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (m_pDxfDataManger && m_pTableViewManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::RefreshLayerTableview, m_pTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
+				connect(m_pDxfDataManger, &CDxfManger::signalRefreshLayerTableview, m_pTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::RefreshStackedWidget, m_pStackedWidgetManger, &CStackedWidgetManger::handleRefreshStackedWidget);
+				connect(m_pDxfDataManger, &CDxfManger::signalRefreshStackedWidget, m_pStackedWidgetManger, &CStackedWidgetManger::handleRefreshStackedWidget);
 			}
 		});
 }

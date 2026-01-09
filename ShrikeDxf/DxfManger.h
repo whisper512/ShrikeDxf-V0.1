@@ -39,17 +39,21 @@ private:
 
 signals:
 	//用来通知treeview
-	void RefreshTreeview(CDxfTreeviewModel* pModel);
+	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	//用来返回获取到的entity信息
-	void ReturnEntityInfo(QString strInfo);
+	void signalReturnEntityInfo(QString strInfo);
 	//通知graphicsview
-	void RefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
+	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
 	//通知layerTableview
-	void RefreshLayerTableview(CDxfLayerTableviewModel* pModel);
+	void signalRefreshLayerTableview(CDxfLayerTableviewModel* pModel);
 	//通知stackedwidget
-	void RefreshStackedWidget(DxfEntity dxfentity);
+	void signalRefreshStackedWidget(variantDxfEntity dxfentity);
+	//通知graphics正在复制图元
+	void signalCopyintEntity();
 
  public slots:
 	QString handleChangeEntityWidget(const QString& strLayer, const QString& strEntity);
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
+	int handleCopyEntity(const QString& strLayer, const QString& strEntity);
+	void handlePaste(QPointF pos);
 };
