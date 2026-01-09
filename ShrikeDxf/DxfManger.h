@@ -43,7 +43,7 @@ signals:
 	//用来返回获取到的entity信息
 	void ReturnEntityInfo(QString strInfo);
 	//通知graphicsview
-	void RefreshGraphicsview(CDxfGraphicsScene* pScene);
+	void RefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
 	//通知layerTableview
 	void RefreshLayerTableview(CDxfLayerTableviewModel* pModel);
 	//通知stackedwidget

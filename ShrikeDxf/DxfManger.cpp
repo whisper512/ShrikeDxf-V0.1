@@ -36,7 +36,7 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
 
         //绘制图形
         m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
-        emit RefreshGraphicsview(&m_DxfGraphicsScene);
+        emit RefreshGraphicsview(&m_DxfGraphicsScene,true);
         return true;
     }   
     
@@ -52,7 +52,7 @@ void CDxfManger::RefreshTreeModelAndGraphicsview()
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
     emit RefreshTreeview(&m_DxfTreeviewModel);
     m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
-    emit RefreshGraphicsview(&m_DxfGraphicsScene);
+    emit RefreshGraphicsview(&m_DxfGraphicsScene,false);
 }
 
 

@@ -27,7 +27,8 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_bDrag(false),
     m_tranformInitial(1, 0, 0, -1, 0, 0),
     m_rectInitialScene(0, 0, 0, 0),
-    m_pointLastPos(0, 0)
+    m_pointLastPos(0, 0),
+    m_rectLastScene(0, 0, 0, 0)
 {
     //添加graphicsview到layout
     ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
@@ -203,25 +204,42 @@ void CGraphicsView::handleDrag(bool bChecked)
 }
 
 
-void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene)
+void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect)
 {
     if (pScene)
     {
+        //保留当前view的状态
+        QTransform currentTransform = transform();
+        QPointF currentCenter = mapToScene(viewport()->rect().center());
+        int hValue = horizontalScrollBar()->value();
+        int vValue = verticalScrollBar()->value();
+        QRectF curRect = sceneRect();
+
         // 设置场景到视图
         setScene(pScene);
 
-        // 计算所有项目的边界矩形
-        QRectF boundingRect;
-        for (const auto& item : pScene->items()) 
+        if (bResetViewRect)
         {
-            boundingRect = boundingRect.united(item->boundingRect());
+            // 计算所有项目的边界矩形
+            QRectF boundingRect;
+            for (const auto& item : pScene->items())
+            {
+                boundingRect = boundingRect.united(item->boundingRect());
+            }
+            m_rectInitialScene = pScene->sceneRect();
+            m_rectLastScene = pScene->sceneRect();
+            QTimer::singleShot(0, [this, pScene]() {fitInView(pScene->sceneRect(), Qt::KeepAspectRatio); });
+            // 强制更新视图
+            update();
         }
-        m_rectInitialScene = pScene->sceneRect();
-
-        QTimer::singleShot(0, [this, pScene]() {fitInView(pScene->sceneRect(), Qt::KeepAspectRatio);});
-        // 强制更新视图
-        update();
-
+        else
+        {
+            // 恢复之前的视图状态
+            setSceneRect(curRect);
+            setTransform(currentTransform);
+            horizontalScrollBar()->setValue(hValue);
+            verticalScrollBar()->setValue(vValue);
+        }
     }
     return;
 }

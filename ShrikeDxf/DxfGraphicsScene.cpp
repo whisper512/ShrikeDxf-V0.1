@@ -19,6 +19,9 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
 {
     ClearScene();
 
+    QRectF bounds = CalculateSceneBounds(mapdxf);
+    setSceneRect(bounds);
+
     for (const auto& pairLayer : mapdxf)
     {
         const stuLayer layer = pairLayer.second;
@@ -58,25 +61,34 @@ void CDxfGraphicsScene::ClearScene()
     clear();
 }
 
+
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 {
     qreal size = 1;
-    addEllipse(point.x - size / 2, point.y - size / 2, size, size,QPen(color, 2), QBrush(color));
+    addEllipse(point.x - size / 2, point.y - size / 2, size, size,QPen(color, CalculateDynamicPenWidth(1)), QBrush(color));
 
-    // 添加十字标记使点更加明显
-    qreal crossSize = size + size * 10;
-    addLine(point.x - crossSize / 2, point.y,point.x + crossSize / 2, point.y, QPen(color, 2));
-    addLine(point.x, point.y - crossSize / 2,point.x, point.y + crossSize / 2, QPen(color, 2));
+    // 获取场景尺寸
+    QRectF sceneRect = this->sceneRect();
+    qreal sceneSize = qMin(sceneRect.width(), sceneRect.height());
+
+    // 根据场景大小动态调整十字标记大小
+    qreal crossSize = sceneSize * 0.02; // 使用场景尺寸的2%作为十字标记的大小
+
+    // 确保十字标记有最小尺寸
+    crossSize = qMax(crossSize, size * 2);
+
+    addLine(point.x - crossSize / 2, point.y, point.x + crossSize / 2, point.y, QPen(color, CalculateDynamicPenWidth(1)));
+    addLine(point.x, point.y - crossSize / 2, point.x, point.y + crossSize / 2, QPen(color, CalculateDynamicPenWidth(1)));
 }
 
 void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
 {
-    addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color));
+    addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color,CalculateDynamicPenWidth(1)));
 }
 
 void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
 {
-    addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color), Qt::NoBrush);
+    addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color,CalculateDynamicPenWidth(1)), Qt::NoBrush);
 }
 
 
@@ -108,7 +120,7 @@ void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
     double qtStartAngle = fmod(360.0 - startAngle, 360.0);
     //转为顺时针绘制圆弧
     path.arcTo(rect, qtStartAngle, -spanLength);
-    addPath(path, QPen(color, 1), Qt::NoBrush);
+    addPath(path, QPen(color, CalculateDynamicPenWidth(1)), Qt::NoBrush);
 }
 
 void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& color)
@@ -118,7 +130,7 @@ void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& col
         return; // 如果点数少于2个，无法绘制多段线
     }
 
-    QPen pen(color);
+    QPen pen(color,CalculateDynamicPenWidth(1));
     QPainterPath path;
 
     // 移动到第一个点
@@ -141,4 +153,52 @@ void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& col
 
 void CDxfGraphicsScene::DrawText(const Text& text, const QColor& color)
 {
+}
+
+
+
+qreal CDxfGraphicsScene::CalculateDynamicPenWidth(qreal basewidth)
+{
+    QRectF sceneRect = this->sceneRect();
+    qreal sceneSize = qMin(sceneRect.width(), sceneRect.height());
+    return qMin(basewidth, sceneSize * 0.001);
+}
+
+
+QRectF CDxfGraphicsScene::CalculateSceneBounds(const map<string, stuLayer>& mapdxf)
+{
+    QRectF totalBounds;
+    for (const auto& pairLayer : mapdxf)
+    {
+        const stuLayer layer = pairLayer.second;
+        for (const auto& point : layer.vecPoints)
+        {
+            totalBounds = totalBounds.united(QRectF(point.x, point.y, 0, 0));
+        }
+        for (const auto& line : layer.vecLines)
+        {
+            totalBounds = totalBounds.united(QRectF(QPointF(line.pointStart.x, line.pointStart.y),
+                QPointF(line.pointEnd.x, line.pointEnd.y)));
+        }
+        for (const auto& circle : layer.vecCircles)
+        {
+            totalBounds = totalBounds.united(QRectF(circle.pointCenter.x - circle.radius,
+                circle.pointCenter.y - circle.radius,
+                circle.radius * 2, circle.radius * 2));
+        }
+        for (const auto& arc : layer.vecArcs)
+        {
+            totalBounds = totalBounds.united(QRectF(arc.pointCenter.x - arc.radius,
+                arc.pointCenter.y - arc.radius,
+                arc.radius * 2, arc.radius * 2));
+        }
+        for (const auto& polyline : layer.vecPolylines)
+        {
+            for (const auto& vertex : polyline.vecVertices)
+            {
+                totalBounds = totalBounds.united(QRectF(vertex.x, vertex.y, 0, 0));
+            }
+        }    
+    }
+    return totalBounds;
 }

@@ -37,4 +37,9 @@ private:
 	void DrawPolyline(const Polyline& polyline, const QColor& color);
 	void DrawText(const Text& text, const QColor& color);
 
+	//动态计算pen的宽度
+	qreal CalculateDynamicPenWidth(qreal basewidth);
+	//提前计算scene的的边界
+	QRectF CalculateSceneBounds(const map<string, stuLayer>& mapdxf);
+
 };

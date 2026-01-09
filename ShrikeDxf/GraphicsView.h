@@ -46,6 +46,8 @@ private:
 	//初始场景矩阵
 	QRectF m_rectInitialScene;
 	QPoint m_pointLastPos;
+	//上次的场景矩阵
+    QRectF m_rectLastScene;
 
 	void InitMenu(QWidget* pParent);
 	void InitAction();
@@ -58,7 +60,7 @@ public:
 signals:
 
 public slots:
-	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene);
+	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene,bool bResetViewRect);
 	void handleFilpAlongX(bool bChecked);
     void handleFilpAlongY(bool bChecked);
 	void handleResetView();
