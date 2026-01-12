@@ -4,7 +4,6 @@ Shrike-Dxf v0.1
 
 (https://www.qcad.org/en/dxflib-downloads)
 
-复制粘贴中的粘贴没有实现
 
 1.treeview::
 添加图元的图标，
@@ -20,7 +19,7 @@ text绘制暂时不考虑
 
 3.右侧图层属性设置：
 
-目前完成简单的图层属性显示
+修改text内数据，修改数据后更新
 
 文本居中
 
