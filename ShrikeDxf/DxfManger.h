@@ -41,6 +41,7 @@ signals:
 	//用来通知treeview
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	//用来返回获取到的entity信息
+
 	void signalReturnEntityInfo(QString strInfo);
 	//通知graphicsview
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);

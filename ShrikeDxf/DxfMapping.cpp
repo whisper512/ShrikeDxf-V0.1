@@ -301,6 +301,7 @@ int CDxfMapping::SaveCopyingEntity(QString strLayer, QString strType, QString st
 		else if (strType == STR_LINE_LOWERCASE)
 		{
 			m_CopyingEntity = CurLayer->second.vecLines.at(strNum.toInt() - 1);
+
 		}
 		else if (strType == STR_CIRCLE_LOWERCASE)
 		{
@@ -322,11 +323,16 @@ int CDxfMapping::SaveCopyingEntity(QString strLayer, QString strType, QString st
 int CDxfMapping::PasteEntity(QPointF pos)
 {
 	Point point;
-	Line line;
+	Line line,newLine;
 	Circle circle;
 	Arc arc;
-	Polyline polyline;
+	Polyline polyline,newPolyline;
 	enumEntity enumEntityType;
+
+	
+	double sumX = 0, sumY = 0;
+	double centerX, centerY;
+	Point newVertex;
 
 	if (m_CopyingEntity.index() != std::variant_npos)
 	{
@@ -345,19 +351,67 @@ int CDxfMapping::PasteEntity(QPointF pos)
 				CurLayer->second.vecPoints.push_back(point);
 				break;
 			case enumEntity_Line:
+			{
+				double lineMidX, lineMidY;
+				double offsetX, offsetY;
+				lineMidX = (line.pointEnd.x + line.pointStart.x) / 2;
+				lineMidY = (line.pointEnd.y + line.pointStart.y) / 2;
+				offsetX = pos.x() - lineMidX;
+				offsetY = pos.y() - lineMidY;
+				newLine.pointStart.x = line.pointStart.x + offsetX;
+				newLine.pointStart.y = line.pointStart.y + offsetY;
+				newLine.pointEnd.x = line.pointEnd.x + offsetX;
+				newLine.pointEnd.y = line.pointEnd.y + offsetY;
+				CurLayer->second.vecLines.push_back(newLine);
 				break;
+			}
 			case enumEntity_Circle:
+				circle.pointCenter.x = pos.x();
+				circle.pointCenter.y = pos.y();
+				CurLayer->second.vecCircles.push_back(circle);
 				break;
 			case enumEntity_Arc:
+				arc.pointCenter.x = pos.x();
+				arc.pointCenter.y = pos.y();
+                CurLayer->second.vecArcs.push_back(arc);
 				break;
 			case enumEntity_Polyline:
+			{
+				double sumX = 0, sumY = 0;
+				double centerX, centerY;
+				double offsetX, offsetY;
+				Point newVertex;
+				for (const auto& vertex : polyline.vecVertices)
+				{
+					sumX += vertex.x;
+					sumY += vertex.y;
+				}
+				centerX = sumX / polyline.vecVertices.size();
+				centerY = sumY / polyline.vecVertices.size();
+				offsetX = pos.x() - centerX;
+				offsetY = pos.y() - centerY;
+
+				newPolyline.numVertices = polyline.numVertices;
+				newPolyline.numVertices_M = polyline.numVertices_M;
+				newPolyline.numVertices_N = polyline.numVertices_N;
+				newPolyline.flag = polyline.flag;
+				// 平移所有顶点
+				for (const auto& vertex : polyline.vecVertices) {
+					newVertex.x = vertex.x + offsetX;
+					newVertex.y = vertex.y + offsetY;
+					newVertex.z = vertex.z;
+					newPolyline.vecVertices.push_back(newVertex);
+				}
+				CurLayer->second.vecPolylines.push_back(newPolyline);
 				break;
+			}
 			case enumEntity_Text:
 				break;
 			default:
 				break;
 			}
 		}
+		m_CopyingEntity = variantDxfEntity();
 		return 1;
 	}
 	else

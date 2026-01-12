@@ -20,7 +20,6 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
     ClearScene();
 
     QRectF bounds = CalculateSceneBounds(mapdxf);
-    bounds.adjust(-10, -10, 10, 10);
     setSceneRect(bounds);
 
     for (const auto& pairLayer : mapdxf)
@@ -89,7 +88,7 @@ void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
 
 void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
 {
-    addEllipse(circle.pointCenter.x, circle.pointCenter.y, circle.radius, circle.radius, QPen(color,CalculateDynamicPenWidth()), Qt::NoBrush);
+    addEllipse(circle.pointCenter.x - circle.radius, circle.pointCenter.y - circle.radius, circle.radius * 2, circle.radius * 2, QPen(color, CalculateDynamicPenWidth()), Qt::NoBrush);
 }
 
 
