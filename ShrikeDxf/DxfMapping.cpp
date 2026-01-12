@@ -329,10 +329,6 @@ int CDxfMapping::PasteEntity(QPointF pos)
 	Polyline polyline,newPolyline;
 	enumEntity enumEntityType;
 
-	
-	double sumX = 0, sumY = 0;
-	double centerX, centerY;
-	Point newVertex;
 
 	if (m_CopyingEntity.index() != std::variant_npos)
 	{
