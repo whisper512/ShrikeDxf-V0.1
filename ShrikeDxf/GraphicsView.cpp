@@ -275,6 +275,8 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
             setTransform(currentTransform);
             horizontalScrollBar()->setValue(hValue);
             verticalScrollBar()->setValue(vValue);
+            update();
+            viewport()->update();
         }
     }
     return;

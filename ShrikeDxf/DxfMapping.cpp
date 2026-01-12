@@ -12,6 +12,35 @@ CDxfMapping::~CDxfMapping()
 	
 }
 
+enumEntity CDxfMapping::GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline)
+{
+	enumEntity EntityType = enumEntity_None;
+	std::visit([&](auto&& arg) {
+		using T = std::decay_t<decltype(arg)>;
+		if constexpr (std::is_same_v<T, Point>) {
+			point = arg;
+			EntityType = enumEntity_Point;
+		}
+		else if constexpr (std::is_same_v<T, Line>) {
+			line = arg;
+			EntityType = enumEntity_Line;
+		}
+		else if constexpr (std::is_same_v<T, Circle>) {
+			circle = arg;
+			EntityType = enumEntity_Circle;
+		}
+		else if constexpr (std::is_same_v<T, Arc>) {
+			arc = arg;
+			EntityType = enumEntity_Arc;
+		}
+		else if constexpr (std::is_same_v<T, Polyline>) {
+			polyline = arg;
+			EntityType = enumEntity_Polyline;
+		}
+		}, dxfEntity);
+	return EntityType;
+}
+
 void CDxfMapping::addLayer(const DL_LayerData& data)
 {
 
@@ -299,48 +328,9 @@ int CDxfMapping::PasteEntity(QPointF pos)
 	Polyline polyline;
 	enumEntity enumEntityType;
 
-	if (m_CopyingEntity.index() != 0)
+	if (m_CopyingEntity.index() != std::variant_npos)
 	{
-		
-		// 使用 Lambda 捕获外部变量引用
-		std::visit([&](auto&& arg) 
-		{
-			using T = std::decay_t<decltype(arg)>;
-
-			if constexpr (std::is_same_v<T, Point>)
-			{
-				point = arg;
-				point.x = pos.x();
-				point.y = pos.y();
-				enumEntityType = enumEntity_Point;
-			}
-			else if constexpr (std::is_same_v<T, Line>)
-			{
-				line = arg;
-				enumEntityType = enumEntity_Line;
-			}
-			else if constexpr (std::is_same_v<T, Circle>)
-			{
-				circle = arg;
-				enumEntityType = enumEntity_Circle;
-			}
-			else if constexpr (std::is_same_v<T, Arc>)
-			{
-				arc = arg;
-				enumEntityType = enumEntity_Arc;
-			}
-			else if constexpr (std::is_same_v<T, Polyline>)
-			{
-				polyline = arg;
-				enumEntityType = enumEntity_Polyline;
-			}
-			else if constexpr (std::is_same_v<T, Text>)
-			{
-
-			}
-		}
-		, m_CopyingEntity);
-
+		enumEntityType = GetVariantDxfEntity(m_CopyingEntity, point, line, circle, arc, polyline);
 
 		auto CurLayer = m_mapDxfEntities.find(m_strCopyingLayer.toStdString());
 		if (CurLayer != m_mapDxfEntities.end())
@@ -350,6 +340,8 @@ int CDxfMapping::PasteEntity(QPointF pos)
 			case enumEntity_None:
 				break;
 			case enumEntity_Point:
+				point.x = pos.x();
+				point.y = pos.y();
 				CurLayer->second.vecPoints.push_back(point);
 				break;
 			case enumEntity_Line:
@@ -366,7 +358,7 @@ int CDxfMapping::PasteEntity(QPointF pos)
 				break;
 			}
 		}
-
+		return 1;
 	}
 	else
 	{

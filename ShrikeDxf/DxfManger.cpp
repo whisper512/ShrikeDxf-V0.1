@@ -100,4 +100,5 @@ int CDxfManger::handleCopyEntity(const QString& strLayer, const QString& strEnti
 void CDxfManger::handlePaste(QPointF pos)
 {
     m_DxfMapping.PasteEntity(pos);
+    RefreshTreeModelAndGraphicsview();
 }

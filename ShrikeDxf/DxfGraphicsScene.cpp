@@ -20,6 +20,7 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
     ClearScene();
 
     QRectF bounds = CalculateSceneBounds(mapdxf);
+    bounds.adjust(-10, -10, 10, 10);
     setSceneRect(bounds);
 
     for (const auto& pairLayer : mapdxf)

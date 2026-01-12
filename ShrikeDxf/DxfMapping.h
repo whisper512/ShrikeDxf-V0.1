@@ -30,7 +30,8 @@ public:
     variantDxfEntity m_CopyingEntity;
     //复制操作临时存储的图元所在图层
     QString m_strCopyingLayer;
-
+    //获取variant中存储的数据和类型
+    enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline);
 
 public:
     //dxflib中的回调函数
