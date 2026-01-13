@@ -466,9 +466,21 @@ void CDxfMapping::ChangePointProperty(Point point)
     auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
 	if (CurLayer != m_mapDxfEntities.end())
 	{
-		if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size())
+		if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 		{
 			CurLayer->second.vecPoints.at(m_SelectedEntity.index) = point;
+		}
+	}
+}
+
+void CDxfMapping::ChangeLineProperty(Line line)
+{
+	auto Curlayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+	if (Curlayer != m_mapDxfEntities.end())
+	{
+		if (m_SelectedEntity.index <= Curlayer->second.vecLines.size() && m_SelectedEntity.index >= 0)
+		{
+            Curlayer->second.vecLines.at(m_SelectedEntity.index) = line;
 		}
 	}
 }

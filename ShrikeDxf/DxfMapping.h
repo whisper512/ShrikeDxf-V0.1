@@ -82,6 +82,8 @@ public:
 
     //修改选中point属性
     void ChangePointProperty(Point point);
+    //修改选中line属性
+    void ChangeLineProperty(Line line);
 
 private:
     //当前多段线,用来读取dxf文档中的多段线

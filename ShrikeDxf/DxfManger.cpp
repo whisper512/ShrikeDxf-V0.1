@@ -117,3 +117,12 @@ void CDxfManger::handlePointAttributeChanged(Point point)
         RefreshTreeModelAndGraphicsview();
     }
 }
+
+void CDxfManger::handleLineAttributeChanged(Line line)
+{
+    if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Line)
+    {
+        m_DxfMapping.ChangeLineProperty(line);
+        RefreshTreeModelAndGraphicsview();
+    }
+}

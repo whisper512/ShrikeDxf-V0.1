@@ -57,6 +57,8 @@ signals:
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
 	int handleCopyEntity(const QString& strLayer, const QString& strEntity);
 	void handlePaste(QPointF pos);
-	//point界面属性发送变化
+	//point界面属性发生变化
 	void handlePointAttributeChanged(Point point);
+	//line界面属性发生变化
+	void handleLineAttributeChanged(Line line);
 };

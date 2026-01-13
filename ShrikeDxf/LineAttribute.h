@@ -19,6 +19,10 @@ private:
 	
 	Line m_line;
 
+	void OnSpinBoxChanged();
+signals:
+		void signalLineAttributeChanged(Line line);
+
 public slots:
 	void handleNoticeLineAttribute(Line line);
 
