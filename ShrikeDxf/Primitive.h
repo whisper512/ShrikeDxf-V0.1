@@ -35,16 +35,38 @@ struct Point
 	double y;
 	double z;
     std::string type = "POINT";
+
 	Point() :x(0.0), y(0.0), z(0.0) {}
 	Point(double x, double y, double z) :x(x), y(y), z(z) {};
+    Point& operator=(const Point& other)
+    {
+        if (this != &other)
+        {
+            x = other.x;
+            y = other.y;
+            z = other.z;
+            type = other.type;  // 添加这行
+        }
+        return *this;
+    }
 };
 
 struct Line 
 {
     Point pointStart, pointEnd;
     std::string type = "LINE";
+
     Line() : pointStart(0.0, 0.0, 0.0), pointEnd(0.0, 0.0, 0.0) {};
     Line(Point pStart,Point pEnd) :pointStart(pStart), pointEnd(pEnd) {};
+    Line& operator=(const Line& other) 
+    {
+        if (this != &other) {
+            pointStart = other.pointStart;
+            pointEnd = other.pointEnd;
+            type = other.type;
+        }
+        return *this;
+    }
 };
 
 struct Circle 
@@ -52,8 +74,18 @@ struct Circle
     Point pointCenter;
     double radius;
     std::string type = "CIRCLE";
+
     Circle() :pointCenter(0.0,0.0,0.0), radius(0.0) {}
     Circle(Point pCenter, double r) :pointCenter(pCenter), radius(r) {};
+    Circle& operator=(const Circle& other) 
+    {
+        if (this != &other) {
+            pointCenter = other.pointCenter;
+            radius = other.radius;
+            type = other.type;
+        }
+        return *this;
+    }
 };
 
 struct Arc 
@@ -62,9 +94,20 @@ struct Arc
     double radius;
     double startAngle, endAngle;//单位为度
     std::string type = "ARC";
+
     Arc() :pointCenter(0.0,0.0,0.0), radius(0.0), startAngle(0.0), endAngle(0.0) {};
-   Arc(Point pCenter, double r, double startAngle, double endAngle) 
-       :pointCenter(pCenter), radius(r), startAngle(startAngle), endAngle(endAngle) {};
+    Arc(Point pCenter, double r, double startAngle, double endAngle) :pointCenter(pCenter), radius(r), startAngle(startAngle), endAngle(endAngle) {};
+    Arc& operator=(const Arc& other) 
+    {
+        if (this != &other) {
+            pointCenter = other.pointCenter;
+            radius = other.radius;
+            startAngle = other.startAngle;
+            endAngle = other.endAngle;
+            type = other.type;
+        }
+        return *this;
+    }
 };
 
 struct Polyline 
@@ -83,6 +126,19 @@ struct Polyline
     std::string type = "POLYLINE";
     
     Polyline() :numVertices(0), numVertices_M(0), numVertices_N(0), flag(0), dBulge(0.0) {};
+    Polyline& operator=(const Polyline& other)
+    {
+        if (this != &other) {
+            numVertices = other.numVertices;
+            numVertices_M = other.numVertices_M;
+            numVertices_N = other.numVertices_N;
+            flag = other.flag;
+            dBulge = other.dBulge;
+            vecVertices = other.vecVertices;
+            type = other.type;
+        }
+        return *this;
+    }
 };
 
 struct Text 

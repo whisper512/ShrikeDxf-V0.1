@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QWidget>
 
 #include "ui_PointAttribute.h"
@@ -14,9 +14,14 @@ public:
 
 private:
 	Point m_point;
-
-private:
 	Ui::CPointAttribute ui;
+private:
+
+	void OnSpinBoxChanged();
+
+
+signals:
+	void signalPointAttributeChanged(Point point);
 
 public slots:
 	void handleNoticePointAttribute(Point point);

@@ -19,6 +19,7 @@ public:
 
 public:
 	bool LoadDxfFile(const QString& strPath);
+	bool SaveDxfFile(const QString& strPath);
 	void ClearDxfMappingData();
 
 private:
@@ -41,7 +42,6 @@ signals:
 	//用来通知treeview
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	//用来返回获取到的entity信息
-
 	void signalReturnEntityInfo(QString strInfo);
 	//通知graphicsview
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
@@ -57,4 +57,6 @@ signals:
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
 	int handleCopyEntity(const QString& strLayer, const QString& strEntity);
 	void handlePaste(QPointF pos);
+	//point界面属性发送变化
+	void handlePointAttributeChanged(Point point);
 };

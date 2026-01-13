@@ -25,8 +25,8 @@ private:
 	void ConnectSignalAndSlot();
 	void AdjustWidget();
 	void ChangeWidgets();
-	
-private:
+
+public:
 	QWidget* m_pMainwnd;
 	QStackedWidget* m_pStackedWidget;
 	CPointAttributeWidget* m_pPointAttributeWidget;

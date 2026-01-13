@@ -86,6 +86,20 @@ public:
 //某个图元
 using variantDxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
 
+struct stuSelectedEntity
+{
+    enumEntity type;
+    QString strLayer;
+    int index;
+    variantDxfEntity entity;
+    stuSelectedEntity()
+    {
+        type = enumEntity_None;
+        strLayer = "";
+        index = -1;
+    }
+};
+
 
 //图层类
 struct stuLayer

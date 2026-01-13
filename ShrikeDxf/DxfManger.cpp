@@ -42,6 +42,11 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
     
 }
 
+bool CDxfManger::SaveDxfFile(const QString& strPath)
+{
+    return false;
+}
+
 void CDxfManger::ClearDxfMappingData()
 {
     m_DxfMapping.m_mapDxfEntities.clear();
@@ -65,6 +70,7 @@ QString CDxfManger::handleChangeEntityWidget(const QString& strLayer, const QStr
     if (match.hasMatch())
     {
         variantDxfEntity Entity = m_DxfMapping.GetEntity(strLayer, match.captured(1), match.captured(2));
+        m_DxfMapping.SaveSelectedEntity(strLayer, match.captured(1), match.captured(2));
         emit signalRefreshStackedWidget(Entity);
     }
     return strEntityData;
@@ -101,4 +107,13 @@ void CDxfManger::handlePaste(QPointF pos)
 {
     m_DxfMapping.PasteEntity(pos);
     RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handlePointAttributeChanged(Point point)
+{
+    if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Point)
+    {
+        m_DxfMapping.ChangePointProperty(point);
+        RefreshTreeModelAndGraphicsview();
+    }
 }

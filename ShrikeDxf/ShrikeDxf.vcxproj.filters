@@ -106,10 +106,10 @@
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="ArcAttritubeWidget.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="PolylineAttributeWidget.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

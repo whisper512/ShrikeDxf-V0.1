@@ -224,9 +224,12 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 	return strInfo;
 }
 
+
+
 variantDxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QString strNum)
 {
 	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
+
 	if (CurLayer != m_mapDxfEntities.end())
 	{
 		//获取图层内的具体图元信息
@@ -256,6 +259,48 @@ variantDxfEntity CDxfMapping::GetEntity(QString strLayer, QString strType, QStri
 		}
 	}
 	return variantDxfEntity();
+}
+
+void CDxfMapping::SaveSelectedEntity(QString strLayer, QString strType, QString strNum)
+{
+	m_SelectedEntity.strLayer = strLayer;
+	m_SelectedEntity.index = strNum.toInt() - 1;
+	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
+
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		//获取图层内的具体图元信息
+		if (strType == STR_POINT_LOWERCASE)
+		{
+			m_SelectedEntity.type = enumEntity_Point;
+			m_SelectedEntity.entity = CurLayer->second.vecPoints.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_LINE_LOWERCASE)
+		{
+			m_SelectedEntity.type = enumEntity_Line;
+			m_SelectedEntity.entity = CurLayer->second.vecLines.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_CIRCLE_LOWERCASE)
+		{
+			m_SelectedEntity.type = enumEntity_Circle;
+			m_SelectedEntity.entity = CurLayer->second.vecCircles.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_ARC_LOWERCASE)
+		{
+			m_SelectedEntity.type = enumEntity_Arc;
+			m_SelectedEntity.entity = CurLayer->second.vecArcs.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_POLYLINE_LOWERCASE)
+		{
+			m_SelectedEntity.type = enumEntity_Polyline;
+			m_SelectedEntity.entity = CurLayer->second.vecPolylines.at(strNum.toInt() - 1);
+		}
+		else if (strType == STR_TEXT_LOWERCASE)
+		{
+			m_SelectedEntity.type = enumEntity_Text;
+			m_SelectedEntity.entity =  CurLayer->second.vecTexts.at(strNum.toInt() - 1);
+		}
+	}
 }
 
 int CDxfMapping::DeleteEntity(QString strLayer, QString strType, QString strNum)
@@ -413,5 +458,17 @@ int CDxfMapping::PasteEntity(QPointF pos)
 	else
 	{
 		return -1;
+	}
+}
+
+void CDxfMapping::ChangePointProperty(Point point)
+{
+    auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size())
+		{
+			CurLayer->second.vecPoints.at(m_SelectedEntity.index) = point;
+		}
 	}
 }

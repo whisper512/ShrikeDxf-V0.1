@@ -121,6 +121,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
 				connect(m_pDxfDataManger, &CDxfManger::signalRefreshStackedWidget, m_pStackedWidgetManger, &CStackedWidgetManger::handleRefreshStackedWidget);
+				connect(m_pStackedWidgetManger->m_pPointAttributeWidget, &CPointAttributeWidget::signalPointAttributeChanged, m_pDxfDataManger, &CDxfManger::handlePointAttributeChanged);
 			}
 		});
 }

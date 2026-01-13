@@ -30,6 +30,8 @@ public:
     variantDxfEntity m_CopyingEntity;
     //复制操作临时存储的图元所在图层
     QString m_strCopyingLayer;
+    //tree当前选择的entity
+    stuSelectedEntity m_SelectedEntity;
     //获取variant中存储的数据和类型
     enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline);
 
@@ -69,12 +71,17 @@ public:
     QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
     //获取特定的entity
     variantDxfEntity GetEntity(QString strLayer,QString strType,QString strNum);
+    //保存选择的entity
+    void SaveSelectedEntity(QString strLayer, QString strType, QString strNum);
     //删除entity
     int DeleteEntity(QString strLayer, QString strType, QString strNum);
 	//保存复制entity
     int SaveCopyingEntity(QString strLayer, QString strType, QString strNum);
     //粘贴entity
     int PasteEntity(QPointF pos);
+
+    //修改选中point属性
+    void ChangePointProperty(Point point);
 
 private:
     //当前多段线,用来读取dxf文档中的多段线
