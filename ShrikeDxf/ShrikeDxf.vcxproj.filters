@@ -168,10 +168,10 @@
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="ArcAttritubeWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="PolylineAttributeWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\WeightView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

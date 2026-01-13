@@ -20,6 +20,12 @@ private:
 
 	void RefreshTable();
 
+	void OnSpinBoxChanged();
+
+signals:
+	void signalPolylineAttributeChanged(Polyline polyline);
+
+
 public slots:
 	void handleNoticePolylineAttribute(Polyline polyline);
 
