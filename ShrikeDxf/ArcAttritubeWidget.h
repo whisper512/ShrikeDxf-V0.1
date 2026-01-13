@@ -17,6 +17,12 @@ private:
 	Ui::ArcAttritubeWidgetClass ui;
 	
 	Arc m_arc;
+
+	void OnSpinBoxChanged();
+
+signals:
+	void signalArcAttributeChanged(Arc arc);
+
 public slots:
 	void handleNoticeArcAttribute(Arc arc);
 };

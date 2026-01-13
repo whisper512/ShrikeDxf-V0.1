@@ -39,7 +39,7 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
         emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
         return true;
     }   
-    
+
 }
 
 bool CDxfManger::SaveDxfFile(const QString& strPath)
@@ -57,7 +57,7 @@ void CDxfManger::RefreshTreeModelAndGraphicsview()
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
-    emit signalRefreshGraphicsview(&m_DxfGraphicsScene,false);
+    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 }
 
 
@@ -125,4 +125,26 @@ void CDxfManger::handleLineAttributeChanged(Line line)
         m_DxfMapping.ChangeLineProperty(line);
         RefreshTreeModelAndGraphicsview();
     }
+}
+
+void CDxfManger::handleCircleAttributeChanged(Circle circle)
+{
+    if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Circle)
+    {
+        m_DxfMapping.ChangeCircleProperty(circle);
+        RefreshTreeModelAndGraphicsview();
+    }
+}
+
+void CDxfManger::handleArcAttributeChanged(Arc arc)
+{
+    if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Arc)
+    {
+        m_DxfMapping.ChangeArcProperty(arc);
+        RefreshTreeModelAndGraphicsview();
+    }
+}
+
+void CDxfManger::handlePolylineAttributeChanged(Polyline polyline)
+{
 }

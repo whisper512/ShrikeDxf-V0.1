@@ -484,3 +484,31 @@ void CDxfMapping::ChangeLineProperty(Line line)
 		}
 	}
 }
+
+void CDxfMapping::ChangeCircleProperty(Circle circle)
+{
+	auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+		{
+            CurLayer->second.vecCircles.at(m_SelectedEntity.index) = circle;
+		}
+	}
+}
+
+void CDxfMapping::ChangeArcProperty(Arc arc)
+{
+    auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		if (m_SelectedEntity.index <= CurLayer->second.vecArcs.size() && m_SelectedEntity.index >= 0)
+		{
+			CurLayer->second.vecArcs.at(m_SelectedEntity.index) = arc;
+		}
+	}
+}
+
+void CDxfMapping::ChangePolylineProperty(Polyline polyline)
+{
+}

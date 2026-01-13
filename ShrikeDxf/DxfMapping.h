@@ -84,6 +84,12 @@ public:
     void ChangePointProperty(Point point);
     //修改选中line属性
     void ChangeLineProperty(Line line);
+    //修改选中circle属性
+    void ChangeCircleProperty(Circle circle);
+    //修改选中arc属性
+    void ChangeArcProperty(Arc arc);
+    //修改选中polyline属性
+    void ChangePolylineProperty(Polyline polyline);
 
 private:
     //当前多段线,用来读取dxf文档中的多段线

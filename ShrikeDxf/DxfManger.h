@@ -61,4 +61,10 @@ signals:
 	void handlePointAttributeChanged(Point point);
 	//line界面属性发生变化
 	void handleLineAttributeChanged(Line line);
+	//circle界面属性发生变化
+	void handleCircleAttributeChanged(Circle circle);
+    //arc界面属性发生变化
+    void handleArcAttributeChanged(Arc arc);
+	//polyline界面属性发生变化
+    void handlePolylineAttributeChanged(Polyline polyline);
 };

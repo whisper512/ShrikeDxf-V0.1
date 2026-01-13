@@ -17,6 +17,12 @@ private:
 	Ui::CCircleAttributeWidgetClass ui;
 
 	Circle m_cirlce;
+
+	void OnSpinBoxChanged();
+
+signals:
+		void signalCircleAttributeChanged(Circle circle);
+
 public slots:
 	void handleNoticeCircleAttribute(Circle circle);
 };
