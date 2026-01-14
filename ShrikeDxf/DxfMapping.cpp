@@ -511,4 +511,12 @@ void CDxfMapping::ChangeArcProperty(Arc arc)
 
 void CDxfMapping::ChangePolylineProperty(Polyline polyline)
 {
+	auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+	if (CurLayer != m_mapDxfEntities.end())
+	{
+		if (m_SelectedEntity.index <= CurLayer->second.vecPolylines.size() && m_SelectedEntity.index >= 0)
+		{
+			CurLayer->second.vecPolylines.at(m_SelectedEntity.index) = polyline;
+		}
+	}
 }

@@ -147,4 +147,9 @@ void CDxfManger::handleArcAttributeChanged(Arc arc)
 
 void CDxfManger::handlePolylineAttributeChanged(Polyline polyline)
 {
+    if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Polyline)
+    {
+        m_DxfMapping.ChangePolylineProperty(polyline);
+        RefreshTreeModelAndGraphicsview();
+    }
 }

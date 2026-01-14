@@ -20,7 +20,10 @@ private:
 
 	void RefreshTable();
 
-	void OnSpinBoxChanged();
+	void OnTableValueChanged();
+
+protected:
+
 
 signals:
 	void signalPolylineAttributeChanged(Polyline polyline);
