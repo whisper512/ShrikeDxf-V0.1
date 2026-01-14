@@ -5,7 +5,7 @@ CLineAttributeWidget::CLineAttributeWidget(QWidget* parent)
     m_line()
 {
 	ui.setupUi(this);
-
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	connect(ui.doubleSpinBox_StartX, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnSpinBoxChanged);
     connect(ui.doubleSpinBox_StartX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnSpinBoxChanged);

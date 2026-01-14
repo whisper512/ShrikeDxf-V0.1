@@ -6,6 +6,7 @@
 
 CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pMainwnd(pMainwnd),
+	m_pLayout(nullptr),
 	m_pStackedWidget(nullptr),
 	m_pPointAttributeWidget(nullptr),
 	m_pLineAttributeWidget(nullptr),
@@ -37,7 +38,6 @@ void CStackedWidgetManger::CreateStackedWidget()
 
 	m_pStackedWidget->setStyleSheet("background-color: #d0d0d0;");
 
-
 	AddPages();
 
 	ConnectSignalAndSlot();
@@ -45,29 +45,35 @@ void CStackedWidgetManger::CreateStackedWidget()
 
 void CStackedWidgetManger::AddPages()
 {
+
 	m_pPointAttributeWidget = new CPointAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pPointAttributeWidget);
-	m_pPointAttributeWidget->hide();
+	m_pPointAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_pStackedWidget->widget(0)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[0] = STR_POINT;
 
 	m_pLineAttributeWidget = new CLineAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
-	m_pLineAttributeWidget->hide();
+	m_pLineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);m_pLineAttributeWidget->hide();
+	m_pStackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[1] = STR_LINE;
 
     m_pCircleAttributeWidget = new CCircleAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pCircleAttributeWidget);
-    m_pCircleAttributeWidget->hide();
+	m_pCircleAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_pStackedWidget->widget(2)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[2] = STR_CIRCLE_LOWERCASE;
 
 	m_pArcAttributeWidget = new CArcAttritubeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pArcAttributeWidget);
-	m_pArcAttributeWidget->hide();
+	m_pArcAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_pStackedWidget->widget(3)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[3] = STR_ARC_LOWERCASE;
 
 	m_pPolylineAttributeWidget = new CPolylineAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pPolylineAttributeWidget);
-	m_pPolylineAttributeWidget->hide();
+	m_pPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[4] = STR_POLYLINE_LOWERCASE;
 }
 
@@ -100,63 +106,39 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 
 void CStackedWidgetManger::AdjustWidget()
 {
-	if (m_pStackedWidget)
-	{
-		QSize size = m_pStackedWidget->size();
-		if (m_pPointAttributeWidget)
-		{
-			m_pPointAttributeWidget->resize(size);
-		}
-		if (m_pLineAttributeWidget)
-		{
-			m_pLineAttributeWidget->resize(size);
-		}
-		if (m_pCircleAttributeWidget)
-		{
-			m_pCircleAttributeWidget->resize(size);
-		}
-		if (m_pArcAttributeWidget)
-		{
-			m_pArcAttributeWidget->resize(size);
-		}
-		if (m_pPolylineAttributeWidget)
-		{
-			m_pPolylineAttributeWidget->resize(size);
-		}
-	}
+
 }
 
 void CStackedWidgetManger::ChangeWidgets()
 {
-	m_pPointAttributeWidget->hide();
-	m_pLineAttributeWidget->hide();
-	m_pCircleAttributeWidget->hide();
-	m_pArcAttributeWidget->hide();
-	m_pPolylineAttributeWidget->hide();
-
+	int nIndex = -1;
 	switch (m_entityType)
 	{
 	case enumEntity_None:
 		break;
 	case enumEntity_Point:
-		m_pPointAttributeWidget->show();
+		nIndex = 0;
 		break;
 	case enumEntity_Line:
-		m_pLineAttributeWidget->show();
+		nIndex = 1;
 		break;
 	case enumEntity_Circle:
-        m_pCircleAttributeWidget->show();
+		nIndex = 2;
 		break;
 	case enumEntity_Arc:
-		m_pArcAttributeWidget->show();
+		nIndex = 3;
 		break;
 	case enumEntity_Polyline:
-		m_pPolylineAttributeWidget->show();
+		nIndex = 4;
 		break;
 	case enumEntity_Text:
 		break;
 	default:
 		break;
+	}
+	if (nIndex >= 0 && nIndex < m_pStackedWidget->count())
+	{
+		m_pStackedWidget->setCurrentIndex(nIndex);
 	}
 }
 

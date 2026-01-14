@@ -28,12 +28,15 @@ private:
 
 public:
 	QWidget* m_pMainwnd;
+	QGridLayout* m_pLayout;
 	QStackedWidget* m_pStackedWidget;
 	CPointAttributeWidget* m_pPointAttributeWidget;
 	CLineAttributeWidget* m_pLineAttributeWidget;
 	CCircleAttributeWidget* m_pCircleAttributeWidget;
 	CArcAttritubeWidget* m_pArcAttributeWidget;
 	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
+
+
 
 	enumEntity m_entityType;
 

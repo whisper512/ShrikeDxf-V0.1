@@ -7,6 +7,9 @@ CPointAttributeWidget::CPointAttributeWidget(QWidget *parent)
 	m_point(0.0,0.0,0.0)
 {
 	ui.setupUi(this);
+
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
 	connect(ui.doubleSpinBox_X, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CPointAttributeWidget::OnSpinBoxChanged);
 	connect(ui.doubleSpinBox_X, &QDoubleSpinBox::editingFinished, this, &CPointAttributeWidget::OnSpinBoxChanged);
 	connect(ui.doubleSpinBox_Y, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CPointAttributeWidget::OnSpinBoxChanged);
