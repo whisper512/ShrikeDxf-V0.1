@@ -166,6 +166,9 @@ void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)
 	if (pModel)
 	{
 		m_pTreeView->setModel(pModel);
+		QHeaderView* pHeader = m_pTreeView->header();
+		pHeader->setSectionResizeMode(0, QHeaderView::Stretch);
+		pHeader->setSectionResizeMode(1, QHeaderView::Stretch);
 		m_pTreeView->expandAll();
 	}
 }
