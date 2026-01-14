@@ -30,6 +30,8 @@ void CPolylineAttributeWidget::RefreshTable()
 		QTableWidgetItem* itemY = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].y));
 		ui.tableWidget->setItem(i, 1, itemY);
 	}
+
+	ui.tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void CPolylineAttributeWidget::OnTableValueChanged()
