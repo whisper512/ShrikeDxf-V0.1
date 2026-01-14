@@ -41,6 +41,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
         pWnd->ui.verticalLayout_Main->addWidget(this);
         setAutoFillBackground(true);
         setStyleSheet(BACKGROUND_GRAY);
+        setRenderHint(QPainter::Antialiasing);
         //翻转y轴
         setTransform(m_tranformInitial);
         // 确保视图可见
