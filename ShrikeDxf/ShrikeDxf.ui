@@ -19,7 +19,7 @@
      <layout class="QVBoxLayout" name="verticalLayout_Main"/>
     </item>
     <item row="0" column="2">
-     <layout class="QVBoxLayout" name="verticalLayout_Layer"/>
+     <layout class="QVBoxLayout" name="verticalLayout_Layer" stretch=""/>
     </item>
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_FileStructure"/>
@@ -33,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

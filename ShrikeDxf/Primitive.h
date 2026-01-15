@@ -37,6 +37,7 @@ struct Point
     std::string type = "POINT";
 
 	Point() :x(0.0), y(0.0), z(0.0) {}
+    Point(double x, double y) :x(x), y(y), z(0.0) {};
 	Point(double x, double y, double z) :x(x), y(y), z(z) {};
     Point& operator=(const Point& other)
     {
@@ -53,13 +54,61 @@ struct Point
 
 struct Line 
 {
+private:
     Point pointStart, pointEnd;
     std::string type = "LINE";
 
+public:
     Line() : pointStart(0.0, 0.0, 0.0), pointEnd(0.0, 0.0, 0.0) {};
-    Line(Point pStart,Point pEnd) :pointStart(pStart), pointEnd(pEnd) {};
-    Line& operator=(const Line& other) 
-    {
+    Line(Point pStart, Point pEnd) :pointStart(pStart), pointEnd(pEnd) {};
+    double StartX() const { return pointStart.x; }
+    double StartY() const { return pointStart.y; }
+    double StartZ() const { return pointStart.z; }
+    double EndX() const { return pointEnd.x; }
+    double EndY() const { return pointEnd.y; }
+    double EndZ() const { return pointEnd.z; }
+
+
+    double Angle() const {
+        return atan2(pointEnd.y - pointStart.y, pointEnd.x - pointStart.x);
+    }
+
+    double Length() const {
+        double dx = pointEnd.x - pointStart.x;
+        double dy = pointEnd.y - pointStart.y;
+        return sqrt(dx * dx + dy * dy);
+    }
+
+    void setStartPoint(const Point& p) {
+        pointStart = p;
+    }
+
+    void setEndPoint(const Point& p) {
+        pointEnd = p;
+    }
+
+    void setStartX(double x) {
+        pointStart.x = x;
+    }
+
+    void setStartY(double y) {
+        pointStart.y = y;
+    }
+
+    void setEndX(double x) {
+        pointEnd.x = x;
+    }
+
+    void setEndY(double y) {
+        pointEnd.y = y;
+    }
+
+    void setPoints(const Point& pStart, const Point& pEnd) {
+        pointStart = pStart;
+        pointEnd = pEnd;
+    }
+
+    Line& operator=(const Line& other) {
         if (this != &other) {
             pointStart = other.pointStart;
             pointEnd = other.pointEnd;
@@ -69,6 +118,7 @@ struct Line
     }
 };
 
+//圆
 struct Circle 
 {
     Point pointCenter;

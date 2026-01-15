@@ -186,8 +186,8 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 		{
 			Line line = CurLayer->second.vecLines.at(strNum.toInt() - 1);
 			strInfo = QString("line%1\nStartPoint  x:%2,y:%3,z:%4\nEndPoint - x:%5,y:%6,z:%7  ").
-				arg(strNum).arg(line.pointStart.x).arg(line.pointStart.y).arg(line.pointStart.z).
-				arg(line.pointEnd.x).arg(line.pointEnd.y).arg(line.pointEnd.z);
+				arg(strNum).arg(line.StartX()).arg(line.StartY()).arg(line.StartZ()).
+				arg(line.EndX()).arg(line.EndY()).arg(line.EndZ());
 		}
 		else if (strType == STR_CIRCLE_LOWERCASE)
 		{
@@ -395,14 +395,12 @@ int CDxfMapping::PasteEntity(QPointF pos)
 			{
 				double lineMidX, lineMidY;
 				double offsetX, offsetY;
-				lineMidX = (line.pointEnd.x + line.pointStart.x) / 2;
-				lineMidY = (line.pointEnd.y + line.pointStart.y) / 2;
+				lineMidX = (line.EndX() + line.StartX()) / 2;
+				lineMidY = (line.EndY() + line.StartY()) / 2;
 				offsetX = pos.x() - lineMidX;
 				offsetY = pos.y() - lineMidY;
-				newLine.pointStart.x = line.pointStart.x + offsetX;
-				newLine.pointStart.y = line.pointStart.y + offsetY;
-				newLine.pointEnd.x = line.pointEnd.x + offsetX;
-				newLine.pointEnd.y = line.pointEnd.y + offsetY;
+				newLine.setStartPoint(Point(line.StartX() + offsetX, line.StartY() + offsetY));
+				newLine.setEndPoint(Point(line.EndX() + offsetX, line.EndY() + offsetY));
 				CurLayer->second.vecLines.push_back(newLine);
 				break;
 			}

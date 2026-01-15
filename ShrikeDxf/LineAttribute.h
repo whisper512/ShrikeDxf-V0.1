@@ -19,7 +19,15 @@ private:
 	
 	Line m_line;
 
-	void OnSpinBoxChanged();
+	void OnSpinBoxStartChanged();
+    void OnSpinBoxEndChanged();
+	void OnAngleSpinBoxChanged();
+	void OnLengthSpinBoxChanged();
+	void RefreshData();
+	void LockOrReleaseStartSpainBoxSignal(bool lock);
+    void LockOrReleaseEndSpainBoxSignal(bool lock);
+
+
 signals:
 		void signalLineAttributeChanged(Line line);
 

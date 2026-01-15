@@ -83,7 +83,7 @@ void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 
 void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
 {
-    addLine(line.pointStart.x, line.pointStart.y, line.pointEnd.x, line.pointEnd.y, QPen(color,CalculateDynamicPenWidth()));
+    addLine(line.StartX(), line.StartY(), line.EndX(), line.EndY(), QPen(color, CalculateDynamicPenWidth()));
 }
 
 void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
@@ -177,8 +177,8 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const map<string, stuLayer>& mapd
         }
         for (const auto& line : layer.vecLines)
         {
-            totalBounds = totalBounds.united(QRectF(QPointF(line.pointStart.x, line.pointStart.y),
-                QPointF(line.pointEnd.x, line.pointEnd.y)));
+            totalBounds = totalBounds.united(QRectF(QPointF(line.StartX(), line.StartY()),
+                QPointF(line.EndX(), line.EndY())));
         }
         for (const auto& circle : layer.vecCircles)
         {
