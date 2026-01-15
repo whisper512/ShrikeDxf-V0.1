@@ -67,45 +67,19 @@ public:
     double EndX() const { return pointEnd.x; }
     double EndY() const { return pointEnd.y; }
     double EndZ() const { return pointEnd.z; }
-
-
-    double Angle() const {
-        return atan2(pointEnd.y - pointStart.y, pointEnd.x - pointStart.x);
-    }
+    double Angle() const {return atan2(pointEnd.y - pointStart.y, pointEnd.x - pointStart.x);}
+    void setStartPoint(const Point& p) {pointStart = p;}
+    void setEndPoint(const Point& p) {pointEnd = p;}
+    void setStartX(double x) {pointStart.x = x;}
+    void setStartY(double y) {pointStart.y = y;}
+    void setEndX(double x) {pointEnd.x = x;}
+    void setEndY(double y) {pointEnd.y = y;}
+    void setPoints(const Point& pStart, const Point& pEnd) {pointStart = pStart;pointEnd = pEnd;}
 
     double Length() const {
         double dx = pointEnd.x - pointStart.x;
         double dy = pointEnd.y - pointStart.y;
         return sqrt(dx * dx + dy * dy);
-    }
-
-    void setStartPoint(const Point& p) {
-        pointStart = p;
-    }
-
-    void setEndPoint(const Point& p) {
-        pointEnd = p;
-    }
-
-    void setStartX(double x) {
-        pointStart.x = x;
-    }
-
-    void setStartY(double y) {
-        pointStart.y = y;
-    }
-
-    void setEndX(double x) {
-        pointEnd.x = x;
-    }
-
-    void setEndY(double y) {
-        pointEnd.y = y;
-    }
-
-    void setPoints(const Point& pStart, const Point& pEnd) {
-        pointStart = pStart;
-        pointEnd = pEnd;
     }
 
     Line& operator=(const Line& other) {
