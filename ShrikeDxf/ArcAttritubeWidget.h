@@ -18,8 +18,9 @@ private:
 	
 	Arc m_arc;
 
-	void OnSpinBoxChanged();
-
+	void OnSpinBoxXYRChanged();
+	void OnSpinBoxAngleRADChanged();
+    void OnSpinBoxAngleDEGChanged();
 signals:
 	void signalArcAttributeChanged(Arc arc);
 
