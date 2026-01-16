@@ -60,6 +60,8 @@ void CDxfManger::RefreshTreeModelAndGraphicsview()
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
+    //刷新stacked的属性
+
 }
 
 
@@ -154,4 +156,41 @@ void CDxfManger::handlePolylineAttributeChanged(Polyline polyline)
         m_DxfMapping.ChangePolylineProperty(polyline);
         RefreshTreeModelAndGraphicsview();
     }
+}
+
+void CDxfManger::handleOnBtnUpClicked()
+{
+    m_DxfMapping.MoveUpSelectedEntity();
+    RefreshTreeModelAndGraphicsview();
+
+}
+
+void CDxfManger::handleOnBtnDownClicked()
+{
+    m_DxfMapping.MoveDownSelectedEntity();
+    RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handleOnBtnLeftClicked()
+{
+    m_DxfMapping.MoveLeftSelectedEntity();
+    RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handleOnBtnRightClicked()
+{
+    m_DxfMapping.MoveRightSelectedEntity();
+    RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handleOnBtnCWClicked()
+{
+    m_DxfMapping.RotateCWSelectedEntity();
+    RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handleOnBtnCCWClicked()
+{
+    m_DxfMapping.RotateCCWSelectedEntity();
+    RefreshTreeModelAndGraphicsview();
 }

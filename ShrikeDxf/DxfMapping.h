@@ -35,6 +35,10 @@ public:
     //获取variant中存储的数据和类型
     enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline);
 
+    double m_dMoveStep = 1.0;
+    double m_dRotateStepRAD = 0.1;
+
+
 public:
     //dxflib中的回调函数
 
@@ -79,6 +83,13 @@ public:
     int SaveCopyingEntity(QString strLayer, QString strType, QString strNum);
     //粘贴entity
     int PasteEntity(QPointF pos);
+
+    void MoveUpSelectedEntity();
+    void MoveDownSelectedEntity();
+    void MoveLeftSelectedEntity();
+    void MoveRightSelectedEntity();
+    void RotateCWSelectedEntity();
+    void RotateCCWSelectedEntity();
 
     //修改选中point属性
     void ChangePointProperty(Point point);

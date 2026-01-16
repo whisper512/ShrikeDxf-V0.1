@@ -412,7 +412,7 @@ int CDxfMapping::PasteEntity(QPointF pos)
 			case enumEntity_Arc:
 				arc.pointCenter.x = pos.x();
 				arc.pointCenter.y = pos.y();
-                CurLayer->second.vecArcs.push_back(arc);
+				CurLayer->second.vecArcs.push_back(arc);
 				break;
 			case enumEntity_Polyline:
 			{
@@ -457,6 +457,282 @@ int CDxfMapping::PasteEntity(QPointF pos)
 	{
 		return -1;
 	}
+}
+
+void CDxfMapping::MoveUpSelectedEntity()
+{
+	if (m_SelectedEntity.index != -1)
+	{
+		switch (m_SelectedEntity.type)
+		{
+		case enumEntity_Point:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecPoints.at(m_SelectedEntity.index).y += m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Line:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX(), line.StartY() + m_dMoveStep));
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX(), line.EndY() + m_dMoveStep));
+				}
+			}	
+			break;
+		}
+		case enumEntity_Circle:
+		{
+            auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+                    CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.y += m_dMoveStep;
+				}
+			}
+			break;
+		}
+        case enumEntity_Arc:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.y += m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Polyline:
+		{
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
+}
+
+void CDxfMapping::MoveDownSelectedEntity()
+{
+	if (m_SelectedEntity.index != -1)
+	{
+		switch (m_SelectedEntity.type)
+		{
+		case enumEntity_Point:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecPoints.at(m_SelectedEntity.index).y -= m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Line:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX(), line.StartY() - m_dMoveStep));
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX(), line.EndY() - m_dMoveStep));
+				}
+			}
+			break;
+		}
+		case enumEntity_Circle:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.y -= m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Arc:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.y -= m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Polyline:
+		{
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
+}
+
+void CDxfMapping::MoveLeftSelectedEntity()
+{
+	if (m_SelectedEntity.index != -1)
+	{
+		switch (m_SelectedEntity.type)
+		{
+		case enumEntity_Point:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecPoints.at(m_SelectedEntity.index).x -= m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Line:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX() - m_dMoveStep, line.StartY()));
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX() - m_dMoveStep, line.EndY()));
+				}
+			}
+			break;
+		}
+		case enumEntity_Circle:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.x -= m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Arc:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.x -= m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Polyline:
+		{
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
+}
+
+void CDxfMapping::MoveRightSelectedEntity()
+{
+	if (m_SelectedEntity.index != -1)
+	{
+		switch (m_SelectedEntity.type)
+		{
+		case enumEntity_Point:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecPoints.at(m_SelectedEntity.index).x += m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Line:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
+				{
+					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX() + m_dMoveStep, line.StartY()));
+					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX() + m_dMoveStep, line.EndY()));
+				}
+			}
+			break;
+		}
+		case enumEntity_Circle:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.x += m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Arc:
+		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.x += m_dMoveStep;
+				}
+			}
+			break;
+		}
+		case enumEntity_Polyline:
+		{
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
+}
+
+void CDxfMapping::RotateCWSelectedEntity()
+{
+}
+
+void CDxfMapping::RotateCCWSelectedEntity()
+{
 }
 
 void CDxfMapping::ChangePointProperty(Point point)

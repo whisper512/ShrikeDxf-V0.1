@@ -107,6 +107,7 @@
     <QtUic Include="ArcAttritubeWidget.ui" />
     <QtUic Include="CircleAttributeWidget.ui" />
     <QtUic Include="LineAttribute.ui" />
+    <QtUic Include="MoveBtnsWidget.ui" />
     <QtUic Include="PointAttribute.ui" />
     <QtUic Include="PolylineAttributeWidget.ui" />
     <QtUic Include="ShrikeDxf.ui" />
@@ -126,6 +127,7 @@
     <QtMoc Include="GraphicsView.h" />
     <QtMoc Include="PointAttribute.h" />
     <QtMoc Include="PolylineAttributeWidget.h" />
+    <QtMoc Include="MoveBtnsWidget.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
@@ -146,6 +148,7 @@
     <ClCompile Include="DxfTreeviewModel.cpp" />
     <ClCompile Include="GraphicsView.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MoveBtnsWidget.cpp" />
     <ClCompile Include="PointAttribute.cpp" />
     <ClCompile Include="PolylineAttributeWidget.cpp" />
     <ClCompile Include="TopMenu.cpp" />

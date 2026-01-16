@@ -111,6 +111,9 @@
     <QtMoc Include="PolylineAttributeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
+    <QtMoc Include="MoveBtnsWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManger.cpp">
@@ -173,6 +176,9 @@
     <ClCompile Include="PolylineAttributeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
+    <ClCompile Include="MoveBtnsWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PointAttribute.ui">
@@ -188,6 +194,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="PolylineAttributeWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MoveBtnsWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

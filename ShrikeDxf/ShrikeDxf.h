@@ -11,6 +11,7 @@
 #include "GraphicsView.h"
 #include "StackedWidget.h"
 #include "LayerTableView.h"
+#include "MoveBtnsWidget.h"
 
 #include "CommonDataManger.h"
 #include "DxfManger.h"
@@ -38,7 +39,9 @@ public:
     //初始化stackedWidget
     void InitAndCreateStackedWidget();
     //初始化tableView
-    void InitAndCreateTableView();
+    void InitAndCreateLayerTableView();
+    //初始化移动按钮
+    void InitAndCreateMoveBtnsWidget();
 
     //链接信号和槽
     void ConnectSignalsAndSlots();
@@ -55,7 +58,10 @@ public:
     //stackedWidget
     CStackedWidgetManger* m_pStackedWidgetManger;
     //tableview
-    CLayerTableViewManger* m_pTableViewManger;
+    CLayerTableViewManger* m_pLayerTableViewManger;
+    //移动按钮
+    CMoveBtnsWidget* m_pMoveBtnsWidget;
+
 
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;

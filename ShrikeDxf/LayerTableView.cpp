@@ -20,8 +20,10 @@ void CLayerTableViewManger::CreateTableView()
 	{
 		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
 		pWnd->ui.verticalLayout_Layer->addWidget(m_pTableView);
+		
 	}
     InitTableView();
+	
 }
 
 void CLayerTableViewManger::InitTableView()

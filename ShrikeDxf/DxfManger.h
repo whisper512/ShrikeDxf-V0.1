@@ -69,4 +69,17 @@ signals:
     void handleArcAttributeChanged(Arc arc);
 	//polyline界面属性发生变化
     void handlePolylineAttributeChanged(Polyline polyline);
+	//向上按钮按下
+	void handleOnBtnUpClicked();
+    //向下按钮按下
+	void handleOnBtnDownClicked();
+    //向左按钮按下
+	void handleOnBtnLeftClicked();
+    //向右按钮按下
+    void handleOnBtnRightClicked();
+	//顺时针旋转
+    void handleOnBtnCWClicked();
+    //逆时针旋转
+    void handleOnBtnCCWClicked();
+
 };

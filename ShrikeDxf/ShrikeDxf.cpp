@@ -7,9 +7,10 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 	m_pTreeViewManger(nullptr),
 	m_pGraphicsView(nullptr),
 	m_pStackedWidgetManger(nullptr),
-    m_pTableViewManger(nullptr),
+    m_pLayerTableViewManger(nullptr),
     m_pDataManager(nullptr),
-	m_pDxfDataManger(nullptr)
+	m_pDxfDataManger(nullptr),
+	m_pMoveBtnsWidget(nullptr)
 {	
     ui.setupUi(this);
 	setWindowIcon(QIcon(":/ShrikeDxf/res/Main.png"));
@@ -33,7 +34,16 @@ void ShrikeDxf::InitWindowComponents()
 		InitAndCreateTreeView();
 		InitAndCreateGraphicsView();
 		InitAndCreateStackedWidget();
-		InitAndCreateTableView();
+		InitAndCreateMoveBtnsWidget();
+		InitAndCreateLayerTableView();
+
+		
+		if (ui.verticalLayout_Layer)
+		{
+			ui.verticalLayout_Layer->setStretch(0, 3);
+			ui.verticalLayout_Layer->setStretch(1, 1);
+			ui.verticalLayout_Layer->setStretch(2, 2);
+		}
 	});
 }
 
@@ -61,7 +71,6 @@ void ShrikeDxf::InitAndCreateTreeView()
 	m_pTreeViewManger = new CTreeViewManger(this);
 	if (m_pTreeViewManger)
 	{
-		//添加treeview
 		m_pTreeViewManger->CreateTreeView();
 	}
 }
@@ -80,14 +89,23 @@ void ShrikeDxf::InitAndCreateStackedWidget()
 	}
 }
 
-void ShrikeDxf::InitAndCreateTableView()
+void ShrikeDxf::InitAndCreateLayerTableView()
 {
-	m_pTableViewManger = new CLayerTableViewManger(this);
-	if (m_pTableViewManger)
+	m_pLayerTableViewManger = new CLayerTableViewManger(this);
+	if (m_pLayerTableViewManger)
 	{
-		m_pTableViewManger->CreateTableView();
+		m_pLayerTableViewManger->CreateTableView();
 	}
 
+}
+
+void ShrikeDxf::InitAndCreateMoveBtnsWidget()
+{
+	m_pMoveBtnsWidget = new CMoveBtnsWidget(this);
+	if (m_pMoveBtnsWidget)
+	{
+        m_pMoveBtnsWidget->InitWidgetAndAddToLayout();
+	}
 }
 
 void ShrikeDxf::ConnectSignalsAndSlots()
@@ -115,9 +133,9 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 
 			}
-			if (m_pDxfDataManger && m_pTableViewManger)
+			if (m_pDxfDataManger && m_pLayerTableViewManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::signalRefreshLayerTableview, m_pTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
+				connect(m_pDxfDataManger, &CDxfManger::signalRefreshLayerTableview, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -127,6 +145,16 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pStackedWidgetManger->m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, m_pDxfDataManger, &CDxfManger::handleCircleAttributeChanged);
 				connect(m_pStackedWidgetManger->m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, m_pDxfDataManger, &CDxfManger::handleArcAttributeChanged);
 				connect(m_pStackedWidgetManger->m_pPolylineAttributeWidget, &CPolylineAttributeWidget::signalPolylineAttributeChanged, m_pDxfDataManger, &CDxfManger::handlePolylineAttributeChanged);
+			}
+			if (m_pDxfDataManger && m_pMoveBtnsWidget)
+			{
+				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnUpClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnUpClicked);
+				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnDownClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnDownClicked);
+				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnLeftClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnLeftClicked);
+				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnRightClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnRightClicked);
+				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCWClicked,m_pDxfDataManger, &CDxfManger::handleOnBtnCWClicked);
+                connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCCWClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnCCWClicked);
+
 			}
 		});
 }
