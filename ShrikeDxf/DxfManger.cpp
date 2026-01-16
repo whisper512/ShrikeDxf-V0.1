@@ -32,6 +32,7 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
         emit signalRefreshTreeviewAfterRead();
 
         //更新通知tableview
+
         m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);
         emit signalRefreshLayerTableview(&m_DxfLayerTableviewModel);
 

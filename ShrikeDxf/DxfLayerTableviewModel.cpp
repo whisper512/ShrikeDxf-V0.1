@@ -11,6 +11,7 @@ CDxfLayerTableviewModel::~CDxfLayerTableviewModel()
 
 void CDxfLayerTableviewModel::UpdateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf)
 {
+	this->clear();
 	this->setHorizontalHeaderLabels({ "NO", "NAME", "COLOR" });
 
 	QList<QStandardItem*> listItems;

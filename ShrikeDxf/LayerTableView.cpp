@@ -44,8 +44,6 @@ void CLayerTableViewManger::InitTableView()
 	QStandardItemModel* pHeaderModel = new QStandardItemModel(0,3, m_pTableView);
 	pHeaderModel->setHorizontalHeaderLabels({"NO","NAME","COLOR"});
 	m_pTableView->setModel(pHeaderModel);
-	
-
 	m_pTableView->verticalHeader()->hide();
 	m_pTableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	m_pTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
@@ -62,5 +60,11 @@ void CLayerTableViewManger::handleRefreshLayerTableview(CDxfLayerTableviewModel*
 		{
 			m_pTableView->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
 		}
+
+		for (int col = 0; col < pModel->columnCount(); col++)
+		{
+			m_pTableView->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Stretch);
+		}
+		
 	}
 }
