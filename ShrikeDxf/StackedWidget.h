@@ -23,7 +23,6 @@ public:
 private:
 	void AddPages();
 	void ConnectSignalAndSlot();
-	void AdjustWidget();
 	void ChangeWidgets();
 
 public:

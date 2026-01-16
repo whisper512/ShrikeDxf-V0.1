@@ -87,6 +87,36 @@ void CTreeViewManger::InitContextMenu()
 	}
 }
 
+void CTreeViewManger::handleRefreshTreeviewAfterRead()
+{
+	if (!m_pTreeView || !m_pTreeView->model())
+	{
+		return;
+	}
+
+	QAbstractItemModel* model = m_pTreeView->model();
+
+	QModelIndex firstLayerIndex = model->index(0, 0);
+
+	if (!firstLayerIndex.isValid())
+	{
+		return; 
+	}
+	QModelIndex firstEntityIndex = model->index(0, 0, firstLayerIndex);
+
+	if (!firstEntityIndex.isValid())
+	{
+		return; 
+	}
+
+	QString strLayer = model->data(firstLayerIndex, Qt::DisplayRole).toString();
+	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();
+
+	emit signalChangeEntityWidget(strLayer, strEntity);
+
+	
+}
+
 void CTreeViewManger::DeleteEntity()
 {
 	QModelIndex index = m_pTreeView->currentIndex();

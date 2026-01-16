@@ -41,6 +41,8 @@ private:
 signals:
 	//用来通知treeview
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
+	//通知tree读完图刷新
+	void signalRefreshTreeviewAfterRead();
 	//用来返回获取到的entity信息
 	void signalReturnEntityInfo(QString strInfo);
 	//通知graphicsview

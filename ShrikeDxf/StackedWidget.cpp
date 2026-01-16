@@ -39,7 +39,7 @@ void CStackedWidgetManger::CreateStackedWidget()
 	m_pStackedWidget->setStyleSheet("background-color: #d0d0d0;");
 
 	AddPages();
-
+	
 	ConnectSignalAndSlot();
 }
 
@@ -54,7 +54,7 @@ void CStackedWidgetManger::AddPages()
 
 	m_pLineAttributeWidget = new CLineAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
-	m_pLineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);m_pLineAttributeWidget->hide();
+	m_pLineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[1] = STR_LINE;
 
@@ -102,11 +102,6 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 				connect(this, &CStackedWidgetManger::NoticePolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
 			}
 	});
-}
-
-void CStackedWidgetManger::AdjustWidget()
-{
-
 }
 
 void CStackedWidgetManger::ChangeWidgets()
@@ -188,31 +183,34 @@ void CStackedWidgetManger::handleRefreshStackedWidget(variantDxfEntity dxfentity
 	,dxfentity);
 
 
-	AdjustWidget();
-
-	switch (m_entityType)
+	
+	if (m_entityType != enumEntity_None)
 	{
-	case enumEntity_Point:
-		ChangeWidgets();
-		emit NoticePointAttribute(point);
-		break;
-	case enumEntity_Line:
-		ChangeWidgets();
-		emit NoticeLineAttribute(line);
-		break;
-	case enumEntity_Circle:
-		ChangeWidgets();
-		emit NoticeCircleAttribute(circle);
-		break;
-	case enumEntity_Arc:
-		ChangeWidgets();
-		emit NoticeArcAttribute(arc);
-		break;
-	case enumEntity_Polyline:
-		ChangeWidgets();
-		emit NoticePolylineAttribute(polyline);
-		break;
-	default:
-		break;
+		switch (m_entityType)
+		{
+		case enumEntity_Point:
+			ChangeWidgets();
+			emit NoticePointAttribute(point);
+			break;
+		case enumEntity_Line:
+			ChangeWidgets();
+			emit NoticeLineAttribute(line);
+			break;
+		case enumEntity_Circle:
+			ChangeWidgets();
+			emit NoticeCircleAttribute(circle);
+			break;
+		case enumEntity_Arc:
+			ChangeWidgets();
+			emit NoticeArcAttribute(arc);
+			break;
+		case enumEntity_Polyline:
+			ChangeWidgets();
+			emit NoticePolylineAttribute(polyline);
+			break;
+		default:
+			break;
+		}
 	}
+	
 }

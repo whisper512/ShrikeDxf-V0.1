@@ -29,6 +29,7 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
         //更新model,通知treeview
         m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
         emit signalRefreshTreeview(&m_DxfTreeviewModel);
+        emit signalRefreshTreeviewAfterRead();
 
         //更新通知tableview
         m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);

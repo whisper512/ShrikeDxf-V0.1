@@ -44,4 +44,6 @@ public slots:
 	void handleOnItemClicked(const QModelIndex& index);
 	//初始化右键menu
 	void InitContextMenu();
+	//读完图第一次刷新
+    void handleRefreshTreeviewAfterRead();
 };
