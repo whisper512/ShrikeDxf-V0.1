@@ -65,6 +65,5 @@ void CLayerTableViewManger::handleRefreshLayerTableview(CDxfLayerTableviewModel*
 		{
 			m_pTableView->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Stretch);
 		}
-		
 	}
 }
