@@ -84,7 +84,7 @@ void CLineAttributeWidget::OnLengthSpinBoxChanged()
     double newLength = ui.doubleSpinBox_Length->value();
     double startX = m_line.StartX();
     double startY = m_line.StartY();
-    double angle = m_line.Angle();
+    double angle = ui.doubleSpinBox_Angle->value();
     double endX = startX + newLength * qCos(qDegreesToRadians(angle));
     double endY = startY + newLength * qSin(qDegreesToRadians(angle));
 
