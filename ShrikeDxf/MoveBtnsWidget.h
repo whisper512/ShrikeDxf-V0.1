@@ -12,7 +12,7 @@ public:
 	~CMoveBtnsWidget();
 
 	void InitWidgetAndAddToLayout();
-
+	
 
 signals:
 	void signalOnBtnUpClicked();
@@ -21,10 +21,18 @@ signals:
     void signalOnBtnRightClicked();
 	void signalOnBtnCWClicked();
 	void signalOnBtnCCWClicked();
+	void signalOnStepLengthOrAngleChanged(double dStepLength, double dRotationAngle);
+
+public slots:
+	void handleSetStepLengthAndAngle(const double &dStepLength,const double &dRotationAngle);
+
 
 private:
 	Ui::CMoveBtnsWidgetClass ui;
 	QWidget* m_pMainWnd;
+
+	double m_dStepLength;
+    double m_dRotationAngle;
 
 private:
 	void OnBtnUpClicked();
@@ -34,5 +42,7 @@ private:
     void OnBtnCWClicked();
     void OnBtnCCWClicked();
 
+	void OnStepLengthChanged();
+	void OnRotationAngleChanged();
 };
 

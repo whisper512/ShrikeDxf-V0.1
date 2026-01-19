@@ -6,14 +6,54 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>230</width>
+    <width>316</width>
     <height>101</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CMoveBtnsWidget</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_stepLength">
+         <property name="text">
+          <string>StepLenght(mm):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_stepLength">
+         <property name="decimals">
+          <number>4</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label__rotateAngle">
+         <property name="text">
+          <string>RotateAngle(DEG):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_rotateAngle">
+         <property name="decimals">
+          <number>4</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">

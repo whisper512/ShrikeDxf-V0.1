@@ -53,9 +53,11 @@ signals:
 	void signalRefreshStackedWidget(variantDxfEntity dxfentity);
 	//通知graphics正在复制图元
 	void signalCopyintEntity();
+	//通知移动步长和旋转角度的初始值
+	void signalSetStepLengthAndAngle(const double& dStepLength, const double& dRotationAngle);
 
  public slots:
-	QString handleChangeEntityWidget(const QString& strLayer, const QString& strEntity);
+	QString handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity);
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
 	int handleCopyEntity(const QString& strLayer, const QString& strEntity);
 	void handlePaste(QPointF pos);
@@ -81,5 +83,7 @@ signals:
     void handleOnBtnCWClicked();
     //逆时针旋转
     void handleOnBtnCCWClicked();
+	//设置移动步长
+	void handleOnStepLengthOrAngleChanged(double dStepLength, double dRotationAngle);
 
 };

@@ -39,8 +39,12 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
         //绘制图形
         m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
         emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
+
+        //初始化步长
+        emit signalSetStepLengthAndAngle(m_DxfMapping.m_dMoveStep, m_DxfMapping.m_dRotateStepRAD);
+
         return true;
-    }   
+    }
 
 }
 
@@ -61,11 +65,10 @@ void CDxfManger::RefreshTreeModelAndGraphicsview()
     m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
     //刷新stacked的属性
-
 }
 
 
-QString CDxfManger::handleChangeEntityWidget(const QString& strLayer, const QString& strEntity)
+QString CDxfManger::handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity)
 {
     QString strEntityData;
 
@@ -73,9 +76,10 @@ QString CDxfManger::handleChangeEntityWidget(const QString& strLayer, const QStr
     QRegularExpressionMatch match = re.match(strEntity);
     if (match.hasMatch())
     {
-        variantDxfEntity Entity = m_DxfMapping.GetEntity(strLayer, match.captured(1), match.captured(2));
+        //保存选择的图元信息
         m_DxfMapping.SaveSelectedEntity(strLayer, match.captured(1), match.captured(2));
-        emit signalRefreshStackedWidget(Entity);
+        //通知stack刷新
+        emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
     }
     return strEntityData;
 }
@@ -95,12 +99,13 @@ int CDxfManger::handleDeleteEntity(const QString& strLayer, const QString& strEn
 
 int CDxfManger::handleCopyEntity(const QString& strLayer, const QString& strEntity)
 {
-    //获取选择的entity,临时保存
+    //获取选择的entity,保存到mapping
     QRegularExpression re("(\\w+)(\\d+)");
     QRegularExpressionMatch match = re.match(strEntity);
     if (match.hasMatch())
     {
         m_DxfMapping.SaveCopyingEntity(strLayer, match.captured(1), match.captured(2));
+        //通知graphics正在复制图元
         emit signalCopyintEntity();
         return 1;
     }
@@ -162,6 +167,7 @@ void CDxfManger::handleOnBtnUpClicked()
 {
     m_DxfMapping.MoveUpSelectedEntity();
     RefreshTreeModelAndGraphicsview();
+    emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 
 }
 
@@ -169,28 +175,40 @@ void CDxfManger::handleOnBtnDownClicked()
 {
     m_DxfMapping.MoveDownSelectedEntity();
     RefreshTreeModelAndGraphicsview();
+    emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnLeftClicked()
 {
     m_DxfMapping.MoveLeftSelectedEntity();
     RefreshTreeModelAndGraphicsview();
+    emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnRightClicked()
 {
     m_DxfMapping.MoveRightSelectedEntity();
     RefreshTreeModelAndGraphicsview();
+    emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnCWClicked()
 {
     m_DxfMapping.RotateCWSelectedEntity();
     RefreshTreeModelAndGraphicsview();
+    emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnCCWClicked()
 {
     m_DxfMapping.RotateCCWSelectedEntity();
     RefreshTreeModelAndGraphicsview();
+    emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
+}
+
+void CDxfManger::handleOnStepLengthOrAngleChanged(double dStepLength, double dRotationAngle)
+{
+    m_DxfMapping.m_dMoveStep = dStepLength;
+    //角度转弧度
+    m_DxfMapping.m_dRotateStepRAD = dRotationAngle * (M_PI / 180);
 }

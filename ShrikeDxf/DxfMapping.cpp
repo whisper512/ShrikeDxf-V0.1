@@ -334,6 +334,7 @@ int CDxfMapping::DeleteEntity(QString strLayer, QString strType, QString strNum)
 
 int CDxfMapping::SaveCopyingEntity(QString strLayer, QString strType, QString strNum)
 {
+	//保存当前复制图元信息
 	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
 	if (CurLayer != m_mapDxfEntities.end())
 	{
@@ -461,6 +462,12 @@ int CDxfMapping::PasteEntity(QPointF pos)
 
 void CDxfMapping::MoveUpSelectedEntity()
 {
+	Point point;
+	Line line;
+	Circle circle;
+	Arc arc;
+	Polyline polyline;
+
 	if (m_SelectedEntity.index != -1)
 	{
 		switch (m_SelectedEntity.type)
@@ -472,7 +479,11 @@ void CDxfMapping::MoveUpSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecPoints.at(m_SelectedEntity.index).y += m_dMoveStep;
+					//根据select的index找到对应的点修改dxf数据
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					point.y += m_dMoveStep;
+					m_SelectedEntity.entity = point;
+					CurLayer->second.vecPoints.at(m_SelectedEntity.index)  = point;	
 				}
 			}
 			break;
@@ -484,9 +495,11 @@ void CDxfMapping::MoveUpSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX(), line.StartY() + m_dMoveStep));
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX(), line.EndY() + m_dMoveStep));
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					line.setStartPoint(Point(line.StartX(), line.StartY() + m_dMoveStep));
+                    line.setEndPoint(Point(line.EndX(), line.EndY() + m_dMoveStep));
+					m_SelectedEntity.entity = line;
+                    CurLayer->second.vecLines.at(m_SelectedEntity.index) = line;
 				}
 			}	
 			break;
@@ -498,7 +511,10 @@ void CDxfMapping::MoveUpSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-                    CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.y += m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					circle.pointCenter.y += m_dMoveStep;
+                    m_SelectedEntity.entity = circle;
+                    CurLayer->second.vecCircles.at(m_SelectedEntity.index) = circle;
 				}
 			}
 			break;
@@ -510,13 +526,30 @@ void CDxfMapping::MoveUpSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.y += m_dMoveStep;
+                    GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    arc.pointCenter.y += m_dMoveStep;
+                    m_SelectedEntity.entity = arc;
+                    CurLayer->second.vecArcs.at(m_SelectedEntity.index) = arc;
 				}
 			}
 			break;
 		}
 		case enumEntity_Polyline:
 		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					for (int i = 0; i < polyline.vecVertices.size(); i++)
+					{
+						polyline.vecVertices[i].y += m_dMoveStep;
+					}
+					m_SelectedEntity.entity = polyline;
+					CurLayer->second.vecPolylines.at(m_SelectedEntity.index) = polyline;
+				}
+			}
 			break;
 		}
 
@@ -528,6 +561,12 @@ void CDxfMapping::MoveUpSelectedEntity()
 
 void CDxfMapping::MoveDownSelectedEntity()
 {
+	Point point;
+	Line line;
+	Circle circle;
+	Arc arc;
+	Polyline polyline;
+
 	if (m_SelectedEntity.index != -1)
 	{
 		switch (m_SelectedEntity.type)
@@ -539,7 +578,10 @@ void CDxfMapping::MoveDownSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecPoints.at(m_SelectedEntity.index).y -= m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    point.y -= m_dMoveStep;
+                    m_SelectedEntity.entity = point;
+                    CurLayer->second.vecPoints.at(m_SelectedEntity.index) = point;
 				}
 			}
 			break;
@@ -551,9 +593,11 @@ void CDxfMapping::MoveDownSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX(), line.StartY() - m_dMoveStep));
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX(), line.EndY() - m_dMoveStep));
+                    GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    line.setStartPoint(Point(line.StartX(), line.StartY() - m_dMoveStep));
+                    line.setEndPoint(Point(line.EndX(), line.EndY() - m_dMoveStep));
+                    m_SelectedEntity.entity = line;
+                    CurLayer->second.vecLines.at(m_SelectedEntity.index) = line;
 				}
 			}
 			break;
@@ -565,7 +609,10 @@ void CDxfMapping::MoveDownSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.y -= m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					circle.pointCenter.y -= m_dMoveStep;
+                    m_SelectedEntity.entity = circle;
+                    CurLayer->second.vecCircles.at(m_SelectedEntity.index) = circle;
 				}
 			}
 			break;
@@ -577,13 +624,30 @@ void CDxfMapping::MoveDownSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.y -= m_dMoveStep;
+                    GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    arc.pointCenter.y -= m_dMoveStep;
+                    m_SelectedEntity.entity = arc;
+                    CurLayer->second.vecArcs.at(m_SelectedEntity.index) = arc;
 				}
 			}
 			break;
 		}
 		case enumEntity_Polyline:
 		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					for (int i = 0; i < polyline.vecVertices.size(); i++)
+					{
+						polyline.vecVertices[i].y -= m_dMoveStep;
+					}
+					m_SelectedEntity.entity = polyline;
+					CurLayer->second.vecPolylines.at(m_SelectedEntity.index) = polyline;
+				}
+			}
 			break;
 		}
 
@@ -595,6 +659,12 @@ void CDxfMapping::MoveDownSelectedEntity()
 
 void CDxfMapping::MoveLeftSelectedEntity()
 {
+	Point point;
+	Line line;
+	Circle circle;
+	Arc arc;
+	Polyline polyline;
+
 	if (m_SelectedEntity.index != -1)
 	{
 		switch (m_SelectedEntity.type)
@@ -606,7 +676,10 @@ void CDxfMapping::MoveLeftSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecPoints.at(m_SelectedEntity.index).x -= m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					point.x -= m_dMoveStep;
+                    m_SelectedEntity.entity = point;
+                    CurLayer->second.vecPoints.at(m_SelectedEntity.index) = point;
 				}
 			}
 			break;
@@ -618,9 +691,11 @@ void CDxfMapping::MoveLeftSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX() - m_dMoveStep, line.StartY()));
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX() - m_dMoveStep, line.EndY()));
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    line.setStartPoint(Point(line.StartX() - m_dMoveStep, line.StartY()));
+                    line.setEndPoint(Point(line.EndX() - m_dMoveStep, line.EndY()));
+                    m_SelectedEntity.entity = line;
+                    CurLayer->second.vecLines.at(m_SelectedEntity.index) = line;
 				}
 			}
 			break;
@@ -632,7 +707,10 @@ void CDxfMapping::MoveLeftSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.x -= m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    circle.pointCenter.x -= m_dMoveStep;
+                    m_SelectedEntity.entity = circle;
+                    CurLayer->second.vecCircles.at(m_SelectedEntity.index) = circle;
 				}
 			}
 			break;
@@ -644,13 +722,30 @@ void CDxfMapping::MoveLeftSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.x -= m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    arc.pointCenter.x -= m_dMoveStep;
+                    m_SelectedEntity.entity = arc;
+                    CurLayer->second.vecArcs.at(m_SelectedEntity.index) = arc;
 				}
 			}
 			break;
 		}
 		case enumEntity_Polyline:
 		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					for (int i = 0; i < polyline.vecVertices.size(); i++)
+					{
+						polyline.vecVertices[i].x -= m_dMoveStep;
+					}
+					m_SelectedEntity.entity = polyline;
+					CurLayer->second.vecPolylines.at(m_SelectedEntity.index) = polyline;
+				}
+			}
 			break;
 		}
 
@@ -662,6 +757,11 @@ void CDxfMapping::MoveLeftSelectedEntity()
 
 void CDxfMapping::MoveRightSelectedEntity()
 {
+	Point point;
+	Line line;
+	Circle circle;
+	Arc arc;
+	Polyline polyline;
 	if (m_SelectedEntity.index != -1)
 	{
 		switch (m_SelectedEntity.type)
@@ -673,7 +773,10 @@ void CDxfMapping::MoveRightSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecPoints.at(m_SelectedEntity.index).x += m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    point.x += m_dMoveStep;
+                    m_SelectedEntity.entity = point;
+                    CurLayer->second.vecPoints.at(m_SelectedEntity.index) = point;
 				}
 			}
 			break;
@@ -685,9 +788,11 @@ void CDxfMapping::MoveRightSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 				{
-					Line line = CurLayer->second.vecLines.at(m_SelectedEntity.index);
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setStartPoint(Point(line.StartX() + m_dMoveStep, line.StartY()));
-					CurLayer->second.vecLines.at(m_SelectedEntity.index).setEndPoint(Point(line.EndX() + m_dMoveStep, line.EndY()));
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    line.setStartPoint(Point(line.StartX() + m_dMoveStep, line.StartY()));
+                    line.setEndPoint(Point(line.EndX() + m_dMoveStep, line.EndY()));
+                    m_SelectedEntity.entity = line;
+                    CurLayer->second.vecLines.at(m_SelectedEntity.index) = line;
 				}
 			}
 			break;
@@ -699,7 +804,10 @@ void CDxfMapping::MoveRightSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecCircles.at(m_SelectedEntity.index).pointCenter.x += m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    circle.pointCenter.x += m_dMoveStep;
+                    m_SelectedEntity.entity = circle;
+                    CurLayer->second.vecCircles.at(m_SelectedEntity.index) = circle;
 				}
 			}
 			break;
@@ -711,13 +819,30 @@ void CDxfMapping::MoveRightSelectedEntity()
 			{
 				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 				{
-					CurLayer->second.vecArcs.at(m_SelectedEntity.index).pointCenter.x += m_dMoveStep;
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+                    arc.pointCenter.x += m_dMoveStep;
+                    m_SelectedEntity.entity = arc;
+                    CurLayer->second.vecArcs.at(m_SelectedEntity.index) = arc;
 				}
 			}
 			break;
 		}
 		case enumEntity_Polyline:
 		{
+			auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
+			if (CurLayer != m_mapDxfEntities.end())
+			{
+				if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
+				{
+					GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
+					for (int i = 0; i < polyline.vecVertices.size(); i++)
+					{
+						polyline.vecVertices[i].x += m_dMoveStep;
+					}
+					m_SelectedEntity.entity = polyline;
+					CurLayer->second.vecPolylines.at(m_SelectedEntity.index) = polyline;
+				}
+			}
 			break;
 		}
 
@@ -742,7 +867,11 @@ void CDxfMapping::ChangePointProperty(Point point)
 	{
 		if (m_SelectedEntity.index <= CurLayer->second.vecPoints.size() && m_SelectedEntity.index >= 0)
 		{
+			//修改选中的图元
+			m_SelectedEntity.entity = point;
+			//修改dxf数据
 			CurLayer->second.vecPoints.at(m_SelectedEntity.index) = point;
+			
 		}
 	}
 }
@@ -754,6 +883,7 @@ void CDxfMapping::ChangeLineProperty(Line line)
 	{
 		if (m_SelectedEntity.index <= Curlayer->second.vecLines.size() && m_SelectedEntity.index >= 0)
 		{
+			m_SelectedEntity.entity = line;
             Curlayer->second.vecLines.at(m_SelectedEntity.index) = line;
 		}
 	}
@@ -766,6 +896,7 @@ void CDxfMapping::ChangeCircleProperty(Circle circle)
 	{
 		if (m_SelectedEntity.index <= CurLayer->second.vecCircles.size() && m_SelectedEntity.index >= 0)
 		{
+			m_SelectedEntity.entity = circle;
             CurLayer->second.vecCircles.at(m_SelectedEntity.index) = circle;
 		}
 	}
@@ -778,6 +909,7 @@ void CDxfMapping::ChangeArcProperty(Arc arc)
 	{
 		if (m_SelectedEntity.index <= CurLayer->second.vecArcs.size() && m_SelectedEntity.index >= 0)
 		{
+			m_SelectedEntity.entity = arc;
 			CurLayer->second.vecArcs.at(m_SelectedEntity.index) = arc;
 		}
 	}
@@ -790,6 +922,7 @@ void CDxfMapping::ChangePolylineProperty(Polyline polyline)
 	{
 		if (m_SelectedEntity.index <= CurLayer->second.vecPolylines.size() && m_SelectedEntity.index >= 0)
 		{
+			m_SelectedEntity.entity = polyline;
 			CurLayer->second.vecPolylines.at(m_SelectedEntity.index) = polyline;
 		}
 	}

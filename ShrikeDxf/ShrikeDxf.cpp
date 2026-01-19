@@ -116,7 +116,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 				connect(m_pDxfDataManger, &CDxfManger::signalRefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
 				connect(m_pDxfDataManger, &CDxfManger::signalReturnEntityInfo, m_pTreeViewManger, &CTreeViewManger::handleReturnEntityInfo);
-				connect(m_pTreeViewManger, &CTreeViewManger::signalChangeEntityWidget, m_pDxfDataManger, &CDxfManger::handleChangeEntityWidget);
+				connect(m_pTreeViewManger, &CTreeViewManger::signalSaveSelectedEntity, m_pDxfDataManger, &CDxfManger::handleSaveSelectedEntity);
 				connect(m_pTreeViewManger,&CTreeViewManger::signalDeleteEntityData,m_pDxfDataManger, &CDxfManger::handleDeleteEntity);
 				connect(m_pTreeViewManger, &CTreeViewManger::signalCopyEntityData, m_pDxfDataManger, &CDxfManger::handleCopyEntity);
 				connect(m_pDxfDataManger, &CDxfManger::signalRefreshTreeviewAfterRead, m_pTreeViewManger, &CTreeViewManger::handleRefreshTreeviewAfterRead);
@@ -154,6 +154,8 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnRightClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnRightClicked);
 				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCWClicked,m_pDxfDataManger, &CDxfManger::handleOnBtnCWClicked);
                 connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCCWClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnCCWClicked);
+				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnStepLengthOrAngleChanged, m_pDxfDataManger, &CDxfManger::handleOnStepLengthOrAngleChanged);
+				connect(m_pDxfDataManger, &CDxfManger::signalSetStepLengthAndAngle, m_pMoveBtnsWidget, &CMoveBtnsWidget::handleSetStepLengthAndAngle);
 
 			}
 		});

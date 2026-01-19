@@ -112,7 +112,7 @@ void CTreeViewManger::handleRefreshTreeviewAfterRead()
 	QString strLayer = model->data(firstLayerIndex, Qt::DisplayRole).toString();
 	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();
 
-	emit signalChangeEntityWidget(strLayer, strEntity);
+	emit signalSaveSelectedEntity(strLayer, strEntity);
 
 	
 }
@@ -184,7 +184,7 @@ void CTreeViewManger::handleOnItemClicked(const QModelIndex& index)
 			//选择到了图层本身
 		}
 		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-		emit signalChangeEntityWidget(strLayer, strEntity);
+		emit signalSaveSelectedEntity(strLayer, strEntity);
 	}
 }
 

@@ -27,8 +27,8 @@ private:
 
 
 signals:
-	//通知dxfmanger图元属性界面
-	void signalChangeEntityWidget(const QString& strLayer, const QString& strEntity);
+	//通知dxfmanger当前选择的图元
+	void signalSaveSelectedEntity(const QString& strLayer, const QString& strEntity);
 	//通知dxfmanger删除图元
 	void signalDeleteEntityData(const QString& strLayer, const QString& strEntity);
 	//通知dxfmanger复制图元

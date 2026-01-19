@@ -5,8 +5,8 @@ CPolylineAttributeWidget::CPolylineAttributeWidget(QWidget* parent)
 	m_polyline()
 {
 	ui.setupUi(this);
-	ui.spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-
+	ui.spinBox_Vertices->setButtonSymbols(QAbstractSpinBox::NoButtons);
+	ui.spinBox_Linenum->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
 	connect(ui.tableWidget, &QTableWidget::itemChanged, this, &CPolylineAttributeWidget::OnTableValueChanged);
 }
@@ -60,7 +60,8 @@ void CPolylineAttributeWidget::handleNoticePolylineAttribute(Polyline polyline)
 	ui.tableWidget->blockSignals(true);
 
 	m_polyline = polyline;
-	ui.spinBox->setValue(m_polyline.numVertices);
+	ui.spinBox_Vertices->setValue(m_polyline.numVertices);
+	ui.spinBox_Linenum->setValue(m_polyline.numVertices - 1);
 	RefreshTable();
 
 	ui.tableWidget->blockSignals(false);
