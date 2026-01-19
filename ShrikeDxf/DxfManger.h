@@ -63,6 +63,9 @@ signals:
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
 	int handleCopyEntity(const QString& strLayer, const QString& strEntity);
 	void handlePaste(QPointF pos);
+
+	void handleLayerModelChanged();
+
 	//point界面属性发生变化
 	void handlePointAttributeChanged(Point point);
 	//line界面属性发生变化
@@ -73,6 +76,7 @@ signals:
     void handleArcAttributeChanged(Arc arc);
 	//polyline界面属性发生变化
     void handlePolylineAttributeChanged(Polyline polyline);
+
 	//向上按钮按下
 	void handleOnBtnUpClicked();
     //向下按钮按下

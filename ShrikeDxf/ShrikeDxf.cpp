@@ -136,6 +136,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (m_pDxfDataManger && m_pLayerTableViewManger)
 			{
 				connect(m_pDxfDataManger, &CDxfManger::signalRefreshLayerTableview, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
+				connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalLayerModelChanged, m_pDxfDataManger, &CDxfManger::handleLayerModelChanged);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{

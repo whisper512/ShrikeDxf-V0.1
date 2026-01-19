@@ -11,6 +11,7 @@ public:
 	~CDxfLayerTableviewModel();
 
 	void UpdateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf);
+	void UpdateLayerData(std::map<std::string, stuLayer>& mapDxf);
 	void ClearModel();
 private:
 	

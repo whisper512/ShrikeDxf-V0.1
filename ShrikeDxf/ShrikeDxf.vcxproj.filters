@@ -112,7 +112,7 @@
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="MoveBtnsWidget.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +177,7 @@
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="MoveBtnsWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\WeightView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

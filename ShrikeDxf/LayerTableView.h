@@ -20,6 +20,10 @@ private:
 	QWidget* m_pMainWnd;
 	QTableView* m_pTableView;
 
+signals:
+	void signalLayerModelChanged();
+
 public slots:
 	void handleRefreshLayerTableview(CDxfLayerTableviewModel* pModel);
+	void handleTableViewClicked(const QModelIndex& index);
 };

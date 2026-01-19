@@ -85,6 +85,9 @@ public:
     //粘贴entity
     int PasteEntity(QPointF pos);
 
+    //修改图层属性
+    void ChangeLayerProperty();
+
     void MoveUpSelectedEntity();
     void MoveDownSelectedEntity();
     void MoveLeftSelectedEntity();

@@ -1,4 +1,5 @@
 ﻿#include <QHeaderView>
+#include <QColorDialog>
 
 #include "LayerTableView.h"
 #include "ShrikeDxf.h"
@@ -50,6 +51,26 @@ void CLayerTableViewManger::InitTableView()
 	m_pTableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	m_pTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 	m_pTableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+
+	connect(m_pTableView, &QTableView::clicked, this, &CLayerTableViewManger::handleTableViewClicked);
+}
+
+void CLayerTableViewManger::handleTableViewClicked(const QModelIndex& index)
+{
+	if (index.column() == 2)
+	{
+		QStandardItemModel* pModel = qobject_cast<QStandardItemModel*>(m_pTableView->model());
+		if (pModel)
+		{
+			QColor color = QColorDialog::getColor(Qt::white, m_pTableView, "");
+			if (color.isValid())
+			{
+				pModel->setData(index, color.name(), Qt::EditRole);
+				pModel->setData(index, color, Qt::BackgroundRole);
+			}
+		}
+	}
+	emit signalLayerModelChanged();
 }
 
 

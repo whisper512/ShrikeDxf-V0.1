@@ -1,7 +1,7 @@
 ﻿#include <QtMath>
 
 #include "DxfMapping.h"
-
+#include "DxfManger.h"
 
 CDxfMapping::CDxfMapping()
 {
@@ -460,6 +460,11 @@ int CDxfMapping::PasteEntity(QPointF pos)
 	{
 		return -1;
 	}
+}
+
+void CDxfMapping::ChangeLayerProperty()
+{
+	
 }
 
 void CDxfMapping::MoveUpSelectedEntity()

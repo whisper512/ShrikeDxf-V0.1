@@ -120,6 +120,12 @@ void CDxfManger::handlePaste(QPointF pos)
     RefreshTreeModelAndGraphicsview();
 }
 
+void CDxfManger::handleLayerModelChanged()
+{
+    m_DxfLayerTableviewModel.UpdateLayerData(m_DxfMapping.m_mapDxfEntities);
+    RefreshTreeModelAndGraphicsview();
+}
+
 void CDxfManger::handlePointAttributeChanged(Point point)
 {
     if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Point)
