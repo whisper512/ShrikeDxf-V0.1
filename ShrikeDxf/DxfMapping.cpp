@@ -273,31 +273,37 @@ void CDxfMapping::SaveSelectedEntity(QString strLayer, QString strType, QString 
 		if (strType == STR_POINT_LOWERCASE)
 		{
 			m_SelectedEntity.type = enumEntity_Point;
+			m_SelectedEntity.index = 0;
 			m_SelectedEntity.entity = CurLayer->second.vecPoints.at(strNum.toInt() - 1);
 		}
 		else if (strType == STR_LINE_LOWERCASE)
 		{
 			m_SelectedEntity.type = enumEntity_Line;
+            m_SelectedEntity.index = 1;
 			m_SelectedEntity.entity = CurLayer->second.vecLines.at(strNum.toInt() - 1);
 		}
 		else if (strType == STR_CIRCLE_LOWERCASE)
 		{
 			m_SelectedEntity.type = enumEntity_Circle;
+            m_SelectedEntity.index = 2;
 			m_SelectedEntity.entity = CurLayer->second.vecCircles.at(strNum.toInt() - 1);
 		}
 		else if (strType == STR_ARC_LOWERCASE)
 		{
 			m_SelectedEntity.type = enumEntity_Arc;
+            m_SelectedEntity.index = 3;
 			m_SelectedEntity.entity = CurLayer->second.vecArcs.at(strNum.toInt() - 1);
 		}
 		else if (strType == STR_POLYLINE_LOWERCASE)
 		{
 			m_SelectedEntity.type = enumEntity_Polyline;
+            m_SelectedEntity.index = 4;
 			m_SelectedEntity.entity = CurLayer->second.vecPolylines.at(strNum.toInt() - 1);
 		}
 		else if (strType == STR_TEXT_LOWERCASE)
 		{
 			m_SelectedEntity.type = enumEntity_Text;
+            m_SelectedEntity.index = 5;
 			m_SelectedEntity.entity =  CurLayer->second.vecTexts.at(strNum.toInt() - 1);
 		}
 	}

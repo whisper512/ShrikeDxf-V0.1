@@ -25,7 +25,7 @@ signals:
 
 public slots:
 	void handleSetStepLengthAndAngle(const double &dStepLength,const double &dRotationAngle);
-
+	void handleSetBtnEnabled(int nType);
 
 private:
 	Ui::CMoveBtnsWidgetClass ui;

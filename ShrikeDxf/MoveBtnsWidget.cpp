@@ -101,3 +101,54 @@ void CMoveBtnsWidget::handleSetStepLengthAndAngle(const double& dStepLength, con
 	ui.doubleSpinBox_stepLength->blockSignals(false);
 	ui.doubleSpinBox_rotateAngle->blockSignals(false);
 }
+
+void CMoveBtnsWidget::handleSetBtnEnabled(int nType)
+{
+	switch (nType)
+	{
+		//point
+	case 0:
+	{
+		ui.doubleSpinBox_rotateAngle->setEnabled(false);
+		ui.toolButton_CW->setEnabled(false);
+		ui.toolButton_CCW->setEnabled(false);
+		break;
+	}
+		//line
+	case 1:
+	{
+		ui.doubleSpinBox_rotateAngle->setEnabled(true);
+		ui.toolButton_CW->setEnabled(true);
+		ui.toolButton_CCW->setEnabled(true);
+		break;
+	}
+		//circle
+	case 2:
+	{
+		ui.doubleSpinBox_rotateAngle->setEnabled(false);
+		ui.toolButton_CW->setEnabled(false);
+		ui.toolButton_CCW->setEnabled(false);
+		break;
+	}
+		//arc
+	case 3:
+	{
+		ui.doubleSpinBox_rotateAngle->setEnabled(true);
+		ui.toolButton_CW->setEnabled(true);
+		ui.toolButton_CCW->setEnabled(true);
+		break;
+	}
+		//polyline
+	case 4:
+	{
+		ui.doubleSpinBox_rotateAngle->setEnabled(true);
+		ui.toolButton_CW->setEnabled(true);
+		ui.toolButton_CCW->setEnabled(true);
+		break;
+	}
+	case 5:
+		break;
+	default:
+		break;
+	}
+}

@@ -55,6 +55,8 @@ signals:
 	void signalCopyintEntity();
 	//通知移动步长和旋转角度的初始值
 	void signalSetStepLengthAndAngle(const double& dStepLength, const double& dRotationAngle);
+	//当前的当前选中的entity的类型
+	void signalSelectedEntityType(int nType);
 
  public slots:
 	QString handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity);

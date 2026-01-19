@@ -156,7 +156,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
                 connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCCWClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnCCWClicked);
 				connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnStepLengthOrAngleChanged, m_pDxfDataManger, &CDxfManger::handleOnStepLengthOrAngleChanged);
 				connect(m_pDxfDataManger, &CDxfManger::signalSetStepLengthAndAngle, m_pMoveBtnsWidget, &CMoveBtnsWidget::handleSetStepLengthAndAngle);
-
+				connect(m_pDxfDataManger,&CDxfManger::signalSelectedEntityType,m_pMoveBtnsWidget,&CMoveBtnsWidget::handleSetBtnEnabled);
 			}
 		});
 }
