@@ -93,7 +93,7 @@ void CMoveBtnsWidget::handleSetStepLengthAndAngle(const double& dStepLength, con
     ui.doubleSpinBox_rotateAngle->blockSignals(true);
 	//弧度转角度
 	m_dStepLength = dStepLength;
-	m_dRotationAngle = dRotationAngle * (M_PI / 180);
+	m_dRotationAngle = qRadiansToDegrees(dRotationAngle);
 	ui.doubleSpinBox_stepLength->setValue(m_dStepLength);
     ui.doubleSpinBox_rotateAngle->setValue(m_dRotationAngle);
 

@@ -36,7 +36,8 @@ public:
     enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline);
 
     double m_dMoveStep = 1.0;
-    double m_dRotateStepRAD = 1.0;
+    double m_dRotateStepRAD = qDegreesToRadians(1.0);
+
 
 
 public:

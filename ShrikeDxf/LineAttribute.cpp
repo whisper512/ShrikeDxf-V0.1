@@ -137,8 +137,15 @@ void CLineAttributeWidget::handleNoticeLineAttribute(Line line)
 	ui.doubleSpinBox_EndX->setValue(m_line.EndX());
     ui.doubleSpinBox_EndY->setValue(m_line.EndY());
 	ui.doubleSpinBox_Length->setValue(m_line.Length());
-    ui.doubleSpinBox_Angle->setValue(m_line.Angle());
-
+    
+    double angleInDegrees = qRadiansToDegrees(m_line.Angle());
+    angleInDegrees = fmod(angleInDegrees, 360.0);
+    if (angleInDegrees < 0.0) 
+    {
+        angleInDegrees += 360.0;
+    }
+    ui.doubleSpinBox_Angle->setValue(angleInDegrees);
+   
 	ui.doubleSpinBox_StartX->blockSignals(false);
 	ui.doubleSpinBox_StartY->blockSignals(false);
 	ui.doubleSpinBox_EndX->blockSignals(false);

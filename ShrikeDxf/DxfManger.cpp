@@ -80,8 +80,8 @@ QString CDxfManger::handleSaveSelectedEntity(const QString& strLayer, const QStr
         m_DxfMapping.SaveSelectedEntity(strLayer, match.captured(1), match.captured(2));
         //通知stack刷新
         emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
-        //通知movewidget
-        emit signalSelectedEntityType(m_DxfMapping.m_SelectedEntity.index);
+        //通知MoveWidget
+        emit signalSelectedEntityType(static_cast<int>(m_DxfMapping.m_SelectedEntity.type));
     }
     return strEntityData;
 }

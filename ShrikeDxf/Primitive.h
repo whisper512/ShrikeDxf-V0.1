@@ -67,6 +67,7 @@ public:
     double EndX() const { return pointEnd.x; }
     double EndY() const { return pointEnd.y; }
     double EndZ() const { return pointEnd.z; }
+    //弧度
     double Angle() const {return atan2(pointEnd.y - pointStart.y, pointEnd.x - pointStart.x);}
     void setStartPoint(const Point& p) {pointStart = p;}
     void setEndPoint(const Point& p) {pointEnd = p;}
