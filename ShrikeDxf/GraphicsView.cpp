@@ -24,6 +24,8 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_pActionShowMousePos(nullptr),
     m_pActionDrag(nullptr),
     m_pActionPasteEntity(nullptr),
+    m_pRulerH(nullptr),
+    m_pRulerV(nullptr),
     m_bLockZoom(false),
     m_bFilpAlongX(false),
     m_bFilpAlongY(false),
@@ -69,14 +71,20 @@ void CGraphicsView::InitMenu(QWidget* pParent)
     InitGraphicsViewAction();
     connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
 
-    // 创建水平标尺
+    // 创建标尺
     m_pRulerH = new CRulerH(this);
     m_pRulerH->setFixedHeight(20);
-
     m_pRulerH->setGeometry(0, 0, width(), 25);
     m_pRulerH->SetStepRange(1, 100.0);
     m_pRulerH->raise();
     m_pRulerH->show();
+
+    m_pRulerV = new CRulerV(this);
+    m_pRulerV->setFixedWidth(20);
+    m_pRulerV->setGeometry(0, 25, 25, height() - 25); // 修改垂直标尺位置和高度
+    m_pRulerV->SetStepRange(1, 100.0);
+    m_pRulerV->raise();
+    m_pRulerV->show();
 }
 
 void CGraphicsView::ShowMenu(const QPoint& pos)
@@ -362,7 +370,7 @@ void CGraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
 
 void CGraphicsView::UpdateRulers()
 {
-    if (!m_pRulerH || !scene())
+    if (!m_pRulerH || !m_pRulerV || !scene())
         return;
 
     // 获取当前视图在场景中的矩形
@@ -375,6 +383,11 @@ void CGraphicsView::UpdateRulers()
     double scaleX = transform.m11();
     // 设置标尺的缩放比例
     m_pRulerH->SetRulerZoom(scaleX);
+
+    m_pRulerV->SetRange(viewRect.top(), viewRect.bottom());
+    m_pRulerV->SetOrigin(viewRect.top());
+    double scaleY = std::abs(transform.m22());
+    m_pRulerV->SetRulerZoom(scaleY);
 }
 
 void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
@@ -384,12 +397,16 @@ void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
     if (m_pRulerH)
     {
         // 设置视口边距，为标尺预留空间
-        setViewportMargins(0, 25, 0, 0);
+        setViewportMargins(25, 25, 0, 0);
 
         // 设置标尺位置
         m_pRulerH->setGeometry(0, 0, width(), 25);
         m_pRulerH->raise();
         m_pRulerH->show();
+
+        m_pRulerV->setGeometry(0, 25, 30, height() - 25);
+        m_pRulerV->raise();
+        m_pRulerV->show();
 
         // 更新标尺
         UpdateRulers();

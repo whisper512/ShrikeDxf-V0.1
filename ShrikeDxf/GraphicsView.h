@@ -38,6 +38,7 @@ private:
 	QAction* m_pActionPasteEntity;
 
 	CRulerH* m_pRulerH;
+	CRulerV* m_pRulerV;
 
 
 	//锁定缩放
