@@ -114,6 +114,9 @@
     <QtMoc Include="MoveBtnsWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
+    <QtMoc Include="Ruler.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManger.cpp">
@@ -177,6 +180,9 @@
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="MoveBtnsWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Ruler.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
   </ItemGroup>

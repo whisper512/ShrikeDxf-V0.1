@@ -128,6 +128,7 @@
     <QtMoc Include="PointAttribute.h" />
     <QtMoc Include="PolylineAttributeWidget.h" />
     <QtMoc Include="MoveBtnsWidget.h" />
+    <QtMoc Include="Ruler.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="MoveBtnsWidget.cpp" />
     <ClCompile Include="PointAttribute.cpp" />
     <ClCompile Include="PolylineAttributeWidget.cpp" />
+    <ClCompile Include="Ruler.cpp" />
     <ClCompile Include="TopMenu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
     <ClCompile Include="StackedWidget.cpp" />

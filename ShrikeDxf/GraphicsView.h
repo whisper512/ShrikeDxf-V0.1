@@ -9,6 +9,7 @@
 
 #include "DxfGraphicsScene.h"
 #include "DxfStruct.h"
+#include "Ruler.h"
 
 class CGraphicsView : public QGraphicsView
 {
@@ -35,6 +36,8 @@ private:
 	QAction* m_pActionDrag;
 	//针对view中图元的操作
 	QAction* m_pActionPasteEntity;
+
+	CRulerH* m_pRulerH;
 
 
 	//锁定缩放
@@ -65,6 +68,7 @@ private:
 	void InitGraphicsOperateAction();
 	void InitPosLabel();
 	void FilpView();
+	void UpdateRulers();
 
 public:
 	QWidget* m_pMainWnd;
@@ -92,4 +96,5 @@ protected:
 	void mouseMoveEvent(QMouseEvent* pEvent) override;
 	void mousePressEvent(QMouseEvent* pEvent) override;
 	void mouseReleaseEvent(QMouseEvent* pEvent) override;
+	void resizeEvent(QResizeEvent* pEvent) override;
 };

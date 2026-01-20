@@ -1,4 +1,6 @@
-﻿#include "GraphicsView.h"
+﻿#include <QMessageBox>
+
+#include "GraphicsView.h"
 #include "StyleSheet.h"
 #include "ShrikeDxf.h"
 
@@ -52,6 +54,9 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     setMouseTracking(true);
     InitMenu(this);
     InitPosLabel();
+
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void CGraphicsView::InitMenu(QWidget* pParent)
@@ -63,7 +68,15 @@ void CGraphicsView::InitMenu(QWidget* pParent)
     InitGraphicsOperateAction();
     InitGraphicsViewAction();
     connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
-    
+
+    // 创建水平标尺
+    m_pRulerH = new CRulerH(this);
+    m_pRulerH->setFixedHeight(20);
+
+    m_pRulerH->setGeometry(0, 0, width(), 25);
+    m_pRulerH->SetStepRange(1, 100.0);
+    m_pRulerH->raise();
+    m_pRulerH->show();
 }
 
 void CGraphicsView::ShowMenu(const QPoint& pos)
@@ -198,23 +211,31 @@ void CGraphicsView::handlePasteEntity()
 
 void CGraphicsView::wheelEvent(QWheelEvent* pEvent)
 {
-    if (m_bLockZoom)
+    if (m_bLockZoom) 
     {
         return;
     }
+
     // 获取鼠标位置在场景中的坐标
     QPointF mouseScenePos = mapToScene(pEvent->position().toPoint());
+
     // 缩放因子
     const double scaleFactor = 1.15;
     double scaleFactorActual = (pEvent->angleDelta().y() > 0) ? scaleFactor : 1.0 / scaleFactor;
-    // 获取当前视图中心点在场景中的坐标
+
+    QRectF currentViewRect = mapToScene(viewport()->rect()).boundingRect();
+    double newWidth = currentViewRect.width() / scaleFactorActual;
+    double newHeight = currentViewRect.height() / scaleFactorActual;
+
     QPointF viewCenterScene = mapToScene(viewport()->rect().center());
-    // 计算新的视图中心点
     QPointF newCenter = mouseScenePos + (viewCenterScene - mouseScenePos) / scaleFactorActual;
-    // 执行缩放
     scale(scaleFactorActual, scaleFactorActual);
+
     // 设置新的视图中心
     centerOn(newCenter);
+
+    // 更新标尺
+    UpdateRulers();
 }
 
 void CGraphicsView::handleResetView()
@@ -280,6 +301,7 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
             viewport()->update();
         }
     }
+    UpdateRulers();
     return;
 }
 
@@ -336,4 +358,40 @@ void CGraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
         setCursor(Qt::ArrowCursor);
     }
     QGraphicsView::mouseReleaseEvent(pEvent);
+}
+
+void CGraphicsView::UpdateRulers()
+{
+    if (!m_pRulerH || !scene())
+        return;
+
+    // 获取当前视图在场景中的矩形
+    QRectF viewRect = mapToScene(viewport()->rect()).boundingRect();
+    // 设置标尺的范围为视图的X范围
+    m_pRulerH->SetRange(viewRect.left(), viewRect.right());
+    m_pRulerH->SetOrigin(viewRect.left());
+    // 获取当前的缩放比例（X方向）
+    QTransform transform = this->transform();
+    double scaleX = transform.m11();
+    // 设置标尺的缩放比例
+    m_pRulerH->SetRulerZoom(scaleX);
+}
+
+void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
+{
+    QGraphicsView::resizeEvent(pEvent);
+
+    if (m_pRulerH)
+    {
+        // 设置视口边距，为标尺预留空间
+        setViewportMargins(0, 25, 0, 0);
+
+        // 设置标尺位置
+        m_pRulerH->setGeometry(0, 0, width(), 25);
+        m_pRulerH->raise();
+        m_pRulerH->show();
+
+        // 更新标尺
+        UpdateRulers();
+    }
 }
