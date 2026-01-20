@@ -24,6 +24,9 @@ public:
 private:
 	std::map<std::string, stuLayer> m_mapDxf;
 
-
-
+	QIcon m_iconPoint;
+	QIcon m_iconLine;
+	QIcon m_iconCircle;
+    QIcon m_iconArc;
+	QIcon m_iconPloyline;
 };

@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/ShrikeDxf">
         <file>res/Main.png</file>
+        <file>res/Point.png</file>
+        <file>res/Arc.png</file>
+        <file>res/Circle.png</file>
+        <file>res/Line.png</file>
+        <file>res/Polyline.png</file>
     </qresource>
 </RCC>

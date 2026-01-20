@@ -2,6 +2,11 @@
 
 CDxfTreeviewModel::CDxfTreeviewModel(QObject* parent)
 {
+    m_iconPoint = QIcon(":/ShrikeDxf/res/Point.png");
+    m_iconLine = QIcon(":/ShrikeDxf/res/Line.png");
+    m_iconCircle = QIcon(":/ShrikeDxf/res/Circle.png");
+    m_iconArc = QIcon(":/ShrikeDxf/res/Arc.png");
+    m_iconPloyline = QIcon(":/ShrikeDxf/res/Polyline.png");
 }
 
 CDxfTreeviewModel::~CDxfTreeviewModel()
@@ -33,6 +38,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             qstr= QString("%1%2").arg(STR_POINT_LOWERCASE).arg(indexPoint);
             QList<QStandardItem*> listItemPoint;
             QStandardItem* itemPoint = new QStandardItem(qstr);
+            itemPoint->setIcon(m_iconPoint);
             QStandardItem* itemPointPlaceHolder = new QStandardItem("");
             itemPointPlaceHolder->setFlags(itemPointPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
             listItemPoint << itemPointPlaceHolder << itemPoint;
@@ -46,6 +52,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             qstr = QString("%1%2").arg(STR_LINE_LOWERCASE).arg(indexLine);
             QList<QStandardItem*> listItemLine;
             QStandardItem* itemLine = new QStandardItem(qstr);
+            itemLine->setIcon(m_iconLine);
             QStandardItem* itemLineBooth = new QStandardItem("");
             itemLineBooth->setFlags(itemLineBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
             listItemLine << itemLineBooth  << itemLine;
@@ -58,6 +65,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             qstr = QString("%1%2").arg(STR_CIRCLE_LOWERCASE).arg(indexCircle);
             QList<QStandardItem*> listItemCircle;
             QStandardItem* itemCircle = new QStandardItem(qstr);
+            itemCircle->setIcon(m_iconCircle);
             QStandardItem* itemCircleBooth = new QStandardItem("");
             itemCircleBooth->setFlags(itemCircleBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
             listItemCircle << itemCircleBooth  << itemCircle;
@@ -70,6 +78,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             qstr = QString("%1%2").arg(STR_ARC_LOWERCASE).arg(indexArc);
             QList<QStandardItem*> listItemArc;
             QStandardItem* itemArc = new QStandardItem(qstr);
+            itemArc->setIcon(m_iconArc);
             QStandardItem* itemArcBooth = new QStandardItem("");
             itemArcBooth->setFlags(itemArcBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
             listItemArc << itemArcBooth  << itemArc;
@@ -82,6 +91,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             qstr = QString("%1%2").arg(STR_POLYLINE_LOWERCASE).arg(indexPolyline);
             QList<QStandardItem*> listItemPolyline;
             QStandardItem* itemPolyline = new QStandardItem(qstr);
+            itemPolyline->setIcon(m_iconPloyline);
             QStandardItem* itemPolylineBooth = new QStandardItem("");
             itemPolylineBooth->setFlags(itemPolylineBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
             listItemPolyline << itemPolylineBooth  << itemPolyline;
