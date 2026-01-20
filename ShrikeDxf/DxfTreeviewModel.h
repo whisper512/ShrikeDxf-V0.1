@@ -29,4 +29,5 @@ private:
 	QIcon m_iconCircle;
     QIcon m_iconArc;
 	QIcon m_iconPloyline;
+	QIcon m_iconLayer;
 };

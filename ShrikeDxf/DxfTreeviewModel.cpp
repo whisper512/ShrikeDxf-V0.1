@@ -7,6 +7,7 @@ CDxfTreeviewModel::CDxfTreeviewModel(QObject* parent)
     m_iconCircle = QIcon(":/ShrikeDxf/res/Circle.png");
     m_iconArc = QIcon(":/ShrikeDxf/res/Arc.png");
     m_iconPloyline = QIcon(":/ShrikeDxf/res/Polyline.png");
+    m_iconLayer = QIcon(":/ShrikeDxf/res/Layer.png");
 }
 
 CDxfTreeviewModel::~CDxfTreeviewModel()
@@ -26,6 +27,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
     {
         QList<QStandardItem*> listItemLayer;
         QStandardItem* itemLayer = new QStandardItem(QString::fromStdString(it->first));
+        itemLayer->setIcon(m_iconLayer);
         QStandardItem* itemLayerPlaceHolder = new QStandardItem("");
         itemLayerPlaceHolder->setFlags(itemLayerPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
         listItemLayer << itemLayer << itemLayerPlaceHolder;
