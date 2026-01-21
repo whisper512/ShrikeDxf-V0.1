@@ -22,6 +22,7 @@ private:
     //刻度最大值
     double m_dStepMax;
     bool m_bOutOfRange;
+    double m_dMousePos;
 
 public:
     explicit CRulerH(QWidget* parent = nullptr);
@@ -30,6 +31,7 @@ public:
     void SetRulerZoom(double zoom);
     void SetRange(double min, double max);
     void SetStepRange(double min, double max);
+    void SetMousePos(double pos);
 
     double CalculateStepSize() const;
     bool IsMajorTickMark(long long count, double step) const;
@@ -57,6 +59,8 @@ private:
     double m_dStepMin;
     //刻度最大值
     double m_dStepMax;
+    double m_dMousePos;
+
     bool m_bOutOfRange;
 
 public:
@@ -66,6 +70,7 @@ public:
     void SetRulerZoom(double zoom);
     void SetRange(double min, double max);
     void SetStepRange(double min, double max);
+    void SetMousePos(double pos);
 
     double CalculateStepSize() const;
     bool IsMajorTickMark(long long count, double step) const;

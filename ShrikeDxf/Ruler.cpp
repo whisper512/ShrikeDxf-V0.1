@@ -88,6 +88,18 @@ void CRulerV::SetStepRange(double min, double max)
     m_dStepMax = max;
 }
 
+void CRulerH::SetMousePos(double pos)
+{
+    m_dMousePos = pos;
+    update();
+}
+
+void CRulerV::SetMousePos(double pos)
+{
+    m_dMousePos = pos;
+    update();
+}
+
 double CRulerH::CalculateStepSize() const
 {
     if (m_dRulerZoom <= 0 || width() <= 0)
@@ -98,7 +110,7 @@ double CRulerH::CalculateStepSize() const
     // 计算视图范围
     double dViewRange = width() / m_dRulerZoom;
 
-    // 计算目标步长，确保最多30个主刻度
+    
     double TargetStep = dViewRange / 35.0;
 
     // 使用对数计算最接近的标准步长
@@ -209,7 +221,7 @@ void CRulerH::paintEvent(QPaintEvent* event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.fillRect(rect(), QColor("#e0e0e0"));
     
-    // 计算刻度间隔
+    
     double step = CalculateStepSize();
 
     // 计算需要的小数位数
@@ -239,17 +251,20 @@ void CRulerH::paintEvent(QPaintEvent* event)
         long long count = qRound64(value / step);
         bool isMajor = IsMajorTickMark(count, step);
 
-
-        int tickHeight;
-        if (count % 2 == 0) {
-            tickHeight = isMajor ? 10 : 6;
+        //刻度的长度
+        int iTickHeight;
+        //小刻度长度交错
+        if (count % 2 == 0) 
+        {
+            iTickHeight = isMajor ? 10 : 6;
         }
-        else {
-            tickHeight = isMajor ? 10 : 4;  // 其他刻度使用短长度
+        else 
+        {
+            iTickHeight = isMajor ? 10 : 4;
         }
-        painter.drawLine(QPointF(xPos, height() - tickHeight), QPointF(xPos, height()));
+        painter.drawLine(QPointF(xPos, height() - iTickHeight), QPointF(xPos, height()));
 
-        // 绘制刻度值（仅主刻度）
+        //主刻度
         if (isMajor)
         {
             QString text = FormatTickValue(value, decimalPlaces);
@@ -259,14 +274,25 @@ void CRulerH::paintEvent(QPaintEvent* event)
             double textX = xPos;
             // 如果文本左边界超出标尺左边界，调整位置
             if (textX - textRect.width() / 2 < 0)
+            {
                 textX = textRect.width() / 2;
+            }
             // 如果文本右边界超出标尺右边界，调整位置
             else if (textX + textRect.width() / 2 > width())
+            {
                 textX = width() - textRect.width() / 2;
-
-            textRect.moveCenter(QPointF(textX, 5)); // 文本位置改为顶部
+            }
+            textRect.moveCenter(QPointF(textX, 5));
             painter.drawText(textRect, Qt::AlignCenter, text);
         }
+    }
+    //画出鼠标位置的红线
+    if (m_dMousePos >= 0 && m_dMousePos <= width())
+    {
+        QPen redPen(Qt::red);
+        redPen.setWidth(1);
+        painter.setPen(redPen);
+        painter.drawLine(QPointF(m_dMousePos, 0), QPointF(m_dMousePos, height()));
     }
 }
 
@@ -290,28 +316,29 @@ void CRulerV::paintEvent(QPaintEvent* event)
     painter.setPen(pen);
     QFont font = painter.font();
     font.setPointSize(8);
-    painter.setFont(font);;
+    painter.setFont(font);
 
     for (double value = startValue; value <= m_dEnd; value += step)
     {
-        double yPos = (value - m_dOrigin) * m_dRulerZoom;
+        double yPos = height() - (value - m_dOrigin) * m_dRulerZoom;
 
         if (yPos < 0 || yPos > height())
+        {
             continue;
-
-
+        }
         long long count = qRound64(value / step);
         bool isMajor = IsMajorTickMark(count, step);
 
         int tickHeight;
-        // 根据count的值决定刻度线长度，实现交错效果
-        if (count % 2 == 0) {
-            tickHeight = isMajor ? 10 : 6;  // 每5个刻度使用中等长度
+        if (count % 2 == 0) 
+        {
+            tickHeight = isMajor ? 10 : 6;
         }
-        else {
-            tickHeight = isMajor ? 8 : 4;  // 其他刻度使用短长度
+        else 
+        {
+            tickHeight = isMajor ? 8 : 4;
         }
-        // 刻度线从左侧改为右侧
+       
         painter.drawLine(QPointF(width() - tickHeight, yPos), QPointF(width(), yPos));
 
         // 绘制主刻度值
@@ -320,21 +347,31 @@ void CRulerV::paintEvent(QPaintEvent* event)
             QString text = FormatTickValue(value, decimalPlaces);
             QRectF textRect = painter.boundingRect(QRectF(), Qt::AlignLeft | Qt::AlignTop, text);
 
-            // 调整文本位置，确保不超出边界
+            
             double textY = yPos;
-            // 如果文本上边界超出标尺上边界，调整位置
             if (textY - textRect.height() / 2 < 0)
+            {
                 textY = textRect.height() / 2;
-            // 如果文本下边界超出标尺下边界，调整位置
+            }
             else if (textY + textRect.height() / 2 > height())
+            {
                 textY = height() - textRect.height() / 2;
-
-            textRect.moveCenter(QPointF(width() / 2, textY)); // 文本位置改为左侧
+            }
+            // 修改：文本位置调整到左侧，并旋转90度
+            textRect.moveCenter(QPointF(width() / 2, textY));
             painter.save();
             painter.translate(textRect.center());
             painter.rotate(-90);
-            painter.drawText(QRectF(-textRect.width() / 2 , -textRect.height() / 2 - 5, textRect.width(), textRect.height()), Qt::AlignCenter, text);
+            painter.drawText(QRectF(-textRect.width() / 2, -textRect.height() / 2 - 5, textRect.width(), textRect.height()), Qt::AlignCenter, text);
             painter.restore();
         }
+    }
+    
+    if (m_dMousePos >= 0 && m_dMousePos <= height())
+    {
+        QPen redPen(Qt::red);
+        redPen.setWidth(1);
+        painter.setPen(redPen);
+        painter.drawLine(QPointF(0, m_dMousePos), QPointF(width(), m_dMousePos));
     }
 }

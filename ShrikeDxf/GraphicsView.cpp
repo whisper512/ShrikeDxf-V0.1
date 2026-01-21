@@ -347,6 +347,17 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
         vBar->setValue(vBar->value() - delta.y());
         m_pointLastPos = pEvent->pos();
     }
+
+    QPoint viewPos = pEvent->pos();
+    if (m_pRulerH)
+    {
+        m_pRulerH->SetMousePos(viewPos.x());
+    }
+    if (m_pRulerV)
+    {
+        m_pRulerV->SetMousePos(viewPos.y()-25);
+    }
+
 }
 
 void CGraphicsView::mousePressEvent(QMouseEvent* pEvent)
@@ -370,24 +381,32 @@ void CGraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
 
 void CGraphicsView::UpdateRulers()
 {
-    if (!m_pRulerH || !m_pRulerV || !scene())
-        return;
-
     // 获取当前视图在场景中的矩形
     QRectF viewRect = mapToScene(viewport()->rect()).boundingRect();
-    // 设置标尺的范围为视图的X范围
-    m_pRulerH->SetRange(viewRect.left(), viewRect.right());
-    m_pRulerH->SetOrigin(viewRect.left());
-    // 获取当前的缩放比例（X方向）
     QTransform transform = this->transform();
-    double scaleX = transform.m11();
-    // 设置标尺的缩放比例
-    m_pRulerH->SetRulerZoom(scaleX);
+    // 设置标尺的范围为视图的X范围
+    if (m_pRulerH)
+    {
+        m_pRulerH->SetRange(viewRect.left(), viewRect.right());
+        m_pRulerH->SetOrigin(viewRect.left());
+        // 获取当前的缩放比例（X方向）
+        double scaleX = transform.m11();
+        // 设置标尺的缩放比例
+        m_pRulerH->SetRulerZoom(scaleX);
+    }
 
-    m_pRulerV->SetRange(viewRect.top(), viewRect.bottom());
-    m_pRulerV->SetOrigin(viewRect.top());
-    double scaleY = std::abs(transform.m22());
-    m_pRulerV->SetRulerZoom(scaleY);
+    if (m_pRulerV)
+    {
+        double rulerTop = viewRect.top();
+        double rulerBottom = viewRect.bottom();
+
+        m_pRulerV->SetRange(rulerTop, rulerBottom);
+        m_pRulerV->SetOrigin(rulerTop);
+        double scaleY = std::abs(transform.m22());
+        // 设置标尺的缩放比例
+        m_pRulerV->SetRulerZoom(scaleY);
+    }
+
 }
 
 void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
@@ -404,7 +423,7 @@ void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
         m_pRulerH->raise();
         m_pRulerH->show();
 
-        m_pRulerV->setGeometry(0, 25, 30, height() - 25);
+        m_pRulerV->setGeometry(0, 25, 25, height() - 25);
         m_pRulerV->raise();
         m_pRulerV->show();
 
