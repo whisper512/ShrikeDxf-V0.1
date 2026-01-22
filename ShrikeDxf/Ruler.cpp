@@ -198,7 +198,7 @@ QString CRulerH::FormatTickValue(double value, int decimalPlaces) const
 
 QString CRulerV::FormatTickValue(double value, int decimalPlaces) const
 {
-    QString text = QString::number(value, 'f', decimalPlaces);
+    QString text = QString::number(-value, 'f', decimalPlaces);
     if (decimalPlaces > 0)
     {
         while (text.endsWith('0'))
@@ -318,9 +318,11 @@ void CRulerV::paintEvent(QPaintEvent* event)
     font.setPointSize(8);
     painter.setFont(font);
 
+    
+
     for (double value = startValue; value <= m_dEnd; value += step)
     {
-        double yPos = height() - (value - m_dOrigin) * m_dRulerZoom;
+        double yPos =  (value - m_dOrigin) * m_dRulerZoom;
 
         if (yPos < 0 || yPos > height())
         {
@@ -357,7 +359,7 @@ void CRulerV::paintEvent(QPaintEvent* event)
             {
                 textY = height() - textRect.height() / 2;
             }
-            // 修改：文本位置调整到左侧，并旋转90度
+            
             textRect.moveCenter(QPointF(width() / 2, textY));
             painter.save();
             painter.translate(textRect.center());

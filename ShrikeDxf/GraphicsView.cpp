@@ -74,14 +74,14 @@ void CGraphicsView::InitMenu(QWidget* pParent)
     // 创建标尺
     m_pRulerH = new CRulerH(this);
     m_pRulerH->setFixedHeight(20);
-    m_pRulerH->setGeometry(0, 0, width(), 25);
+    m_pRulerH->setGeometry(0, 0, width(), 20);
     m_pRulerH->SetStepRange(1, 100.0);
     m_pRulerH->raise();
     m_pRulerH->show();
 
     m_pRulerV = new CRulerV(this);
     m_pRulerV->setFixedWidth(20);
-    m_pRulerV->setGeometry(0, 25, 25, height() - 25); // 修改垂直标尺位置和高度
+    m_pRulerV->setGeometry(0, 0, 20, height());
     m_pRulerV->SetStepRange(1, 100.0);
     m_pRulerV->raise();
     m_pRulerV->show();
@@ -139,7 +139,6 @@ void CGraphicsView::InitGraphicsViewAction()
 void CGraphicsView::InitGraphicsOperateAction()
 {
     m_pActionPasteEntity = new QAction("Paste", this);
-
     m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
 
     connect(m_pActionPasteEntity,&QAction::triggered,this,&CGraphicsView::handlePasteEntity);
@@ -355,7 +354,7 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
     }
     if (m_pRulerV)
     {
-        m_pRulerV->SetMousePos(viewPos.y()-25);
+        m_pRulerV->SetMousePos(viewPos.y());
     }
 
 }
@@ -389,7 +388,7 @@ void CGraphicsView::UpdateRulers()
     {
         m_pRulerH->SetRange(viewRect.left(), viewRect.right());
         m_pRulerH->SetOrigin(viewRect.left());
-        // 获取当前的缩放比例（X方向）
+
         double scaleX = transform.m11();
         // 设置标尺的缩放比例
         m_pRulerH->SetRulerZoom(scaleX);
@@ -416,14 +415,14 @@ void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
     if (m_pRulerH)
     {
         // 设置视口边距，为标尺预留空间
-        setViewportMargins(25, 25, 0, 0);
+        setViewportMargins(20, 20, 0, 0);
 
         // 设置标尺位置
-        m_pRulerH->setGeometry(0, 0, width(), 25);
+        m_pRulerH->setGeometry(0, 0, width(), 20);
         m_pRulerH->raise();
         m_pRulerH->show();
 
-        m_pRulerV->setGeometry(0, 25, 25, height() - 25);
+        m_pRulerV->setGeometry(0, 0, 20, height());
         m_pRulerV->raise();
         m_pRulerV->show();
 
