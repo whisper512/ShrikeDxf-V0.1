@@ -310,6 +310,12 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
             QTimer::singleShot(0, [this, pScene]() {fitInView(pScene->sceneRect(), Qt::KeepAspectRatio); });
             // 强制更新视图
             update();
+            //延时更新尺子
+            QTimer::singleShot(0, [this, pScene]() 
+            {
+                fitInView(pScene->sceneRect(), Qt::KeepAspectRatio);
+                UpdateRulers();
+                });
         }
         else
         {
@@ -412,6 +418,7 @@ void CGraphicsView::UpdateRulers()
 
         // 设置标尺的缩放比例
         m_pRulerH->SetRulerZoom(scaleX);
+        m_pRulerH->update();
     }
 
     if (m_pRulerV)
@@ -424,6 +431,7 @@ void CGraphicsView::UpdateRulers()
         double scaleY = transform.m22();
         // 设置标尺的缩放比例
         m_pRulerV->SetRulerZoom(scaleY);
+        m_pRulerV->update();
     }
 
 }
