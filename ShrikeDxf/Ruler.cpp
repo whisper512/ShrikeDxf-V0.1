@@ -247,7 +247,6 @@ void CRulerH::paintEvent(QPaintEvent* event)
         if (xPos < 0 || xPos > width())
             continue;
 
-        
         long long count = qRound64(value / step);
         bool isMajor = IsMajorTickMark(count, step);
 
@@ -286,11 +285,12 @@ void CRulerH::paintEvent(QPaintEvent* event)
             painter.drawText(textRect, Qt::AlignCenter, text);
         }
     }
-    //画出鼠标位置的红线
-    //QPen redPen(Qt::red);
-    //redPen.setWidth(1);
-    //painter.setPen(redPen);
-    //painter.drawLine(QPointF(m_dMousePos, 0), QPointF(m_dMousePos, height()));
+    //画出鼠标位置的红线,鼠标坐标是scene中的坐标需要转换
+    QPen redPen(Qt::red);
+    redPen.setWidth(1);
+    painter.setPen(redPen);
+    double widgetMouseX = (m_dMousePos - m_dOrigin) * m_dRulerZoom;
+    painter.drawLine(QPointF(widgetMouseX, 0), QPointF(widgetMouseX, height()));
     
 }
 
@@ -366,9 +366,10 @@ void CRulerV::paintEvent(QPaintEvent* event)
         }
     }
     
-    //QPen redPen(Qt::red);
-    //redPen.setWidth(1);
-    //painter.setPen(redPen);
-    //painter.drawLine(QPointF(0, m_dMousePos), QPointF(width(), m_dMousePos));
+    QPen redPen(Qt::red);
+    redPen.setWidth(1);
+    painter.setPen(redPen);
+    double WidgetMouseY = height() - ((m_dMousePos - m_dOrigin) * (-m_dRulerZoom));
+    painter.drawLine(QPointF(0, WidgetMouseY), QPointF(width(), WidgetMouseY));
     
 }

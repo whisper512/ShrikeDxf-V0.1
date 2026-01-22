@@ -361,6 +361,7 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
         m_pointLastPos = pEvent->pos();
     }
 
+    //传递scene中的坐标
     QPointF scenePos = mapToScene(pEvent->pos());
     if (m_pRulerH)
     {
