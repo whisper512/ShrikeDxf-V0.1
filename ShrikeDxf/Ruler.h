@@ -21,8 +21,8 @@ private:
     double m_dStepMin;
     //刻度最大值
     double m_dStepMax;
-    bool m_bOutOfRange;
-    double m_dMousePos;
+    //graphicsview中scene的鼠标位置
+    double m_dMouseXPos;
 
 public:
     explicit CRulerH(QWidget* parent = nullptr);
@@ -30,10 +30,10 @@ public:
     void SetOrigin(double origin);
     void SetRulerZoom(double zoom);
     void SetRange(double min, double max);
-    void SetStepRange(double min, double max);
     void SetMousePos(double pos);
-
+    //计算尺子间隔
     double CalculateStepSize() const;
+    //判断是否为主刻度
     bool IsMajorTickMark(long long count, double step) const;
     QString FormatTickValue(double value, int decimalPlaces) const;
     int CalculateDecimalPlaces(double step) const;
@@ -59,9 +59,7 @@ private:
     double m_dStepMin;
     //刻度最大值
     double m_dStepMax;
-    double m_dMousePos;
-
-    bool m_bOutOfRange;
+    double m_dMouseYPos;
 
 public:
     explicit CRulerV(QWidget* parent = nullptr);
@@ -69,7 +67,6 @@ public:
     void SetOrigin(double origin);
     void SetRulerZoom(double zoom);
     void SetRange(double min, double max);
-    void SetStepRange(double min, double max);
     void SetMousePos(double pos);
 
     double CalculateStepSize() const;

@@ -12,10 +12,8 @@ CRulerH::CRulerH(QWidget* parent) : QWidget(parent),
     m_dStart(0.0),
     m_dEnd(5000.0),
     m_dStepMin(1.0),
-    m_dStepMax(500.0),
-    m_bOutOfRange(false)
+    m_dStepMax(500.0)
 {
-    setFixedHeight(20);
 }
 
 CRulerH::~CRulerH()
@@ -28,8 +26,7 @@ CRulerV::CRulerV(QWidget* parent) : QWidget(parent),
     m_dStart(0.0),
     m_dEnd(5000.0),
     m_dStepMin(1.0),
-    m_dStepMax(500.0),
-    m_bOutOfRange(false)
+    m_dStepMax(500.0)
 {
 }
 
@@ -59,7 +56,6 @@ void CRulerV::SetRulerZoom(double zoom)
 {
     //view的Y轴翻转
     m_dRulerZoom = zoom;
-
     update();
 }
 
@@ -77,28 +73,15 @@ void CRulerV::SetRange(double min, double max)
     update();
 }
 
-void CRulerH::SetStepRange(double min, double max)
-{
-    m_dStepMin = min;
-    m_dStepMax = max;
-    update();
-}
-
-void CRulerV::SetStepRange(double min, double max)
-{
-    m_dStepMin = min;
-    m_dStepMax = max;
-}
-
 void CRulerH::SetMousePos(double pos)
 {
-    m_dMousePos = pos;
+    m_dMouseXPos = pos;
     update();
 }
 
 void CRulerV::SetMousePos(double pos)
 {
-    m_dMousePos = pos;
+    m_dMouseYPos = pos;
     update();
 }
 
@@ -109,7 +92,7 @@ double CRulerH::CalculateStepSize() const
         return 1.0;
     }
 
-    // 计算视图范围
+    // 视图范围
     double dViewRange = width() / m_dRulerZoom;
     double TargetStep = dViewRange / 35.0;
 
@@ -149,11 +132,9 @@ double CRulerV::CalculateStepSize() const
 int CRulerH::CalculateDecimalPlaces(double step) const
 {
     if (step >= 1.0) return 0;
-
     // 计算需要的小数位数
     double logStep = std::log10(step);
     int places = static_cast<int>(-std::floor(logStep));
-
     // 限制小数位数
     return qMin(places, 6);
 }
@@ -221,7 +202,6 @@ void CRulerH::paintEvent(QPaintEvent* event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.fillRect(rect(), QColor("#e0e0e0"));
     
-    
     double step = CalculateStepSize();
 
     // 计算需要的小数位数
@@ -242,7 +222,6 @@ void CRulerH::paintEvent(QPaintEvent* event)
     {
         // 将场景坐标转换为视图坐标
         double xPos = (value - m_dOrigin) * m_dRulerZoom;
-
         // 只绘制在视图范围内的刻度
         if (xPos < 0 || xPos > width())
             continue;
@@ -289,9 +268,8 @@ void CRulerH::paintEvent(QPaintEvent* event)
     QPen redPen(Qt::red);
     redPen.setWidth(1);
     painter.setPen(redPen);
-    double widgetMouseX = (m_dMousePos - m_dOrigin) * m_dRulerZoom;
+    double widgetMouseX = (m_dMouseXPos - m_dOrigin) * m_dRulerZoom;
     painter.drawLine(QPointF(widgetMouseX, 0), QPointF(widgetMouseX, height()));
-    
 }
 
 void CRulerV::paintEvent(QPaintEvent* event)
@@ -303,9 +281,7 @@ void CRulerV::paintEvent(QPaintEvent* event)
     painter.fillRect(rect(), QColor("#e0e0e0"));
 
     double step = CalculateStepSize();
-
     int decimalPlaces = CalculateDecimalPlaces(step);
-
     double startValue = std::ceil(m_dStart / step) * step;
 
     QPen pen = painter.pen();
@@ -316,11 +292,9 @@ void CRulerV::paintEvent(QPaintEvent* event)
     font.setPointSize(8);
     painter.setFont(font);
 
-
     for (double value = startValue; value <= m_dEnd; value += step)
     {
         double yPos =height() - ((value - m_dOrigin) * (-m_dRulerZoom));
-
         if (yPos < 0 || yPos > height())
         {
             continue;
@@ -339,14 +313,12 @@ void CRulerV::paintEvent(QPaintEvent* event)
         }
        
         painter.drawLine(QPointF(width() - tickHeight, yPos), QPointF(width(), yPos));
-
         // 绘制主刻度值
         if (isMajor)
         {
             QString text = FormatTickValue(value, decimalPlaces);
             QRectF textRect = painter.boundingRect(QRectF(), Qt::AlignLeft | Qt::AlignTop, text);
 
-            
             double textY = yPos;
             if (textY - textRect.height() / 2 < 0)
             {
@@ -369,7 +341,6 @@ void CRulerV::paintEvent(QPaintEvent* event)
     QPen redPen(Qt::red);
     redPen.setWidth(1);
     painter.setPen(redPen);
-    double WidgetMouseY = height() - ((m_dMousePos - m_dOrigin) * (-m_dRulerZoom));
+    double WidgetMouseY = height() - ((m_dMouseYPos - m_dOrigin) * (-m_dRulerZoom));
     painter.drawLine(QPointF(0, WidgetMouseY), QPointF(width(), WidgetMouseY));
-    
 }

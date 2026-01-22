@@ -48,7 +48,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
         setRenderHint(QPainter::Antialiasing);
         //翻转y轴
         setTransform(m_tranformInitial);
-        // 确保视图可见
+        //确保视图可见
         setVisible(true);
         show();
     }
@@ -56,7 +56,6 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     setMouseTracking(true);
     InitMenu(this);
     InitPosLabel();
-    //初始化一个scene
     InitScene();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -77,14 +76,12 @@ void CGraphicsView::InitMenu(QWidget* pParent)
     m_pRulerH = new CRulerH(this);
     m_pRulerH->setFixedHeight(20);
     m_pRulerH->setGeometry(0, 0, width(), 20);
-    m_pRulerH->SetStepRange(1, 100.0);
     m_pRulerH->raise();
     m_pRulerH->show();
 
     m_pRulerV = new CRulerV(this);
     m_pRulerV->setFixedWidth(20);
     m_pRulerV->setGeometry(0, 0, 20, height());
-    m_pRulerV->SetStepRange(1, 100.0);
     m_pRulerV->raise();
     m_pRulerV->show();
 }
@@ -159,6 +156,7 @@ void CGraphicsView::InitPosLabel()
 
 void CGraphicsView::InitScene()
 {
+    //在没有加载scene的情况下，初始化一个scene
     if (!scene())
     {
         CDxfGraphicsScene* pScene;
@@ -328,7 +326,6 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
             viewport()->update();
         }
     }
-    UpdateRulers();
     return;
 }
 
@@ -377,7 +374,6 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
     {
         m_pRulerV->SetMousePos(scenePos.y());
     }
-
 }
 
 void CGraphicsView::mousePressEvent(QMouseEvent* pEvent)
@@ -404,7 +400,6 @@ void CGraphicsView::UpdateRulers()
     // 获取当前视图在场景中的矩形
     QRectF sceneRect;
     QRectF viewRect;
-    
     sceneRect = mapToScene(viewport()->rect()).boundingRect();
     
     QTransform transform = this->transform();
@@ -415,7 +410,6 @@ void CGraphicsView::UpdateRulers()
         m_pRulerH->SetOrigin(sceneRect.left());
 
         double scaleX = transform.m11();
-
         // 设置标尺的缩放比例
         m_pRulerH->SetRulerZoom(scaleX);
         m_pRulerH->update();
@@ -433,7 +427,6 @@ void CGraphicsView::UpdateRulers()
         m_pRulerV->SetRulerZoom(scaleY);
         m_pRulerV->update();
     }
-
 }
 
 void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
