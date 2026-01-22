@@ -263,6 +263,7 @@ void CGraphicsView::handleResetView()
     if (scene())
     {
         fitInView(m_rectInitialScene, Qt::KeepAspectRatio);
+        UpdateRulers();
     }
 }
 
