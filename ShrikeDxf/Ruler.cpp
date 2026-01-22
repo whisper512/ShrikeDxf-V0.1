@@ -57,7 +57,9 @@ void CRulerH::SetRulerZoom(double zoom)
 
 void CRulerV::SetRulerZoom(double zoom)
 {
+    //view的Y轴翻转
     m_dRulerZoom = zoom;
+
     update();
 }
 
@@ -102,15 +104,13 @@ void CRulerV::SetMousePos(double pos)
 
 double CRulerH::CalculateStepSize() const
 {
-    if (m_dRulerZoom <= 0 || width() <= 0)
+    if (width() <= 0)
     {
         return 1.0;
     }
 
     // 计算视图范围
     double dViewRange = width() / m_dRulerZoom;
-
-    
     double TargetStep = dViewRange / 35.0;
 
     // 使用对数计算最接近的标准步长
@@ -128,11 +128,11 @@ double CRulerH::CalculateStepSize() const
 
 double CRulerV::CalculateStepSize() const
 {
-    if (m_dRulerZoom <= 0 || height() <= 0)
+    if (height() <= 0)
     {
         return 1.0;
     }
-    double dViewRange = height() / m_dRulerZoom;
+    double dViewRange = height() / (-m_dRulerZoom);
     double TargetStep = dViewRange / 35.0;
     double logStep = std::log10(TargetStep);
     double power = std::floor(logStep);
@@ -198,7 +198,7 @@ QString CRulerH::FormatTickValue(double value, int decimalPlaces) const
 
 QString CRulerV::FormatTickValue(double value, int decimalPlaces) const
 {
-    QString text = QString::number(-value, 'f', decimalPlaces);
+    QString text = QString::number(value, 'f', decimalPlaces);
     if (decimalPlaces > 0)
     {
         while (text.endsWith('0'))
@@ -287,13 +287,11 @@ void CRulerH::paintEvent(QPaintEvent* event)
         }
     }
     //画出鼠标位置的红线
-    if (m_dMousePos >= 0 && m_dMousePos <= width())
-    {
-        QPen redPen(Qt::red);
-        redPen.setWidth(1);
-        painter.setPen(redPen);
-        painter.drawLine(QPointF(m_dMousePos, 0), QPointF(m_dMousePos, height()));
-    }
+    //QPen redPen(Qt::red);
+    //redPen.setWidth(1);
+    //painter.setPen(redPen);
+    //painter.drawLine(QPointF(m_dMousePos, 0), QPointF(m_dMousePos, height()));
+    
 }
 
 void CRulerV::paintEvent(QPaintEvent* event)
@@ -318,11 +316,10 @@ void CRulerV::paintEvent(QPaintEvent* event)
     font.setPointSize(8);
     painter.setFont(font);
 
-    
 
     for (double value = startValue; value <= m_dEnd; value += step)
     {
-        double yPos =  (value - m_dOrigin) * m_dRulerZoom;
+        double yPos =height() - ((value - m_dOrigin) * (-m_dRulerZoom));
 
         if (yPos < 0 || yPos > height())
         {
@@ -369,11 +366,9 @@ void CRulerV::paintEvent(QPaintEvent* event)
         }
     }
     
-    if (m_dMousePos >= 0 && m_dMousePos <= height())
-    {
-        QPen redPen(Qt::red);
-        redPen.setWidth(1);
-        painter.setPen(redPen);
-        painter.drawLine(QPointF(0, m_dMousePos), QPointF(width(), m_dMousePos));
-    }
+    //QPen redPen(Qt::red);
+    //redPen.setWidth(1);
+    //painter.setPen(redPen);
+    //painter.drawLine(QPointF(0, m_dMousePos), QPointF(width(), m_dMousePos));
+    
 }

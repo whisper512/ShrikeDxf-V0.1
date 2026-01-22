@@ -68,6 +68,7 @@ private:
 	void InitGraphicsViewAction();
 	void InitGraphicsOperateAction();
 	void InitPosLabel();
+	void InitScene();
 	void FilpView();
 	void UpdateRulers();
 

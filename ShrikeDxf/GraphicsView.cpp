@@ -56,6 +56,8 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     setMouseTracking(true);
     InitMenu(this);
     InitPosLabel();
+    //初始化一个scene
+    InitScene();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -153,6 +155,18 @@ void CGraphicsView::InitPosLabel()
     m_pLabelMousePos->adjustSize();
     m_pLabelMousePos->clear();
     m_pLabelMousePos->hide();
+}
+
+void CGraphicsView::InitScene()
+{
+    if (!scene())
+    {
+        CDxfGraphicsScene* pScene;
+        pScene = new CDxfGraphicsScene(this);
+        pScene->setSceneRect(0, 0,500, 500);
+        setScene(pScene);
+    }
+    UpdateRulers();
 }
 
 void CGraphicsView::FilpView()
@@ -347,14 +361,14 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
         m_pointLastPos = pEvent->pos();
     }
 
-    QPoint viewPos = pEvent->pos();
+    QPointF scenePos = mapToScene(pEvent->pos());
     if (m_pRulerH)
     {
-        m_pRulerH->SetMousePos(viewPos.x());
+        m_pRulerH->SetMousePos(scenePos.x());
     }
     if (m_pRulerV)
     {
-        m_pRulerV->SetMousePos(viewPos.y());
+        m_pRulerV->SetMousePos(scenePos.y());
     }
 
 }
@@ -381,27 +395,32 @@ void CGraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
 void CGraphicsView::UpdateRulers()
 {
     // 获取当前视图在场景中的矩形
-    QRectF viewRect = mapToScene(viewport()->rect()).boundingRect();
+    QRectF sceneRect;
+    QRectF viewRect;
+    
+    sceneRect = mapToScene(viewport()->rect()).boundingRect();
+    
     QTransform transform = this->transform();
     // 设置标尺的范围为视图的X范围
     if (m_pRulerH)
     {
-        m_pRulerH->SetRange(viewRect.left(), viewRect.right());
-        m_pRulerH->SetOrigin(viewRect.left());
+        m_pRulerH->SetRange(sceneRect.left(), sceneRect.right());
+        m_pRulerH->SetOrigin(sceneRect.left());
 
         double scaleX = transform.m11();
+
         // 设置标尺的缩放比例
         m_pRulerH->SetRulerZoom(scaleX);
     }
 
     if (m_pRulerV)
     {
-        double rulerTop = viewRect.top();
-        double rulerBottom = viewRect.bottom();
+        double rulerTop = sceneRect.top();
+        double rulerBottom = sceneRect.bottom();
 
         m_pRulerV->SetRange(rulerTop, rulerBottom);
         m_pRulerV->SetOrigin(rulerTop);
-        double scaleY = std::abs(transform.m22());
+        double scaleY = transform.m22();
         // 设置标尺的缩放比例
         m_pRulerV->SetRulerZoom(scaleY);
     }
