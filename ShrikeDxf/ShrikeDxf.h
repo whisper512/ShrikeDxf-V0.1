@@ -43,6 +43,9 @@ public:
     //初始化移动按钮
     void InitAndCreateMoveBtnsWidget();
 
+    //初始化位置显示label
+    void InitPosLabel();
+
     //链接信号和槽
     void ConnectSignalsAndSlots();
 
@@ -62,6 +65,8 @@ public:
     //移动按钮
     CMoveBtnsWidget* m_pMoveBtnsWidget;
 
+    //显示graphics的坐标
+    QLabel* m_pLabelPos;
 
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;

@@ -8,6 +8,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 	m_pGraphicsView(nullptr),
 	m_pStackedWidgetManger(nullptr),
     m_pLayerTableViewManger(nullptr),
+	m_pLabelPos(nullptr),
     m_pDataManager(nullptr),
 	m_pDxfDataManger(nullptr),
 	m_pMoveBtnsWidget(nullptr)
@@ -17,6 +18,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 
 	InitWindowComponents();
 	InitDataManagers();
+	InitPosLabel();
 	ConnectSignalsAndSlots();
 }
 
@@ -107,6 +109,15 @@ void ShrikeDxf::InitAndCreateMoveBtnsWidget()
         m_pMoveBtnsWidget->InitWidgetAndAddToLayout();
 	}
 }
+
+void ShrikeDxf::InitPosLabel()
+{
+	m_pLabelPos = new QLabel(this);
+	m_pLabelPos->setText("x:0.000 ,y:0.000");
+	m_pLabelPos->setStyleSheet("QLabel {  background-color: #f0f0f0; border: 1px solid #ccc; }");
+	statusBar()->addPermanentWidget(m_pLabelPos);
+}
+
 
 void ShrikeDxf::ConnectSignalsAndSlots()
 {
