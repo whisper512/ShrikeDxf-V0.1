@@ -29,7 +29,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_bLockZoom(false),
     m_bFilpAlongX(false),
     m_bFilpAlongY(false),
-    m_bShowMousePos(false),
+    m_bShowPosCross(false),
     m_bDrag(false),
     m_bCopyingEntity(false),
     m_tranformInitial(1, 0, 0, -1, 0, 0),
@@ -269,7 +269,7 @@ void CGraphicsView::handleResetView()
 
 void CGraphicsView::handleShowMousePos(bool bChecked)
 {
-    m_bShowMousePos = bChecked;
+    m_bShowPosCross = bChecked;
     if (m_pLabelMousePos)
     {
         m_pLabelMousePos->setVisible(bChecked);
@@ -334,10 +334,11 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
 {
     QGraphicsView::mouseMoveEvent(pEvent);
 
-    if (m_bShowMousePos && m_pLabelMousePos)
+    if (m_pLabelMousePos)
     {
         QPointF posScene = mapToScene(pEvent->pos());
-        QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',1).arg(posScene.y(),0,'f',1);
+        QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',3).arg(posScene.y(),0,'f',3);
+        emit signalMousePos(strPos);
         m_pLabelMousePos->setText(strPos);
         m_pLabelMousePos->adjustSize();
         // 计算标签位置，考虑边界限制

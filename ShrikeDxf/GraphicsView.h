@@ -47,8 +47,8 @@ private:
 	bool m_bFilpAlongX;
 	//沿y轴翻转
 	bool m_bFilpAlongY;
-	//显示鼠标位置
-	bool m_bShowMousePos;
+	//显示鼠标位置十字线
+	bool m_bShowPosCross;
 	//左键拖拽
 	bool m_bDrag;
 	//开启复制图元中
@@ -77,6 +77,7 @@ public:
 
 signals:
 	void signalPaste(QPointF pos);
+	void signalMousePos(QString strPos);
 
 public slots:
 	//类外交互

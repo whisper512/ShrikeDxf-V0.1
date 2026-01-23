@@ -44,7 +44,7 @@ public:
     void InitAndCreateMoveBtnsWidget();
 
     //初始化位置显示label
-    void InitPosLabel();
+    void InitLabels();
 
     //链接信号和槽
     void ConnectSignalsAndSlots();
@@ -67,12 +67,16 @@ public:
 
     //显示graphics的坐标
     QLabel* m_pLabelPos;
+    //显示当前文档名称
+    QLabel* m_pLabelDocName;
 
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;
     //Dxf数据管理
     CDxfManger* m_pDxfDataManger;
 
+public slots:
+    void handlesignalMousePos(QString strPos);
 
 };
 

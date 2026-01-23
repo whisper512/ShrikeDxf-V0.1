@@ -9,6 +9,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 	m_pStackedWidgetManger(nullptr),
     m_pLayerTableViewManger(nullptr),
 	m_pLabelPos(nullptr),
+	m_pLabelDocName(nullptr),
     m_pDataManager(nullptr),
 	m_pDxfDataManger(nullptr),
 	m_pMoveBtnsWidget(nullptr)
@@ -18,7 +19,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 
 	InitWindowComponents();
 	InitDataManagers();
-	InitPosLabel();
+	InitLabels();
 	ConnectSignalsAndSlots();
 }
 
@@ -98,7 +99,6 @@ void ShrikeDxf::InitAndCreateLayerTableView()
 	{
 		m_pLayerTableViewManger->CreateTableView();
 	}
-
 }
 
 void ShrikeDxf::InitAndCreateMoveBtnsWidget()
@@ -110,12 +110,17 @@ void ShrikeDxf::InitAndCreateMoveBtnsWidget()
 	}
 }
 
-void ShrikeDxf::InitPosLabel()
+void ShrikeDxf::InitLabels()
 {
+	m_pLabelDocName = new QLabel(this);
+	m_pLabelDocName->setText("DocName:None");
+	m_pLabelDocName->setStyleSheet("QLabel {border: 5px solid transparent;; }");
+	statusBar()->addWidget(m_pLabelDocName);
+
 	m_pLabelPos = new QLabel(this);
-	m_pLabelPos->setText("x:0.000 ,y:0.000");
-	m_pLabelPos->setStyleSheet("QLabel {  background-color: #f0f0f0; border: 1px solid #ccc; }");
-	statusBar()->addPermanentWidget(m_pLabelPos);
+	m_pLabelPos->setText("X:0.000 Y:0.000");
+	m_pLabelPos->setStyleSheet("QLabel {border: 5px solid transparent;; }");
+	statusBar()->addWidget(m_pLabelPos);
 }
 
 
@@ -170,7 +175,17 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pDxfDataManger, &CDxfManger::signalSetStepLengthAndAngle, m_pMoveBtnsWidget, &CMoveBtnsWidget::handleSetStepLengthAndAngle);
 				connect(m_pDxfDataManger,&CDxfManger::signalSelectedEntityType,m_pMoveBtnsWidget,&CMoveBtnsWidget::handleSetBtnEnabled);
 			}
+			if (this && m_pGraphicsView)
+			{
+				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, this, &ShrikeDxf::handlesignalMousePos);
+			}
 		});
 }
 
-
+void ShrikeDxf::handlesignalMousePos(QString strPos)
+{
+	if (m_pLabelPos)
+	{
+		m_pLabelPos->setText(strPos);
+	}
+}
