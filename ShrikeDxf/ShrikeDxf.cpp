@@ -12,11 +12,11 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 	m_pLabelDocName(nullptr),
     m_pDataManager(nullptr),
 	m_pDxfDataManger(nullptr),
-	m_pMoveBtnsWidget(nullptr)
+	m_pMoveBtnsWidget(nullptr),
+	m_pCreateEntityWidget(nullptr)
 {	
     ui.setupUi(this);
 	setWindowIcon(QIcon(":/ShrikeDxf/res/Main.png"));
-
 	InitWindowComponents();
 	InitDataManagers();
 	InitLabels();
@@ -40,7 +40,6 @@ void ShrikeDxf::InitWindowComponents()
 		InitAndCreateMoveBtnsWidget();
 		InitAndCreateLayerTableView();
 
-		
 		if (ui.verticalLayout_Layer)
 		{
 			ui.verticalLayout_Layer->setStretch(0, 3);

@@ -12,6 +12,7 @@
 #include "StackedWidget.h"
 #include "LayerTableView.h"
 #include "MoveBtnsWidget.h"
+#include "CreateEntityWidget.h"
 
 #include "CommonDataManger.h"
 #include "DxfManger.h"
@@ -64,6 +65,8 @@ public:
     CLayerTableViewManger* m_pLayerTableViewManger;
     //移动按钮
     CMoveBtnsWidget* m_pMoveBtnsWidget;
+    //新建图元界面
+    CCreateEntityWidget* m_pCreateEntityWidget;
 
     //显示graphics的坐标
     QLabel* m_pLabelPos;

@@ -117,6 +117,9 @@
     <QtMoc Include="Ruler.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
+    <QtMoc Include="CreateEntityWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManger.cpp">
@@ -185,6 +188,9 @@
     <ClCompile Include="Ruler.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
+    <ClCompile Include="CreateEntityWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PointAttribute.ui">
@@ -203,6 +209,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MoveBtnsWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CreateEntityWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

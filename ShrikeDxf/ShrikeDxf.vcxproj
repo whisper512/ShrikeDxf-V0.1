@@ -106,6 +106,7 @@
     <QtRcc Include="ShrikeDxf.qrc" />
     <QtUic Include="ArcAttritubeWidget.ui" />
     <QtUic Include="CircleAttributeWidget.ui" />
+    <QtUic Include="CreateEntityWidget.ui" />
     <QtUic Include="LineAttribute.ui" />
     <QtUic Include="MoveBtnsWidget.ui" />
     <QtUic Include="PointAttribute.ui" />
@@ -117,6 +118,7 @@
     <QtMoc Include="CircleAttributeWidget.h" />
     <QtMoc Include="ArcAttritubeWidget.h" />
     <ClInclude Include="CommonDataManger.h" />
+    <QtMoc Include="CreateEntityWidget.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
     <QtMoc Include="DxfManger.h" />
@@ -139,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="ArcAttritubeWidget.cpp" />
     <ClCompile Include="CircleAttributeWidget.cpp" />
+    <ClCompile Include="CreateEntityWidget.cpp" />
     <ClCompile Include="LineAttribute.cpp" />
     <ClCompile Include="CommonDataManger.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />
