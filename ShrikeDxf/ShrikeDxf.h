@@ -77,6 +77,7 @@ public:
 
 public slots:
     void handlesignalMousePos(QString strPos);
+    void handleShowDocName(QString strDocName);
 
 };
 

@@ -57,6 +57,9 @@ signals:
 	void signalSetStepLengthAndAngle(const double& dStepLength, const double& dRotationAngle);
 	//当前的当前选中的entity的类型
 	void signalSelectedEntityType(int nType);
+	//更新label显示文件名
+	void signalShowFileName(QString strFileName);
+
 
  public slots:
 	QString handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity);

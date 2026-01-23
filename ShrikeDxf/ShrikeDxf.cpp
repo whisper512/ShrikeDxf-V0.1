@@ -179,7 +179,25 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, this, &ShrikeDxf::handlesignalMousePos);
 			}
+			if (this && m_pDxfDataManger)
+			{
+                connect(m_pDxfDataManger,&CDxfManger::signalShowFileName, this, &ShrikeDxf::handleShowDocName);
+			}
+
 		});
+}
+
+void ShrikeDxf::handleShowDocName(QString strDocName)
+{
+	if (!strDocName.isEmpty())
+	{
+		QFileInfo fileInfo(strDocName);
+		QString fileName = fileInfo.fileName();
+		if (m_pLabelDocName)
+		{
+			m_pLabelDocName->setText("DocName:" + fileName);
+		}
+	}
 }
 
 void ShrikeDxf::handlesignalMousePos(QString strPos)
