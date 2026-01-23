@@ -25,14 +25,12 @@ private:
 	//右键菜单
 	QMenu* m_pGraphicsViewMenu;
 	QMenu* m_pGraphicsOperateMenu;
-	QLabel* m_pLabelMousePos;
 
 	//view的操作
 	QAction* m_pActionLockZoom;
 	QAction* m_pActionFilpX;
 	QAction* m_pActionFilpY;
 	QAction* m_pActionResetView;
-	QAction* m_pActionShowMousePos;
 	QAction* m_pActionDrag;
 	//针对view中图元的操作
 	QAction* m_pActionPasteEntity;
@@ -66,8 +64,6 @@ private:
 
 	void InitMenu(QWidget* pParent);
 	void InitGraphicsViewAction();
-	void InitGraphicsOperateAction();
-	void InitPosLabel();
 	void InitScene();
 	void FilpView();
 	void UpdateRulers();
@@ -87,7 +83,6 @@ public slots:
 	void handleFilpAlongX(bool bChecked);
     void handleFilpAlongY(bool bChecked);
 	void handleResetView();
-	void handleShowMousePos(bool bChecked);
 	void handleDrag(bool bChecked);
 	void ShowMenu(const QPoint& pos);
 	void handleLockZoom(bool bChecked);
@@ -100,4 +95,5 @@ protected:
 	void mousePressEvent(QMouseEvent* pEvent) override;
 	void mouseReleaseEvent(QMouseEvent* pEvent) override;
 	void resizeEvent(QResizeEvent* pEvent) override;
+	void drawForeground(QPainter* pPainter, const QRectF& rect) override;
 };

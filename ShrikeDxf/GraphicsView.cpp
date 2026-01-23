@@ -16,12 +16,10 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_pMainWnd(pMainwnd),
     m_pGraphicsViewMenu(nullptr),
     m_pGraphicsOperateMenu(nullptr),
-    m_pLabelMousePos(nullptr),
     m_pActionLockZoom(nullptr),
     m_pActionFilpX(nullptr),
     m_pActionFilpY(nullptr),
     m_pActionResetView(nullptr),
-    m_pActionShowMousePos(nullptr),
     m_pActionDrag(nullptr),
     m_pActionPasteEntity(nullptr),
     m_pRulerH(nullptr),
@@ -55,7 +53,6 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     //开启鼠标追踪
     setMouseTracking(true);
     InitMenu(this);
-    InitPosLabel();
     InitScene();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -68,14 +65,13 @@ void CGraphicsView::InitMenu(QWidget* pParent)
     m_pGraphicsOperateMenu = new QMenu();
 
     setContextMenuPolicy(Qt::CustomContextMenu);
-    InitGraphicsOperateAction();
     InitGraphicsViewAction();
     connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
 
     // 创建标尺
     m_pRulerH = new CRulerH(this);
     m_pRulerH->setFixedHeight(20);
-    m_pRulerH->setGeometry(0, 0, width(), 20);
+    m_pRulerH->setGeometry(20, 0, width()-20, 20);
     m_pRulerH->raise();
     m_pRulerH->show();
 
@@ -102,9 +98,6 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
 
 void CGraphicsView::InitGraphicsViewAction()
 {
-    m_pActionShowMousePos = new QAction("Show Pos", this);
-    m_pActionShowMousePos->setCheckable(true);
-    m_pActionShowMousePos->setChecked(false);
     m_pActionDrag = new QAction("Drag", this);
     m_pActionDrag->setCheckable(true);
     m_pActionDrag->setChecked(false);
@@ -120,14 +113,12 @@ void CGraphicsView::InitGraphicsViewAction()
 
     m_pActionResetView = new QAction("Reset View", this);
 
-    m_pGraphicsViewMenu->addAction(m_pActionShowMousePos);
     m_pGraphicsViewMenu->addAction(m_pActionDrag);
     m_pGraphicsViewMenu->addAction(m_pActionLockZoom);
     m_pGraphicsViewMenu->addAction(m_pActionFilpX);
     m_pGraphicsViewMenu->addAction(m_pActionFilpY);
     m_pGraphicsViewMenu->addAction(m_pActionResetView);
 
-    connect(m_pActionShowMousePos, &QAction::toggled, this, &CGraphicsView::handleShowMousePos);
     connect(m_pActionDrag, &QAction::toggled, this, &CGraphicsView::handleDrag);
     connect(m_pActionLockZoom, &QAction::toggled, this, &CGraphicsView::handleLockZoom);
     connect(m_pActionFilpX, &QAction::toggled, this, &CGraphicsView::handleFilpAlongX);
@@ -135,24 +126,6 @@ void CGraphicsView::InitGraphicsViewAction()
     connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
 }
 
-void CGraphicsView::InitGraphicsOperateAction()
-{
-    m_pActionPasteEntity = new QAction("Paste", this);
-    m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
-
-    connect(m_pActionPasteEntity,&QAction::triggered,this,&CGraphicsView::handlePasteEntity);
-}
-
-void CGraphicsView::InitPosLabel()
-{
-    m_pLabelMousePos = new QLabel(this);
-    m_pLabelMousePos->setStyleSheet("background-color: rgba(255, 255, 255, 200); padding: 2px;border-radius: 4px;");
-    m_pLabelMousePos->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    m_pLabelMousePos->setText("X:0.0 Y:0.0");
-    m_pLabelMousePos->adjustSize();
-    m_pLabelMousePos->clear();
-    m_pLabelMousePos->hide();
-}
 
 void CGraphicsView::InitScene()
 {
@@ -267,14 +240,6 @@ void CGraphicsView::handleResetView()
     }
 }
 
-void CGraphicsView::handleShowMousePos(bool bChecked)
-{
-    m_bShowPosCross = bChecked;
-    if (m_pLabelMousePos)
-    {
-        m_pLabelMousePos->setVisible(bChecked);
-    }
-}
 
 void CGraphicsView::handleDrag(bool bChecked)
 {
@@ -333,28 +298,12 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
 void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
 {
     QGraphicsView::mouseMoveEvent(pEvent);
+    update();
 
-    if (m_pLabelMousePos)
-    {
-        QPointF posScene = mapToScene(pEvent->pos());
-        QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',3).arg(posScene.y(),0,'f',3);
-        emit signalMousePos(strPos);
-        m_pLabelMousePos->setText(strPos);
-        m_pLabelMousePos->adjustSize();
-        // 计算标签位置，考虑边界限制
-        QPoint posLabel = pEvent->pos() + QPoint(15, -20);
-        QRect labelRect = m_pLabelMousePos->rect();
-        QRect viewRect = viewport()->rect();
+    QPointF posScene = mapToScene(pEvent->pos());
+    QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',3).arg(posScene.y(),0,'f',3);
+    emit signalMousePos(strPos);
 
-        // 检查右边界
-        if (posLabel.x() + labelRect.width() > viewRect.right())
-            posLabel.setX(pEvent->pos().x() - labelRect.width() - 15);
-        // 检查上边界
-        if (posLabel.y() < viewRect.top())
-            posLabel.setY(pEvent->pos().y() + 20);
-
-        m_pLabelMousePos->move(posLabel);
-    }
 
     if (m_bDrag && (pEvent->buttons() & Qt::LeftButton))
     {
@@ -431,6 +380,7 @@ void CGraphicsView::UpdateRulers()
     }
 }
 
+
 void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
 {
     QGraphicsView::resizeEvent(pEvent);
@@ -441,7 +391,7 @@ void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
         setViewportMargins(20, 20, 0, 0);
 
         // 设置标尺位置
-        m_pRulerH->setGeometry(0, 0, width(), 20);
+        m_pRulerH->setGeometry(20, 0, width()- 20, 20);
         m_pRulerH->raise();
         m_pRulerH->show();
 
@@ -451,5 +401,14 @@ void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
 
         // 更新标尺
         UpdateRulers();
+    }
+}
+
+void CGraphicsView::drawForeground(QPainter* pPainter, const QRectF& rect)
+{
+    QGraphicsView::drawForeground(pPainter, rect);
+    if (m_bShowPosCross)
+    {
+
     }
 }
