@@ -39,12 +39,20 @@ void ShrikeDxf::InitWindowComponents()
 		InitAndCreateStackedWidget();
 		InitAndCreateMoveBtnsWidget();
 		InitAndCreateLayerTableView();
+		InitAndCreateCreateEntityWidget();
 
 		if (ui.verticalLayout_Layer)
 		{
 			ui.verticalLayout_Layer->setStretch(0, 3);
 			ui.verticalLayout_Layer->setStretch(1, 1);
 			ui.verticalLayout_Layer->setStretch(2, 2);
+		}
+		if (ui.horizontalLayout_FileStructure)
+		{
+			ui.horizontalLayout_FileStructure->setSpacing(2);
+			ui.horizontalLayout_FileStructure->setContentsMargins(0, 0, 0, 0);
+            ui.horizontalLayout_FileStructure->setStretch(0, 9);
+            ui.horizontalLayout_FileStructure->setStretch(1, 1);
 		}
 	});
 }
@@ -106,6 +114,15 @@ void ShrikeDxf::InitAndCreateMoveBtnsWidget()
 	if (m_pMoveBtnsWidget)
 	{
         m_pMoveBtnsWidget->InitWidgetAndAddToLayout();
+	}
+}
+
+void ShrikeDxf::InitAndCreateCreateEntityWidget()
+{
+	m_pCreateEntityWidget =  new CCreateEntityWidget(this);
+	if (m_pCreateEntityWidget)
+	{
+        //m_pCreateEntityWidget->InitWidgetAndAddToLayout();
 	}
 }
 

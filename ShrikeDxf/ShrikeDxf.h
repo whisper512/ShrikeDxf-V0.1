@@ -43,6 +43,8 @@ public:
     void InitAndCreateLayerTableView();
     //初始化移动按钮
     void InitAndCreateMoveBtnsWidget();
+    //初始化新建图元界面
+    void InitAndCreateCreateEntityWidget();
 
     //初始化位置显示label
     void InitLabels();
