@@ -60,13 +60,14 @@ signals:
 	//更新label显示文件名
 	void signalShowFileName(QString strFileName);
 
+	//
+
 
  public slots:
 	QString handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity);
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
 	int handleCopyEntity();
 	void handlePaste(QPointF pos);
-
 	void handleLayerModelChanged();
 
 	//point界面属性发生变化
@@ -95,4 +96,6 @@ signals:
 	//设置移动步长
 	void handleOnStepLengthOrAngleChanged(double dStepLength, double dRotationAngle);
 
+	//graphics中鼠标状态
+	void handleMouseStatus(int iIndex);
 };

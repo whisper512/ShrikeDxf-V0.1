@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include "ui_CreateEntityWidget.h"
@@ -17,10 +17,19 @@ public:
 private:
 	Ui::CCreateEntityWidgetClass ui;
 	QWidget* m_pMainWnd;
+	//当前选择的按钮
+	int m_iSlectedIndex;
 
 	void SetIcon();
 	void AdjustBtn();
+	void ConnectBtnSignals();
+	void RefreshBtn();
 
+signals:
+	void signalMouseStatus(int index);
+
+private slots:
+	void OnToolBtnClicked();
 
 protected:
 	void resizeEvent(QResizeEvent *event) override;

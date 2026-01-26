@@ -215,3 +215,31 @@ void CDxfManger::handleOnStepLengthOrAngleChanged(double dStepLength, double dRo
     //角度转弧度
     m_DxfMapping.m_dRotateStepRAD = dRotationAngle * (M_PI / 180);
 }
+
+void CDxfManger::handleMouseStatus(int iIndex)
+{
+    m_DxfMapping.iGraphicsMouseState = iIndex;
+    switch (m_DxfMapping.iGraphicsMouseState)
+    {
+    case 0:
+        m_DxfMapping.m_PreviewEntity.type = enumEntity_None;
+        break;
+    case 1:
+        m_DxfMapping.m_PreviewEntity.type = enumEntity_Point;
+        break;
+    case 2:
+        m_DxfMapping.m_PreviewEntity.type = enumEntity_Line;
+        break;
+    case 3:
+        m_DxfMapping.m_PreviewEntity.type = enumEntity_Circle;
+        break;
+    case 4:
+        m_DxfMapping.m_PreviewEntity.type = enumEntity_Arc;
+        break;
+    case 5:
+        m_DxfMapping.m_PreviewEntity.type = enumEntity_Polyline;
+        break;
+    default:
+        break;
+    }
+}

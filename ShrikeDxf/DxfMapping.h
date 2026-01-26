@@ -28,9 +28,12 @@ public:
     map<string, stuLayer> m_mapDxfEntities;
     //tree当前选择的entity
     stuSelectedEntity m_SelectedEntity;
-    //获取variant中存储的数据和类型
-    enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline);
+    //graphics鼠标当前状态
+    int iGraphicsMouseState = 0;
+    //预览图元
+    stuPreviewEntity m_PreviewEntity;
 
+    //移动的步长
     double m_dMoveStep = 1.0;
     double m_dRotateStepRAD = qDegreesToRadians(1.0);
 
@@ -68,6 +71,8 @@ public:
    
     
 public:
+    //获取variant中存储的数据和类型
+    enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity, Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline);
     //获取entity数据
     QString GetEntityInfo(QString strLayer, QString strType,QString strNum);
     //获取特定的entity
@@ -81,14 +86,13 @@ public:
 
     //修改图层属性
     void ChangeLayerProperty();
-
+    //移动图元
     void MoveUpSelectedEntity();
     void MoveDownSelectedEntity();
     void MoveLeftSelectedEntity();
     void MoveRightSelectedEntity();
     void RotateCWSelectedEntity();
     void RotateCCWSelectedEntity();
-
     //修改选中point属性
     void ChangePointProperty(Point point);
     //修改选中line属性
@@ -99,6 +103,10 @@ public:
     void ChangeArcProperty(Arc arc);
     //修改选中polyline属性
     void ChangePolylineProperty(Polyline polyline);
+
+    //预览图元相关
+    void ClearPreviewEntity();
+    void CreatePreviewEntity(const QPointF& pos);
 
 private:
     //当前多段线,用来读取dxf文档中的多段线

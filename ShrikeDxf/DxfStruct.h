@@ -100,6 +100,18 @@ struct stuSelectedEntity
     }
 };
 
+struct stuPreviewEntity
+{
+    enumEntity type;
+    QString strLayer;
+    variantDxfEntity entity;
+    stuPreviewEntity()
+    {
+        type = enumEntity_None;
+        strLayer = "";
+    }
+};
+
 
 
 //图层类

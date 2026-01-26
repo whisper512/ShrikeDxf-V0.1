@@ -39,6 +39,7 @@ private:
 	CRulerV* m_pRulerV;
 
 
+	//*****右键鼠标显示的针对view的操作*****
 	//锁定缩放
 	bool m_bLockZoom;
 	//沿x轴翻转
@@ -49,8 +50,12 @@ private:
 	bool m_bShowPosCross;
 	//左键拖拽
 	bool m_bDrag;
+
+	//*****右键鼠标显示的针对图元的操作*****
 	//开启复制图元中
 	bool m_bCopyingEntity;
+
+
 	//初始transform
 	QTransform m_tranformInitial;
 	//初始场景矩阵

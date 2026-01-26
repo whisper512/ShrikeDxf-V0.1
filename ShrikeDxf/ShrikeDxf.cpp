@@ -200,6 +200,10 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
                 connect(m_pDxfDataManger,&CDxfManger::signalShowFileName, this, &ShrikeDxf::handleShowDocName);
 			}
+			if (m_pCreateEntityWidget && m_pDxfDataManger)
+			{
+				connect(m_pCreateEntityWidget,&CCreateEntityWidget::signalMouseStatus,m_pDxfDataManger, &CDxfManger::handleMouseStatus);
+			}
 
 		});
 }
