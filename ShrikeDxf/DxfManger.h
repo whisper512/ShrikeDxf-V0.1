@@ -64,7 +64,7 @@ signals:
  public slots:
 	QString handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity);
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
-	int handleCopyEntity(const QString& strLayer, const QString& strEntity);
+	int handleCopyEntity();
 	void handlePaste(QPointF pos);
 
 	void handleLayerModelChanged();

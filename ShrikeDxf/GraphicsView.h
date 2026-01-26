@@ -63,6 +63,7 @@ private:
 	
 
 	void InitMenu(QWidget* pParent);
+	void InitRuler();
 	void InitGraphicsViewAction();
 	void InitScene();
 	void FilpView();
@@ -78,6 +79,7 @@ signals:
 public slots:
 	//类外交互
 	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene,bool bResetViewRect);
+	//正在复制图元
 	void handlelCopyintEntity();
 	//viewmenu动作
 	void handleFilpAlongX(bool bChecked);

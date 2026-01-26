@@ -32,7 +32,7 @@ signals:
 	//通知dxfmanger删除图元
 	void signalDeleteEntityData(const QString& strLayer, const QString& strEntity);
 	//通知dxfmanger复制图元
-	void signalCopyEntityData(const QString& strLayer, const QString& strEntity);
+	void signalCopyEntityData();
 public slots:
 	//获取模型用于刷新
 	void handleRefreshTree(CDxfTreeviewModel* pModel);

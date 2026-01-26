@@ -334,39 +334,6 @@ int CDxfMapping::DeleteEntity(QString strLayer, QString strType, QString strNum)
 	return 0;
 }
 
-int CDxfMapping::SaveCopyingEntity(QString strLayer, QString strType, QString strNum)
-{
-	//保存当前复制图元信息
-	auto CurLayer = m_mapDxfEntities.find(strLayer.toStdString());
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-		m_strCopyingLayer = strLayer;
-		if (strType == STR_POINT_LOWERCASE)
-		{
-			m_CopyingEntity = CurLayer->second.vecPoints.at(strNum.toInt() - 1);
-
-		}
-		else if (strType == STR_LINE_LOWERCASE)
-		{
-			m_CopyingEntity = CurLayer->second.vecLines.at(strNum.toInt() - 1);
-
-		}
-		else if (strType == STR_CIRCLE_LOWERCASE)
-		{
-			m_CopyingEntity = CurLayer->second.vecCircles.at(strNum.toInt() - 1);
-		}
-		else if (strType == STR_ARC_LOWERCASE)
-		{
-			m_CopyingEntity = CurLayer->second.vecArcs.at(strNum.toInt() - 1);
-		}
-		else if (strType == STR_POLYLINE_LOWERCASE)
-		{
-			m_CopyingEntity = CurLayer->second.vecPolylines.at(strNum.toInt() - 1);
-		}
-	}
-	return 0;
-}
-
 
 int CDxfMapping::PasteEntity(QPointF pos)
 {
@@ -378,11 +345,11 @@ int CDxfMapping::PasteEntity(QPointF pos)
 	enumEntity enumEntityType;
 
 
-	if (m_CopyingEntity.index() != std::variant_npos)
+	if (m_SelectedEntity.entity.index() != std::variant_npos)
 	{
-		enumEntityType = GetVariantDxfEntity(m_CopyingEntity, point, line, circle, arc, polyline);
+		enumEntityType = GetVariantDxfEntity(m_SelectedEntity.entity, point, line, circle, arc, polyline);
 
-		auto CurLayer = m_mapDxfEntities.find(m_strCopyingLayer.toStdString());
+		auto CurLayer = m_mapDxfEntities.find(m_SelectedEntity.strLayer.toStdString());
 		if (CurLayer != m_mapDxfEntities.end())
 		{
 			switch (enumEntityType)
@@ -453,7 +420,6 @@ int CDxfMapping::PasteEntity(QPointF pos)
 				break;
 			}
 		}
-		m_CopyingEntity = variantDxfEntity();
 		return 1;
 	}
 	else

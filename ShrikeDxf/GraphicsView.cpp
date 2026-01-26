@@ -53,6 +53,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     //开启鼠标追踪
     setMouseTracking(true);
     InitMenu(this);
+    InitRuler();
     InitScene();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -67,11 +68,14 @@ void CGraphicsView::InitMenu(QWidget* pParent)
     setContextMenuPolicy(Qt::CustomContextMenu);
     InitGraphicsViewAction();
     connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
+}
 
+void CGraphicsView::InitRuler()
+{
     // 创建标尺
     m_pRulerH = new CRulerH(this);
     m_pRulerH->setFixedHeight(20);
-    m_pRulerH->setGeometry(20, 0, width()-20, 20);
+    m_pRulerH->setGeometry(20, 0, width() - 20, 20);
     m_pRulerH->raise();
     m_pRulerH->show();
 
@@ -110,7 +114,6 @@ void CGraphicsView::InitGraphicsViewAction()
     m_pActionFilpY = new QAction("Vertical Flip", this);
     m_pActionFilpY->setCheckable(true);
     m_pActionFilpY->setChecked(false);
-
     m_pActionResetView = new QAction("Reset View", this);
 
     m_pGraphicsViewMenu->addAction(m_pActionDrag);
@@ -124,6 +127,10 @@ void CGraphicsView::InitGraphicsViewAction()
     connect(m_pActionFilpX, &QAction::toggled, this, &CGraphicsView::handleFilpAlongX);
     connect(m_pActionFilpY, &QAction::toggled, this, &CGraphicsView::handleFilpAlongY);
     connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
+
+    m_pActionPasteEntity = new QAction("Paste", this);
+    m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
+    connect(m_pActionPasteEntity,&QAction::triggered,this,&CGraphicsView::handlePasteEntity);
 }
 
 

@@ -145,24 +145,7 @@ void CTreeViewManger::DeleteEntity()
 
 void CTreeViewManger::CopyEntity()
 {
-    QModelIndex index = m_pTreeView->currentIndex();
-	if (index.isValid())
-	{
-        QAbstractItemModel* model = m_pTreeView->model();
-		QModelIndex ParentIndex = index.parent();
-		QString strLayer;
-
-		if (ParentIndex.isValid())
-		{
-			strLayer = model->data(ParentIndex, Qt::DisplayRole).toString();
-		}
-		else
-		{
-
-		}
-		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-		emit signalCopyEntityData(strLayer, strEntity);
-	}
+	emit signalCopyEntityData();
 }
 
 

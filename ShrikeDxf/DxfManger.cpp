@@ -102,19 +102,11 @@ int CDxfManger::handleDeleteEntity(const QString& strLayer, const QString& strEn
     return -1;
 }
 
-int CDxfManger::handleCopyEntity(const QString& strLayer, const QString& strEntity)
+int CDxfManger::handleCopyEntity()
 {
-    //获取选择的entity,保存到mapping
-    QRegularExpression re("(\\w+)(\\d+)");
-    QRegularExpressionMatch match = re.match(strEntity);
-    if (match.hasMatch())
-    {
-        m_DxfMapping.SaveCopyingEntity(strLayer, match.captured(1), match.captured(2));
-        //通知graphics正在复制图元
-        emit signalCopyintEntity();
-        return 1;
-    }
-    return -1;
+    //通知graphics正在复制图元
+    emit signalCopyintEntity();
+    return 1;
 }
 
 void CDxfManger::handlePaste(QPointF pos)

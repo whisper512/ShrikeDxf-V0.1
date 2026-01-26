@@ -26,10 +26,6 @@ public:
     // 存放dxf文件中所有的数据
     // 图层名 图层数据
     map<string, stuLayer> m_mapDxfEntities;
-    //复制操作临时存储的图元
-    variantDxfEntity m_CopyingEntity;
-    //复制操作临时存储的图元所在图层
-    QString m_strCopyingLayer;
     //tree当前选择的entity
     stuSelectedEntity m_SelectedEntity;
     //获取variant中存储的数据和类型
@@ -80,8 +76,6 @@ public:
     void SaveSelectedEntity(QString strLayer, QString strType, QString strNum);
     //删除entity
     int DeleteEntity(QString strLayer, QString strType, QString strNum);
-	//保存复制entity
-    int SaveCopyingEntity(QString strLayer, QString strType, QString strNum);
     //粘贴entity
     int PasteEntity(QPointF pos);
 
