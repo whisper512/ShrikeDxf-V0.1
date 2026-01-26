@@ -11,7 +11,19 @@ public:
 	CCreateEntityWidget(QWidget *parent = nullptr);
 	~CCreateEntityWidget();
 
+	void InitWidgetAndAddToLayout();
+	
+
 private:
 	Ui::CCreateEntityWidgetClass ui;
+	QWidget* m_pMainWnd;
+
+	void SetIcon();
+	void AdjustBtn();
+
+
+protected:
+	void resizeEvent(QResizeEvent *event) override;
+
 };
 

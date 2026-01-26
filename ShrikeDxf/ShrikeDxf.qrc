@@ -7,5 +7,6 @@
         <file>res/Line.png</file>
         <file>res/Polyline.png</file>
         <file>res/Layer.png</file>
+        <file>res/Mouse.png</file>
     </qresource>
 </RCC>

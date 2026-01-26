@@ -14,12 +14,26 @@
    <string>ShrikeDxf</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,3,1">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3,1">
     <property name="spacing">
-     <number>2</number>
+     <number>3</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_FileStructure"/>
+     <layout class="QHBoxLayout" name="horizontalLayout_FileStructure" stretch="9,1">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_Tree"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_Newentity">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+       </layout>
+      </item>
+     </layout>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_Main"/>

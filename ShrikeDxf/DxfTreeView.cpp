@@ -26,7 +26,7 @@ void CTreeViewManger::CreateTreeView()
 	if (m_pMainwnd)
 	{
 		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
-		pWnd->ui.horizontalLayout_FileStructure->addWidget(m_pTreeView);
+		pWnd->ui.verticalLayout_Tree->addWidget(m_pTreeView);
 	}
 	else
 	{
