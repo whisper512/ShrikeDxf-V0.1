@@ -78,8 +78,13 @@ public:
 	QWidget* m_pMainWnd;
 
 signals:
+	//粘贴信号
 	void signalPaste(QPointF pos);
+	//鼠标位置,用来显示在label
 	void signalMousePos(QString strPos);
+	void signalGraphicsViewMouseMove(QPointF pos);
+	void signalGraphicsViewLeftCLick(QPointF pos);
+
 
 public slots:
 	//类外交互
