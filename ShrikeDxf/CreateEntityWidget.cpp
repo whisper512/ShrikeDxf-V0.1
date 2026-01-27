@@ -21,13 +21,13 @@ void CCreateEntityWidget::InitWidgetAndAddToLayout()
 		pWnd->ui.verticalLayout_Newentity->addWidget(this);
 	}
 
-	SetIcon();
+	SetIconAndTip();
 	ConnectBtnSignals();
 	AdjustBtn();
 	RefreshBtn();
 }
 
-void CCreateEntityWidget::SetIcon()
+void CCreateEntityWidget::SetIconAndTip()
 {
 	ui.toolButton_Mouse->setIcon(QIcon(":/ShrikeDxf/res/Mouse.png"));
 	ui.toolButton_Point->setIcon(QIcon(":/ShrikeDxf/res/Point.png"));
@@ -35,6 +35,13 @@ void CCreateEntityWidget::SetIcon()
     ui.toolButton_Circle->setIcon(QIcon(":/ShrikeDxf/res/Circle.png"));
     ui.toolButton_Arc->setIcon(QIcon(":/ShrikeDxf/res/Arc.png"));
     ui.toolButton_Polyline->setIcon(QIcon(":/ShrikeDxf/res/Polyline.png"));
+
+	ui.toolButton_Mouse->setToolTip("Mouse");
+    ui.toolButton_Point->setToolTip("Point");
+    ui.toolButton_Line->setToolTip("Line");
+    ui.toolButton_Circle->setToolTip("Circle");
+    ui.toolButton_Arc->setToolTip("Arc");
+    ui.toolButton_Polyline->setToolTip("Polyline");
 }
 
 void CCreateEntityWidget::ConnectBtnSignals()

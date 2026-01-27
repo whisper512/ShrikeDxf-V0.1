@@ -20,7 +20,7 @@ private:
 	//当前选择的按钮
 	int m_iSlectedIndex;
 
-	void SetIcon();
+	void SetIconAndTip();
 	void AdjustBtn();
 	void ConnectBtnSignals();
 	void RefreshBtn();
