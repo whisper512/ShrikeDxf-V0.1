@@ -36,12 +36,13 @@ private:
 
 public:
 	//预览相关
-	QPointF m_lineStartPoint;  // 记录直线的起点
+	QPointF m_LineStartPoint;  // 记录直线的起点
 	bool m_isDrawingLine;      // 标记是否正在绘制直线
 	
-
+public:
 	//当前工作图层
     QString m_strCurrentLayer;
+	QColor GetCurrentLayerColor();
 private:
 	//刷新树状图和绘图的model
 	void RefreshTreeModelAndGraphicsview();

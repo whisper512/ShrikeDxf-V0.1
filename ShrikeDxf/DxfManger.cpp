@@ -63,6 +63,15 @@ void CDxfManger::ClearDxfMappingData()
     m_DxfMapping.m_mapDxfEntities.clear();
 }
 
+QColor CDxfManger::GetCurrentLayerColor()
+{
+    if (m_DxfMapping.m_mapDxfEntities.find(m_strCurrentLayer.toStdString()) != m_DxfMapping.m_mapDxfEntities.end())
+    {
+        return m_DxfMapping.m_mapDxfEntities[m_strCurrentLayer.toStdString()].color;
+    }
+    return QColor();
+}
+
 void CDxfManger::RefreshTreeModelAndGraphicsview()
 {
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
@@ -266,7 +275,7 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
         Point previewPoint(pos.x(), pos.y());
         m_DxfMapping.m_PreviewEntity.strLayer = "0";
         // 绘制预览点
-        m_DxfGraphicsScene.DrawPreviewPoint(previewPoint);
+        m_DxfGraphicsScene.DrawPreviewPoint(previewPoint,GetCurrentLayerColor());
         break;
     }
     case enumEntity_Line:
@@ -275,12 +284,12 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
         {
             //绘制起始点
             Point previewPoint(pos.x(), pos.y());
-            m_DxfGraphicsScene.DrawPreviewPoint(previewPoint);
+            m_DxfGraphicsScene.DrawPreviewPoint(previewPoint,GetCurrentLayerColor());
         }
         else {
             //绘制预览直线
-            Line previewLine(Point(m_lineStartPoint.x(), m_lineStartPoint.y()), Point(pos.x(), pos.y()));
-            m_DxfGraphicsScene.DrawPreviewLine(previewLine);
+            Line previewLine(Point(m_LineStartPoint.x(), m_LineStartPoint.y()), Point(pos.x(), pos.y()));
+            m_DxfGraphicsScene.DrawPreviewLine(previewLine,GetCurrentLayerColor());
         }
         break;
     }
@@ -322,12 +331,12 @@ void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
     {
         if (!m_isDrawingLine) {
             // 第一次点击，记录起点
-            m_lineStartPoint = pos;
+            m_LineStartPoint = pos;
             m_isDrawingLine = true;
         }
         else {
             // 第二次点击，创建直线并添加到场景
-            Line newLine(Point(m_lineStartPoint.x(), m_lineStartPoint.y()), Point(pos.x(), pos.y()));
+            Line newLine(Point(m_LineStartPoint.x(), m_LineStartPoint.y()), Point(pos.x(), pos.y()));
             //m_DxfMapping.AddLineEntity(newLine);
 
             // 重置绘制状态

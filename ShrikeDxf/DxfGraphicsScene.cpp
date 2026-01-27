@@ -129,7 +129,7 @@ void CDxfGraphicsScene::ClearPreviewItems()
     }
 }
 
-void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
+void CDxfGraphicsScene::DrawPreviewPoint(const Point& point,QColor color)
 {
     // 清除之前的预览图形
     ClearPreviewItems();
@@ -144,8 +144,8 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
     QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(
         point.x - size / 2, point.y - size / 2,
         size, size);
-    centerPoint->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
-    centerPoint->setBrush(QBrush(Qt::red));
+    centerPoint->setPen(QPen(color, CalculateDynamicPenWidth()));
+    centerPoint->setBrush(QBrush(color));
     centerPoint->setZValue(1000);
     addItem(centerPoint);
     m_PreviewItems.append(centerPoint);
@@ -158,7 +158,7 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
         point.x - crossSize / 2, point.y,
         point.x + crossSize / 2, point.y
     );
-    hLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    hLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     hLine->setZValue(1000);
     addItem(hLine);
     m_PreviewItems.append(hLine);
@@ -166,13 +166,13 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
         point.x, point.y - crossSize / 2,
         point.x, point.y + crossSize / 2
     );
-    vLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    vLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     vLine->setZValue(1000);
     addItem(vLine);
     m_PreviewItems.append(vLine);
 }
 
-void CDxfGraphicsScene::DrawPreviewLine(const Line& line)
+void CDxfGraphicsScene::DrawPreviewLine(const Line& line,QColor color)
 {
     // 清除之前的预览图形
     ClearPreviewItems();
@@ -183,7 +183,7 @@ void CDxfGraphicsScene::DrawPreviewLine(const Line& line)
     );
 
     // 设置预览直线的样式
-    previewLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    previewLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     previewLine->setZValue(1000);
 
     addItem(previewLine);

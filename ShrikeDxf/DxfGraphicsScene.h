@@ -30,8 +30,8 @@ private:
 public:
 	QList<QGraphicsItem*> m_PreviewItems;
 	void ClearPreviewItems();
-	void DrawPreviewPoint(const Point& point);
-	void DrawPreviewLine(const Line& line);
+	void DrawPreviewPoint(const Point& point,QColor color);
+	void DrawPreviewLine(const Line& line,QColor color);
 private:
 	void DrawPoint(const Point& point,const QColor& color);
 	void DrawLine(const Line& line, const QColor& color);
