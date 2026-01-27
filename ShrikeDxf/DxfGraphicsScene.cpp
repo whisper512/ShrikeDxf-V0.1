@@ -138,15 +138,12 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
     QRectF sceneRect = this->sceneRect();
     qreal sceneSize = qMin(sceneRect.width(), sceneRect.height());
 
-    // 基础点大小 - 根据场景大小动态调整
     qreal size = sceneSize * 0.005;
     size = qMax(size, 1.0);
 
-    // 绘制中心圆点
     QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(
         point.x - size / 2, point.y - size / 2,
-        size, size
-    );
+        size, size);
     centerPoint->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
     centerPoint->setBrush(QBrush(Qt::red));
     centerPoint->setZValue(1000);
@@ -154,10 +151,9 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
     m_PreviewItems.append(centerPoint);
 
     // 根据场景大小动态调整十字标记大小
-    qreal crossSize = sceneSize * 0.02;  // 使用场景尺寸的2%作为十字标记的大小
-    crossSize = qMax(crossSize, size * 2);  // 确保十字标记有最小尺寸
+    qreal crossSize = sceneSize * 0.02;
+    crossSize = qMax(crossSize, size * 2);
 
-    // 绘制水平十字线
     QGraphicsLineItem* hLine = new QGraphicsLineItem(
         point.x - crossSize / 2, point.y,
         point.x + crossSize / 2, point.y
@@ -166,8 +162,6 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
     hLine->setZValue(1000);
     addItem(hLine);
     m_PreviewItems.append(hLine);
-
-    // 绘制垂直十字线
     QGraphicsLineItem* vLine = new QGraphicsLineItem(
         point.x, point.y - crossSize / 2,
         point.x, point.y + crossSize / 2
@@ -183,7 +177,6 @@ void CDxfGraphicsScene::DrawPreviewLine(const Line& line)
     // 清除之前的预览图形
     ClearPreviewItems();
 
-    // 创建预览直线
     QGraphicsLineItem* previewLine = new QGraphicsLineItem(
         line.StartX(), line.StartY(),
         line.EndX(), line.EndY()
@@ -193,10 +186,7 @@ void CDxfGraphicsScene::DrawPreviewLine(const Line& line)
     previewLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
     previewLine->setZValue(1000);
 
-    // 添加到场景
     addItem(previewLine);
-
-    // 保存预览项以便后续清除
     m_PreviewItems.append(previewLine);
 }
 

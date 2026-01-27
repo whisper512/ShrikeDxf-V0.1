@@ -266,12 +266,12 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
     {
         if (!m_isDrawingLine) 
         {
-            // 还没有开始绘制直线，只显示鼠标位置的预览点
+            //绘制起始点
             Point previewPoint(pos.x(), pos.y());
             m_DxfGraphicsScene.DrawPreviewPoint(previewPoint);
         }
         else {
-            // 已经记录了起点，绘制预览直线
+            //绘制预览直线
             Line previewLine(Point(m_lineStartPoint.x(), m_lineStartPoint.y()), Point(pos.x(), pos.y()));
             m_DxfGraphicsScene.DrawPreviewLine(previewLine);
         }
