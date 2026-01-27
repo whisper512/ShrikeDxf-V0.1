@@ -276,6 +276,7 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
         m_DxfMapping.m_PreviewEntity.strLayer = "0";
         // 绘制预览点
         m_DxfGraphicsScene.DrawPreviewPoint(previewPoint,GetCurrentLayerColor());
+        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
         break;
     }
     case enumEntity_Line:
@@ -291,6 +292,7 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
             Line previewLine(Point(m_LineStartPoint.x(), m_LineStartPoint.y()), Point(pos.x(), pos.y()));
             m_DxfGraphicsScene.DrawPreviewLine(previewLine,GetCurrentLayerColor());
         }
+        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
         break;
     }
     case enumEntity_Circle:
@@ -314,7 +316,6 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
     default:
         break;
     }
-    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 }
 
 void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
