@@ -34,6 +34,11 @@ private:
 	//graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 
+public:
+	//预览相关
+	QPointF m_lineStartPoint;  // 记录直线的起点
+	bool m_isDrawingLine;      // 标记是否正在绘制直线
+	
 private:
 	//刷新树状图和绘图的model
 	void RefreshTreeModelAndGraphicsview();
@@ -60,7 +65,7 @@ signals:
 	//更新label显示文件名
 	void signalShowFileName(QString strFileName);
 
-	//
+	
 
 
  public slots:
@@ -98,4 +103,7 @@ signals:
 
 	//graphics中鼠标状态
 	void handleMouseStatus(int iIndex);
+	void handleGraphicsViewMouseMove(QPointF pos);
+	void handleGraphicsViewLeftClick(QPointF pos);
+
 };

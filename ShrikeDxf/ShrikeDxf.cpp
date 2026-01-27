@@ -161,6 +161,8 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pDxfDataManger, &CDxfManger::signalCopyintEntity, m_pGraphicsView, &CGraphicsView::handlelCopyintEntity);
 				//view通知manger鼠标位置
 				connect(m_pGraphicsView,&CGraphicsView::signalPaste,m_pDxfDataManger, &CDxfManger::handlePaste);
+				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewMouseMove,m_pDxfDataManger,&CDxfManger::handleGraphicsViewMouseMove);
+				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftCLick,m_pDxfDataManger, &CDxfManger::handleGraphicsViewLeftClick);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{

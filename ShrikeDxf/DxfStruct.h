@@ -104,13 +104,41 @@ struct stuPreviewEntity
 {
     enumEntity type;
     QString strLayer;
-    variantDxfEntity entity;
     stuPreviewEntity()
     {
         type = enumEntity_None;
         strLayer = "";
     }
 };
+
+static enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity, Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline)
+{
+    enumEntity EntityType = enumEntity_None;
+    std::visit([&](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, Point>) {
+            point = arg;
+            EntityType = enumEntity_Point;
+        }
+        else if constexpr (std::is_same_v<T, Line>) {
+            line = arg;
+            EntityType = enumEntity_Line;
+        }
+        else if constexpr (std::is_same_v<T, Circle>) {
+            circle = arg;
+            EntityType = enumEntity_Circle;
+        }
+        else if constexpr (std::is_same_v<T, Arc>) {
+            arc = arg;
+            EntityType = enumEntity_Arc;
+        }
+        else if constexpr (std::is_same_v<T, Polyline>) {
+            polyline = arg;
+            EntityType = enumEntity_Polyline;
+        }
+        }, dxfEntity);
+    return EntityType;
+}
 
 
 

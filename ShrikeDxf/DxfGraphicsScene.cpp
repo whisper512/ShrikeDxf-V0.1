@@ -1,5 +1,7 @@
-﻿#include<QPainterPath>
-
+﻿#include<QGraphicsItem>
+#include<QGraphicsEllipseItem>
+#include<QGraphicsLineItem>
+#include<QPainterPath>
 #include "DxfGraphicsScene.h"
 
 
@@ -59,8 +61,144 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
 void CDxfGraphicsScene::ClearScene()
 {
     clear();
+    m_PreviewItems.clear();
 }
 
+
+void CDxfGraphicsScene::ClearPreviewItems()
+{
+    if (!this) 
+    {
+        return;
+    }
+
+    if (m_PreviewItems.isEmpty()) 
+    {
+        return;
+    }
+
+    // 创建临时列表，避免在迭代过程中修改原列表
+    QList<QGraphicsItem*> itemsToRemove;
+
+    
+    for (int i = 0; i < m_PreviewItems.size(); ++i) {
+        QGraphicsItem* item = m_PreviewItems.at(i);
+        if (item) {
+            itemsToRemove.append(item);
+        }
+    }
+    m_PreviewItems.clear();
+
+    for (QGraphicsItem* item : itemsToRemove) {
+        if (item) {
+            try {
+                // 检查项是否有效且还在场景中
+                bool isValid = true;
+                try {
+                    // 尝试访问项的场景，可能会抛出异常
+                    QGraphicsScene* itemScene = item->scene();
+                    if (itemScene != this) {
+                        isValid = false;
+                    }
+                }
+                catch (...) {
+                    // 如果访问场景时抛出异常，认为项无效
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    try {
+                        removeItem(item);
+                    }
+                    catch (...) {
+                        // 移除项时可能抛出异常，忽略
+                    }
+                }
+                try {
+                    delete item;
+                }
+                catch (...) {
+                    // 删除项时可能抛出异常，忽略
+                }
+            }
+            catch (...) {
+                // 捕获所有可能的异常，防止程序崩溃
+                continue;
+            }
+        }
+    }
+}
+
+void CDxfGraphicsScene::DrawPreviewPoint(const Point& point)
+{
+    // 清除之前的预览图形
+    ClearPreviewItems();
+
+    // 获取场景尺寸
+    QRectF sceneRect = this->sceneRect();
+    qreal sceneSize = qMin(sceneRect.width(), sceneRect.height());
+
+    // 基础点大小 - 根据场景大小动态调整
+    qreal size = sceneSize * 0.005;
+    size = qMax(size, 1.0);
+
+    // 绘制中心圆点
+    QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(
+        point.x - size / 2, point.y - size / 2,
+        size, size
+    );
+    centerPoint->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    centerPoint->setBrush(QBrush(Qt::red));
+    centerPoint->setZValue(1000);
+    addItem(centerPoint);
+    m_PreviewItems.append(centerPoint);
+
+    // 根据场景大小动态调整十字标记大小
+    qreal crossSize = sceneSize * 0.02;  // 使用场景尺寸的2%作为十字标记的大小
+    crossSize = qMax(crossSize, size * 2);  // 确保十字标记有最小尺寸
+
+    // 绘制水平十字线
+    QGraphicsLineItem* hLine = new QGraphicsLineItem(
+        point.x - crossSize / 2, point.y,
+        point.x + crossSize / 2, point.y
+    );
+    hLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    hLine->setZValue(1000);
+    addItem(hLine);
+    m_PreviewItems.append(hLine);
+
+    // 绘制垂直十字线
+    QGraphicsLineItem* vLine = new QGraphicsLineItem(
+        point.x, point.y - crossSize / 2,
+        point.x, point.y + crossSize / 2
+    );
+    vLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    vLine->setZValue(1000);
+    addItem(vLine);
+    m_PreviewItems.append(vLine);
+}
+
+void CDxfGraphicsScene::DrawPreviewLine(const Line& line)
+{
+    // 清除之前的预览图形
+    ClearPreviewItems();
+
+    // 创建预览直线
+    QGraphicsLineItem* previewLine = new QGraphicsLineItem(
+        line.StartX(), line.StartY(),
+        line.EndX(), line.EndY()
+    );
+
+    // 设置预览直线的样式
+    previewLine->setPen(QPen(Qt::red, CalculateDynamicPenWidth()));
+    previewLine->setZValue(1000);
+
+    // 添加到场景
+    addItem(previewLine);
+
+    // 保存预览项以便后续清除
+    m_PreviewItems.append(previewLine);
+}
 
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 {

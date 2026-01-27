@@ -104,9 +104,6 @@ public:
     //修改选中polyline属性
     void ChangePolylineProperty(Polyline polyline);
 
-    //预览图元相关
-    void ClearPreviewEntity();
-    void CreatePreviewEntity(const QPointF& pos);
 
 private:
     //当前多段线,用来读取dxf文档中的多段线

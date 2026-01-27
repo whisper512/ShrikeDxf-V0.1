@@ -1080,27 +1080,3 @@ void CDxfMapping::ChangePolylineProperty(Polyline polyline)
 	}
 }
 
-void CDxfMapping::ClearPreviewEntity()
-{
-	m_PreviewEntity.type = enumEntity_None;
-	m_PreviewEntity.entity = variantDxfEntity();
-}
-
-void CDxfMapping::CreatePreviewEntity(const QPointF& pos)
-{
-	Point point;
-	Line line;
-	Circle circle;
-	Arc arc;
-	Polyline polyline;
-
-	switch (m_PreviewEntity.type)
-	{
-        case enumEntity_Point:
-		{
-			point = Point(pos.x(), pos.y());
-		}
-	default:
-		break;
-	}
-}

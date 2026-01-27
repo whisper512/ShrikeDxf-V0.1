@@ -5,7 +5,8 @@
 
 
 CDxfManger::CDxfManger(QWidget* pMainWnd):
-    m_pMainWnd(pMainWnd)
+    m_pMainWnd(pMainWnd),
+    m_isDrawingLine(false)
 {
 }
 
@@ -219,6 +220,11 @@ void CDxfManger::handleOnStepLengthOrAngleChanged(double dStepLength, double dRo
 void CDxfManger::handleMouseStatus(int iIndex)
 {
     m_DxfMapping.iGraphicsMouseState = iIndex;
+
+    if (iIndex != 2) {  // 不是直线绘制模式
+        m_isDrawingLine = false;
+    }
+
     switch (m_DxfMapping.iGraphicsMouseState)
     {
     case 0:
@@ -242,4 +248,109 @@ void CDxfManger::handleMouseStatus(int iIndex)
     default:
         break;
     }
+}
+
+void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
+{
+    switch (m_DxfMapping.m_PreviewEntity.type)
+    {
+    case enumEntity_Point:
+    {
+        Point previewPoint(pos.x(), pos.y());
+        m_DxfMapping.m_PreviewEntity.strLayer = "0";
+        // 绘制预览点
+        m_DxfGraphicsScene.DrawPreviewPoint(previewPoint);
+        break;
+    }
+    case enumEntity_Line:
+    {
+        if (!m_isDrawingLine) 
+        {
+            // 还没有开始绘制直线，只显示鼠标位置的预览点
+            Point previewPoint(pos.x(), pos.y());
+            m_DxfGraphicsScene.DrawPreviewPoint(previewPoint);
+        }
+        else {
+            // 已经记录了起点，绘制预览直线
+            Line previewLine(Point(m_lineStartPoint.x(), m_lineStartPoint.y()), Point(pos.x(), pos.y()));
+            m_DxfGraphicsScene.DrawPreviewLine(previewLine);
+        }
+        break;
+    }
+    case enumEntity_Circle:
+    {
+        // 实现圆预览逻辑
+        // 需要记录圆心，当前鼠标位置计算半径
+        break;
+    }
+    case enumEntity_Arc:
+    {
+        // 实现圆弧预览逻辑
+        // 需要记录起点、终点和半径
+        break;
+    }
+    case enumEntity_Polyline:
+    {
+        // 实现多段线预览逻辑
+        // 需要记录所有已确定的点，当前鼠标位置作为新的点
+        break;
+    }
+    default:
+        break;
+    }
+    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
+}
+
+void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
+{
+    switch (m_DxfMapping.m_PreviewEntity.type)
+    {
+    case enumEntity_Point:
+    {
+        Point newPoint(pos.x(), pos.y());
+        //m_DxfMapping.AddPointEntity(newPoint);
+        break;
+    }
+    case enumEntity_Line:
+    {
+        if (!m_isDrawingLine) {
+            // 第一次点击，记录起点
+            m_lineStartPoint = pos;
+            m_isDrawingLine = true;
+        }
+        else {
+            // 第二次点击，创建直线并添加到场景
+            Line newLine(Point(m_lineStartPoint.x(), m_lineStartPoint.y()), Point(pos.x(), pos.y()));
+            //m_DxfMapping.AddLineEntity(newLine);
+
+            // 重置绘制状态
+            m_isDrawingLine = false;
+
+            // 刷新视图
+            RefreshTreeModelAndGraphicsview();
+        }
+        break;
+        break;
+    }
+    case enumEntity_Circle:
+    {
+        // 第一次点击记录圆心
+        // 第二次点击计算半径并添加圆
+        break;
+    }
+    case enumEntity_Arc:
+    {
+        // 实现圆弧的三点或两点加半径逻辑
+        break;
+    }
+    case enumEntity_Polyline:
+    {
+        // 每次点击添加一个顶点
+        // 右键或双击结束绘制
+        break;
+    }
+    default:
+        break;
+    }
+    //RefreshTreeModelAndGraphicsview();
 }

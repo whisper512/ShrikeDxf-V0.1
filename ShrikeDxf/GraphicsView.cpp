@@ -310,7 +310,7 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
     QPointF posScene = mapToScene(pEvent->pos());
     QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',3).arg(posScene.y(),0,'f',3);
     emit signalMousePos(strPos);
-
+    emit signalGraphicsViewMouseMove(posScene);
 
     if (m_bDrag && (pEvent->buttons() & Qt::LeftButton))
     {
@@ -341,6 +341,12 @@ void CGraphicsView::mousePressEvent(QMouseEvent* pEvent)
         m_pointLastPos = pEvent->pos();
         setCursor(Qt::ClosedHandCursor);
     }
+    if (pEvent->button() == Qt::LeftButton)
+    {
+        QPointF scenePos = mapToScene(pEvent->pos());
+        emit signalGraphicsViewLeftCLick(scenePos);
+    }
+
     QGraphicsView::mousePressEvent(pEvent);
 }
 

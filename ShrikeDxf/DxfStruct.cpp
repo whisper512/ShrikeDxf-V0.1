@@ -7,4 +7,3 @@ CDxfStruct::CDxfStruct()
 CDxfStruct::~CDxfStruct()
 {
 }
-
