@@ -59,6 +59,7 @@ void CLayerTableViewManger::handleTableViewClicked(const QModelIndex& index)
 {
 	if (index.column() == 2)
 	{
+		//直接修改模型
 		QStandardItemModel* pModel = qobject_cast<QStandardItemModel*>(m_pTableView->model());
 		if (pModel)
 		{
@@ -70,6 +71,17 @@ void CLayerTableViewManger::handleTableViewClicked(const QModelIndex& index)
 			}
 		}
 	}
+
+	// 获取点击行的图层名称并发送信号
+	QAbstractItemModel* pModel = m_pTableView->model();
+	if (pModel)
+	{
+		QModelIndex nameIndex = pModel->index(index.row(), 1);
+		QString strLayerName = pModel->data(nameIndex).toString(); // 获取图层名称
+		emit signalChangeCurrentLayer(strLayerName);
+	}
+
+	//通知模型已经修改,刷新
 	emit signalLayerModelChanged();
 }
 
@@ -87,6 +99,14 @@ void CLayerTableViewManger::handleRefreshLayerTableview(CDxfLayerTableviewModel*
 		for (int col = 0; col < pModel->columnCount(); col++)
 		{
 			m_pTableView->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Stretch);
+		}
+		// 获取第一行的图层名称并发送信号
+		if (pModel->rowCount() > 0)
+		{
+			QModelIndex firstLayerIndex = pModel->index(0, 1);
+			QString strCurLayer = pModel->data(firstLayerIndex).toString();
+			//加载后默认工作图层为第一个图层
+			emit signalChangeCurrentLayer(strCurLayer);
 		}
 	}
 }

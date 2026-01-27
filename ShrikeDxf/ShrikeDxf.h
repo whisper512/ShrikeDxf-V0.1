@@ -74,6 +74,9 @@ public:
     QLabel* m_pLabelPos;
     //显示当前文档名称
     QLabel* m_pLabelDocName;
+    //显示当前工作图层
+    QLabel* m_pLabelLayer;
+
 
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;
@@ -81,8 +84,8 @@ public:
     CDxfManger* m_pDxfDataManger;
 
 public slots:
-    void handlesignalMousePos(QString strPos);
+    void handleMousePos(QString strPos);
     void handleShowDocName(QString strDocName);
-
+    void handleShowLayerName(QString strLayerName);
 };
 

@@ -284,7 +284,6 @@ void CDxfGraphicsScene::DrawText(const Text& text, const QColor& color)
 }
 
 
-
 qreal CDxfGraphicsScene::CalculateDynamicPenWidth()
 {
     QRectF sceneRect = this->sceneRect();

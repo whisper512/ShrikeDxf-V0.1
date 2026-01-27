@@ -39,6 +39,9 @@ public:
 	QPointF m_lineStartPoint;  // 记录直线的起点
 	bool m_isDrawingLine;      // 标记是否正在绘制直线
 	
+
+	//当前工作图层
+    QString m_strCurrentLayer;
 private:
 	//刷新树状图和绘图的model
 	void RefreshTreeModelAndGraphicsview();
@@ -65,16 +68,29 @@ signals:
 	//更新label显示文件名
 	void signalShowFileName(QString strFileName);
 
-	
-
+	//通知主界面修改label
+	void signalCurrentLayer(QString strLayer);
 
  public slots:
+	 //-----treeview的槽函数-----
+	 //保存tree鼠标点选的图元
 	QString handleSaveSelectedEntity(const QString& strLayer, const QString& strEntity);
+	//tree删除图元
 	int handleDeleteEntity(const QString& strLayer, const QString& strEntity);
+	//通知graphics复制图元
 	int handleCopyEntity();
+	//粘贴图元
 	void handlePaste(QPointF pos);
+	//-----------
+	
+	//-----tablelayer的槽函数-----
+	//tablelayer的模型发生改变,刷新
 	void handleLayerModelChanged();
+	//工作图层改变
+	void handleChangeCurrentLayer(QString strLayer);
+	//-----------
 
+	//-----stackwidget的槽函数-----
 	//point界面属性发生变化
 	void handlePointAttributeChanged(Point point);
 	//line界面属性发生变化
@@ -85,7 +101,9 @@ signals:
     void handleArcAttributeChanged(Arc arc);
 	//polyline界面属性发生变化
     void handlePolylineAttributeChanged(Polyline polyline);
+	//-----------
 
+	//-----movewidget的槽函数-----
 	//向上按钮按下
 	void handleOnBtnUpClicked();
     //向下按钮按下
@@ -100,10 +118,13 @@ signals:
     void handleOnBtnCCWClicked();
 	//设置移动步长
 	void handleOnStepLengthOrAngleChanged(double dStepLength, double dRotationAngle);
+	//-----------
 
+	//-----graphicsview的槽函数-----
 	//graphics中鼠标状态
 	void handleMouseStatus(int iIndex);
 	void handleGraphicsViewMouseMove(QPointF pos);
 	void handleGraphicsViewLeftClick(QPointF pos);
+	//-----------
 
 };

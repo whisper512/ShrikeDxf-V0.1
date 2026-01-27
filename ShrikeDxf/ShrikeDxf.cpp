@@ -10,6 +10,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
     m_pLayerTableViewManger(nullptr),
 	m_pLabelPos(nullptr),
 	m_pLabelDocName(nullptr),
+	m_pLabelLayer(nullptr),
     m_pDataManager(nullptr),
 	m_pDxfDataManger(nullptr),
 	m_pMoveBtnsWidget(nullptr),
@@ -134,10 +135,16 @@ void ShrikeDxf::InitLabels()
 	m_pLabelDocName->setStyleSheet("QLabel {border: 5px solid transparent;; }");
 	statusBar()->addWidget(m_pLabelDocName);
 
+	m_pLabelLayer = new QLabel(this);
+	m_pLabelLayer->setText("Layer:None");
+	m_pLabelLayer->setStyleSheet("QLabel {border: 5px solid transparent;; }");
+	statusBar()->addWidget(m_pLabelLayer);
+
 	m_pLabelPos = new QLabel(this);
 	m_pLabelPos->setText("X:0.000 Y:0.000");
 	m_pLabelPos->setStyleSheet("QLabel {border: 5px solid transparent;; }");
 	statusBar()->addWidget(m_pLabelPos);
+
 }
 
 
@@ -172,6 +179,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 				connect(m_pDxfDataManger, &CDxfManger::signalRefreshLayerTableview, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
 				connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalLayerModelChanged, m_pDxfDataManger, &CDxfManger::handleLayerModelChanged);
+				connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalChangeCurrentLayer, m_pDxfDataManger, &CDxfManger::handleChangeCurrentLayer);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -196,11 +204,12 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (this && m_pGraphicsView)
 			{
-				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, this, &ShrikeDxf::handlesignalMousePos);
+				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, this, &ShrikeDxf::handleMousePos);
 			}
 			if (this && m_pDxfDataManger)
 			{
                 connect(m_pDxfDataManger,&CDxfManger::signalShowFileName, this, &ShrikeDxf::handleShowDocName);
+				connect(m_pDxfDataManger,&CDxfManger::signalCurrentLayer,this,&ShrikeDxf::handleShowLayerName);
 			}
 			if (m_pCreateEntityWidget && m_pDxfDataManger)
 			{
@@ -223,7 +232,15 @@ void ShrikeDxf::handleShowDocName(QString strDocName)
 	}
 }
 
-void ShrikeDxf::handlesignalMousePos(QString strPos)
+void ShrikeDxf::handleShowLayerName(QString strLayerName)
+{
+	if (m_pLabelLayer)
+	{
+		m_pLabelLayer->setText("Layer:" + strLayerName);
+	}
+}
+
+void ShrikeDxf::handleMousePos(QString strPos)
 {
 	if (m_pLabelPos)
 	{

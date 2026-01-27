@@ -4,9 +4,10 @@
 
 
 
-CDxfManger::CDxfManger(QWidget* pMainWnd):
+CDxfManger::CDxfManger(QWidget* pMainWnd) :
     m_pMainWnd(pMainWnd),
-    m_isDrawingLine(false)
+    m_isDrawingLine(false),
+    m_strCurrentLayer("")
 {
 }
 
@@ -120,6 +121,12 @@ void CDxfManger::handleLayerModelChanged()
 {
     m_DxfLayerTableviewModel.UpdateLayerData(m_DxfMapping.m_mapDxfEntities);
     RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handleChangeCurrentLayer(QString strLayer)
+{
+    m_strCurrentLayer = strLayer;
+    emit signalCurrentLayer(strLayer);
 }
 
 void CDxfManger::handlePointAttributeChanged(Point point)
