@@ -24,6 +24,7 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
     QRectF bounds = CalculateSceneBounds(mapdxf);
     setSceneRect(bounds);
 
+
     for (const auto& pairLayer : mapdxf)
     {
         const stuLayer layer = pairLayer.second;
@@ -183,11 +184,128 @@ void CDxfGraphicsScene::DrawPreviewLine(const Line& line,QColor color)
     );
 
     // 设置预览直线的样式
-    previewLine->setPen(QPen(color, CalculateDynamicPenWidth()));
+    previewLine->setPen(QPen(color, CalculateDynamicPenWidth(), Qt::DashLine));
     previewLine->setZValue(1000);
 
     addItem(previewLine);
     m_PreviewItems.append(previewLine);
+}
+
+void CDxfGraphicsScene::DrawPreviewCircleWithCenterAndRadius(const Circle& circle,const QPointF& MousePos, QColor color)
+{
+    // 清除之前的预览项
+    ClearPreviewItems();
+
+    // 创建圆的图形项
+    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(
+        circle.pointCenter.x - circle.radius,
+        circle.pointCenter.y - circle.radius,
+        circle.radius * 2,
+        circle.radius * 2
+    );
+
+    // 设置圆的样式
+    QPen pen(color);
+    pen.setWidth(CalculateDynamicPenWidth());
+    pen.setStyle(Qt::DashLine);
+    pCircleItem->setPen(pen);
+    pCircleItem->setBrush(Qt::NoBrush);
+
+    addItem(pCircleItem);
+    m_PreviewItems.append(pCircleItem);
+
+    //半径线
+    QGraphicsLineItem* pRadiusLine = new QGraphicsLineItem(circle.pointCenter.x, circle.pointCenter.y, MousePos.x(), MousePos.y());
+    pRadiusLine->setPen(pen);
+    pRadiusLine->setZValue(1000);
+    addItem(pRadiusLine);
+    m_PreviewItems.append(pRadiusLine);
+}
+
+void CDxfGraphicsScene::DrawPreviewCircleWithDiameter(const Line& diameter, QColor color)
+{
+    ClearPreviewItems();
+
+    // 计算圆心
+    double centerX = (diameter.StartX() + diameter.EndX()) / 2;
+    double centerY = (diameter.StartY() + diameter.EndY()) / 2;
+    double radius = sqrt(pow(diameter.EndX() - diameter.StartX(), 2) +
+        pow(diameter.EndY() - diameter.StartY(), 2)) / 2;
+
+    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(
+        centerX - radius,
+        centerY - radius,
+        radius * 2,
+        radius * 2
+    );
+
+    // 设置圆的样式，使用动态笔宽
+    QPen pen(color);
+    pen.setWidth(CalculateDynamicPenWidth());
+    pen.setStyle(Qt::DashLine);
+    pCircleItem->setPen(pen);
+    pCircleItem->setBrush(Qt::NoBrush);
+
+    addItem(pCircleItem);
+    m_PreviewItems.append(pCircleItem);
+
+    QGraphicsLineItem* pDiameterLine = new QGraphicsLineItem(
+        diameter.StartX(), diameter.StartY(),
+        diameter.EndX(), diameter.EndY()
+    );
+    pDiameterLine->setPen(pen);
+    pDiameterLine->setZValue(1000); 
+    addItem(pDiameterLine);
+    m_PreviewItems.append(pDiameterLine);
+}
+
+void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color)
+{
+    ClearPreviewItems();
+
+    // 保存当前场景尺寸
+    QRectF currentSceneRect = this->sceneRect();
+
+    QPainterPath path;
+    QPointF center(arc.pointCenter.x, arc.pointCenter.y);
+    // 圆弧外接矩形
+    QRectF rect(center.x() - arc.radius, center.y() - arc.radius, arc.radius * 2, arc.radius * 2);
+
+    // 计算起点,起始角度是针对圆形中心的角度
+    double startAngleRad = qDegreesToRadians(arc.startAngle);
+    QPointF startPoint(center.x() + arc.radius * cos(startAngleRad), center.y() + arc.radius * sin(startAngleRad));
+    path.moveTo(startPoint);
+
+    // 取整
+    double startAngle = fmod(arc.startAngle, 360.0);
+    double endAngle = fmod(arc.endAngle, 360.0);
+
+    // 计算跨度-保持DXF的逆时针方向画弧
+    double spanLength = endAngle - startAngle;
+    if (spanLength < 0)
+    {
+        spanLength += 360.0;
+    }
+
+    // 由于View做了Y轴镜像，角度需要转换
+    // Qt起始角 = (360° - DXF起始角) % 360°
+    double qtStartAngle = fmod(360.0 - startAngle, 360.0);
+    // 转为顺时针绘制圆弧
+    path.arcTo(rect, qtStartAngle, -spanLength);
+
+    // 计算笔触宽度，使用保存的场景尺寸
+    qreal sceneSize = qMin(currentSceneRect.width(), currentSceneRect.height());
+    qreal penWidth = sceneSize * 0.001;
+    penWidth = qMin(penWidth, 2.0);
+    penWidth = qMax(penWidth, 0.5);
+
+    // 设置预览弧线的样式
+    QPen pen(color);
+    pen.setWidth(penWidth);
+    pen.setStyle(Qt::DashLine);
+
+    QGraphicsPathItem* arcItem = addPath(path, pen, Qt::NoBrush);
+    m_PreviewItems.append(arcItem);
 }
 
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)

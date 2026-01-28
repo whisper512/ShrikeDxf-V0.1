@@ -36,9 +36,17 @@ private:
 
 public:
 	//预览相关
-	QPointF m_LineStartPoint;  // 记录直线的起点
-	bool m_isDrawingLine;      // 标记是否正在绘制直线
-	
+	QPointF m_pointLineStart;  // 记录直线的起点
+	Line m_linePreview;
+	QPointF m_pointCircleCenter; // 存储圆心位置
+	QPointF m_pointDiameterStart; // 存储直径起点位置
+	QPointF m_pointArcCenter;  // 存储弧线圆心
+	QPointF m_pointArcStart;   // 存储弧线起点
+	Arc m_arcPreview;
+	QPointF m_ArcFirstPoint;   // 存储弧线的起点
+	QPointF m_ArcSecondPoint;  // 存储弧线的中间点
+
+	void CalculateCircleFromThreePoints(const Point& p1, const Point& p2, const Point& p3, Point& center, double& radius);
 public:
 	//当前工作图层
     QString m_strCurrentLayer;
@@ -54,7 +62,7 @@ signals:
 	void signalRefreshTreeviewAfterRead();
 	//用来返回获取到的entity信息
 	void signalReturnEntityInfo(QString strInfo);
-	//通知graphicsview
+	//通知graphicsview，加载新的scene,加载scene后要不要重新计算边界
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
 	//通知layerTableview
 	void signalRefreshLayerTableview(CDxfLayerTableviewModel* pModel);
