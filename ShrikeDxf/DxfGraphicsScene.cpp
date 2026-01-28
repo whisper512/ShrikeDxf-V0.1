@@ -308,6 +308,302 @@ void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color)
     m_PreviewItems.append(arcItem);
 }
 
+void CDxfGraphicsScene::ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color)
+{
+    if (m_pointLineStart.isNull()) 
+    {
+    //绘制预览起始点
+        Point previewPoint(pos.x(), pos.y());
+        DrawPreviewPoint(previewPoint,color);
+    }
+    else 
+    {
+    //绘制预览直线
+        Line previewLine(Point(m_pointLineStart.x(), m_pointLineStart.y()), Point(pos.x(), pos.y()));
+        DrawPreviewLine(previewLine,color);
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewLineWhenMouseClick(QPointF pos,QColor color)
+{
+    if (m_pointLineStart.isNull()) 
+    {
+           m_pointLineStart = pos;
+    }
+    else
+    {
+        Line newLine(Point(m_pointLineStart.x(), m_pointLineStart.y()), Point(pos.x(), pos.y()));
+        m_pointLineStart = QPointF();
+    }
+
+}
+
+void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseMove(QPointF pos, QColor color)
+{
+    if (m_pointCircleCenter.isNull())
+    {
+        //绘制预览圆心
+        Point previewPoint(pos.x(), pos.y());
+        DrawPreviewPoint(previewPoint, color);
+    }
+    else
+    {
+        //绘制预览圆
+        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) +
+            pow(pos.y() - m_pointCircleCenter.y(), 2));
+        Circle previewCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
+        DrawPreviewCircleWithCenterAndRadius(previewCircle, pos, color);
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseClick(QPointF pos, QColor color)
+{
+    if (m_pointCircleCenter.isNull())
+    {
+        //确认圆心
+        m_pointCircleCenter = pos;
+    }
+    else
+    {
+        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) +
+            pow(pos.y() - m_pointCircleCenter.y(), 2));
+        Circle newCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
+        m_pointCircleCenter = QPointF();
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseMove(QPointF pos, QColor color)
+{
+    if (m_pointDiameterStart.isNull())
+    {
+        //绘制预览直径起点
+        Point previewPoint(pos.x(), pos.y());
+        DrawPreviewPoint(previewPoint, color);
+    }
+    else
+    {
+        //绘制预览圆
+        Line diameter(Point(m_pointDiameterStart.x(), m_pointDiameterStart.y()),
+            Point(pos.x(), pos.y()));
+        DrawPreviewCircleWithDiameter(diameter, color);
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseClick(QPointF pos, QColor color)
+{
+    if (m_pointDiameterStart.isNull())
+    {
+        //确认直径起点
+        m_pointDiameterStart = pos;
+    }
+    else
+    {
+        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) +
+            pow(pos.y() - m_pointCircleCenter.y(), 2));
+        Circle newCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
+
+        m_pointDiameterStart = QPointF();
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos, QColor color)
+{
+    if (m_pointArcCenter.isNull() && m_pointArcStart.isNull())
+    {
+        // 绘制预览圆心
+        Point previewPoint(pos.x(), pos.y());
+        DrawPreviewPoint(previewPoint, color);
+    }
+    else if (m_pointArcStart.isNull() && !m_pointArcCenter.isNull())
+    {
+        // 绘制预览圆心和起点
+        Point centerPoint(m_pointArcCenter.x(), m_pointArcCenter.y());
+        Point startPoint(pos.x(), pos.y());
+        DrawPreviewPoint(centerPoint, color);
+        DrawPreviewPoint(startPoint, color);
+
+        // 绘制圆心到起点的连线
+        Line radiusLine(centerPoint, startPoint);
+        DrawPreviewLine(radiusLine, color);
+    }
+    else if (!m_pointArcStart.isNull() && !m_pointArcCenter.isNull())
+    {
+        // 计算弧线参数
+        Point centerPoint(m_pointArcCenter.x(), m_pointArcCenter.y());
+        Point startPoint(m_pointArcStart.x(), m_pointArcStart.y());
+        Point endPoint(pos.x(), pos.y());
+
+        // 计算半径
+        double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) +
+            pow(startPoint.y - centerPoint.y, 2));
+
+        // 计算起点和终点的角度
+        double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;
+        double endAngle = atan2(endPoint.y - centerPoint.y, endPoint.x - centerPoint.x) * 180 / M_PI;
+
+        Line radiusLine(centerPoint, startPoint);
+        DrawPreviewLine(radiusLine, Qt::red);
+
+        // 创建预览弧线
+        Arc previewArc(centerPoint, radius, startAngle, endAngle);
+        DrawPreviewArc(previewArc, color);
+
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseClick(QPointF pos, QColor color)
+{
+    if (m_pointArcCenter.isNull() && m_pointDiameterStart.isNull())
+    {
+        // 确认圆心
+        m_pointArcCenter = pos;
+        m_arcPreview.pointCenter = Point(pos.x(), pos.y());
+    }
+    else if (m_pointArcStart.isNull() && !m_pointArcCenter.isNull())
+    {
+        // 确认起点
+        m_pointArcStart = pos;
+    }
+    else if (!m_pointArcStart.isNull() && !m_pointArcCenter.isNull())
+    {
+        //计算弧线参数
+        Point centerPoint(m_pointArcCenter.x(), m_pointArcCenter.y());
+        Point startPoint(m_pointArcStart.x(), m_pointArcStart.y());
+        Point endPoint(pos.x(), pos.y());
+
+        //计算半径
+        double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) +
+            pow(startPoint.y - centerPoint.y, 2));
+
+        //计算起点和终点的角度
+        double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;
+        double endAngle = atan2(endPoint.y - centerPoint.y, endPoint.x - centerPoint.x) * 180 / M_PI;
+
+        //重置状态
+        m_pointArcCenter = QPointF();
+        m_pointArcStart = QPointF();
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos, QColor color)
+{
+    //if (m_ArcFirstPoint.isNull() && m_ArcSecondPoint.isNull())
+    //{
+    //    // 绘制预览起点
+    //    Point previewPoint(pos.x(), pos.y());
+    //    DrawPreviewPoint(previewPoint,color);
+    //}
+    //else if (m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
+    //{
+    //    // 绘制预览起点和中间点
+    //    Point firstPoint(m_ArcFirstPoint.x(), m_ArcFirstPoint.y());
+    //    Point secondPoint(pos.x(), pos.y());
+    //    DrawPreviewPoint(firstPoint, color);
+    //    DrawPreviewPoint(secondPoint, color);
+
+    //    // 绘制起点到中间点的连线
+    //    Line line(firstPoint, secondPoint);
+    //    DrawPreviewLine(line, color);
+    //}
+    //else if (!m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
+    //{
+    //    // 计算三点确定的圆弧
+    //    Point firstPoint(m_ArcFirstPoint.x(), m_ArcFirstPoint.y());
+    //    Point secondPoint(m_ArcSecondPoint.x(), m_ArcSecondPoint.y());
+    //    Point thirdPoint(pos.x(), pos.y());
+
+    //    // 计算圆心和半径
+    //    Point centerPoint;
+    //    double radius;
+    //    CalculateCircleFromThreePoints(firstPoint, secondPoint, thirdPoint, centerPoint, radius);
+
+    //    // 计算起点和终点的角度
+    //    double startAngle = atan2(firstPoint.y - centerPoint.y, firstPoint.x - centerPoint.x) * 180 / M_PI;
+    //    double endAngle = atan2(thirdPoint.y - centerPoint.y, thirdPoint.x - centerPoint.x) * 180 / M_PI;
+
+    //    // 创建预览弧线
+    //    Arc previewArc(centerPoint, radius, startAngle, endAngle);
+    //    DrawPreviewArc(previewArc, color);
+    //}
+}
+
+void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseClick(QPointF pos, QColor color)
+{
+    //if (m_ArcFirstPoint.isNull() && m_ArcSecondPoint.isNull())
+    //{
+    //    // 确认起点
+    //    m_ArcFirstPoint = pos;
+    //}
+    //else if (m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
+    //{
+    //    // 确认中间点
+    //    m_ArcSecondPoint = pos;
+    //}
+    //else if (!m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
+    //{
+    //    // 计算三点确定的圆弧
+    //    Point firstPoint(m_ArcFirstPoint.x(), m_ArcFirstPoint.y());
+    //    Point secondPoint(m_ArcSecondPoint.x(), m_ArcSecondPoint.y());
+    //    Point thirdPoint(pos.x(), pos.y());
+
+    //    // 计算圆心和半径
+    //    Point centerPoint;
+    //    double radius;
+    //    CalculateCircleFromThreePoints(firstPoint, secondPoint, thirdPoint, centerPoint, radius);
+
+    //    // 计算起点和终点的角度
+    //    double startAngle = atan2(firstPoint.y - centerPoint.y, firstPoint.x - centerPoint.x) * 180 / M_PI;
+    //    double endAngle = atan2(thirdPoint.y - centerPoint.y, thirdPoint.x - centerPoint.x) * 180 / M_PI;
+
+    //    // 创建新弧线
+    //    Arc newArc(centerPoint, radius, startAngle, endAngle);
+    //    // m_DxfMapping.AddArcEntity(newArc); // 如果需要添加到实体集合中，取消注释
+
+    //    // 重置状态
+    //    m_ArcFirstPoint = QPointF();
+    //    m_ArcSecondPoint = QPointF();
+    //}
+}
+
+void CDxfGraphicsScene::CalculateCircleFromThreePoints(const Point& p1, const Point& p2, const Point& p3, Point& center, double& radius)
+{
+    // 计算向量
+    double ax = p1.x - p2.x;
+    double ay = p1.y - p2.y;
+    double bx = p2.x - p3.x;
+    double by = p2.y - p3.y;
+
+    // 计算叉积，用于判断三点是否共线
+    double crossProduct = ax * by - ay * bx;
+
+    // 如果叉积接近0，说明三点共线，无法确定圆
+    if (fabs(crossProduct) < 1e-10)
+    {
+        // 设置无效的圆心和半径
+        center.x = 0;
+        center.y = 0;
+        radius = -1;
+        return;
+    }
+
+    // 计算圆心
+    double d = 2 * crossProduct;
+    double ux = ((p1.x * p1.x + p1.y * p1.y) * (p2.y - p3.y) +
+        (p2.x * p2.x + p2.y * p2.y) * (p3.y - p1.y) +
+        (p3.x * p3.x + p3.y * p3.y) * (p1.y - p2.y)) / d;
+    double uy = ((p1.x * p1.x + p1.y * p1.y) * (p3.x - p2.x) +
+        (p2.x * p2.x + p2.y * p2.y) * (p1.x - p3.x) +
+        (p3.x * p3.x + p3.y * p3.y) * (p2.x - p1.x)) / d;
+
+    center.x = ux;
+    center.y = uy;
+
+    // 计算半径
+    radius = sqrt(pow(p1.x - center.x, 2) + pow(p1.y - center.y, 2));
+}
+
+
+
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 {
     qreal size = 1;
