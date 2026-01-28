@@ -243,23 +243,29 @@ void CDxfManger::handleMouseStatus(int iIndex)
 
     switch (m_DxfMapping.iGraphicsMouseState)
     {
+    case -1:
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_None;
+        break;
     case 0:
-        m_DxfMapping.m_PreviewEntity.type = enumEntity_None;
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Point;
         break;
     case 1:
-        m_DxfMapping.m_PreviewEntity.type = enumEntity_Point;
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Line;
         break;
     case 2:
-        m_DxfMapping.m_PreviewEntity.type = enumEntity_Line;
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Center_Radius_Circle;
         break;
     case 3:
-        m_DxfMapping.m_PreviewEntity.type = enumEntity_Circle;
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Diameter_Circle;
         break;
     case 4:
-        m_DxfMapping.m_PreviewEntity.type = enumEntity_Arc;
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Center_Endpoint_Arc;
         break;
     case 5:
-        m_DxfMapping.m_PreviewEntity.type = enumEntity_Polyline;
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_ThreePoints_Arc;
+        break;
+    case 6:
+        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Polyline;
         break;
     default:
         break;
@@ -270,7 +276,7 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
 {
     switch (m_DxfMapping.m_PreviewEntity.type)
     {
-    case enumEntity_Point:
+    case enumPreviewEntity_Point:
     {
         Point previewPoint(pos.x(), pos.y());
         m_DxfMapping.m_PreviewEntity.strLayer = "0";
@@ -279,7 +285,7 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
         emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
         break;
     }
-    case enumEntity_Line:
+    case enumPreviewEntity_Line:
     {
         if (!m_isDrawingLine) 
         {
@@ -287,7 +293,8 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
             Point previewPoint(pos.x(), pos.y());
             m_DxfGraphicsScene.DrawPreviewPoint(previewPoint,GetCurrentLayerColor());
         }
-        else {
+        else 
+        {
             //绘制预览直线
             Line previewLine(Point(m_LineStartPoint.x(), m_LineStartPoint.y()), Point(pos.x(), pos.y()));
             m_DxfGraphicsScene.DrawPreviewLine(previewLine,GetCurrentLayerColor());
@@ -295,19 +302,25 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
         emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
         break;
     }
-    case enumEntity_Circle:
+    case enumPreviewEntity_Center_Radius_Circle:
     {
         // 实现圆预览逻辑
         // 需要记录圆心，当前鼠标位置计算半径
         break;
     }
-    case enumEntity_Arc:
+    case enumPreviewEntity_Diameter_Circle:
     {
-        // 实现圆弧预览逻辑
-        // 需要记录起点、终点和半径
         break;
     }
-    case enumEntity_Polyline:
+    case enumPreviewEntity_Center_Endpoint_Arc:
+    {
+        break;
+    }
+    case enumPreviewEntity_ThreePoints_Arc:
+    {
+        break;
+    }
+    case enumPreviewEntity_Polyline:
     {
         // 实现多段线预览逻辑
         // 需要记录所有已确定的点，当前鼠标位置作为新的点
@@ -322,13 +335,13 @@ void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
 {
     switch (m_DxfMapping.m_PreviewEntity.type)
     {
-    case enumEntity_Point:
+    case enumPreviewEntity_Point:
     {
         Point newPoint(pos.x(), pos.y());
         //m_DxfMapping.AddPointEntity(newPoint);
         break;
     }
-    case enumEntity_Line:
+    case enumPreviewEntity_Line:
     {
         if (!m_isDrawingLine) {
             // 第一次点击，记录起点
@@ -347,27 +360,33 @@ void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
             RefreshTreeModelAndGraphicsview();
         }
         break;
+    }
+    case enumPreviewEntity_Center_Radius_Circle:
+    {
+
         break;
     }
-    case enumEntity_Circle:
+    case enumPreviewEntity_Diameter_Circle:
     {
-        // 第一次点击记录圆心
-        // 第二次点击计算半径并添加圆
+
         break;
     }
-    case enumEntity_Arc:
+    case enumPreviewEntity_Center_Endpoint_Arc:
     {
-        // 实现圆弧的三点或两点加半径逻辑
+
         break;
     }
-    case enumEntity_Polyline:
+    case enumPreviewEntity_ThreePoints_Arc:
     {
-        // 每次点击添加一个顶点
-        // 右键或双击结束绘制
+        break;
+    }
+    case enumPreviewEntity_Polyline:
+    {
         break;
     }
     default:
+    {
         break;
     }
-    //RefreshTreeModelAndGraphicsview();
+    }
 }

@@ -293,6 +293,7 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
             // 恢复之前的视图状态
             setSceneRect(curRect);
             setTransform(currentTransform);
+            centerOn(currentCenter);
             horizontalScrollBar()->setValue(hValue);
             verticalScrollBar()->setValue(vValue);
             update();

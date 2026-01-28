@@ -102,11 +102,11 @@ struct stuSelectedEntity
 
 struct stuPreviewEntity
 {
-    enumEntity type;
+    enumPreviewEntity type;
     QString strLayer;
     stuPreviewEntity()
     {
-        type = enumEntity_None;
+        type = enumPreviewEntity_None;
         strLayer = "";
     }
 };

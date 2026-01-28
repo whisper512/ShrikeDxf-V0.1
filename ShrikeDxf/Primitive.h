@@ -28,6 +28,18 @@ enum enumEntity
     enumEntity_Text = 5
 };
 
+enum enumPreviewEntity
+{
+    enumPreviewEntity_None = -1,
+    enumPreviewEntity_Point = 0,
+    enumPreviewEntity_Line = 1,
+    enumPreviewEntity_Center_Radius_Circle = 2,
+    enumPreviewEntity_Diameter_Circle = 3,
+    enumPreviewEntity_Center_Endpoint_Arc = 4,
+    enumPreviewEntity_ThreePoints_Arc = 5,
+    enumPreviewEntity_Polyline = 6,
+};
+
 //Dxf图元类
 struct Point
 {

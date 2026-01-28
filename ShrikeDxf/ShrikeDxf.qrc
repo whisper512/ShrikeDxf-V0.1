@@ -8,5 +8,9 @@
         <file>res/Polyline.png</file>
         <file>res/Layer.png</file>
         <file>res/Mouse.png</file>
+        <file>res/Center-Diameter-Circle.png</file>
+        <file>res/Center-Radius-Circle.png</file>
+        <file>res/Center-Endpoint-Arc.png</file>
+        <file>res/Three-Point-Arc.png</file>
     </qresource>
 </RCC>
