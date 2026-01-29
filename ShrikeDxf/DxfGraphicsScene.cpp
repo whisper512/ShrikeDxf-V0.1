@@ -82,47 +82,61 @@ void CDxfGraphicsScene::ClearPreviewItems()
     QList<QGraphicsItem*> itemsToRemove;
 
     
-    for (int i = 0; i < m_PreviewItems.size(); ++i) {
+    for (int i = 0; i < m_PreviewItems.size(); ++i) 
+    {
         QGraphicsItem* item = m_PreviewItems.at(i);
-        if (item) {
+        if (item) 
+        {
             itemsToRemove.append(item);
         }
     }
     m_PreviewItems.clear();
 
-    for (QGraphicsItem* item : itemsToRemove) {
-        if (item) {
-            try {
+    for (QGraphicsItem* item : itemsToRemove) 
+    {
+        if (item) 
+        {
+            try 
+            {
                 // 检查项是否有效且还在场景中
                 bool isValid = true;
-                try {
+                try 
+                {
                     // 尝试访问项的场景，可能会抛出异常
                     QGraphicsScene* itemScene = item->scene();
-                    if (itemScene != this) {
+                    if (itemScene != this) 
+                    {
                         isValid = false;
                     }
                 }
-                catch (...) {
+                catch (...) 
+                {
                     // 如果访问场景时抛出异常，认为项无效
                     isValid = false;
                 }
 
-                if (isValid) {
-                    try {
+                if (isValid) 
+                {
+                    try 
+                    {
                         removeItem(item);
                     }
-                    catch (...) {
+                    catch (...) 
+                    {
                         // 移除项时可能抛出异常，忽略
                     }
                 }
-                try {
+                try 
+                {
                     delete item;
                 }
-                catch (...) {
+                catch (...) 
+                {
                     // 删除项时可能抛出异常，忽略
                 }
             }
-            catch (...) {
+            catch (...) 
+            {
                 // 捕获所有可能的异常，防止程序崩溃
                 continue;
             }
@@ -259,24 +273,21 @@ void CDxfGraphicsScene::DrawPreviewCircleWithDiameter(const Line& diameter, QCol
     m_PreviewItems.append(pDiameterLine);
 }
 
-void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color)
+void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color, const Point& pointStart, const Point& pointEnd)
 {
     ClearPreviewItems();
 
-    // 保存当前场景尺寸
     QRectF currentSceneRect = this->sceneRect();
-
     QPainterPath path;
     QPointF center(arc.pointCenter.x, arc.pointCenter.y);
-    // 圆弧外接矩形
     QRectF rect(center.x() - arc.radius, center.y() - arc.radius, arc.radius * 2, arc.radius * 2);
 
-    // 计算起点,起始角度是针对圆形中心的角度
+    //计算起点,起始角度是针对圆形中心的角度
     double startAngleRad = qDegreesToRadians(arc.startAngle);
     QPointF startPoint(center.x() + arc.radius * cos(startAngleRad), center.y() + arc.radius * sin(startAngleRad));
     path.moveTo(startPoint);
 
-    // 取整
+    //取整角度
     double startAngle = fmod(arc.startAngle, 360.0);
     double endAngle = fmod(arc.endAngle, 360.0);
 
@@ -290,22 +301,35 @@ void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color)
     // 由于View做了Y轴镜像，角度需要转换
     // Qt起始角 = (360° - DXF起始角) % 360°
     double qtStartAngle = fmod(360.0 - startAngle, 360.0);
-    // 转为顺时针绘制圆弧
+    //转为顺时针绘制圆弧
     path.arcTo(rect, qtStartAngle, -spanLength);
 
-    // 计算笔触宽度，使用保存的场景尺寸
     qreal sceneSize = qMin(currentSceneRect.width(), currentSceneRect.height());
     qreal penWidth = sceneSize * 0.001;
     penWidth = qMin(penWidth, 2.0);
     penWidth = qMax(penWidth, 0.5);
 
-    // 设置预览弧线的样式
     QPen pen(color);
     pen.setWidth(penWidth);
     pen.setStyle(Qt::DashLine);
 
     QGraphicsPathItem* arcItem = addPath(path, pen, Qt::NoBrush);
     m_PreviewItems.append(arcItem);
+    //计算终止在圆弧上的点
+    double endAngleRad = qDegreesToRadians(arc.endAngle);
+    Point pointEndinCircle;
+    pointEndinCircle.x = center.x() + arc.radius * cos(endAngleRad);
+    pointEndinCircle.y = center.y() + arc.radius * sin(endAngleRad);
+
+    QGraphicsLineItem* lineCenterToStart = new QGraphicsLineItem(arc.pointCenter.x, arc.pointCenter.y, pointStart.x, pointStart.y);
+    QGraphicsLineItem* lineCenterToEnd = new QGraphicsLineItem(arc.pointCenter.x, arc.pointCenter.y, pointEndinCircle.x, pointEndinCircle.y);
+    // 设置预览直线的样式
+    lineCenterToStart->setPen(QPen(color, CalculateDynamicPenWidth(), Qt::DashLine));
+    lineCenterToEnd->setPen(QPen(color, CalculateDynamicPenWidth(), Qt::DashLine));
+    addItem(lineCenterToStart);
+    addItem(lineCenterToEnd);
+    m_PreviewItems.append(lineCenterToStart);
+    m_PreviewItems.append(lineCenterToEnd);
 }
 
 void CDxfGraphicsScene::ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color)
@@ -428,11 +452,9 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos
     }
     else if (!m_pointArcStart.isNull() && !m_pointArcCenter.isNull())
     {
-        // 计算弧线参数
         Point centerPoint(m_pointArcCenter.x(), m_pointArcCenter.y());
         Point startPoint(m_pointArcStart.x(), m_pointArcStart.y());
         Point endPoint(pos.x(), pos.y());
-
         // 计算半径
         double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) +
             pow(startPoint.y - centerPoint.y, 2));
@@ -441,13 +463,8 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos
         double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;
         double endAngle = atan2(endPoint.y - centerPoint.y, endPoint.x - centerPoint.x) * 180 / M_PI;
 
-        Line radiusLine(centerPoint, startPoint);
-        DrawPreviewLine(radiusLine, Qt::red);
-
-        // 创建预览弧线
         Arc previewArc(centerPoint, radius, startAngle, endAngle);
-        DrawPreviewArc(previewArc, color);
-
+        DrawPreviewArc(previewArc, color, startPoint, endPoint);
     }
 }
 

@@ -46,7 +46,7 @@ public:
 	void DrawPreviewLine(const Line& line,QColor color);
     void DrawPreviewCircleWithCenterAndRadius(const Circle& circle, const QPointF& MousePos, QColor color);
 	void DrawPreviewCircleWithDiameter(const Line& diameter, QColor color);
-	void DrawPreviewArc(const Arc& arc, const QColor& color);
+	void DrawPreviewArc(const Arc& arc, const QColor& color,const Point& pointStart ,const Point& pointEnd);
 
 	void ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color);
 	void ProcessPreviewLineWhenMouseClick(QPointF pos,QColor color);
