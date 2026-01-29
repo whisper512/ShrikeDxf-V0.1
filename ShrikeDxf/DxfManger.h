@@ -59,6 +59,7 @@ signals:
 	void signalRefreshTreeviewAfterRead();
 	//用来返回获取到的entity信息
 	void signalReturnEntityInfo(QString strInfo);
+
 	//通知graphicsview，加载新的scene,加载scene后要不要重新计算边界
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
 	//通知layerTableview
@@ -67,6 +68,9 @@ signals:
 	void signalRefreshStackedWidget(variantDxfEntity dxfentity);
 	//通知graphics正在复制图元
 	void signalCopyintEntity();
+	//通知graphics正在预览
+    void signalStartPreviewEntity(int index);
+
 	//通知移动步长和旋转角度的初始值
 	void signalSetStepLengthAndAngle(const double& dStepLength, const double& dRotationAngle);
 	//当前的当前选中的entity的类型
@@ -133,6 +137,8 @@ signals:
 	void handleGraphicsViewMouseMove(QPointF pos);
 	void handleGraphicsViewLeftClick(QPointF pos);
 	void handleGraphicsViewRightClick(QPointF pos);
+	void handleEndDrawPreview();
 	//-----------
+
 
 };

@@ -25,6 +25,7 @@ private:
 	//右键菜单
 	QMenu* m_pGraphicsViewMenu;
 	QMenu* m_pGraphicsOperateMenu;
+	QMenu* m_pGraphicsPreviewMenu;
 
 	//view的操作
 	QAction* m_pActionLockZoom;
@@ -34,6 +35,8 @@ private:
 	QAction* m_pActionDrag;
 	//针对view中图元的操作
 	QAction* m_pActionPasteEntity;
+	//针对view中预览图元的操作
+	QAction* m_pActionEndDrawing;
 
 	CRulerH* m_pRulerH;
 	CRulerV* m_pRulerV;
@@ -54,6 +57,9 @@ private:
 	//*****右键鼠标显示的针对图元的操作*****
 	//开启复制图元中
 	bool m_bCopyingEntity;
+
+	//*****右键正在绘制预览的操作*****
+	bool m_bDrawingPreview;
 
 
 	//初始transform
@@ -86,6 +92,8 @@ signals:
 	void signalGraphicsViewLeftCLick(QPointF pos);
 	void signalGraphicsViewRightClick(QPointF pos);
 
+	//preview信号
+	void signalEndDrawingPreview();
 
 public slots:
 	//类外交互
@@ -101,7 +109,9 @@ public slots:
 	void handleLockZoom(bool bChecked);
 	//operate动作
 	void handlePasteEntity();
-
+	//preview动作
+	void handleEndDrawingPreview();
+	void handleStartPreviewEntity(int index);
 
 protected:
 	void wheelEvent(QWheelEvent* pEvent) override;

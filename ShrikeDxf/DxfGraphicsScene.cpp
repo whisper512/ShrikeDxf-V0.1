@@ -160,46 +160,46 @@ void CDxfGraphicsScene::MouseLeftClick(QPointF pos, QColor color)
 
 void CDxfGraphicsScene::MouseRightClick(QPointF pos)
 {
-    switch (m_PreviewEntity.type)
-    {
-    case enumPreviewEntity_Point:
-    {
-       m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    case enumPreviewEntity_Line:
-    {
-        m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    case enumPreviewEntity_Center_Radius_Circle:
-    {
-        m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    case enumPreviewEntity_Diameter_Circle:
-    {
-        m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    case enumPreviewEntity_Center_Endpoint_Arc:
-    {
-        m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    case enumPreviewEntity_ThreePoints_Arc:
-    {
-        m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    case enumPreviewEntity_Polyline:
-    {
-        m_mouseState = enumMouseStateInView_None;
-        break;
-    }
-    default:
-        break;
-    }
+    //switch (m_PreviewEntity.type)
+    //{
+    //case enumPreviewEntity_Point:
+    //{
+    //   m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //case enumPreviewEntity_Line:
+    //{
+    //    m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //case enumPreviewEntity_Center_Radius_Circle:
+    //{
+    //    m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //case enumPreviewEntity_Diameter_Circle:
+    //{
+    //    m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //case enumPreviewEntity_Center_Endpoint_Arc:
+    //{
+    //    m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //case enumPreviewEntity_ThreePoints_Arc:
+    //{
+    //    m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //case enumPreviewEntity_Polyline:
+    //{
+    //    m_mouseState = enumMouseStateInView_None;
+    //    break;
+    //}
+    //default:
+    //    break;
+    //}
 }
 
 void CDxfGraphicsScene::ChangePreviewEntityByMouseState()

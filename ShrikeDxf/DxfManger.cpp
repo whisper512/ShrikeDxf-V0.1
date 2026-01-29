@@ -238,11 +238,15 @@ void CDxfManger::handleMouseStatus(int index)
     m_DxfGraphicsScene.m_mouseState = (enumMouseStateInView)index;
     m_DxfGraphicsScene.clearPreviewEntityData();
     m_DxfGraphicsScene.ChangePreviewEntityByMouseState();
+    //通知view正在预览绘图
+    emit signalStartPreviewEntity(index);
+    
 }
 
 void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
 {
     m_DxfGraphicsScene.MouseMove(pos,GetCurrentLayerColor());
+    //通知view刷新绘图
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 }
 
@@ -255,6 +259,11 @@ void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
 void CDxfManger::handleGraphicsViewRightClick(QPointF pos)
 {
     m_DxfGraphicsScene.MouseRightClick(pos);
-    emit signalChangeCreateBtnStatus((int)m_DxfGraphicsScene.m_mouseState);
 }
 
+void CDxfManger::handleEndDrawPreview()
+{
+    m_DxfGraphicsScene.m_mouseState = enumMouseStateInView_None;
+    //结束预览绘图，通知btn切换状态
+    emit signalChangeCreateBtnStatus((int)m_DxfGraphicsScene.m_mouseState);
+}

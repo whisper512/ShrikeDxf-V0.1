@@ -16,12 +16,14 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_pMainWnd(pMainwnd),
     m_pGraphicsViewMenu(nullptr),
     m_pGraphicsOperateMenu(nullptr),
+    m_pGraphicsPreviewMenu(nullptr),
     m_pActionLockZoom(nullptr),
     m_pActionFilpX(nullptr),
     m_pActionFilpY(nullptr),
     m_pActionResetView(nullptr),
     m_pActionDrag(nullptr),
     m_pActionPasteEntity(nullptr),
+    m_pActionEndDrawing(nullptr),
     m_pRulerH(nullptr),
     m_pRulerV(nullptr),
     m_bLockZoom(false),
@@ -30,6 +32,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_bShowPosCross(false),
     m_bDrag(false),
     m_bCopyingEntity(false),
+    m_bDrawingPreview(false),
     m_tranformInitial(1, 0, 0, -1, 0, 0),
     m_rectInitialScene(0, 0, 0, 0),
     m_pointLastPos(0, 0),
@@ -64,6 +67,7 @@ void CGraphicsView::InitMenu(QWidget* pParent)
 {
     m_pGraphicsViewMenu = new QMenu();
     m_pGraphicsOperateMenu = new QMenu();
+    m_pGraphicsPreviewMenu = new QMenu();
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     InitGraphicsViewAction();
@@ -95,6 +99,10 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
     {
         m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
     }
+    else if (m_bDrawingPreview)
+    {
+        m_pGraphicsPreviewMenu->popup(mapToGlobal(pos));
+    }
     else
     {
         m_pGraphicsViewMenu->popup(mapToGlobal(pos));
@@ -104,6 +112,7 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
 
 void CGraphicsView::InitGraphicsViewAction()
 {
+    //************
     m_pActionDrag = new QAction("Drag", this);
     m_pActionDrag->setCheckable(true);
     m_pActionDrag->setChecked(false);
@@ -130,9 +139,15 @@ void CGraphicsView::InitGraphicsViewAction()
     connect(m_pActionFilpY, &QAction::toggled, this, &CGraphicsView::handleFilpAlongY);
     connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
 
+    //************
     m_pActionPasteEntity = new QAction("Paste", this);
     m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
     connect(m_pActionPasteEntity,&QAction::triggered,this,&CGraphicsView::handlePasteEntity);
+
+    //************
+    m_pActionEndDrawing = new QAction("End Drawing", this);
+    m_pGraphicsPreviewMenu->addAction(m_pActionEndDrawing);
+    connect(m_pActionEndDrawing, &QAction::triggered, this, &CGraphicsView::handleEndDrawingPreview);
 }
 
 
@@ -208,6 +223,24 @@ void CGraphicsView::handlePasteEntity()
     //重置
     m_bCopyingEntity = false;
     emit signalPaste(mapToScene(m_pointRightClickPos));
+}
+
+void CGraphicsView::handleEndDrawingPreview()
+{
+    m_bDrawingPreview = false;
+    emit signalEndDrawingPreview();
+}
+
+void CGraphicsView::handleStartPreviewEntity(int index)
+{
+    if (index != -1)
+    {
+        m_bDrawingPreview = true;
+    }
+    else
+    {
+        m_bDrawingPreview = false;
+    }
 }
 
 
