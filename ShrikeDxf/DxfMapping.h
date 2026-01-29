@@ -100,7 +100,11 @@ public:
     //修改选中polyline属性
     void ChangePolylineProperty(Polyline polyline);
 
-
+public:
+    void addPointToLayer(Point point ,QString strLayer);
+    void addLineToLayer(Line line, QString strLayer);
+    void addCircleToLayer(Circle circle, QString strLayer);
+    void addArcToLayer(Arc arc, QString strLayer);
 private:
     //当前多段线,用来读取dxf文档中的多段线
     Polyline* m_pCurPolyline;

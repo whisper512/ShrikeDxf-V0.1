@@ -160,46 +160,6 @@ void CDxfGraphicsScene::MouseLeftClick(QPointF pos, QColor color)
 
 void CDxfGraphicsScene::MouseRightClick(QPointF pos)
 {
-    //switch (m_PreviewEntity.type)
-    //{
-    //case enumPreviewEntity_Point:
-    //{
-    //   m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //case enumPreviewEntity_Line:
-    //{
-    //    m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //case enumPreviewEntity_Center_Radius_Circle:
-    //{
-    //    m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //case enumPreviewEntity_Diameter_Circle:
-    //{
-    //    m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //case enumPreviewEntity_Center_Endpoint_Arc:
-    //{
-    //    m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //case enumPreviewEntity_ThreePoints_Arc:
-    //{
-    //    m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //case enumPreviewEntity_Polyline:
-    //{
-    //    m_mouseState = enumMouseStateInView_None;
-    //    break;
-    //}
-    //default:
-    //    break;
-    //}
 }
 
 void CDxfGraphicsScene::ChangePreviewEntityByMouseState()
@@ -508,6 +468,7 @@ void CDxfGraphicsScene::ProcessPreviewLineWhenMouseLeftClick(QPointF pos,QColor 
     else
     {
         Line newLine(Point(m_pointLineStart.x(), m_pointLineStart.y()), Point(pos.x(), pos.y()));
+        m_linePreview = newLine;
         m_pointLineStart = QPointF();
     }
 
@@ -542,6 +503,7 @@ void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseLeftClick(QPoin
     {
         double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) + pow(pos.y() - m_pointCircleCenter.y(), 2));
         Circle newCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
+        m_circlePreview = newCircle;
         m_pointCircleCenter = QPointF();
     }
 }
@@ -571,9 +533,12 @@ void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseLeftClick(QPointF p
     }
     else
     {
-        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) + pow(pos.y() - m_pointCircleCenter.y(), 2));
-        Circle newCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
-
+        Line diameter(Point(m_pointDiameterStart.x(), m_pointDiameterStart.y()), Point(pos.x(), pos.y()));
+        double centerX = (diameter.StartX() + diameter.EndX()) / 2;
+        double centerY = (diameter.StartY() + diameter.EndY()) / 2;
+        double radius = sqrt(pow(diameter.EndX() - diameter.StartX(), 2) + pow(diameter.EndY() - diameter.StartY(), 2)) / 2;
+        Circle newCircle(Point(centerX, centerY), radius);
+        m_circlePreview = newCircle;
         m_pointDiameterStart = QPointF();
     }
 }
@@ -642,7 +607,8 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseLeftClick(QPoint
         //计算起点和终点的角度
         double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;
         double endAngle = atan2(endPoint.y - centerPoint.y, endPoint.x - centerPoint.x) * 180 / M_PI;
-
+        Arc newArc(centerPoint, radius, startAngle, endAngle);
+        m_arcPreview = newArc;
         //重置状态
         m_pointArcCenter = QPointF();
         m_pointArcStart = QPointF();

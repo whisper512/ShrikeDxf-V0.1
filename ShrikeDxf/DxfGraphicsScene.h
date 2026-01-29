@@ -53,7 +53,6 @@ public:
 	//直径画圆存储直径起点位置
 	QPointF m_pointDiameterStart;
 	//圆心-起点-终点画弧
-	Arc m_arcPreview;
 	QPointF m_pointArcCenter;  // 存储弧线圆心
 	QPointF m_pointArcStart;   // 存储弧线起点
 	//三点画弧存储弧线
@@ -61,6 +60,10 @@ public:
 	QPointF m_ArcSecondPoint;  // 存储弧线的中间点
 	//多段线
 	QVector<QPointF> m_vecPolylinePoints;
+
+	Line m_linePreview;
+	Circle m_circlePreview;
+	Arc m_arcPreview;
 
 	void MouseMove(QPointF pos,QColor color);
 	void MouseLeftClick(QPointF pos,QColor color);
@@ -77,12 +80,16 @@ public:
 
 	void ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color);
 	void ProcessPreviewLineWhenMouseLeftClick(QPointF pos,QColor color);
+
 	void ProcessPreviewCircleCenterRadiusWhenMouseMove(QPointF pos,QColor color);
     void ProcessPreviewCircleCenterRadiusWhenMouseLeftClick(QPointF pos,QColor color);
+
 	void ProcessPreviewCircleDiameterWhenMouseMove(QPointF pos,QColor color);
 	void ProcessPreviewCircleDiameterWhenMouseLeftClick(QPointF pos,QColor color);
+
 	void ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos,QColor color);
     void ProcessPreviewArcCenterEndpointWhenMouseLeftClick(QPointF pos,QColor color);
+
 	void ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos,QColor color);
 	void ProcessPreviewArcThreePointsWhenMouseLeftClick(QPointF pos,QColor color);
 	void CalculateCircleFromThreePoints(const Point& p1, const Point& p2, const Point& p3, Point& center, double& radius);

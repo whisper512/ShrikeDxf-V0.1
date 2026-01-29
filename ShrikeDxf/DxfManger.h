@@ -48,29 +48,44 @@ public:
 	//当前工作图层
     QString m_strCurrentLayer;
 	QColor GetCurrentLayerColor();
+	QString GetCurrentLayerName();
 private:
 	//刷新树状图和绘图的model
 	void RefreshTreeModelAndGraphicsview();
 
 signals:
+	//-----------
 	//用来通知treeview
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	//通知tree读完图刷新
 	void signalRefreshTreeviewAfterRead();
 	//用来返回获取到的entity信息
 	void signalReturnEntityInfo(QString strInfo);
+	//-----------
 
+	//-----------
 	//通知graphicsview，加载新的scene,加载scene后要不要重新计算边界
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
+	//-----------
+
+	//-----------
 	//通知layerTableview
 	void signalRefreshLayerTableview(CDxfLayerTableviewModel* pModel);
+	//-----------
+
+	//-----------
 	//通知stackedwidget
 	void signalRefreshStackedWidget(variantDxfEntity dxfentity);
+	//-----------
+
+	//-----------
 	//通知graphics正在复制图元
 	void signalCopyintEntity();
 	//通知graphics正在预览
     void signalStartPreviewEntity(int index);
+	//-----------
 
+	//-----------
 	//通知移动步长和旋转角度的初始值
 	void signalSetStepLengthAndAngle(const double& dStepLength, const double& dRotationAngle);
 	//当前的当前选中的entity的类型
@@ -81,6 +96,7 @@ signals:
 	void signalCurrentLayer(QString strLayer);
 	//通知createbtn切换状态
 	void signalChangeCreateBtnStatus(int index);
+	//-----------
 
  public slots:
 	 //-----treeview的槽函数-----
@@ -132,11 +148,12 @@ signals:
 	//-----------
 
 	//-----graphicsview的槽函数-----
-	//graphics中鼠标状态
+	//创建图元按钮改变
 	void handleMouseStatus(int index);
 	void handleGraphicsViewMouseMove(QPointF pos);
 	void handleGraphicsViewLeftClick(QPointF pos);
 	void handleGraphicsViewRightClick(QPointF pos);
+	//graphicsview结束绘画预览
 	void handleEndDrawPreview();
 	//-----------
 

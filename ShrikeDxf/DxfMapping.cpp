@@ -1080,3 +1080,39 @@ void CDxfMapping::ChangePolylineProperty(Polyline polyline)
 	}
 }
 
+void CDxfMapping::addPointToLayer(Point point, QString strLayer)
+{
+	auto curLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (curLayer != m_mapDxfEntities.end())
+	{
+        curLayer->second.vecPoints.push_back(point);
+	}
+}
+
+void CDxfMapping::addLineToLayer(Line line, QString strLayer)
+{
+	auto curLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (curLayer != m_mapDxfEntities.end())
+	{
+		curLayer->second.vecLines.push_back(line);
+	}
+}
+
+void CDxfMapping::addCircleToLayer(Circle circle, QString strLayer)
+{
+    auto curLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (curLayer != m_mapDxfEntities.end())
+	{
+        curLayer->second.vecCircles.push_back(circle);
+	}
+}
+
+void CDxfMapping::addArcToLayer(Arc arc, QString strLayer)
+{
+    auto curLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (curLayer != m_mapDxfEntities.end())
+	{
+        curLayer->second.vecArcs.push_back(arc);
+	}
+}
+

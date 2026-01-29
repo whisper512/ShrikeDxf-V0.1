@@ -72,6 +72,11 @@ QColor CDxfManger::GetCurrentLayerColor()
     return QColor();
 }
 
+QString CDxfManger::GetCurrentLayerName()
+{
+    return m_strCurrentLayer;
+}
+
 void CDxfManger::RefreshTreeModelAndGraphicsview()
 {
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
@@ -238,9 +243,8 @@ void CDxfManger::handleMouseStatus(int index)
     m_DxfGraphicsScene.m_mouseState = (enumMouseStateInView)index;
     m_DxfGraphicsScene.clearPreviewEntityData();
     m_DxfGraphicsScene.ChangePreviewEntityByMouseState();
-    //通知view正在预览绘图
+    //通知view预览绘图
     emit signalStartPreviewEntity(index);
-    
 }
 
 void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
@@ -253,6 +257,42 @@ void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
 void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
 {
     m_DxfGraphicsScene.MouseLeftClick(pos, GetCurrentLayerColor());
+    switch (m_DxfGraphicsScene.m_PreviewEntity.type)
+    {
+    case enumEntity_Point:
+    {
+        //添加点
+        Point point(pos.x(), pos.y());
+        m_DxfMapping.addPointToLayer(point, GetCurrentLayerName());
+        RefreshTreeModelAndGraphicsview();
+        break;
+    }
+    case enumPreviewEntity_Line:
+    {
+        m_DxfMapping.addLineToLayer(m_DxfGraphicsScene.m_linePreview,GetCurrentLayerName());
+        break;
+    }
+    case enumPreviewEntity_Center_Radius_Circle:
+    {
+        m_DxfMapping.addCircleToLayer(m_DxfGraphicsScene.m_circlePreview, GetCurrentLayerName());
+        break;
+    }
+    case enumPreviewEntity_Diameter_Circle:
+    {
+        m_DxfMapping.addCircleToLayer(m_DxfGraphicsScene.m_circlePreview, GetCurrentLayerName());
+        break;
+    }
+    case enumPreviewEntity_Center_Endpoint_Arc:
+    {
+        if (m_DxfGraphicsScene.m_pointArcCenter.isNull() && m_DxfGraphicsScene.m_pointArcStart.isNull())
+        {
+            m_DxfMapping.addArcToLayer(m_DxfGraphicsScene.m_arcPreview, GetCurrentLayerName());
+        }
+        break;
+    }
+    default:
+        break;
+    }
     RefreshTreeModelAndGraphicsview();
 }
 
@@ -264,6 +304,6 @@ void CDxfManger::handleGraphicsViewRightClick(QPointF pos)
 void CDxfManger::handleEndDrawPreview()
 {
     m_DxfGraphicsScene.m_mouseState = enumMouseStateInView_None;
-    //结束预览绘图，通知btn切换状态
+    //结束预览绘图,通知btn切换状态
     emit signalChangeCreateBtnStatus((int)m_DxfGraphicsScene.m_mouseState);
 }
