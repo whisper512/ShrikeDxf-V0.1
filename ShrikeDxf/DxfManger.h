@@ -73,9 +73,10 @@ signals:
 	void signalSelectedEntityType(int nType);
 	//更新label显示文件名
 	void signalShowFileName(QString strFileName);
-
 	//通知主界面修改label
 	void signalCurrentLayer(QString strLayer);
+	//通知createbtn切换状态
+	void signalChangeCreateBtnStatus(int index);
 
  public slots:
 	 //-----treeview的槽函数-----
@@ -128,9 +129,10 @@ signals:
 
 	//-----graphicsview的槽函数-----
 	//graphics中鼠标状态
-	void handleMouseStatus(int iIndex);
+	void handleMouseStatus(int index);
 	void handleGraphicsViewMouseMove(QPointF pos);
 	void handleGraphicsViewLeftClick(QPointF pos);
+	void handleGraphicsViewRightClick(QPointF pos);
 	//-----------
 
 };

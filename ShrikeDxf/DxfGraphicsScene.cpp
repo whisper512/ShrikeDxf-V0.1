@@ -28,8 +28,6 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
     for (const auto& pairLayer : mapdxf)
     {
         const stuLayer layer = pairLayer.second;
-       
-
         for (auto itPoint = layer.vecPoints.begin(); itPoint != layer.vecPoints.end(); ++itPoint)
         {
             DrawPoint(*itPoint, layer.color);
@@ -66,6 +64,187 @@ void CDxfGraphicsScene::ClearScene()
 }
 
 
+void CDxfGraphicsScene::MouseMove(QPointF pos,QColor color)
+{
+    switch (m_PreviewEntity.type)
+    {
+    case enumPreviewEntity_None:
+    {
+       ClearPreviewItems();
+        break;
+    }
+    case enumPreviewEntity_Point:
+    {
+        // 绘制预览点
+        DrawPreviewPoint(Point(pos.x(), pos.y()), color);
+        break;
+    }
+    case enumPreviewEntity_Line:
+    {
+        ProcessPreviewLineWhenMouseMove(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Center_Radius_Circle:
+    {
+        ProcessPreviewCircleCenterRadiusWhenMouseMove(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Diameter_Circle:
+    {
+        ProcessPreviewCircleDiameterWhenMouseMove(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Center_Endpoint_Arc:
+    {
+        ProcessPreviewArcCenterEndpointWhenMouseMove(pos, color);
+        break;
+    }
+    case enumPreviewEntity_ThreePoints_Arc:
+    {
+        ProcessPreviewArcThreePointsWhenMouseMove(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Polyline:
+    {
+
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void CDxfGraphicsScene::MouseLeftClick(QPointF pos, QColor color)
+{
+    switch (m_PreviewEntity.type)
+    {
+    case enumPreviewEntity_Point:
+    {
+        Point newPoint(pos.x(), pos.y());
+        break;
+    }
+    case enumPreviewEntity_Line:
+    {
+        ProcessPreviewLineWhenMouseClick(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Center_Radius_Circle:
+    {
+        ProcessPreviewCircleCenterRadiusWhenMouseClick(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Diameter_Circle:
+    {
+        ProcessPreviewCircleDiameterWhenMouseClick(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Center_Endpoint_Arc:
+    {
+        ProcessPreviewArcCenterEndpointWhenMouseClick(pos, color);
+        break;
+    }
+    case enumPreviewEntity_ThreePoints_Arc:
+    {
+        ProcessPreviewArcThreePointsWhenMouseClick(pos, color);
+        break;
+    }
+    case enumPreviewEntity_Polyline:
+    {
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void CDxfGraphicsScene::MouseRightClick(QPointF pos)
+{
+    switch (m_PreviewEntity.type)
+    {
+    case enumPreviewEntity_Point:
+    {
+       m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    case enumPreviewEntity_Line:
+    {
+        m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    case enumPreviewEntity_Center_Radius_Circle:
+    {
+        m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    case enumPreviewEntity_Diameter_Circle:
+    {
+        m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    case enumPreviewEntity_Center_Endpoint_Arc:
+    {
+        m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    case enumPreviewEntity_ThreePoints_Arc:
+    {
+        m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    case enumPreviewEntity_Polyline:
+    {
+        m_mouseState = enumMouseStateInView_None;
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void CDxfGraphicsScene::ChangePreviewEntityByMouseState()
+{
+    switch (m_mouseState)
+    {
+    case enumMouseStateInView_None:
+        m_PreviewEntity.type = enumPreviewEntity_None;
+        break;
+    case enumMouseStateInView_PreviewPoint:
+        m_PreviewEntity.type = enumPreviewEntity_Point;
+        break;
+    case enumMouseStateInView_PreviewLine:
+        m_PreviewEntity.type = enumPreviewEntity_Line;
+        break;
+    case enumMouseStateInView_PreviewCircleCenterRadius:
+        m_PreviewEntity.type = enumPreviewEntity_Center_Radius_Circle;
+        break;
+    case enumMouseStateInView_PreviewCircleDiameter:
+        m_PreviewEntity.type = enumPreviewEntity_Diameter_Circle;
+        break;
+    case enumMouseStateInView_PreviewArcCenterEndpoint:
+        m_PreviewEntity.type = enumPreviewEntity_Center_Endpoint_Arc;
+        break;
+    case enumMouseStateInView_PreviewArcThreePoints:
+        m_PreviewEntity.type = enumPreviewEntity_ThreePoints_Arc;
+        break;
+    case enumMouseStateInView_PreviewPolyline:
+        m_PreviewEntity.type = enumPreviewEntity_Polyline;
+        break;
+    default:
+        break;
+    }
+}
+
+void CDxfGraphicsScene::clearPreviewEntityData()
+{
+    m_pointLineStart = QPointF();
+    m_pointCircleCenter = QPointF();
+    m_pointDiameterStart = QPointF();
+    m_pointArcCenter = QPointF();
+    m_pointArcStart = QPointF();
+    m_ArcFirstPoint = QPointF();
+    m_ArcSecondPoint = QPointF();
+}
+
 void CDxfGraphicsScene::ClearPreviewItems()
 {
     if (!this) 
@@ -80,7 +259,6 @@ void CDxfGraphicsScene::ClearPreviewItems()
 
     // 创建临时列表，避免在迭代过程中修改原列表
     QList<QGraphicsItem*> itemsToRemove;
-
     
     for (int i = 0; i < m_PreviewItems.size(); ++i) 
     {
@@ -156,9 +334,7 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point,QColor color)
     qreal size = sceneSize * 0.005;
     size = qMax(size, 1.0);
 
-    QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(
-        point.x - size / 2, point.y - size / 2,
-        size, size);
+    QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(point.x - size / 2, point.y - size / 2,size, size);
     centerPoint->setPen(QPen(color, CalculateDynamicPenWidth()));
     centerPoint->setBrush(QBrush(color));
     centerPoint->setZValue(1000);
@@ -169,18 +345,12 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point,QColor color)
     qreal crossSize = sceneSize * 0.02;
     crossSize = qMax(crossSize, size * 2);
 
-    QGraphicsLineItem* hLine = new QGraphicsLineItem(
-        point.x - crossSize / 2, point.y,
-        point.x + crossSize / 2, point.y
-    );
+    QGraphicsLineItem* hLine = new QGraphicsLineItem(point.x - crossSize / 2, point.y, point.x + crossSize / 2, point.y);
     hLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     hLine->setZValue(1000);
     addItem(hLine);
     m_PreviewItems.append(hLine);
-    QGraphicsLineItem* vLine = new QGraphicsLineItem(
-        point.x, point.y - crossSize / 2,
-        point.x, point.y + crossSize / 2
-    );
+    QGraphicsLineItem* vLine = new QGraphicsLineItem(point.x, point.y - crossSize / 2, point.x, point.y + crossSize / 2);
     vLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     vLine->setZValue(1000);
     addItem(vLine);
@@ -189,15 +359,10 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point,QColor color)
 
 void CDxfGraphicsScene::DrawPreviewLine(const Line& line,QColor color)
 {
-    // 清除之前的预览图形
+    //清除之前的预览图形
     ClearPreviewItems();
 
-    QGraphicsLineItem* previewLine = new QGraphicsLineItem(
-        line.StartX(), line.StartY(),
-        line.EndX(), line.EndY()
-    );
-
-    // 设置预览直线的样式
+    QGraphicsLineItem* previewLine = new QGraphicsLineItem(line.StartX(), line.StartY(),line.EndX(), line.EndY());
     previewLine->setPen(QPen(color, CalculateDynamicPenWidth(), Qt::DashLine));
     previewLine->setZValue(1000);
 
@@ -207,18 +372,12 @@ void CDxfGraphicsScene::DrawPreviewLine(const Line& line,QColor color)
 
 void CDxfGraphicsScene::DrawPreviewCircleWithCenterAndRadius(const Circle& circle,const QPointF& MousePos, QColor color)
 {
-    // 清除之前的预览项
     ClearPreviewItems();
 
-    // 创建圆的图形项
-    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(
-        circle.pointCenter.x - circle.radius,
-        circle.pointCenter.y - circle.radius,
-        circle.radius * 2,
-        circle.radius * 2
-    );
+    //创建圆的图形项
+    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(circle.pointCenter.x - circle.radius,circle.pointCenter.y - circle.radius,circle.radius * 2,circle.radius * 2);
 
-    // 设置圆的样式
+    //设置圆的样式
     QPen pen(color);
     pen.setWidth(CalculateDynamicPenWidth());
     pen.setStyle(Qt::DashLine);
@@ -240,20 +399,13 @@ void CDxfGraphicsScene::DrawPreviewCircleWithDiameter(const Line& diameter, QCol
 {
     ClearPreviewItems();
 
-    // 计算圆心
+    //计算圆心
     double centerX = (diameter.StartX() + diameter.EndX()) / 2;
     double centerY = (diameter.StartY() + diameter.EndY()) / 2;
-    double radius = sqrt(pow(diameter.EndX() - diameter.StartX(), 2) +
-        pow(diameter.EndY() - diameter.StartY(), 2)) / 2;
+    double radius = sqrt(pow(diameter.EndX() - diameter.StartX(), 2) + pow(diameter.EndY() - diameter.StartY(), 2)) / 2;
 
-    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(
-        centerX - radius,
-        centerY - radius,
-        radius * 2,
-        radius * 2
-    );
+    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(centerX - radius,centerY - radius,radius * 2,radius * 2);
 
-    // 设置圆的样式，使用动态笔宽
     QPen pen(color);
     pen.setWidth(CalculateDynamicPenWidth());
     pen.setStyle(Qt::DashLine);
@@ -263,10 +415,7 @@ void CDxfGraphicsScene::DrawPreviewCircleWithDiameter(const Line& diameter, QCol
     addItem(pCircleItem);
     m_PreviewItems.append(pCircleItem);
 
-    QGraphicsLineItem* pDiameterLine = new QGraphicsLineItem(
-        diameter.StartX(), diameter.StartY(),
-        diameter.EndX(), diameter.EndY()
-    );
+    QGraphicsLineItem* pDiameterLine = new QGraphicsLineItem(diameter.StartX(), diameter.StartY(),diameter.EndX(), diameter.EndY());
     pDiameterLine->setPen(pen);
     pDiameterLine->setZValue(1000); 
     addItem(pDiameterLine);
@@ -336,13 +485,13 @@ void CDxfGraphicsScene::ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color
 {
     if (m_pointLineStart.isNull()) 
     {
-    //绘制预览起始点
+        //绘制预览起始点
         Point previewPoint(pos.x(), pos.y());
         DrawPreviewPoint(previewPoint,color);
     }
     else 
     {
-    //绘制预览直线
+        //绘制预览直线
         Line previewLine(Point(m_pointLineStart.x(), m_pointLineStart.y()), Point(pos.x(), pos.y()));
         DrawPreviewLine(previewLine,color);
     }
@@ -389,8 +538,7 @@ void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseClick(QPointF p
     }
     else
     {
-        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) +
-            pow(pos.y() - m_pointCircleCenter.y(), 2));
+        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) + pow(pos.y() - m_pointCircleCenter.y(), 2));
         Circle newCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
         m_pointCircleCenter = QPointF();
     }
@@ -407,8 +555,7 @@ void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseMove(QPointF pos, Q
     else
     {
         //绘制预览圆
-        Line diameter(Point(m_pointDiameterStart.x(), m_pointDiameterStart.y()),
-            Point(pos.x(), pos.y()));
+        Line diameter(Point(m_pointDiameterStart.x(), m_pointDiameterStart.y()), Point(pos.x(), pos.y()));
         DrawPreviewCircleWithDiameter(diameter, color);
     }
 }
@@ -422,8 +569,7 @@ void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseClick(QPointF pos, 
     }
     else
     {
-        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) +
-            pow(pos.y() - m_pointCircleCenter.y(), 2));
+        double radius = sqrt(pow(pos.x() - m_pointCircleCenter.x(), 2) + pow(pos.y() - m_pointCircleCenter.y(), 2));
         Circle newCircle(Point(m_pointCircleCenter.x(), m_pointCircleCenter.y()), radius);
 
         m_pointDiameterStart = QPointF();
@@ -456,8 +602,7 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos
         Point startPoint(m_pointArcStart.x(), m_pointArcStart.y());
         Point endPoint(pos.x(), pos.y());
         // 计算半径
-        double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) +
-            pow(startPoint.y - centerPoint.y, 2));
+        double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) + pow(startPoint.y - centerPoint.y, 2));
 
         // 计算起点和终点的角度
         double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;

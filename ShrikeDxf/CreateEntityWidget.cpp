@@ -190,6 +190,13 @@ void CCreateEntityWidget::OnToolBtnClicked()
 }
 
 
+void CCreateEntityWidget::handleChangeCreateBtnStatus(int index)
+{
+	m_iSlectedIndex = index;
+    RefreshBtn();
+	emit signalMouseStatus(m_iSlectedIndex);
+}
+
 void CCreateEntityWidget::resizeEvent(QResizeEvent* event)
 {
 	QWidget::resizeEvent(event);

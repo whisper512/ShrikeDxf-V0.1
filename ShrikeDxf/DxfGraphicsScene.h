@@ -6,6 +6,18 @@
 
 #include "DxfStruct.h"
 
+enum enumMouseStateInView
+{
+	enumMouseStateInView_None = -1,
+	enumMouseStateInView_PreviewPoint,
+	enumMouseStateInView_PreviewLine,
+	enumMouseStateInView_PreviewCircleCenterRadius,
+	enumMouseStateInView_PreviewCircleDiameter,
+	enumMouseStateInView_PreviewArcCenterEndpoint,
+	enumMouseStateInView_PreviewArcThreePoints,
+	enumMouseStateInView_PreviewPolyline,
+};
+
 class CDxfGraphicsScene : public QGraphicsScene
 {
 	Q_OBJECT
@@ -28,19 +40,32 @@ public:
 private:
 
 public:
-	//绘制预览
+    //graphics鼠标当前状态
+	enumMouseStateInView m_mouseState = enumMouseStateInView_None;
+
+	//预览图元
+    stuPreviewEntity m_PreviewEntity;
 	QList<QGraphicsItem*> m_PreviewItems;
 	//预览线段起点
 	QPointF m_pointLineStart;
 	//存储圆心位置
 	QPointF m_pointCircleCenter;
-	QPointF m_pointDiameterStart; //存储直径起点位置
+	//直径画圆存储直径起点位置
+	QPointF m_pointDiameterStart;
+	//圆心-起点-终点画弧
+	Arc m_arcPreview;
 	QPointF m_pointArcCenter;  // 存储弧线圆心
 	QPointF m_pointArcStart;   // 存储弧线起点
-	Arc m_arcPreview;
+	//三点画弧存储弧线
 	QPointF m_ArcFirstPoint;   // 存储弧线的起点
 	QPointF m_ArcSecondPoint;  // 存储弧线的中间点
 
+	void MouseMove(QPointF pos,QColor color);
+	void MouseLeftClick(QPointF pos,QColor color);
+	void MouseRightClick(QPointF pos);
+	void ChangePreviewEntityByMouseState();
+
+	void clearPreviewEntityData();
 	void ClearPreviewItems();
 	void DrawPreviewPoint(const Point& point,QColor color);
 	void DrawPreviewLine(const Line& line,QColor color);

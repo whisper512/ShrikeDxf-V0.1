@@ -84,6 +84,7 @@ signals:
 	void signalMousePos(QString strPos);
 	void signalGraphicsViewMouseMove(QPointF pos);
 	void signalGraphicsViewLeftCLick(QPointF pos);
+	void signalGraphicsViewRightClick(QPointF pos);
 
 
 public slots:
@@ -100,6 +101,7 @@ public slots:
 	void handleLockZoom(bool bChecked);
 	//operate动作
 	void handlePasteEntity();
+
 
 protected:
 	void wheelEvent(QWheelEvent* pEvent) override;

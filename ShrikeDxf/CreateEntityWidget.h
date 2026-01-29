@@ -27,9 +27,10 @@ private:
 
 signals:
 	void signalMouseStatus(int index);
-
 private slots:
 	void OnToolBtnClicked();
+public slots:
+	void handleChangeCreateBtnStatus(int index);
 
 protected:
 	void resizeEvent(QResizeEvent *event) override;

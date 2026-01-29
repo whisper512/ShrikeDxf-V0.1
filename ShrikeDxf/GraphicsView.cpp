@@ -89,6 +89,8 @@ void CGraphicsView::InitRuler()
 void CGraphicsView::ShowMenu(const QPoint& pos)
 {
     m_pointRightClickPos = pos;
+
+
     if (m_bCopyingEntity)
     {
         m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
@@ -207,6 +209,7 @@ void CGraphicsView::handlePasteEntity()
     m_bCopyingEntity = false;
     emit signalPaste(mapToScene(m_pointRightClickPos));
 }
+
 
 void CGraphicsView::wheelEvent(QWheelEvent* pEvent)
 {
@@ -338,6 +341,11 @@ void CGraphicsView::mousePressEvent(QMouseEvent* pEvent)
     {
         QPointF scenePos = mapToScene(pEvent->pos());
         emit signalGraphicsViewLeftCLick(scenePos);
+    }
+    if (pEvent->button() == Qt::RightButton)
+    {
+        QPointF scenePos = mapToScene(pEvent->pos());
+        emit signalGraphicsViewRightClick(scenePos);
     }
 
     QGraphicsView::mousePressEvent(pEvent);

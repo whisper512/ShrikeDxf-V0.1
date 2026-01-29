@@ -170,6 +170,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pGraphicsView,&CGraphicsView::signalPaste,m_pDxfDataManger, &CDxfManger::handlePaste);
 				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewMouseMove,m_pDxfDataManger,&CDxfManger::handleGraphicsViewMouseMove);
 				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftCLick,m_pDxfDataManger, &CDxfManger::handleGraphicsViewLeftClick);
+				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewRightClick, m_pDxfDataManger, &CDxfManger::handleGraphicsViewRightClick);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -214,6 +215,11 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (m_pCreateEntityWidget && m_pDxfDataManger)
 			{
 				connect(m_pCreateEntityWidget,&CCreateEntityWidget::signalMouseStatus,m_pDxfDataManger, &CDxfManger::handleMouseStatus);
+				connect(m_pDxfDataManger,&CDxfManger::signalChangeCreateBtnStatus,m_pCreateEntityWidget,&CCreateEntityWidget::handleChangeCreateBtnStatus);
+			}
+			if (m_pCreateEntityWidget && m_pGraphicsView)
+			{
+				
 			}
 
 		});

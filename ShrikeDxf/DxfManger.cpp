@@ -233,167 +233,28 @@ void CDxfManger::handleOnStepLengthOrAngleChanged(double dStepLength, double dRo
     m_DxfMapping.m_dRotateStepRAD = dRotationAngle * (M_PI / 180);
 }
 
-void CDxfManger::handleMouseStatus(int iIndex)
+void CDxfManger::handleMouseStatus(int index)
 {
-    m_DxfMapping.iGraphicsMouseState = iIndex;
-
-    if (iIndex != 1) 
-    {  
-        m_DxfGraphicsScene.m_pointLineStart = QPointF();
-    }
-    if (iIndex != 2) 
-    {
-        m_DxfGraphicsScene.m_pointCircleCenter = QPointF();
-    }
-    if (iIndex != 3)
-    {
-        m_DxfGraphicsScene.m_pointDiameterStart = QPointF();
-    }
-    if (iIndex != 4)
-    {
-        m_DxfGraphicsScene.m_pointArcCenter = QPointF();
-        m_DxfGraphicsScene.m_pointArcStart = QPointF();
-    }
-    if (iIndex != 5)
-    {
-        m_DxfGraphicsScene.m_ArcFirstPoint = QPointF();
-        m_DxfGraphicsScene.m_ArcSecondPoint = QPointF();
-    }
-
-    switch (m_DxfMapping.iGraphicsMouseState)
-    {
-    case -1:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_None;
-        break;
-    case 0:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Point;
-        break;
-    case 1:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Line;
-        break;
-    case 2:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Center_Radius_Circle;
-        break;
-    case 3:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Diameter_Circle;
-        break;
-    case 4:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Center_Endpoint_Arc;
-        break;
-    case 5:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_ThreePoints_Arc;
-        break;
-    case 6:
-        m_DxfMapping.m_PreviewEntity.type = enumPreviewEntity_Polyline;
-        break;
-    default:
-        break;
-    }
+    m_DxfGraphicsScene.m_mouseState = (enumMouseStateInView)index;
+    m_DxfGraphicsScene.clearPreviewEntityData();
+    m_DxfGraphicsScene.ChangePreviewEntityByMouseState();
 }
 
 void CDxfManger::handleGraphicsViewMouseMove(QPointF pos)
 {
-    switch (m_DxfMapping.m_PreviewEntity.type)
-    {
-    case enumPreviewEntity_None:
-    {
-        m_DxfGraphicsScene.ClearPreviewItems();
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_Point:
-    {
-
-        // 绘制预览点
-        m_DxfGraphicsScene.DrawPreviewPoint(Point(pos.x(), pos.y()), GetCurrentLayerColor());
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_Line:
-    {
-        m_DxfGraphicsScene.ProcessPreviewLineWhenMouseMove(pos, GetCurrentLayerColor());
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_Center_Radius_Circle:
-    {
-        m_DxfGraphicsScene.ProcessPreviewCircleCenterRadiusWhenMouseMove(pos, GetCurrentLayerColor());
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_Diameter_Circle:
-    {
-        m_DxfGraphicsScene.ProcessPreviewCircleDiameterWhenMouseMove(pos, GetCurrentLayerColor());
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_Center_Endpoint_Arc:
-    {
-        m_DxfGraphicsScene.ProcessPreviewArcCenterEndpointWhenMouseMove(pos, GetCurrentLayerColor());
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_ThreePoints_Arc:
-    {
-        m_DxfGraphicsScene.ProcessPreviewArcThreePointsWhenMouseMove(pos, GetCurrentLayerColor());
-        emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-        break;
-    }
-    case enumPreviewEntity_Polyline:
-    {
-        
-        break;
-    }
-    default:
-        break;
-    }
+    m_DxfGraphicsScene.MouseMove(pos,GetCurrentLayerColor());
+    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 }
 
 void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
 {
-    switch (m_DxfMapping.m_PreviewEntity.type)
-    {
-    case enumPreviewEntity_Point:
-    {
-        Point newPoint(pos.x(), pos.y());
-        break;
-    }
-    case enumPreviewEntity_Line:
-    {
-        m_DxfGraphicsScene.ProcessPreviewLineWhenMouseClick(pos,GetCurrentLayerColor());
-        RefreshTreeModelAndGraphicsview();
-        break;
-    }
-    case enumPreviewEntity_Center_Radius_Circle:
-    {
-        m_DxfGraphicsScene.ProcessPreviewCircleCenterRadiusWhenMouseClick(pos,GetCurrentLayerColor());
-        RefreshTreeModelAndGraphicsview();
-        break;
-    }
-    case enumPreviewEntity_Diameter_Circle:
-    {
-        m_DxfGraphicsScene.ProcessPreviewCircleDiameterWhenMouseClick(pos, GetCurrentLayerColor());
-        RefreshTreeModelAndGraphicsview();
-        break;
-    }
-    case enumPreviewEntity_Center_Endpoint_Arc:
-    {
-        m_DxfGraphicsScene.ProcessPreviewArcCenterEndpointWhenMouseClick(pos,GetCurrentLayerColor());
-        RefreshTreeModelAndGraphicsview();
-        break;
-    }
-    case enumPreviewEntity_ThreePoints_Arc:
-    {
-        m_DxfGraphicsScene.ProcessPreviewArcThreePointsWhenMouseClick(pos,GetCurrentLayerColor());
-        RefreshTreeModelAndGraphicsview();
-        break;
-    }
-    case enumPreviewEntity_Polyline:
-    {
-        break;
-    }
-    default:
-        break;
-    }
+    m_DxfGraphicsScene.MouseLeftClick(pos, GetCurrentLayerColor());
+    RefreshTreeModelAndGraphicsview();
+}
+
+void CDxfManger::handleGraphicsViewRightClick(QPointF pos)
+{
+    m_DxfGraphicsScene.MouseRightClick(pos);
+    emit signalChangeCreateBtnStatus((int)m_DxfGraphicsScene.m_mouseState);
 }
 

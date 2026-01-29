@@ -28,10 +28,6 @@ public:
     map<string, stuLayer> m_mapDxfEntities;
     //tree当前选择的entity
     stuSelectedEntity m_SelectedEntity;
-    //graphics鼠标当前状态
-    int iGraphicsMouseState = 0;
-    //预览图元
-    stuPreviewEntity m_PreviewEntity;
 
     //移动的步长
     double m_dMoveStep = 1.0;
