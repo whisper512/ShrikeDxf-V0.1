@@ -59,6 +59,8 @@ public:
 	//三点画弧存储弧线
 	QPointF m_ArcFirstPoint;   // 存储弧线的起点
 	QPointF m_ArcSecondPoint;  // 存储弧线的中间点
+	//多段线
+	QVector<QPointF> m_vecPolylinePoints;
 
 	void MouseMove(QPointF pos,QColor color);
 	void MouseLeftClick(QPointF pos,QColor color);
@@ -74,16 +76,19 @@ public:
 	void DrawPreviewArc(const Arc& arc, const QColor& color,const Point& pointStart ,const Point& pointEnd);
 
 	void ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color);
-	void ProcessPreviewLineWhenMouseClick(QPointF pos,QColor color);
+	void ProcessPreviewLineWhenMouseLeftClick(QPointF pos,QColor color);
 	void ProcessPreviewCircleCenterRadiusWhenMouseMove(QPointF pos,QColor color);
-    void ProcessPreviewCircleCenterRadiusWhenMouseClick(QPointF pos,QColor color);
+    void ProcessPreviewCircleCenterRadiusWhenMouseLeftClick(QPointF pos,QColor color);
 	void ProcessPreviewCircleDiameterWhenMouseMove(QPointF pos,QColor color);
-	void ProcessPreviewCircleDiameterWhenMouseClick(QPointF pos,QColor color);
+	void ProcessPreviewCircleDiameterWhenMouseLeftClick(QPointF pos,QColor color);
 	void ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos,QColor color);
-    void ProcessPreviewArcCenterEndpointWhenMouseClick(QPointF pos,QColor color);
+    void ProcessPreviewArcCenterEndpointWhenMouseLeftClick(QPointF pos,QColor color);
 	void ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos,QColor color);
-	void ProcessPreviewArcThreePointsWhenMouseClick(QPointF pos,QColor color);
+	void ProcessPreviewArcThreePointsWhenMouseLeftClick(QPointF pos,QColor color);
 	void CalculateCircleFromThreePoints(const Point& p1, const Point& p2, const Point& p3, Point& center, double& radius);
+
+	void ProcessPreviewPolylineWhenMouseMove(QPointF pos,QColor color);
+    void ProcessPreviewPolylineWhenMouseLeftClick(QPointF pos,QColor color);
 private:
 	void DrawPoint(const Point& point,const QColor& color);
 	void DrawLine(const Line& line, const QColor& color);

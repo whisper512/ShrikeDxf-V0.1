@@ -106,7 +106,7 @@ void CDxfGraphicsScene::MouseMove(QPointF pos,QColor color)
     }
     case enumPreviewEntity_Polyline:
     {
-
+        ProcessPreviewPolylineWhenMouseMove(pos, color);
         break;
     }
     default:
@@ -125,31 +125,32 @@ void CDxfGraphicsScene::MouseLeftClick(QPointF pos, QColor color)
     }
     case enumPreviewEntity_Line:
     {
-        ProcessPreviewLineWhenMouseClick(pos, color);
+        ProcessPreviewLineWhenMouseLeftClick(pos, color);
         break;
     }
     case enumPreviewEntity_Center_Radius_Circle:
     {
-        ProcessPreviewCircleCenterRadiusWhenMouseClick(pos, color);
+        ProcessPreviewCircleCenterRadiusWhenMouseLeftClick(pos, color);
         break;
     }
     case enumPreviewEntity_Diameter_Circle:
     {
-        ProcessPreviewCircleDiameterWhenMouseClick(pos, color);
+        ProcessPreviewCircleDiameterWhenMouseLeftClick(pos, color);
         break;
     }
     case enumPreviewEntity_Center_Endpoint_Arc:
     {
-        ProcessPreviewArcCenterEndpointWhenMouseClick(pos, color);
+        ProcessPreviewArcCenterEndpointWhenMouseLeftClick(pos, color);
         break;
     }
     case enumPreviewEntity_ThreePoints_Arc:
     {
-        ProcessPreviewArcThreePointsWhenMouseClick(pos, color);
+        ProcessPreviewArcThreePointsWhenMouseLeftClick(pos, color);
         break;
     }
     case enumPreviewEntity_Polyline:
     {
+        ProcessPreviewPolylineWhenMouseLeftClick(pos, color);
         break;
     }
     default:
@@ -243,6 +244,7 @@ void CDxfGraphicsScene::clearPreviewEntityData()
     m_pointArcStart = QPointF();
     m_ArcFirstPoint = QPointF();
     m_ArcSecondPoint = QPointF();
+    m_vecPolylinePoints.clear();
 }
 
 void CDxfGraphicsScene::ClearPreviewItems()
@@ -497,7 +499,7 @@ void CDxfGraphicsScene::ProcessPreviewLineWhenMouseMove(QPointF pos,QColor color
     }
 }
 
-void CDxfGraphicsScene::ProcessPreviewLineWhenMouseClick(QPointF pos,QColor color)
+void CDxfGraphicsScene::ProcessPreviewLineWhenMouseLeftClick(QPointF pos,QColor color)
 {
     if (m_pointLineStart.isNull()) 
     {
@@ -529,7 +531,7 @@ void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseMove(QPointF po
     }
 }
 
-void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseClick(QPointF pos, QColor color)
+void CDxfGraphicsScene::ProcessPreviewCircleCenterRadiusWhenMouseLeftClick(QPointF pos, QColor color)
 {
     if (m_pointCircleCenter.isNull())
     {
@@ -560,7 +562,7 @@ void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseMove(QPointF pos, Q
     }
 }
 
-void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseClick(QPointF pos, QColor color)
+void CDxfGraphicsScene::ProcessPreviewCircleDiameterWhenMouseLeftClick(QPointF pos, QColor color)
 {
     if (m_pointDiameterStart.isNull())
     {
@@ -613,7 +615,7 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos
     }
 }
 
-void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseClick(QPointF pos, QColor color)
+void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseLeftClick(QPointF pos, QColor color)
 {
     if (m_pointArcCenter.isNull() && m_pointDiameterStart.isNull())
     {
@@ -689,7 +691,7 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos, Q
     //}
 }
 
-void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseClick(QPointF pos, QColor color)
+void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseLeftClick(QPointF pos, QColor color)
 {
     //if (m_ArcFirstPoint.isNull() && m_ArcSecondPoint.isNull())
     //{
@@ -762,6 +764,49 @@ void CDxfGraphicsScene::CalculateCircleFromThreePoints(const Point& p1, const Po
 
     // 计算半径
     radius = sqrt(pow(p1.x - center.x, 2) + pow(p1.y - center.y, 2));
+}
+
+void CDxfGraphicsScene::ProcessPreviewPolylineWhenMouseMove(QPointF pos, QColor color)
+{
+    // 如果没有顶点，显示预览点
+    if (m_vecPolylinePoints.isEmpty())
+    {
+        Point previewPoint(pos.x(), pos.y());
+        DrawPreviewPoint(previewPoint, color);
+    }
+    else
+    {
+        // 清除之前的预览
+        ClearPreviewItems();
+
+        // 绘制已确定的线段
+        for (int i = 0; i < m_vecPolylinePoints.size() - 1; ++i)
+        {
+            Line line(Point(m_vecPolylinePoints[i].x(), m_vecPolylinePoints[i].y()),
+                Point(m_vecPolylinePoints[i + 1].x(), m_vecPolylinePoints[i + 1].y()));
+            DrawLine(line, color);
+        }
+
+        // 绘制从最后一个顶点到当前鼠标位置的预览线
+        Line previewLine(Point(m_vecPolylinePoints.last().x(), m_vecPolylinePoints.last().y()),
+            Point(pos.x(), pos.y()));
+        DrawPreviewLine(previewLine, color);
+    }
+}
+
+void CDxfGraphicsScene::ProcessPreviewPolylineWhenMouseLeftClick(QPointF pos, QColor color)
+{
+    // 添加当前点作为多段线的一个顶点
+    m_vecPolylinePoints.append(pos);
+
+    // 绘制已确定的线段
+    if (m_vecPolylinePoints.size() >= 2)
+    {
+        int lastIndex = m_vecPolylinePoints.size() - 1;
+        Line line(Point(m_vecPolylinePoints[lastIndex - 1].x(), m_vecPolylinePoints[lastIndex - 1].y()),
+            Point(m_vecPolylinePoints[lastIndex].x(), m_vecPolylinePoints[lastIndex].y()));
+        DrawLine(line, color);
+    }
 }
 
 
