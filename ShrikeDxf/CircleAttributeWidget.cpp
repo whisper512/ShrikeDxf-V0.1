@@ -20,8 +20,8 @@ CCircleAttributeWidget::~CCircleAttributeWidget()
 
 void CCircleAttributeWidget::OnSpinBoxChanged()
 {
-	m_cirlce.pointCenter.x = ui.doubleSpinBox_CenterX->value();
-    m_cirlce.pointCenter.y = ui.doubleSpinBox_CenterY->value();
+	m_cirlce.pointCenter.setX(ui.doubleSpinBox_CenterX->value());
+    m_cirlce.pointCenter.setY(ui.doubleSpinBox_CenterY->value());
     m_cirlce.radius = ui.doubleSpinBox_Radius->value();
 	emit signalCircleAttributeChanged(m_cirlce);
 }
@@ -33,8 +33,8 @@ void CCircleAttributeWidget::handleNoticeCircleAttribute(Circle circle)
     ui.doubleSpinBox_Radius->blockSignals(true);
 
 	m_cirlce = circle;
-	ui.doubleSpinBox_CenterX->setValue(m_cirlce.pointCenter.x);
-	ui.doubleSpinBox_CenterY->setValue(m_cirlce.pointCenter.y);
+	ui.doubleSpinBox_CenterX->setValue(m_cirlce.pointCenter.x());
+	ui.doubleSpinBox_CenterY->setValue(m_cirlce.pointCenter.y());
     ui.doubleSpinBox_Radius->setValue(m_cirlce.radius);
 
 	ui.doubleSpinBox_CenterX->blockSignals(false);

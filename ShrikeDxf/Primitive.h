@@ -17,6 +17,10 @@
 #define STR_POLYLINE_LOWERCASE "polyline"
 #define STR_TEXT_LOWERCASE "text"
 
+#include <QPointF>  
+#include <string> 
+#include <vector>
+
 enum enumEntity
 {
     enumEntity_None = -1,
@@ -41,27 +45,21 @@ enum enumPreviewEntity
 };
 
 //Dxf图元类
-struct Point
+struct Point :public QPointF
 {
-	double x;
-	double y;
-	double z;
+    double z;
     std::string type = "POINT";
 
-	Point() :x(0.0), y(0.0), z(0.0) {}
-    Point(double x, double y) :x(x), y(y), z(0.0) {};
-	Point(double x, double y, double z) :x(x), y(y), z(z) {};
-    Point& operator=(const Point& other)
-    {
-        if (this != &other)
-        {
-            x = other.x;
-            y = other.y;
-            z = other.z;
-            type = other.type;  // 添加这行
-        }
-        return *this;
-    }
+    Point() : QPointF(0.0, 0.0), z(0.0) {}
+    Point(double x, double y) : QPointF(x, y), z(0.0) {};
+    Point(double x, double y, double z) : QPointF(x, y), z(z) {};
+    Point(const QPointF& point) : QPointF(point), z(0.0) {}
+
+    // 保留原有接口
+    double X() const { return x(); }
+    double Y() const { return y(); }
+    void setX(double x) { QPointF::setX(x); }
+    void setY(double y) { QPointF::setY(y); }
 };
 
 struct Line 
@@ -73,25 +71,25 @@ private:
 public:
     Line() : pointStart(0.0, 0.0, 0.0), pointEnd(0.0, 0.0, 0.0) {};
     Line(Point pStart, Point pEnd) :pointStart(pStart), pointEnd(pEnd) {};
-    double StartX() const { return pointStart.x; }
-    double StartY() const { return pointStart.y; }
+    double StartX() const { return pointStart.x(); }
+    double StartY() const { return pointStart.y(); }
     double StartZ() const { return pointStart.z; }
-    double EndX() const { return pointEnd.x; }
-    double EndY() const { return pointEnd.y; }
+    double EndX() const { return pointEnd.x(); }
+    double EndY() const { return pointEnd.y(); }
     double EndZ() const { return pointEnd.z; }
     //弧度
-    double Angle() const {return atan2(pointEnd.y - pointStart.y, pointEnd.x - pointStart.x);}
+    double Angle() const {return atan2(pointEnd.y() - pointStart.y(), pointEnd.x() - pointStart.x());}
     void setStartPoint(const Point& p) {pointStart = p;}
     void setEndPoint(const Point& p) {pointEnd = p;}
-    void setStartX(double x) {pointStart.x = x;}
-    void setStartY(double y) {pointStart.y = y;}
-    void setEndX(double x) {pointEnd.x = x;}
-    void setEndY(double y) {pointEnd.y = y;}
+    void setStartX(double x) {pointStart.setX(x);}
+    void setStartY(double y) { pointStart.setY(y); }
+    void setEndX(double x) {pointEnd.setX(x);}
+    void setEndY(double y) {pointEnd.setY(y);}
     void setPoints(const Point& pStart, const Point& pEnd) {pointStart = pStart;pointEnd = pEnd;}
 
     double Length() const {
-        double dx = pointEnd.x - pointStart.x;
-        double dy = pointEnd.y - pointStart.y;
+        double dx = pointEnd.x() - pointStart.x();
+        double dy = pointEnd.y() - pointStart.y();
         return sqrt(dx * dx + dy * dy);
     }
 

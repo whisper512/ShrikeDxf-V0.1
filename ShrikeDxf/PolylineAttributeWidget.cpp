@@ -25,9 +25,9 @@ void CPolylineAttributeWidget::RefreshTable()
 	ui.tableWidget->setHorizontalHeaderLabels(header);
 	for (int i = 0; i < m_polyline.numVertices; i++)
 	{
-		QTableWidgetItem* itemX = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].x));
+		QTableWidgetItem* itemX = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].x()));
 		ui.tableWidget->setItem(i, 0, itemX);
-		QTableWidgetItem* itemY = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].y));
+		QTableWidgetItem* itemY = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].y()));
 		ui.tableWidget->setItem(i, 1, itemY);
 	}
 
@@ -47,8 +47,10 @@ void CPolylineAttributeWidget::OnTableValueChanged()
 
 		// 创建顶点并添加到向量中
 		Point vertex;
-		vertex.x = x;
-		vertex.y = y;
+		//vertex.x() = x;
+		//vertex.y()() = y;
+		vertex.setX(x);
+        vertex.setY(y);
 		m_polyline.vecVertices.push_back(vertex);
 	}
 	emit signalPolylineAttributeChanged(m_polyline);

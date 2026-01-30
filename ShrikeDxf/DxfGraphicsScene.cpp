@@ -296,7 +296,7 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point,QColor color)
     qreal size = sceneSize * 0.005;
     size = qMax(size, 1.0);
 
-    QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(point.x - size / 2, point.y - size / 2,size, size);
+    QGraphicsEllipseItem* centerPoint = new QGraphicsEllipseItem(point.x() - size / 2, point.y() - size / 2,size, size);
     centerPoint->setPen(QPen(color, CalculateDynamicPenWidth()));
     centerPoint->setBrush(QBrush(color));
     centerPoint->setZValue(1000);
@@ -307,12 +307,12 @@ void CDxfGraphicsScene::DrawPreviewPoint(const Point& point,QColor color)
     qreal crossSize = sceneSize * 0.02;
     crossSize = qMax(crossSize, size * 2);
 
-    QGraphicsLineItem* hLine = new QGraphicsLineItem(point.x - crossSize / 2, point.y, point.x + crossSize / 2, point.y);
+    QGraphicsLineItem* hLine = new QGraphicsLineItem(point.x() - crossSize / 2, point.y(), point.x() + crossSize / 2, point.y());
     hLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     hLine->setZValue(1000);
     addItem(hLine);
     m_PreviewItems.append(hLine);
-    QGraphicsLineItem* vLine = new QGraphicsLineItem(point.x, point.y - crossSize / 2, point.x, point.y + crossSize / 2);
+    QGraphicsLineItem* vLine = new QGraphicsLineItem(point.x(), point.y() - crossSize / 2, point.x(), point.y() + crossSize / 2);
     vLine->setPen(QPen(color, CalculateDynamicPenWidth()));
     vLine->setZValue(1000);
     addItem(vLine);
@@ -337,7 +337,7 @@ void CDxfGraphicsScene::DrawPreviewCircleWithCenterAndRadius(const Circle& circl
     ClearPreviewItems();
 
     //创建圆的图形项
-    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(circle.pointCenter.x - circle.radius,circle.pointCenter.y - circle.radius,circle.radius * 2,circle.radius * 2);
+    QGraphicsEllipseItem* pCircleItem = new QGraphicsEllipseItem(circle.pointCenter.x() - circle.radius,circle.pointCenter.y() - circle.radius,circle.radius * 2,circle.radius * 2);
 
     //设置圆的样式
     QPen pen(color);
@@ -350,7 +350,7 @@ void CDxfGraphicsScene::DrawPreviewCircleWithCenterAndRadius(const Circle& circl
     m_PreviewItems.append(pCircleItem);
 
     //半径线
-    QGraphicsLineItem* pRadiusLine = new QGraphicsLineItem(circle.pointCenter.x, circle.pointCenter.y, MousePos.x(), MousePos.y());
+    QGraphicsLineItem* pRadiusLine = new QGraphicsLineItem(circle.pointCenter.x(), circle.pointCenter.y(), MousePos.x(), MousePos.y());
     pRadiusLine->setPen(pen);
     pRadiusLine->setZValue(1000);
     addItem(pRadiusLine);
@@ -390,7 +390,7 @@ void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color, cons
 
     QRectF currentSceneRect = this->sceneRect();
     QPainterPath path;
-    QPointF center(arc.pointCenter.x, arc.pointCenter.y);
+    QPointF center(arc.pointCenter.x(), arc.pointCenter.y());
     QRectF rect(center.x() - arc.radius, center.y() - arc.radius, arc.radius * 2, arc.radius * 2);
 
     //计算起点,起始角度是针对圆形中心的角度
@@ -429,11 +429,11 @@ void CDxfGraphicsScene::DrawPreviewArc(const Arc& arc, const QColor& color, cons
     //计算终止在圆弧上的点
     double endAngleRad = qDegreesToRadians(arc.endAngle);
     Point pointEndinCircle;
-    pointEndinCircle.x = center.x() + arc.radius * cos(endAngleRad);
-    pointEndinCircle.y = center.y() + arc.radius * sin(endAngleRad);
+    pointEndinCircle.setX(center.x() + arc.radius * cos(endAngleRad));
+    pointEndinCircle.setY(center.y() + arc.radius * sin(endAngleRad));
 
-    QGraphicsLineItem* lineCenterToStart = new QGraphicsLineItem(arc.pointCenter.x, arc.pointCenter.y, pointStart.x, pointStart.y);
-    QGraphicsLineItem* lineCenterToEnd = new QGraphicsLineItem(arc.pointCenter.x, arc.pointCenter.y, pointEndinCircle.x, pointEndinCircle.y);
+    QGraphicsLineItem* lineCenterToStart = new QGraphicsLineItem(arc.pointCenter.x(), arc.pointCenter.y(), pointStart.x(), pointStart.y());
+    QGraphicsLineItem* lineCenterToEnd = new QGraphicsLineItem(arc.pointCenter.x(), arc.pointCenter.y(), pointEndinCircle.x(), pointEndinCircle.y());
     // 设置预览直线的样式
     lineCenterToStart->setPen(QPen(color, CalculateDynamicPenWidth(), Qt::DashLine));
     lineCenterToEnd->setPen(QPen(color, CalculateDynamicPenWidth(), Qt::DashLine));
@@ -569,11 +569,11 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseMove(QPointF pos
         Point startPoint(m_pointArcStart.x(), m_pointArcStart.y());
         Point endPoint(pos.x(), pos.y());
         // 计算半径
-        double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) + pow(startPoint.y - centerPoint.y, 2));
+        double radius = sqrt(pow(startPoint.x() - centerPoint.x(), 2) + pow(startPoint.y() - centerPoint.y(), 2));
 
         // 计算起点和终点的角度
-        double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;
-        double endAngle = atan2(endPoint.y - centerPoint.y, endPoint.x - centerPoint.x) * 180 / M_PI;
+        double startAngle = atan2(startPoint.y() - centerPoint.y(), startPoint.x() - centerPoint.x()) * 180 / M_PI;
+        double endAngle = atan2(endPoint.y() - centerPoint.y(), endPoint.x() - centerPoint.x()) * 180 / M_PI;
 
         Arc previewArc(centerPoint, radius, startAngle, endAngle);
         DrawPreviewArc(previewArc, color, startPoint, endPoint);
@@ -601,12 +601,12 @@ void CDxfGraphicsScene::ProcessPreviewArcCenterEndpointWhenMouseLeftClick(QPoint
         Point endPoint(pos.x(), pos.y());
 
         //计算半径
-        double radius = sqrt(pow(startPoint.x - centerPoint.x, 2) +
-            pow(startPoint.y - centerPoint.y, 2));
+        double radius = sqrt(pow(startPoint.x() - centerPoint.x(), 2) +
+            pow(startPoint.y() - centerPoint.y(), 2));
 
         //计算起点和终点的角度
-        double startAngle = atan2(startPoint.y - centerPoint.y, startPoint.x - centerPoint.x) * 180 / M_PI;
-        double endAngle = atan2(endPoint.y - centerPoint.y, endPoint.x - centerPoint.x) * 180 / M_PI;
+        double startAngle = atan2(startPoint.y() - centerPoint.y(), startPoint.x() - centerPoint.x()) * 180 / M_PI;
+        double endAngle = atan2(endPoint.y() - centerPoint.y(), endPoint.x() - centerPoint.x()) * 180 / M_PI;
         Arc newArc(centerPoint, radius, startAngle, endAngle);
         m_arcPreview = newArc;
         //重置状态
@@ -620,14 +620,14 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos, Q
     //if (m_ArcFirstPoint.isNull() && m_ArcSecondPoint.isNull())
     //{
     //    // 绘制预览起点
-    //    Point previewPoint(pos.x(), pos.y());
+    //    Point previewPoint(pos.x()(), pos.y()()());
     //    DrawPreviewPoint(previewPoint,color);
     //}
     //else if (m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
     //{
     //    // 绘制预览起点和中间点
-    //    Point firstPoint(m_ArcFirstPoint.x(), m_ArcFirstPoint.y());
-    //    Point secondPoint(pos.x(), pos.y());
+    //    Point firstPoint(m_ArcFirstPoint.x()(), m_ArcFirstPoint.y()()());
+    //    Point secondPoint(pos.x()(), pos.y()()());
     //    DrawPreviewPoint(firstPoint, color);
     //    DrawPreviewPoint(secondPoint, color);
 
@@ -638,9 +638,9 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos, Q
     //else if (!m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
     //{
     //    // 计算三点确定的圆弧
-    //    Point firstPoint(m_ArcFirstPoint.x(), m_ArcFirstPoint.y());
-    //    Point secondPoint(m_ArcSecondPoint.x(), m_ArcSecondPoint.y());
-    //    Point thirdPoint(pos.x(), pos.y());
+    //    Point firstPoint(m_ArcFirstPoint.x()(), m_ArcFirstPoint.y()()());
+    //    Point secondPoint(m_ArcSecondPoint.x()(), m_ArcSecondPoint.y()()());
+    //    Point thirdPoint(pos.x()(), pos.y()()());
 
     //    // 计算圆心和半径
     //    Point centerPoint;
@@ -648,8 +648,8 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseMove(QPointF pos, Q
     //    CalculateCircleFromThreePoints(firstPoint, secondPoint, thirdPoint, centerPoint, radius);
 
     //    // 计算起点和终点的角度
-    //    double startAngle = atan2(firstPoint.y - centerPoint.y, firstPoint.x - centerPoint.x) * 180 / M_PI;
-    //    double endAngle = atan2(thirdPoint.y - centerPoint.y, thirdPoint.x - centerPoint.x) * 180 / M_PI;
+    //    double startAngle = atan2(firstPoint.y()() - centerPoint.y()(), firstPoint.x() - centerPoint.x()) * 180 / M_PI;
+    //    double endAngle = atan2(thirdPoint.y()() - centerPoint.y()(), thirdPoint.x() - centerPoint.x()) * 180 / M_PI;
 
     //    // 创建预览弧线
     //    Arc previewArc(centerPoint, radius, startAngle, endAngle);
@@ -672,9 +672,9 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseLeftClick(QPointF p
     //else if (!m_ArcSecondPoint.isNull() && !m_ArcFirstPoint.isNull())
     //{
     //    // 计算三点确定的圆弧
-    //    Point firstPoint(m_ArcFirstPoint.x(), m_ArcFirstPoint.y());
-    //    Point secondPoint(m_ArcSecondPoint.x(), m_ArcSecondPoint.y());
-    //    Point thirdPoint(pos.x(), pos.y());
+    //    Point firstPoint(m_ArcFirstPoint.x()(), m_ArcFirstPoint.y()()());
+    //    Point secondPoint(m_ArcSecondPoint.x()(), m_ArcSecondPoint.y()()());
+    //    Point thirdPoint(pos.x()(), pos.y()()());
 
     //    // 计算圆心和半径
     //    Point centerPoint;
@@ -682,8 +682,8 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseLeftClick(QPointF p
     //    CalculateCircleFromThreePoints(firstPoint, secondPoint, thirdPoint, centerPoint, radius);
 
     //    // 计算起点和终点的角度
-    //    double startAngle = atan2(firstPoint.y - centerPoint.y, firstPoint.x - centerPoint.x) * 180 / M_PI;
-    //    double endAngle = atan2(thirdPoint.y - centerPoint.y, thirdPoint.x - centerPoint.x) * 180 / M_PI;
+    //    double startAngle = atan2(firstPoint.y()() - centerPoint.y()(), firstPoint.x() - centerPoint.x()) * 180 / M_PI;
+    //    double endAngle = atan2(thirdPoint.y()() - centerPoint.y()(), thirdPoint.x() - centerPoint.x()) * 180 / M_PI;
 
     //    // 创建新弧线
     //    Arc newArc(centerPoint, radius, startAngle, endAngle);
@@ -698,10 +698,10 @@ void CDxfGraphicsScene::ProcessPreviewArcThreePointsWhenMouseLeftClick(QPointF p
 void CDxfGraphicsScene::CalculateCircleFromThreePoints(const Point& p1, const Point& p2, const Point& p3, Point& center, double& radius)
 {
     // 计算向量
-    double ax = p1.x - p2.x;
-    double ay = p1.y - p2.y;
-    double bx = p2.x - p3.x;
-    double by = p2.y - p3.y;
+    double ax = p1.x() - p2.x();
+    double ay = p1.y() - p2.y();
+    double bx = p2.x() - p3.x();
+    double by = p2.y() - p3.y();
 
     // 计算叉积，用于判断三点是否共线
     double crossProduct = ax * by - ay * bx;
@@ -710,26 +710,26 @@ void CDxfGraphicsScene::CalculateCircleFromThreePoints(const Point& p1, const Po
     if (fabs(crossProduct) < 1e-10)
     {
         // 设置无效的圆心和半径
-        center.x = 0;
-        center.y = 0;
+        center.setX(0);
+        center.setY(0);
         radius = -1;
         return;
     }
 
     // 计算圆心
     double d = 2 * crossProduct;
-    double ux = ((p1.x * p1.x + p1.y * p1.y) * (p2.y - p3.y) +
-        (p2.x * p2.x + p2.y * p2.y) * (p3.y - p1.y) +
-        (p3.x * p3.x + p3.y * p3.y) * (p1.y - p2.y)) / d;
-    double uy = ((p1.x * p1.x + p1.y * p1.y) * (p3.x - p2.x) +
-        (p2.x * p2.x + p2.y * p2.y) * (p1.x - p3.x) +
-        (p3.x * p3.x + p3.y * p3.y) * (p2.x - p1.x)) / d;
+    double ux = ((p1.x() * p1.x() + p1.y() * p1.y()) * (p2.y() - p3.y()) +
+        (p2.x() * p2.x() + p2.y() * p2.y()) * (p3.y() - p1.y()) +
+        (p3.x() * p3.x() + p3.y() * p3.y()) * (p1.y() - p2.y())) / d;
+    double uy = ((p1.x() * p1.x() + p1.y() * p1.y()) * (p3.x() - p2.x()) +
+        (p2.x() * p2.x() + p2.y() * p2.y()) * (p1.x() - p3.x()) +
+        (p3.x() * p3.x() + p3.y() * p3.y()) * (p2.x() - p1.x())) / d;
 
-    center.x = ux;
-    center.y = uy;
+    center.setX(ux);
+    center.setY(uy);
 
     // 计算半径
-    radius = sqrt(pow(p1.x - center.x, 2) + pow(p1.y - center.y, 2));
+    radius = sqrt(pow(p1.x() - center.x(), 2) + pow(p1.y() - center.y(), 2));
 }
 
 void CDxfGraphicsScene::ProcessPreviewPolylineWhenMouseMove(QPointF pos, QColor color)
@@ -780,7 +780,7 @@ void CDxfGraphicsScene::ProcessPreviewPolylineWhenMouseLeftClick(QPointF pos, QC
 void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
 {
     qreal size = 1;
-    addEllipse(point.x - size / 2, point.y - size / 2, size, size,QPen(color, CalculateDynamicPenWidth()), QBrush(color));
+    addEllipse(point.x() - size / 2, point.y() - size / 2, size, size,QPen(color, CalculateDynamicPenWidth()), QBrush(color));
 
     // 获取场景尺寸
     QRectF sceneRect = this->sceneRect();
@@ -792,8 +792,8 @@ void CDxfGraphicsScene::DrawPoint(const Point& point, const QColor& color)
     // 确保十字标记有最小尺寸
     crossSize = qMax(crossSize, size * 2);
 
-    addLine(point.x - crossSize / 2, point.y, point.x + crossSize / 2, point.y, QPen(color, CalculateDynamicPenWidth()));
-    addLine(point.x, point.y - crossSize / 2, point.x, point.y + crossSize / 2, QPen(color, CalculateDynamicPenWidth()));
+    addLine(point.x() - crossSize / 2, point.y(), point.x() + crossSize / 2, point.y(), QPen(color, CalculateDynamicPenWidth()));
+    addLine(point.x(), point.y() - crossSize / 2, point.x(), point.y() + crossSize / 2, QPen(color, CalculateDynamicPenWidth()));
 }
 
 void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
@@ -803,7 +803,7 @@ void CDxfGraphicsScene::DrawLine(const Line& line, const QColor& color)
 
 void CDxfGraphicsScene::DrawCircle(const Circle& circle, const QColor& color)
 {
-    addEllipse(circle.pointCenter.x - circle.radius, circle.pointCenter.y - circle.radius, circle.radius * 2, circle.radius * 2, QPen(color, CalculateDynamicPenWidth()), Qt::NoBrush);
+    addEllipse(circle.pointCenter.x() - circle.radius, circle.pointCenter.y() - circle.radius, circle.radius * 2, circle.radius * 2, QPen(color, CalculateDynamicPenWidth()), Qt::NoBrush);
 }
 
 
@@ -811,7 +811,7 @@ void CDxfGraphicsScene::DrawArc(const Arc& arc, const QColor& color)
 {
 
     QPainterPath path;
-    QPointF center(arc.pointCenter.x, arc.pointCenter.y);
+    QPointF center(arc.pointCenter.x(), arc.pointCenter.y());
     //圆弧外接矩形
     QRectF rect(center.x() - arc.radius,center.y() - arc.radius,arc.radius * 2, arc.radius * 2);
 
@@ -849,18 +849,18 @@ void CDxfGraphicsScene::DrawPolyline(const Polyline& polyline, const QColor& col
     QPainterPath path;
 
     // 移动到第一个点
-    path.moveTo(polyline.vecVertices[0].x, polyline.vecVertices[0].y);
+    path.moveTo(polyline.vecVertices[0].x(), polyline.vecVertices[0].y());
 
     // 连接后续所有点
     for (size_t i = 1; i < polyline.vecVertices.size(); ++i) 
     {
-        path.lineTo(polyline.vecVertices[i].x, polyline.vecVertices[i].y);
+        path.lineTo(polyline.vecVertices[i].x(), polyline.vecVertices[i].y());
     }
 
     // 如果多段线是闭合的，连接最后一个点和第一个点
     if (polyline.flag & 1) 
     {
-        path.lineTo(polyline.vecVertices[0].x, polyline.vecVertices[0].y);
+        path.lineTo(polyline.vecVertices[0].x(), polyline.vecVertices[0].y());
     }
 
     addPath(path, pen);
@@ -887,7 +887,7 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const map<string, stuLayer>& mapd
         const stuLayer layer = pairLayer.second;
         for (const auto& point : layer.vecPoints)
         {
-            totalBounds = totalBounds.united(QRectF(point.x, point.y, 0, 0));
+            totalBounds = totalBounds.united(QRectF(point.x(), point.y(), 0, 0));
         }
         for (const auto& line : layer.vecLines)
         {
@@ -896,21 +896,21 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const map<string, stuLayer>& mapd
         }
         for (const auto& circle : layer.vecCircles)
         {
-            totalBounds = totalBounds.united(QRectF(circle.pointCenter.x - circle.radius,
-                circle.pointCenter.y - circle.radius,
+            totalBounds = totalBounds.united(QRectF(circle.pointCenter.x() - circle.radius,
+                circle.pointCenter.y() - circle.radius,
                 circle.radius * 2, circle.radius * 2));
         }
         for (const auto& arc : layer.vecArcs)
         {
-            totalBounds = totalBounds.united(QRectF(arc.pointCenter.x - arc.radius,
-                arc.pointCenter.y - arc.radius,
+            totalBounds = totalBounds.united(QRectF(arc.pointCenter.x() - arc.radius,
+                arc.pointCenter.y() - arc.radius,
                 arc.radius * 2, arc.radius * 2));
         }
         for (const auto& polyline : layer.vecPolylines)
         {
             for (const auto& vertex : polyline.vecVertices)
             {
-                totalBounds = totalBounds.united(QRectF(vertex.x, vertex.y, 0, 0));
+                totalBounds = totalBounds.united(QRectF(vertex.x(), vertex.y(), 0, 0));
             }
         }    
     }
