@@ -202,7 +202,16 @@ bool CDxfManger::NewDxfFile()
     layer.color = QColor(0, 0, 0); //默认黑色
     m_DxfMapping.m_mapDxfEntities["0"] = layer;
     m_strCurrentLayer = "0";
-    RefreshTreelAndGraphicsAndLayertable();
+    m_DxfGraphicsScene.setSceneRect(0, 0, 500, 500);
+    
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
+    m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
+    m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);
+
+    emit signalRefreshTreeview(&m_DxfTreeviewModel);
+    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
+    emit signalRefreshLayerTableview(&m_DxfLayerTableviewModel);
+    emit signalSetStepLengthAndAngle(m_DxfMapping.m_dMoveStep, m_DxfMapping.m_dRotateStepRAD);
     return true;
 }
 
