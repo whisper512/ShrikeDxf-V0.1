@@ -160,16 +160,24 @@ void CMenuManger::OnSave()
 		QString filePath = pShrikeDxf->m_pDataManager->m_strDxfPath;
 		pShrikeDxf->m_pDxfDataManger->SaveDxfFile(filePath);
 	}
-
 }
 
 void CMenuManger::OnClose()
 {
-
+	if (m_pParent)
+	{
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+        pShrikeDxf->m_pDxfDataManger->CloseDxfFile();
+	}
 }
 
 void CMenuManger::OnNew()
 {
+	if (m_pParent)
+	{
+        ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+        pShrikeDxf->m_pDxfDataManger->NewDxfFile();
+	}
 }
 
 void CMenuManger::OnSaveAs()

@@ -47,8 +47,6 @@ void CPolylineAttributeWidget::OnTableValueChanged()
 
 		// 创建顶点并添加到向量中
 		Point vertex;
-		//vertex.x() = x;
-		//vertex.y()() = y;
 		vertex.setX(x);
         vertex.setY(y);
 		m_polyline.vecVertices.push_back(vertex);

@@ -20,6 +20,8 @@ public:
 public:
 	bool LoadDxfFile(const QString& strPath);
 	bool SaveDxfFile(const QString& strPath);
+	bool NewDxfFile();
+	bool CloseDxfFile();
 	void ClearDxfMappingData();
 
 private:
@@ -54,7 +56,7 @@ public:
 	QString GetCurrentLayerName();
 private:
 	//刷新树状图和绘图的model
-	void RefreshTreeModelAndGraphicsview();
+	void RefreshTreelAndGraphicsAndLayertable();
 
 signals:
 	//-----------

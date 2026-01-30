@@ -190,6 +190,32 @@ bool CDxfManger::SaveDxfFile(const QString& strPath)
     return true;
 }
 
+bool CDxfManger::NewDxfFile()
+{
+    //先关闭当前文件
+    CloseDxfFile();
+    
+    //默认版本
+    m_dxfVersion = DL_Codes::version::AC1015;
+    //添加默认图层
+    stuLayer layer;
+    layer.color = QColor(255, 255, 255); //默认白色
+    m_DxfMapping.m_mapDxfEntities["0"] = layer;
+    m_strCurrentLayer = "0";
+    RefreshTreelAndGraphicsAndLayertable();
+    return true;
+}
+
+bool CDxfManger::CloseDxfFile()
+{
+    ClearDxfMappingData();
+    m_DxfTreeviewModel.clear();
+    m_DxfGraphicsScene.clear();
+    m_DxfLayerTableviewModel.clear();
+    RefreshTreelAndGraphicsAndLayertable();
+    return false;
+}
+
 void CDxfManger::ClearDxfMappingData()
 {
     m_DxfMapping.m_mapDxfEntities.clear();
@@ -210,13 +236,14 @@ QString CDxfManger::GetCurrentLayerName()
     return m_strCurrentLayer;
 }
 
-void CDxfManger::RefreshTreeModelAndGraphicsview()
+void CDxfManger::RefreshTreelAndGraphicsAndLayertable()
 {
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
-    //刷新stacked的属性
+    m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);
+    emit signalRefreshLayerTableview(&m_DxfLayerTableviewModel);
 }
 
 
@@ -245,7 +272,7 @@ int CDxfManger::handleDeleteEntity(const QString& strLayer, const QString& strEn
     if (match.hasMatch())
     {
         m_DxfMapping.DeleteEntity(strLayer, match.captured(1), match.captured(2));
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
         return 1;
     }
     return -1;
@@ -261,13 +288,13 @@ int CDxfManger::handleCopyEntity()
 void CDxfManger::handlePaste(QPointF pos)
 {
     m_DxfMapping.PasteEntity(pos);
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
 }
 
 void CDxfManger::handleLayerModelChanged()
 {
-    m_DxfLayerTableviewModel.UpdateLayerData(m_DxfMapping.m_mapDxfEntities);
-    RefreshTreeModelAndGraphicsview();
+    m_DxfLayerTableviewModel.UpdateLayerChangedData(m_DxfMapping.m_mapDxfEntities);
+    RefreshTreelAndGraphicsAndLayertable();
 }
 
 void CDxfManger::handleChangeCurrentLayer(QString strLayer)
@@ -281,7 +308,7 @@ void CDxfManger::handlePointAttributeChanged(Point point)
     if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Point)
     {
         m_DxfMapping.ChangePointProperty(point);
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
     }
 }
 
@@ -290,7 +317,7 @@ void CDxfManger::handleLineAttributeChanged(Line line)
     if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Line)
     {
         m_DxfMapping.ChangeLineProperty(line);
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
     }
 }
 
@@ -299,7 +326,7 @@ void CDxfManger::handleCircleAttributeChanged(Circle circle)
     if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Circle)
     {
         m_DxfMapping.ChangeCircleProperty(circle);
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
     }
 }
 
@@ -308,7 +335,7 @@ void CDxfManger::handleArcAttributeChanged(Arc arc)
     if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Arc)
     {
         m_DxfMapping.ChangeArcProperty(arc);
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
     }
 }
 
@@ -317,14 +344,14 @@ void CDxfManger::handlePolylineAttributeChanged(Polyline polyline)
     if (m_DxfMapping.m_SelectedEntity.type == enumEntity_Polyline)
     {
         m_DxfMapping.ChangePolylineProperty(polyline);
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
     }
 }
 
 void CDxfManger::handleOnBtnUpClicked()
 {
     m_DxfMapping.MoveUpSelectedEntity();
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
     emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 
 }
@@ -332,35 +359,35 @@ void CDxfManger::handleOnBtnUpClicked()
 void CDxfManger::handleOnBtnDownClicked()
 {
     m_DxfMapping.MoveDownSelectedEntity();
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
     emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnLeftClicked()
 {
     m_DxfMapping.MoveLeftSelectedEntity();
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
     emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnRightClicked()
 {
     m_DxfMapping.MoveRightSelectedEntity();
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
     emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnCWClicked()
 {
     m_DxfMapping.RotateCWSelectedEntity();
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
     emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
 void CDxfManger::handleOnBtnCCWClicked()
 {
     m_DxfMapping.RotateCCWSelectedEntity();
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
     emit signalRefreshStackedWidget(m_DxfMapping.m_SelectedEntity.entity);
 }
 
@@ -397,7 +424,7 @@ void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
         //添加点
         Point point(pos.x(), pos.y());
         m_DxfMapping.addPointToLayer(point, GetCurrentLayerName());
-        RefreshTreeModelAndGraphicsview();
+        RefreshTreelAndGraphicsAndLayertable();
         break;
     }
     case enumPreviewEntity_Line:
@@ -426,7 +453,7 @@ void CDxfManger::handleGraphicsViewLeftClick(QPointF pos)
     default:
         break;
     }
-    RefreshTreeModelAndGraphicsview();
+    RefreshTreelAndGraphicsAndLayertable();
 }
 
 void CDxfManger::handleGraphicsViewRightClick(QPointF pos)

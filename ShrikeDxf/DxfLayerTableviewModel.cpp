@@ -39,7 +39,7 @@ void CDxfLayerTableviewModel::UpdateLayerTableViewModel(const std::map<std::stri
 	}
 }
 
-void CDxfLayerTableviewModel::UpdateLayerData(std::map<std::string, stuLayer>& mapDxf)
+void CDxfLayerTableviewModel::UpdateLayerChangedData(std::map<std::string, stuLayer>& mapDxf)
 {
 	int rowCount = this->rowCount();
 
