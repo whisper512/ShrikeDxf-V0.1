@@ -34,6 +34,9 @@ private:
 	//graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 
+	//dxf版本
+	DL_Codes::version m_dxfVersion;
+	
 public:
 	//预览相关
 	Line m_linePreview;

@@ -76,6 +76,37 @@ public:
         }();
         return colorMap;
     }
+
+    //根据qcolor获取dxf颜色索引
+    static int getColorIndex(const QColor& color)
+    {
+        const auto& colorMap = getColorMap();
+
+        // 首先检查是否完全匹配
+        for (const auto& pair : colorMap) {
+            if (pair.second == color) {
+                return pair.first;
+            }
+        }
+
+        // 如果没有完全匹配，则寻找最接近的颜色
+        int minDistance = INT_MAX;
+        int closestIndex = 7; // 默认返回白色
+
+        for (const auto& pair : colorMap) {
+            int rDiff = abs(pair.second.red() - color.red());
+            int gDiff = abs(pair.second.green() - color.green());
+            int bDiff = abs(pair.second.blue() - color.blue());
+            int distance = rDiff + gDiff + bDiff;
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = pair.first;
+            }
+        }
+
+        return closestIndex;
+    }
 };
 
 

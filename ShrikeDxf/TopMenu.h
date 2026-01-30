@@ -24,7 +24,7 @@ private:
 	//menu
 	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting, * m_pMenuView;
 	//文件action
-	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose;
+	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose, * m_pActionNew, * m_pActionSaveAs;
 	//外观action
 	//QAction* m_pActionLightTheme, *m_pActionDarkTheme;
 	//帮助action
@@ -35,6 +35,8 @@ private:
 	void OnOpen();
 	void OnSave();
     void OnClose();
+    void OnNew();
+    void OnSaveAs();
 };
 
 #endif // !_MENU_H

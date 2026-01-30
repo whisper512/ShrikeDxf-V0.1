@@ -56,12 +56,18 @@ void CMenuManger::InitAction()
 	{
 		if (m_pMenuFile->actions().isEmpty())
 		{
+			m_pActionNew = new QAction("New", this);
+			m_pActionNew->setShortcut(QKeySequence::New);
+			m_pMenuFile->addAction(m_pActionNew);
 			m_pActionOpen = new QAction("Open", this);
 			m_pActionOpen->setShortcut(QKeySequence::Open);
 			m_pMenuFile->addAction(m_pActionOpen);
 			m_pActionSave = new QAction("Save", this);
 			m_pActionSave->setShortcut(QKeySequence::Save);
 			m_pMenuFile->addAction(m_pActionSave);
+            m_pActionSaveAs = new QAction("Save As", this);
+            m_pActionSaveAs->setShortcut(QKeySequence::SaveAs);
+            m_pMenuFile->addAction(m_pActionSaveAs);
 			m_pActionClose = new QAction("Close", this);
 			m_pActionClose->setShortcut(QKeySequence::Close);
 			m_pMenuFile->addAction(m_pActionClose);
@@ -116,6 +122,14 @@ void CMenuManger::ConnectSolt()
 	{
 		connect(m_pActionClose, &QAction::triggered, this, &CMenuManger::OnClose);
 	}
+	if (m_pActionSaveAs)
+	{
+        connect(m_pActionSaveAs, &QAction::triggered, this, &CMenuManger::OnSaveAs);
+	}
+	if(m_pActionNew)
+	{
+        connect(m_pActionNew, &QAction::triggered, this, &CMenuManger::OnNew);
+	}
 }
 
 void CMenuManger::OnOpen()
@@ -139,8 +153,24 @@ void CMenuManger::OnOpen()
 
 void CMenuManger::OnSave()
 {
+	if (m_pParent)
+	{
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		QString filePath = pShrikeDxf->m_pDataManager->m_strDxfPath;
+		pShrikeDxf->m_pDxfDataManger->SaveDxfFile(filePath);
+	}
+
 }
 
 void CMenuManger::OnClose()
+{
+
+}
+
+void CMenuManger::OnNew()
+{
+}
+
+void CMenuManger::OnSaveAs()
 {
 }
