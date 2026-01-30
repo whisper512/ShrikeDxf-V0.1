@@ -105,6 +105,7 @@ public:
     void addLineToLayer(Line line, QString strLayer);
     void addCircleToLayer(Circle circle, QString strLayer);
     void addArcToLayer(Arc arc, QString strLayer);
+    void addPolylineToLayer(QVector<QPointF>& m_vecPoints, QString strLayer);
 private:
     //当前多段线,用来读取dxf文档中的多段线
     Polyline* m_pCurPolyline;

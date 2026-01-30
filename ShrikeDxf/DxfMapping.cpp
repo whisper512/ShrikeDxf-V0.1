@@ -1116,3 +1116,29 @@ void CDxfMapping::addArcToLayer(Arc arc, QString strLayer)
 	}
 }
 
+void CDxfMapping::addPolylineToLayer(QVector<QPointF>& m_vecPoints, QString strLayer)
+{
+	if (m_vecPoints.isEmpty())
+	{
+		return;
+	}
+
+	Polyline polyline;
+	polyline.numVertices = m_vecPoints.size();
+	polyline.numVertices_M = 0;
+	polyline.numVertices_N = 0;
+	polyline.flag = 0; // 默认不闭合
+	for (const QPointF& point : m_vecPoints)
+	{
+		Point vertex(point.x(), point.y(), 0.0);
+		polyline.vecVertices.push_back(vertex);
+	}
+
+	auto curLayer = m_mapDxfEntities.find(strLayer.toStdString());
+	if (curLayer != m_mapDxfEntities.end())
+	{
+		curLayer->second.vecPolylines.push_back(polyline);
+	}
+    
+}
+

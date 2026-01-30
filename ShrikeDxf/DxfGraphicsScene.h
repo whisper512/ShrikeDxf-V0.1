@@ -41,7 +41,7 @@ private:
 
 public:
     //graphics鼠标当前状态
-	enumMouseStateInView m_mouseState = enumMouseStateInView_None;
+	enumMouseStateInView m_MouseState = enumMouseStateInView_None;
 
 	//预览图元
     stuPreviewEntity m_PreviewEntity;

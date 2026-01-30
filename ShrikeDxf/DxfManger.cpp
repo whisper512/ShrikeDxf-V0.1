@@ -240,7 +240,7 @@ void CDxfManger::handleOnStepLengthOrAngleChanged(double dStepLength, double dRo
 
 void CDxfManger::handleMouseStatus(int index)
 {
-    m_DxfGraphicsScene.m_mouseState = (enumMouseStateInView)index;
+    m_DxfGraphicsScene.m_MouseState = (enumMouseStateInView)index;
     m_DxfGraphicsScene.clearPreviewEntityData();
     m_DxfGraphicsScene.ChangePreviewEntityByMouseState();
     //通知view预览绘图
@@ -303,7 +303,14 @@ void CDxfManger::handleGraphicsViewRightClick(QPointF pos)
 
 void CDxfManger::handleEndDrawPreview()
 {
-    m_DxfGraphicsScene.m_mouseState = enumMouseStateInView_None;
+    //处理多段线
+    if (m_DxfGraphicsScene.m_MouseState == enumMouseStateInView_PreviewPolyline && !m_DxfGraphicsScene.m_vecPolylinePoints.isEmpty())
+    {
+        m_DxfMapping.addPolylineToLayer(m_DxfGraphicsScene.m_vecPolylinePoints, GetCurrentLayerName());
+        m_DxfGraphicsScene.m_vecPolylinePoints.clear();
+    }
+
+    m_DxfGraphicsScene.m_MouseState = enumMouseStateInView_None;
     //结束预览绘图,通知btn切换状态
-    emit signalChangeCreateBtnStatus((int)m_DxfGraphicsScene.m_mouseState);
+    emit signalChangeCreateBtnStatus((int)m_DxfGraphicsScene.m_MouseState);
 }

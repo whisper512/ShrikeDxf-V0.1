@@ -164,7 +164,7 @@ void CDxfGraphicsScene::MouseRightClick(QPointF pos)
 
 void CDxfGraphicsScene::ChangePreviewEntityByMouseState()
 {
-    switch (m_mouseState)
+    switch (m_MouseState)
     {
     case enumMouseStateInView_None:
         m_PreviewEntity.type = enumPreviewEntity_None;
