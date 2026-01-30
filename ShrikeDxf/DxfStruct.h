@@ -111,9 +111,6 @@ public:
 
 
 
-
-
-
 //某个图元
 using variantDxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
 

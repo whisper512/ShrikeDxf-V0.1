@@ -2,6 +2,7 @@
 #include <QWidget>
 #include <QFileDialog>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "ShrikeDxf.h"
 
@@ -173,4 +174,36 @@ void CMenuManger::OnNew()
 
 void CMenuManger::OnSaveAs()
 {
+	if (m_pParent)
+	{
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+
+		QString filePath = QFileDialog::getSaveFileName(
+			this,
+			"Save DXF File",
+			QDir::homePath(),
+			"DXF File (*.dxf);;All Files (*.*)"
+		);
+
+		if (!filePath.isEmpty())
+		{
+			if (!filePath.endsWith(".dxf", Qt::CaseInsensitive))
+			{
+				filePath += ".dxf";
+			}
+
+			bool success = pShrikeDxf->m_pDxfDataManger->SaveDxfFile(filePath);
+
+			// 如果保存成功，更新当前文件路径
+			if (success)
+			{
+				pShrikeDxf->m_pDataManager->m_strDxfPath = filePath;
+			}
+			else
+			{
+				// 显示保存失败的消息
+				QMessageBox::warning(this, "Save File", "Failed to save DXF file.");
+			}
+		}
+	}
 }
