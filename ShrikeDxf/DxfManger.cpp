@@ -199,7 +199,7 @@ bool CDxfManger::NewDxfFile()
     m_dxfVersion = DL_Codes::version::AC1015;
     //添加默认图层
     stuLayer layer;
-    layer.color = QColor(255, 255, 255); //默认白色
+    layer.color = QColor(0, 0, 0); //默认黑色
     m_DxfMapping.m_mapDxfEntities["0"] = layer;
     m_strCurrentLayer = "0";
     RefreshTreelAndGraphicsAndLayertable();
