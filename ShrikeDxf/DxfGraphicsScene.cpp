@@ -22,6 +22,11 @@ void CDxfGraphicsScene::DxfDraw(const map<string,stuLayer>& mapdxf)
     ClearScene();
 
     QRectF bounds = CalculateSceneBounds(mapdxf);
+    if (bounds.isNull() || bounds.width() == 0 || bounds.height() == 0)
+    {
+        bounds = QRectF(0, 0, 500, 500);
+    }
+
     setSceneRect(bounds);
 
 
