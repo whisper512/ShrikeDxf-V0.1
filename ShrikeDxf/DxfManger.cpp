@@ -205,7 +205,6 @@ bool CDxfManger::NewDxfFile()
     m_DxfGraphicsScene.setSceneRect(0, 0, 500, 500);
     
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
-    m_DxfGraphicsScene.DxfDraw(m_DxfMapping.m_mapDxfEntities);
     m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);
 
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
