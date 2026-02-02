@@ -202,7 +202,7 @@ bool CDxfManger::NewDxfFile()
     layer.color = QColor(0, 0, 0); //默认黑色
     m_DxfMapping.m_mapDxfEntities["0"] = layer;
     m_strCurrentLayer = "0";
-    m_DxfGraphicsScene.setSceneRect(0, 0, 500, 500);
+    m_DxfGraphicsScene.setSceneRect(500, 500, 500, 500);
     
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfMapping.m_mapDxfEntities);
     m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfMapping.m_mapDxfEntities);
