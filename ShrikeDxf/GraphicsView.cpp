@@ -158,7 +158,7 @@ void CGraphicsView::InitScene()
     {
         CDxfGraphicsScene* pScene;
         pScene = new CDxfGraphicsScene(this);
-        pScene->setSceneRect(0, 0,500, 500);
+        pScene->setSceneRect(500, 500,500, 500);
         setScene(pScene);
     }
     UpdateRulers();
