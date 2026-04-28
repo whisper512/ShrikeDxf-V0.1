@@ -1,4 +1,4 @@
-#include "LineAttribute.h"
+﻿#include "LineAttribute.h"
 
 CLineAttributeWidget::CLineAttributeWidget(QWidget* parent)
 	: QWidget(parent),

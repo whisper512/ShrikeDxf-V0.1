@@ -1,4 +1,4 @@
-#include "ArcAttritubeWidget.h"
+﻿#include "ArcAttritubeWidget.h"
 
 CArcAttritubeWidget::CArcAttritubeWidget(QWidget* parent)
 	: QWidget(parent),

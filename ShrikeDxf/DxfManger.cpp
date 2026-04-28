@@ -139,7 +139,7 @@ bool CDxfManger::SaveDxfFile(const QString& strPath)
             // 开始多段线
             dxf->writePolyline(
                 *dw,
-                DL_PolylineData(polyline.vecVertices.size(), 0, 0, 0),
+                DL_PolylineData((int)polyline.vecVertices.size(), 0, 0, 0),
                 DL_Attributes(layerName.c_str(),colorIndex,1,"CONTINUOUS",1.0));
 
             // 写入多段线的顶点

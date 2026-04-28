@@ -1,4 +1,4 @@
-#include "DxfLayerTableviewModel.h"
+﻿#include "DxfLayerTableviewModel.h"
 
 
 CDxfLayerTableviewModel::CDxfLayerTableviewModel()

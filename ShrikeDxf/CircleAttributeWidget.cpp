@@ -1,4 +1,4 @@
-#include "CircleAttributeWidget.h"
+﻿#include "CircleAttributeWidget.h"
 
 CCircleAttributeWidget::CCircleAttributeWidget(QWidget *parent)
 	: QWidget(parent),

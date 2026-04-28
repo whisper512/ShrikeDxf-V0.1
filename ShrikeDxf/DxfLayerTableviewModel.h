@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <QStandardItemModel>
 #include <QString>
 #include "DxfStruct.h"
@@ -10,9 +10,9 @@ public:
 	CDxfLayerTableviewModel();
 	~CDxfLayerTableviewModel();
 
-	//¸üĞÂmodel
+	//æ›´æ–°model
 	void UpdateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf);
-	//table¸üĞÂºó,¸üĞÂmodel
+	//tableæ›´æ–°å,æ›´æ–°model
 	void UpdateLayerChangedData(std::map<std::string, stuLayer>& mapDxf);
 	void ClearModel();
 private:
