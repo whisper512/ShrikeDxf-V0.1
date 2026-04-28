@@ -111,11 +111,6 @@ void ShrikeDxf::InitAndCreateLayerTableView()
 
 void ShrikeDxf::InitAndCreateMoveBtnsWidget()
 {
-	m_pMoveBtnsWidget = new CMoveBtnsWidget(this);
-	if (m_pMoveBtnsWidget)
-	{
-        m_pMoveBtnsWidget->InitWidgetAndAddToLayout();
-	}
 }
 
 void ShrikeDxf::InitAndCreateCreateEntityWidget()

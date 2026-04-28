@@ -35,10 +35,10 @@ void CMoveBtnsWidget::InitWidgetAndAddToLayout()
 		pWnd->ui.verticalLayout_Layer->addWidget(this);
 	}
 
-	this->setAttribute(Qt::WA_StyledBackground, true);
+	/*this->setAttribute(Qt::WA_StyledBackground, true);
 	this->setStyleSheet("CMoveBtnsWidget { background-color: #d0d0d0; }"
 		                "QToolButton { background-color: #e0e0e0; }"
-		                "QDoubleSpinBox { background-color: #d0d0d0; }");
+		                "QDoubleSpinBox { background-color: #d0d0d0; }");*/
 }
 
 void CMoveBtnsWidget::OnBtnUpClicked()

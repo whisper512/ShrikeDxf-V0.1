@@ -200,7 +200,7 @@ void CRulerH::paintEvent(QPaintEvent* event)
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.fillRect(rect(), QColor("#e0e0e0"));
+    painter.fillRect(rect(), QColor("#FFFFFF"));
     
     double step = CalculateStepSize();
 
@@ -278,7 +278,7 @@ void CRulerV::paintEvent(QPaintEvent* event)
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.fillRect(rect(), QColor("#e0e0e0"));
+    painter.fillRect(rect(), QColor("#FFFFFF"));
 
     double step = CalculateStepSize();
     int decimalPlaces = CalculateDecimalPlaces(step);

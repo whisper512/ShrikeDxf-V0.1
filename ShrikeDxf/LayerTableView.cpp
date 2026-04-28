@@ -29,21 +29,6 @@ void CLayerTableViewManger::CreateTableView()
 
 void CLayerTableViewManger::InitTableView()
 {
-	m_pTableView->setStyleSheet(
-		"QTableView {"
-		"    background-color: #d0d0d0;"
-		"}"
-		"QTableView::item {"
-		"    text-align: center;"
-		"    padding: 5px;"
-		"}"
-		"QHeaderView::section {"
-		"    background-color: #e0e0e0;"
-		"    padding: 4px;"
-		"    border: 1px solid #e0e0e0;"
-		"}"
-	);
-
 	QStandardItemModel* pHeaderModel = new QStandardItemModel(0,3, m_pTableView);
 	pHeaderModel->setHorizontalHeaderLabels({"NO","NAME","COLOR"});
 	m_pTableView->setModel(pHeaderModel);

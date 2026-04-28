@@ -62,46 +62,6 @@ void CCreateEntityWidget::ConnectBtnSignals()
 
 void CCreateEntityWidget::RefreshBtn()
 {
-	QString normalStyle = "QToolButton { background-color: #e0e0e0; border: none; }";
-	QString selectedStyle = "QToolButton { background-color: #d0d0d0; border: none; }";
-	ui.toolButton_Mouse->setStyleSheet(normalStyle);
-	ui.toolButton_Point->setStyleSheet(normalStyle);
-	ui.toolButton_Line->setStyleSheet(normalStyle);
-	ui.toolButton_Center_Radius_Circle->setStyleSheet(normalStyle);
-	ui.toolButton_Center_Diameter_Circle->setStyleSheet(normalStyle);
-    ui.toolButton_Center_Endpoint_Arc->setStyleSheet(normalStyle);
-    ui.toolButton_ThreePoint_Arc->setStyleSheet(normalStyle);
-	ui.toolButton_Polyline->setStyleSheet(normalStyle);
-	
-	switch (m_iSlectedIndex)
-	{
-	case -1:
-        ui.toolButton_Mouse->setStyleSheet(selectedStyle);
-        break;
-	case 0:
-        ui.toolButton_Point->setStyleSheet(selectedStyle);
-        break;
-    case 1:
-		ui.toolButton_Line->setStyleSheet(selectedStyle);
-		break;
-	case 2:
-        ui.toolButton_Center_Radius_Circle->setStyleSheet(selectedStyle);
-		break;
-	case 3:
-		ui.toolButton_Center_Diameter_Circle->setStyleSheet(selectedStyle);
-		break;
-	case 4:
-		ui.toolButton_Center_Endpoint_Arc->setStyleSheet(selectedStyle);
-		break;
-	case 5:
-		ui.toolButton_ThreePoint_Arc->setStyleSheet(selectedStyle);
-		break;
-	case 6:
-        ui.toolButton_Polyline->setStyleSheet(selectedStyle);
-		break;
-	default:
-		break;
-	}
 }
 
 void CCreateEntityWidget::AdjustBtn()

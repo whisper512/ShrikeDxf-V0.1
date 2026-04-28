@@ -33,22 +33,6 @@ void CTreeViewManger::CreateTreeView()
 		QMessageBox::information(m_pTreeView, "TreeView Error", "MainWnd is null");
 		return;
 	}
-	// 设置样式表，包括背景色和其他外观属性
-	m_pTreeView->setStyleSheet(
-		"QTreeView {"
-		"	background-color: #d0d0d0;"  // 设置背景色为淡灰色
-		"}"
-		"QTreeView::item {"
-		"   height: 24px;"  // 设置行高为32像素，与图标尺寸匹配
-		"}"
-		"QHeaderView::section {"
-		"    background-color: #e0e0e0;"  // 设置表头颜色
-		"    padding: 4px;"
-		"    border: 1px solid #e0e0e0;"
-		"}"
-	);
-
-	//m_pTreeView->setIconSize(QSize(16, 16));
 
 	//设置临时模型来显示列名
 	QStandardItemModel* pHeaderModel = new QStandardItemModel(0, 2, m_pTreeView);

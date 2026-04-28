@@ -36,8 +36,7 @@ void CStackedWidgetManger::CreateStackedWidget()
 		return;
 	}
 
-	m_pStackedWidget->setStyleSheet("background-color: #d0d0d0;");
-
+	m_pStackedWidget->setStyleSheet("background-color: #FFFFFF;");
 	AddPages();
 	
 	ConnectSignalAndSlot();

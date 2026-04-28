@@ -22,54 +22,54 @@ public:
 	explicit CGraphicsView(QWidget* pMainwnd);
 
 private:
-	//右键菜单
+	// 右键菜单
 	QMenu* m_pGraphicsViewMenu;
 	QMenu* m_pGraphicsOperateMenu;
 	QMenu* m_pGraphicsPreviewMenu;
 
-	//view的操作
+	// view的操作
 	QAction* m_pActionLockZoom;
 	QAction* m_pActionFilpX;
 	QAction* m_pActionFilpY;
 	QAction* m_pActionResetView;
 	QAction* m_pActionDrag;
-	//针对view中图元的操作
+	// 针对view中图元的操作
 	QAction* m_pActionPasteEntity;
-	//针对view中预览图元的操作
+	// 针对view中预览图元的操作
 	QAction* m_pActionEndDrawing;
 
 	CRulerH* m_pRulerH;
 	CRulerV* m_pRulerV;
 
 
-	//*****右键鼠标显示的针对view的操作*****
-	//锁定缩放
+	// 右键鼠标显示的针对view的操作*****
+	// 锁定缩放
 	bool m_bLockZoom;
-	//沿x轴翻转
+	// 沿x轴翻转
 	bool m_bFilpAlongX;
-	//沿y轴翻转
+	// 沿y轴翻转
 	bool m_bFilpAlongY;
-	//显示鼠标位置十字线
+	// 显示鼠标位置十字线
 	bool m_bShowPosCross;
-	//左键拖拽
+	// 左键拖拽
 	bool m_bDrag;
 
-	//*****右键鼠标显示的针对图元的操作*****
-	//开启复制图元中
+	// 右键鼠标显示的针对图元的操作 
+	// 开启复制图元中
 	bool m_bCopyingEntity;
 
-	//*****右键正在绘制预览的操作*****
+	// 右键正在绘制预览的操作
 	bool m_bDrawingPreview;
 
 
-	//初始transform
+	// 初始transform
 	QTransform m_tranformInitial;
-	//初始场景矩阵
+	// 初始场景矩阵
 	QRectF m_rectInitialScene;
 	QPoint m_pointLastPos;
-	//上次的场景矩阵
+	// 上次的场景矩阵
     QRectF m_rectLastScene;
-	//右键鼠标位置
+	// 右键鼠标位置
     QPoint m_pointRightClickPos;
 	
 
@@ -84,32 +84,32 @@ public:
 	QWidget* m_pMainWnd;
 
 signals:
-	//粘贴信号
+	// 粘贴信号
 	void signalPaste(QPointF pos);
-	//鼠标位置,用来显示在label
+	// 鼠标位置,用来显示在label
 	void signalMousePos(QString strPos);
 	void signalGraphicsViewMouseMove(QPointF pos);
 	void signalGraphicsViewLeftCLick(QPointF pos);
 	void signalGraphicsViewRightClick(QPointF pos);
 
-	//preview信号
+	// preview信号
 	void signalEndDrawingPreview();
 
 public slots:
-	//类外交互
+	// 类外交互
 	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene,bool bResetViewRect);
-	//正在复制图元
+	// 正在复制图元
 	void handlelCopyintEntity();
-	//viewmenu动作
+	// viewmenu动作
 	void handleFilpAlongX(bool bChecked);
     void handleFilpAlongY(bool bChecked);
 	void handleResetView();
 	void handleDrag(bool bChecked);
 	void ShowMenu(const QPoint& pos);
 	void handleLockZoom(bool bChecked);
-	//operate动作
+	// operate动作
 	void handlePasteEntity();
-	//preview动作
+	// preview动作s
 	void handleEndDrawingPreview();
 	void handleStartPreviewEntity(int index);
 
