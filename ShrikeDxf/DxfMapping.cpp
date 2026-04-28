@@ -218,8 +218,6 @@ QString CDxfMapping::GetEntityInfo(QString strLayer, QString strType, QString st
 		else if (strType == STR_TEXT_LOWERCASE)
 		{
 			Text text = CurLayer->second.vecTexts.at(strNum.toInt() - 1);
-			strInfo = QString("text%1\nCenterPoint  x:%2,y:%3,z:%4\nContent - %5\nHeight - %6").
-				arg(strNum).arg(text.pointCenter.x()).arg(text.pointCenter.y()).arg(text.pointCenter.z).arg(text.content).arg(text.height);
 		}
 	}
 
