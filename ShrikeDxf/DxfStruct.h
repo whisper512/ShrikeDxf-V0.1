@@ -196,13 +196,8 @@ public:
 
 private:
 
-
-
-
 public:
 
 };
-
-
 
 #endif // DxfStruct_h

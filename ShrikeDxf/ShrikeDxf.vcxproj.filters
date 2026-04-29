@@ -52,9 +52,6 @@
     <ClInclude Include="Primitive.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="DxfMapping.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
     <ClInclude Include="CommonDataManger.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
@@ -123,9 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManger.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfMapping.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="CommonDataManger.cpp">
