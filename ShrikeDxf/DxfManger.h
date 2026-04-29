@@ -2,7 +2,7 @@
 #include <QWidget>
 #include <QRegularExpression>
 
-
+#include "libdxfrw.h"
 #include "DxfMapping.h"
 #include "DxfTreeviewModel.h"
 #include "DxfGraphicsScene.h"
@@ -37,7 +37,7 @@ private:
 	CDxfGraphicsScene m_DxfGraphicsScene;
 
 	//dxf版本
-	DL_Codes::version m_dxfVersion;
+	//DL_Codes::version m_dxfVersion;
 	
 public:
 	//预览相关

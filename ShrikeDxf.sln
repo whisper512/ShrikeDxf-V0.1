@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShrikeDxf", "ShrikeDxf\ShrikeDxf.vcxproj", "{3D7623C6-173A-4234-BFE9-375F95EBF0BC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdxfrw", "libdxfrw\libdxfrw-master\vs2013\libdxfrw.vcxproj", "{357A8016-9AD4-47EF-B23C-2071C264793B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{3D7623C6-173A-4234-BFE9-375F95EBF0BC}.Debug|x64.Build.0 = Debug|x64
 		{3D7623C6-173A-4234-BFE9-375F95EBF0BC}.Release|x64.ActiveCfg = Release|x64
 		{3D7623C6-173A-4234-BFE9-375F95EBF0BC}.Release|x64.Build.0 = Release|x64
+		{357A8016-9AD4-47EF-B23C-2071C264793B}.Debug|x64.ActiveCfg = Debug|x64
+		{357A8016-9AD4-47EF-B23C-2071C264793B}.Debug|x64.Build.0 = Debug|x64
+		{357A8016-9AD4-47EF-B23C-2071C264793B}.Release|x64.ActiveCfg = Release|x64
+		{357A8016-9AD4-47EF-B23C-2071C264793B}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

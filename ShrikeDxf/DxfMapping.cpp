@@ -14,6 +14,248 @@ CDxfMapping::~CDxfMapping()
 	
 }
 
+void CDxfMapping::addHeader(const DRW_Header* data)
+{
+}
+
+void CDxfMapping::addLType(const DRW_LType& data)
+{
+}
+
+void CDxfMapping::addLayer(const DRW_Layer& data)
+{
+	if (m_mapDxfEntities.find(data.name) == m_mapDxfEntities.end())
+		m_mapDxfEntities[data.name];
+	auto curLayer = m_mapDxfEntities.find(data.name);
+	const auto& mapDxfColor = DxfColorMap::getColorMap();
+	if (curLayer != m_mapDxfEntities.end())
+		curLayer->second.color = mapDxfColor.at(data.color);
+}
+
+void CDxfMapping::addDimStyle(const DRW_Dimstyle& data)
+{
+}
+
+void CDxfMapping::addVport(const DRW_Vport& data)
+{
+}
+
+void CDxfMapping::addTextStyle(const DRW_Textstyle& data)
+{
+}
+
+void CDxfMapping::addAppId(const DRW_AppId& data)
+{
+}
+
+void CDxfMapping::addBlock(const DRW_Block& data)
+{
+}
+
+void CDxfMapping::setBlock(const int handle)
+{
+}
+
+void CDxfMapping::endBlock()
+{
+}
+
+void CDxfMapping::addPoint(const DRW_Point& data)
+{
+	Point point{ data.basePoint.x, data.basePoint.y, data.basePoint.z };
+	std::string strCurrentLayer = data.layer;
+	auto curLayer = m_mapDxfEntities.find(strCurrentLayer);
+	if (curLayer != m_mapDxfEntities.end())
+		curLayer->second.vecPoints.push_back(point);
+}
+
+void CDxfMapping::addLine(const DRW_Line& data)
+{
+	Point pStart{ data.basePoint.x, data.basePoint.y, data.basePoint.z };
+	Point pEnd{ data.secPoint.x, data.secPoint.y, data.secPoint.z };
+	Line line{ pStart, pEnd };
+	std::string strCurrentLayer = data.layer;
+	auto curLayer = m_mapDxfEntities.find(strCurrentLayer);
+	if (curLayer != m_mapDxfEntities.end())
+		curLayer->second.vecLines.push_back(line);
+}
+
+void CDxfMapping::addRay(const DRW_Ray& data)
+{
+}
+
+void CDxfMapping::addXline(const DRW_Xline& data)
+{
+}
+
+void CDxfMapping::addCircle(const DRW_Circle& data)
+{
+	
+}
+
+void CDxfMapping::addEllipse(const DRW_Ellipse& data)
+{
+}
+
+void CDxfMapping::addArc(const DRW_Arc& data)
+{
+	
+}
+
+void CDxfMapping::addMText(const DRW_MText& data)
+{
+}
+
+void CDxfMapping::addText(const DRW_Text& data)
+{
+	Point point{ data.basePoint.x, data.basePoint.y, data.basePoint.z };
+	Text text;
+	text.pointCenter = point;
+	text.content = data.text;
+	text.height = data.height;
+	std::string strCurrentLayer = data.layer;
+	auto curLayer = m_mapDxfEntities.find(strCurrentLayer);
+	if (curLayer != m_mapDxfEntities.end())
+		curLayer->second.vecTexts.push_back(text);
+}
+
+void CDxfMapping::addDimAlign(const DRW_DimAligned* data)
+{
+}
+
+void CDxfMapping::addDimLinear(const DRW_DimLinear* data)
+{
+}
+
+void CDxfMapping::addDimRadial(const DRW_DimRadial* data)
+{
+}
+
+void CDxfMapping::addDimDiametric(const DRW_DimDiametric* data)
+{
+}
+
+void CDxfMapping::addDimAngular(const DRW_DimAngular* data)
+{
+}
+
+void CDxfMapping::addDimAngular3P(const DRW_DimAngular3p* data)
+{
+}
+
+void CDxfMapping::addDimOrdinate(const DRW_DimOrdinate* data)
+{
+}
+
+void CDxfMapping::addLeader(const DRW_Leader* data)
+{
+}
+
+void CDxfMapping::addHatch(const DRW_Hatch* data)
+{
+}
+
+void CDxfMapping::addViewport(const DRW_Viewport& data)
+{
+}
+
+void CDxfMapping::addImage(const DRW_Image* data)
+{
+}
+
+void CDxfMapping::linkImage(const DRW_ImageDef* data)
+{
+}
+
+void CDxfMapping::addComment(const char* comment)
+{
+}
+
+void CDxfMapping::addPlotSettings(const DRW_PlotSettings* data)
+{
+}
+
+void CDxfMapping::writeHeader(DRW_Header& data)
+{
+}
+
+void CDxfMapping::writeBlocks()
+{
+}
+
+void CDxfMapping::writeBlockRecords()
+{
+}
+
+void CDxfMapping::writeEntities()
+{
+}
+
+void CDxfMapping::writeLTypes()
+{
+}
+
+void CDxfMapping::writeLayers()
+{
+}
+
+void CDxfMapping::writeTextstyles()
+{
+}
+
+void CDxfMapping::writeVports()
+{
+}
+
+void CDxfMapping::writeDimstyles()
+{
+}
+
+void CDxfMapping::writeObjects()
+{
+}
+
+void CDxfMapping::writeAppId()
+{
+}
+
+
+void CDxfMapping::addLWPolyline(const DRW_LWPolyline& data)
+{
+	
+}
+
+void CDxfMapping::addPolyline(const DRW_Polyline& data)
+{
+	
+}
+
+void CDxfMapping::addSpline(const DRW_Spline* data)
+{
+}
+
+void CDxfMapping::addKnot(const DRW_Entity& data)
+{
+}
+
+void CDxfMapping::addInsert(const DRW_Insert& data)
+{
+}
+
+void CDxfMapping::addTrace(const DRW_Trace& data)
+{
+}
+
+void CDxfMapping::add3dFace(const DRW_3Dface& data)
+{
+}
+
+void CDxfMapping::addSolid(const DRW_Solid& data)
+{
+}
+
+
+
 enumEntity CDxfMapping::GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline)
 {
 	enumEntity EntityType = enumEntity_None;
@@ -43,126 +285,6 @@ enumEntity CDxfMapping::GetVariantDxfEntity(variantDxfEntity dxfEntity,Point& po
 	return EntityType;
 }
 
-void CDxfMapping::addLayer(const DL_LayerData& data)
-{
-
-	if (m_mapDxfEntities.find(data.name) == m_mapDxfEntities.end())
-	{
-		//添加图层名作为键
-		m_mapDxfEntities[data.name];
-	}
-
-	//添加图层颜色
-	std::string strCurrentLayer = getAttributes().getLayer();
-	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	//初始化dxf颜色索引和颜色的对应
-	const auto& mapDxfColor = DxfColorMap::getColorMap();
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-		CurLayer->second.color = mapDxfColor.at(getAttributes().getColor());
-	}
-	
-}
-
-void CDxfMapping::addPoint(const DL_PointData& data)
-{
-	Point point{ data.x, data.y, data.z };
-	//获取当前的图层
-	std::string strCurrentLayer = getAttributes().getLayer();
-
-
-	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	if(CurLayer != m_mapDxfEntities.end())
-	{
-		CurLayer->second.vecPoints.push_back(point);
-	}
-}
-
-void CDxfMapping::addLine(const DL_LineData& data)
-{
-	Point pStart{ data.x1, data.y1, data.z1 };
-    Point pEnd{ data.x2, data.y2, data.z2 };
-    Line line{ pStart, pEnd };
-
-	std::string strCurrentLayer = getAttributes().getLayer();
-	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-		CurLayer->second.vecLines.push_back(line);
-	}
-
-}
-
-void CDxfMapping::addCircle(const DL_CircleData& data)
-{
-	Point point{ data.cx, data.cy, data.cz };
-	Circle cycle{point, data.radius };
-	
-	std::string strCurrentLayer = getAttributes().getLayer();
-	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-        CurLayer->second.vecCircles.push_back(cycle);
-	}
-}
-
-void CDxfMapping::addArc(const DL_ArcData& data)
-{
-	Point point{ data.cx, data.cy, data.cz };
-	Arc arc{ point, data.radius, data.angle1, data.angle2 };
-	
-	std::string strCurrentLayer = getAttributes().getLayer();
-    auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-        CurLayer->second.vecArcs.push_back(arc);
-	}
-}
-
-void CDxfMapping::addPolyline(const DL_PolylineData& data)
-{
-    Polyline Polyline;
-	Polyline.numVertices = data.number;
-	Polyline.numVertices_M = data.m;
-	Polyline.numVertices_N = data.n;
-	Polyline.flag = data.flags;
-
-	std::string strCurrentLayer = getAttributes().getLayer();
-    auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-        CurLayer->second.vecPolylines.push_back(Polyline);
-		m_pCurPolyline = &CurLayer->second.vecPolylines.back();
-		
-	}
-}
-
-void CDxfMapping::addVertex(const DL_VertexData& data)
-{
-	if (m_pCurPolyline)
-	{
-		Point point{ data.x, data.y, data.z };
-		m_pCurPolyline->vecVertices.push_back(point);
-	}
-}
-
-void CDxfMapping::addText(const DL_TextData& data)
-{
-	//text 数据结构存在疑惑点, 没有读取到，暂时忽略
-	Point point{ data.ipx, data.ipy, data.ipz };
-	Text text;
-	text.pointCenter = point;
-    text.content = data.text;
-    text.height = data.height;
-
-	std::string strCurrentLayer = getAttributes().getLayer();
-	auto CurLayer = m_mapDxfEntities.find(strCurrentLayer);
-	if (CurLayer != m_mapDxfEntities.end())
-	{
-		CurLayer->second.vecTexts.push_back(text);
-	}
-
-}
 
 void CDxfMapping::ClearDxfData()
 {
@@ -1139,4 +1261,3 @@ void CDxfMapping::addPolylineToLayer(QVector<QPointF>& m_vecPoints, QString strL
 	}
     
 }
-
