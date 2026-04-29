@@ -1,203 +1,247 @@
 ﻿#pragma once
-#ifndef DxfStruct_h
-#define DxfStruct_h
+#ifndef DXFSTRUCT_H
+#define DXFSTRUCT_H
+
 #include <iostream>
 #include <QString>
+#include <QColor>
 #include <vector>
 #include <map>
-#include <QColor>
+#include <variant>
 
-#include "Primitive.h"
+#include "Entity.h"
 
-//存储dxf文件数据结构
-using namespace std;
-
-//dxf颜色索引和实际颜色
+// ═══════════════════════════════════════════════════════════════
+// DXF 颜色索引映射（保留原有逻辑）
+// ═══════════════════════════════════════════════════════════════
 class DxfColorMap
 {
 public:
     static const std::map<int, QColor>& getColorMap()
     {
-        static std::map<int, QColor> colorMap = []()
-        {
-            std::map<int, QColor> map;
+        //static std::map<int, QColor> colorMap = []()
+        //    {
+        //        std::map<int, QColor> map;
 
-            // 初始化标准颜色 (1-7)
-            map[1] = Qt::red;        // 红色
-            map[2] = Qt::yellow;     // 黄色
-            map[3] = Qt::green;      // 绿色
-            map[4] = Qt::cyan;       // 青色
-            map[5] = Qt::blue;       // 蓝色
-            map[6] = Qt::magenta;    // 洋红色
-            map[7] = Qt::white;      // 白色/黑色（取决于背景色）
+        //        // 标准颜色 (1-7)
+        //        map[1] = Qt::red;
+        //        map[2] = Qt::yellow;
+        //        map[3] = Qt::green;
+        //        map[4] = Qt::cyan;
+        //        map[5] = Qt::blue;
+        //        map[6] = Qt::magenta;
+        //        map[7] = Qt::white;
 
-            // 初始化8-255的颜色
-            for (int i = 8; i <= 255; ++i) 
-            {
-                int r, g, b;
+        //        // 8-9 灰度
+        //        for (int i = 8; i <= 9; ++i) {
+        //            int gray = 255 - (i - 8) * 50;
+        //            map[i] = QColor(gray, gray, gray);
+        //        }
 
-                if (i <= 9) 
-                {
-                    int gray = 255 - (i - 8) * 50;
-                    r = g = b = gray;
-                }
-                else if (i <= 249) 
-                {
-                    int colorIndex = i - 10;
-                    int colorGroup = colorIndex / 16;
-                    int indexInGroup = colorIndex % 16;
+        //        // 10-249 彩色
+        //        for (int i = 10; i <= 249; ++i) {
+        //            int colorIndex = i - 10;
+        //            int colorGroup = colorIndex / 16;
+        //            int indexInGroup = colorIndex % 16;
 
-                    switch (colorGroup) 
-                    {
-                    case 0:  // 红色调
-                        r = 255;
-                        g = indexInGroup * 17;
-                        b = 0;
-                        break;
-                        // ... 其他颜色组的处理逻辑 ...
-                    default:
-                        r = g = b = 128;
-                        break;
-                    }
-                }
-                else 
-                {
-                    int gray = 255 - (i - 250) * 40;
-                    r = g = b = gray;
-                }
+        //            int r = 0, g = 0, b = 0;
+        //            switch (colorGroup) {
+        //            case 0:  r = 255;           g = indexInGroup * 17;   b = 0;              break;
+        //            case 1:  r = 255 - indexInGroup * 17;  g = 255;    b = 0;              break;
+        //            case 2:  r = 0;             g = 255;                b = indexInGroup * 17; break;
+        //            case 3:  r = 0;             g = 255 - indexInGroup * 17; b = 255;       break;
+        //            case 4:  r = indexInGroup * 17;  g = 0;            b = 255;            break;
+        //            case 5:  r = 255;           g = 0;                  b = 255 - indexInGroup * 17; break;
+        //            case 6:  r = 255 - indexInGroup * 17;  g = 0;      b = 0;              break;
+        //            case 7:  r = 255;           g = indexInGroup * 17; b = indexInGroup * 17; break;
+        //            case 8:  r = 255 - indexInGroup * 17;  g = 255;    b = indexInGroup * 17; break;
+        //            case 9:  r = 255 - indexInGroup * 17;  g = 255 - indexInGroup * 17; b = 255; break;
+        //            default: r = g = b = 128; break;
+        //            }
+        //            map[i] = QColor(r, g, b);
+        //        }
 
-                map[i] = QColor(r, g, b);
-            }
+        //        // 250-255 灰度
+        //        for (int i = 250; i <= 255; ++i) {
+        //            int gray = 255 - (i - 250) * 40;
+        //            map[i] = QColor(gray, gray, gray);
+        //        }
 
-            // 添加0号颜色（表示随块）
-            map[0] = Qt::black;
+        //        // 0号颜色（随块）
+        //        map[0] = Qt::black;
 
-            return map;
-        }();
-        return colorMap;
+        //        return map;
+        //    }();
+        //return colorMap;
     }
 
-    //根据qcolor获取dxf颜色索引
     static int getColorIndex(const QColor& color)
     {
         const auto& colorMap = getColorMap();
-
-        // 首先检查是否完全匹配
         for (const auto& pair : colorMap) {
-            if (pair.second == color) {
+            if (pair.second == color)
                 return pair.first;
-            }
         }
 
-        // 如果没有完全匹配，则寻找最接近的颜色
         int minDistance = INT_MAX;
-        int closestIndex = 7; // 默认返回白色
-
+        int closestIndex = 7;
         for (const auto& pair : colorMap) {
             int rDiff = abs(pair.second.red() - color.red());
             int gDiff = abs(pair.second.green() - color.green());
             int bDiff = abs(pair.second.blue() - color.blue());
             int distance = rDiff + gDiff + bDiff;
-
             if (distance < minDistance) {
                 minDistance = distance;
                 closestIndex = pair.first;
             }
         }
-
         return closestIndex;
     }
 };
 
-
-
-//某个图元
-using variantDxfEntity = std::variant<Point, Line, Circle, Arc, Polyline, Text>;
-
-struct stuSelectedEntity
-{
-    enumEntity type;
-    QString strLayer;
-    int index;
-    variantDxfEntity entity;
-    stuSelectedEntity()
-    {
-        type = enumEntity_None;
-        strLayer = "";
-        index = -1;
-    }
-};
-
-struct stuPreviewEntity
-{
-    enumPreviewEntity type;
-    QString strLayer;
-    stuPreviewEntity()
-    {
-        type = enumPreviewEntity_None;
-        strLayer = "";
-    }
-};
-
-static enumEntity GetVariantDxfEntity(variantDxfEntity dxfEntity, Point& point, Line& line, Circle& circle, Arc& arc, Polyline& polyline)
-{
-    enumEntity EntityType = enumEntity_None;
-    std::visit([&](auto&& arg) {
-        using T = std::decay_t<decltype(arg)>;
-        if constexpr (std::is_same_v<T, Point>) {
-            point = arg;
-            EntityType = enumEntity_Point;
-        }
-        else if constexpr (std::is_same_v<T, Line>) {
-            line = arg;
-            EntityType = enumEntity_Line;
-        }
-        else if constexpr (std::is_same_v<T, Circle>) {
-            circle = arg;
-            EntityType = enumEntity_Circle;
-        }
-        else if constexpr (std::is_same_v<T, Arc>) {
-            arc = arg;
-            EntityType = enumEntity_Arc;
-        }
-        else if constexpr (std::is_same_v<T, Polyline>) {
-            polyline = arg;
-            EntityType = enumEntity_Polyline;
-        }
-        }, dxfEntity);
-    return EntityType;
-}
-
-
-
-//图层类
+// ═══════════════════════════════════════════════════════════════
+// 图层信息
+// ═══════════════════════════════════════════════════════════════
 struct stuLayer
 {
-    QColor color;
-	vector<Point> vecPoints;
-    vector<Line> vecLines;
-    vector<Circle> vecCircles;
-    vector<Arc> vecArcs;
-    vector<Polyline> vecPolylines;
-    vector<Text> vecTexts;
+    QColor  color = Qt::white;
+    QString lineType = "BYLAYER";
+    int     lineWeight = -1;
+    bool    isVisible = true;
+    bool    isLocked = false;
+
+    // 该图层所有图元 — 统一用 EntityVariant 存储
+    std::vector<variantDxfEntity> entities;
+
+    // 辅助：获取该图层某种类型的图元数量
+    int GetEntityCount(EntityType type) const {
+        int count = 0;
+        for (auto& ent : entities) {
+            if (GetEntityType(ent) == type)
+                count++;
+        }
+        return count;
+    }
 };
 
-//图层类,图元不做区分
-struct stuLayoutMix
+// ═══════════════════════════════════════════════════════════════
+// 块定义
+// ═══════════════════════════════════════════════════════════════
+struct stuBlock
 {
-	vector<variantDxfEntity> vecEntities;
+    QString     name;           // 块名
+    Vertex3D    basePoint;      // 基点
+    int         flags = 0;      // 块标志
+
+    // 块内的所有图元
+    std::vector<variantDxfEntity> entities;
 };
 
-class CDxfStruct
+// ═══════════════════════════════════════════════════════════════
+// 选中的图元
+// ═══════════════════════════════════════════════════════════════
+struct stuSelectedEntity
 {
-public:
-	CDxfStruct();
-	~CDxfStruct();
+    EntityType  type = EntityType::None;
+    QString     strLayer;
+    int         index = -1;     // 在 stuLayer::entities 中的索引
+    variantDxfEntity entity;
 
-private:
-
-public:
-
+    stuSelectedEntity() = default;
 };
 
-#endif // DxfStruct_h
+// ═══════════════════════════════════════════════════════════════
+// 预览图元（用于绘制时的临时预览）
+// ═══════════════════════════════════════════════════════════════
+struct stuPreviewEntity
+{
+    enum enumType
+    {
+        None = -1,
+        Point,
+        Line,
+        CenterRadiusCircle,
+        DiameterCircle,
+        CenterEndpointArc,
+        ThreePointsArc,
+        Polyline,
+    };
+
+    enumType type = None;
+    QString  strLayer;
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 文档整体结构
+// ═══════════════════════════════════════════════════════════════
+struct DxfDocument
+{
+    // ─── 头部变量 ───
+    QString     version;            // DXF 版本 (AC1009, AC1015...)
+    double      insUnits = 1.0;     // 单位 (1=毫米)
+    Vertex3D    extMin, extMax;     // 图形范围
+    double      ltscale = 1.0;      // 线型比例
+
+    // ─── 表 ───
+    std::map<std::string, stuLayer> layers;     // 图层
+    std::map<std::string, stuBlock> blocks;     // 块定义
+
+    // ─── 选中/预览状态 ───
+    stuSelectedEntity  selectedEntity;
+    stuPreviewEntity   previewEntity;
+
+    // ─── 编辑参数 ───
+    double moveStep = 1.0;
+    double rotateStepRad = 0.0174533;   // 1度
+
+    // ─── 便捷查询 ───
+    // 获取所有图元（不分图层，展开所有块？还是只取模型空间？取决于实现）
+    int GetTotalEntityCount() const {
+        int count = 0;
+        for (auto& [name, layer] : layers) {
+            count += layer.entities.size();
+        }
+        return count;
+    }
+
+    // 清空所有数据
+    void Clear() {
+        version.clear();
+        insUnits = 1.0;
+        extMin = Vertex3D();
+        extMax = Vertex3D();
+        ltscale = 1.0;
+        layers.clear();
+        blocks.clear();
+        selectedEntity = stuSelectedEntity();
+        previewEntity = stuPreviewEntity();
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 便捷工具函数（替代原来的 GetVariantDxfEntity）
+// ═══════════════════════════════════════════════════════════════
+
+// 按类型过滤图元
+inline std::vector<variantDxfEntity> FilterEntitiesByType(
+    const std::vector<variantDxfEntity>& entities, EntityType type)
+{
+    std::vector<variantDxfEntity> result;
+    for (auto& ent : entities) {
+        if (GetEntityType(ent) == type)
+            result.push_back(ent);
+    }
+    return result;
+}
+
+// 按图层过滤图元
+inline std::vector<variantDxfEntity> FilterEntitiesByLayer(
+    const std::map<std::string, stuLayer>& layers, const std::string& layerName)
+{
+    auto it = layers.find(layerName);
+    if (it != layers.end())
+        return it->second.entities;
+    return {};
+}
+
+#endif // DXFSTRUCT_H
