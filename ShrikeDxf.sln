@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShrikeDxf", "ShrikeDxf\ShrikeDxf.vcxproj", "{3D7623C6-173A-4234-BFE9-375F95EBF0BC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dxflib", "dxf\dxflib.vcxproj", "{EE34DDD7-2FE8-3484-801B-4A410DBD1855}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -17,10 +15,6 @@ Global
 		{3D7623C6-173A-4234-BFE9-375F95EBF0BC}.Debug|x64.Build.0 = Debug|x64
 		{3D7623C6-173A-4234-BFE9-375F95EBF0BC}.Release|x64.ActiveCfg = Release|x64
 		{3D7623C6-173A-4234-BFE9-375F95EBF0BC}.Release|x64.Build.0 = Release|x64
-		{EE34DDD7-2FE8-3484-801B-4A410DBD1855}.Debug|x64.ActiveCfg = Debug|x64
-		{EE34DDD7-2FE8-3484-801B-4A410DBD1855}.Debug|x64.Build.0 = Debug|x64
-		{EE34DDD7-2FE8-3484-801B-4A410DBD1855}.Release|x64.ActiveCfg = Release|x64
-		{EE34DDD7-2FE8-3484-801B-4A410DBD1855}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
