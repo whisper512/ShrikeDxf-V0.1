@@ -90,7 +90,7 @@ void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
     if (it != colorMap.end())
         color = it->second;
     QPen pen(color, 1.0 / m_scale);
-    pen.setCosmetic(true);
+    pen.setCosmetic(true); //线宽不受缩放影响
     qreal x = point.point.x();
     qreal y = point.point.y();
     qreal s = 1.0 / m_scale;  // 点的大小
@@ -136,7 +136,7 @@ void CDxfGraphicsScene::DrawArc(const EntityArc& arc)
     // Qt QPainterPath::arcTo: 角度从右侧开始，顺时针为正
     // 所以需要反转方向
     qreal startAngle = arc.startAngle * 180.0 / M_PI;        // 转度
-    qreal sweepAngle = arc.endAngle - arc.startAngle;        // 跨度（弧度）
+    qreal sweepAngle = arc.endAngle - arc.startAngle;        // 跨度(弧度)
     sweepAngle = sweepAngle * 180.0 / M_PI;                  // 转度
     if (!arc.isCCW) {
         // 顺时针弧：反转 sweepAngle
@@ -337,6 +337,111 @@ void CDxfGraphicsScene::DrawPolyline(const EntityPolyline& polyline)
     addPath(path, pen);
 }
 
+void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
+{
+    if (!spline.prop.visible ||
+        (spline.controlPoints.empty() && spline.fitPoints.empty())) return;
+    QColor color = GetEntityColor(spline.prop);
+    QPen pen(color, 1.0 / m_scale);
+    pen.setCosmetic(true);
+    QPainterPath path;
+    // 优先用拟合点做 Catmull-Rom 插值（平滑曲线）
+    if (spline.fitPoints.size() >= 2)
+    {
+        const auto& pts = spline.fitPoints;
+        int n = static_cast<int>(pts.size());
+        path.moveTo(pts[0].x(), pts[0].y());
+        // Catmull-Rom 插值：每两个点之间用 cubicTo 插值
+        // 需要前后各一个辅助点
+        for (int i = 0; i < n - 1; ++i)
+        {
+            // 取前后各一点作为控制点
+            QPointF p0 = (i == 0) ? pts[0].toQPointF() : pts[i - 1].toQPointF();
+            QPointF p1 = pts[i].toQPointF();
+            QPointF p2 = pts[i + 1].toQPointF();
+            QPointF p3 = (i + 2 >= n) ? pts[n - 1].toQPointF() : pts[i + 2].toQPointF();
+            // Catmull-Rom → 三次贝塞尔控制点
+            double t = 0.5;  // 张力参数
+            QPointF cp1 = p1 + (p2 - p0) * t / 3.0;
+            QPointF cp2 = p2 - (p3 - p1) * t / 3.0;
+            path.cubicTo(cp1, cp2, p2);
+        }
+    }
+    else if (spline.controlPoints.size() >= 2)
+    {
+        int degree = (spline.degree > 0) ? spline.degree : 3;
+        int n = static_cast<int>(spline.controlPoints.size());
+        if (n <= degree)
+        {
+            // 控制点太少，直接连线
+            path.moveTo(spline.controlPoints[0].x(), spline.controlPoints[0].y());
+            for (int i = 1; i < n; ++i)
+                path.lineTo(spline.controlPoints[i].x(), spline.controlPoints[i].y());
+        }
+        else
+        {
+            // 构建节点向量
+            std::vector<double> knots = spline.knots;
+            if (knots.empty())
+            {
+                // 标准 clamped 节点：前 degree+1 个 = 0，后 degree+1 个 = 1
+                int m = n + degree + 1;
+                knots.resize(m);
+                for (int i = 0; i < m; ++i)
+                {
+                    if (i <= degree)
+                        knots[i] = 0.0;
+                    else if (i >= n)
+                        knots[i] = 1.0;
+                    else
+                        knots[i] = static_cast<double>(i - degree) / (n - degree);
+                }
+            }
+            // 采样 100 个点
+            int numSamples = 200;
+            double uMin = knots[degree];
+            double uMax = knots[n];
+            if (uMax <= uMin) {
+                uMin = knots.front();
+                uMax = knots.back();
+            }
+            auto getPoint = [&](double u) -> QPointF
+                {
+                    double x = 0, y = 0, wSum = 0;
+                    bool hasWeight = !spline.weights.empty();
+                    for (int j = 0; j < n; ++j)
+                    {
+                        double basis = BSplineBasis(j, degree, u, knots);
+                        if (basis < 1e-15) continue;
+                        double w = hasWeight ? spline.weights[j] : 1.0;
+                        x += spline.controlPoints[j].x() * w * basis;
+                        y += spline.controlPoints[j].y() * w * basis;
+                        wSum += w * basis;
+                    }
+                    if (hasWeight && std::abs(wSum) > 1e-15) {
+                        return QPointF(x / wSum, y / wSum);
+                    }
+                    return QPointF(x, y);
+                };
+            bool first = true;
+            for (int i = 0; i <= numSamples; ++i)
+            {
+                double u = uMin + (uMax - uMin) * i / numSamples;
+                QPointF pt = getPoint(u);
+                if (first) {
+                    path.moveTo(pt);
+                    first = false;
+                }
+                else {
+                    path.lineTo(pt);
+                }
+            }
+        }
+    }
+    addPath(path, pen);
+}
+
+
 QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf)
 {
     if (mapDxf.empty())
@@ -470,111 +575,6 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
         maxY - minY + margin * 2);
 }
 
-
-
-void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
-{
-    if (!spline.prop.visible ||
-        (spline.controlPoints.empty() && spline.fitPoints.empty())) return;
-    QColor color = GetEntityColor(spline.prop);
-    QPen pen(color, 1.0 / m_scale);
-    pen.setCosmetic(true);
-    QPainterPath path;
-    // ★ 优先用拟合点做 Catmull-Rom 插值（平滑曲线）
-    if (spline.fitPoints.size() >= 2)
-    {
-        const auto& pts = spline.fitPoints;
-        int n = static_cast<int>(pts.size());
-        path.moveTo(pts[0].x(), pts[0].y());
-        // Catmull-Rom 插值：每两个点之间用 cubicTo 插值
-        // 需要前后各一个辅助点
-        for (int i = 0; i < n - 1; ++i)
-        {
-            // 取前后各一点作为控制点
-            QPointF p0 = (i == 0) ? pts[0].toQPointF() : pts[i - 1].toQPointF();
-            QPointF p1 = pts[i].toQPointF();
-            QPointF p2 = pts[i + 1].toQPointF();
-            QPointF p3 = (i + 2 >= n) ? pts[n - 1].toQPointF() : pts[i + 2].toQPointF();
-            // Catmull-Rom → 三次贝塞尔控制点
-            double t = 0.5;  // 张力参数
-            QPointF cp1 = p1 + (p2 - p0) * t / 3.0;
-            QPointF cp2 = p2 - (p3 - p1) * t / 3.0;
-            path.cubicTo(cp1, cp2, p2);
-        }
-    }
-    else if (spline.controlPoints.size() >= 2)
-    {
-        int degree = (spline.degree > 0) ? spline.degree : 3;
-        int n = static_cast<int>(spline.controlPoints.size());
-        if (n <= degree)
-        {
-            // 控制点太少，直接连线
-            path.moveTo(spline.controlPoints[0].x(), spline.controlPoints[0].y());
-            for (int i = 1; i < n; ++i)
-                path.lineTo(spline.controlPoints[i].x(), spline.controlPoints[i].y());
-        }
-        else
-        {
-            // 构建节点向量
-            std::vector<double> knots = spline.knots;
-            if (knots.empty())
-            {
-                // 标准 clamped 节点：前 degree+1 个 = 0，后 degree+1 个 = 1
-                int m = n + degree + 1;
-                knots.resize(m);
-                for (int i = 0; i < m; ++i)
-                {
-                    if (i <= degree)
-                        knots[i] = 0.0;
-                    else if (i >= n)
-                        knots[i] = 1.0;
-                    else
-                        knots[i] = static_cast<double>(i - degree) / (n - degree);
-                }
-            }
-            // 采样 100 个点
-            int numSamples = 200;
-            double uMin = knots[degree];
-            double uMax = knots[n];
-            if (uMax <= uMin) {
-                uMin = knots.front();
-                uMax = knots.back();
-            }
-            auto getPoint = [&](double u) -> QPointF
-                {
-                    double x = 0, y = 0, wSum = 0;
-                    bool hasWeight = !spline.weights.empty();
-                    for (int j = 0; j < n; ++j)
-                    {
-                        double basis = BSplineBasis(j, degree, u, knots);
-                        if (basis < 1e-15) continue;
-                        double w = hasWeight ? spline.weights[j] : 1.0;
-                        x += spline.controlPoints[j].x() * w * basis;
-                        y += spline.controlPoints[j].y() * w * basis;
-                        wSum += w * basis;
-                    }
-                    if (hasWeight && std::abs(wSum) > 1e-15) {
-                        return QPointF(x / wSum, y / wSum);
-                    }
-                    return QPointF(x, y);
-                };
-            bool first = true;
-            for (int i = 0; i <= numSamples; ++i)
-            {
-                double u = uMin + (uMax - uMin) * i / numSamples;
-                QPointF pt = getPoint(u);
-                if (first) {
-                    path.moveTo(pt);
-                    first = false;
-                }
-                else {
-                    path.lineTo(pt);
-                }
-            }
-        }
-    }
-    addPath(path, pen);
-}
 
 void CDxfGraphicsScene::DrawText(const EntityText& text)
 {
