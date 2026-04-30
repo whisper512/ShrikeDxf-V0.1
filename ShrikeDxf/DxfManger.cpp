@@ -20,10 +20,16 @@ CDxfManger::~CDxfManger()
 
 bool CDxfManger::LoadDxfFile(const QString& strPath)
 {
-    ClearDxfMappingData();
-    
-
-    return false;
+    // 确保 Reader 持有 Data 指针
+    m_DxfReader->SetDataTarget(m_DxfData.get());
+    // 执行读取
+    bool ok = m_DxfReader->ReadFile(strPath);
+    if (!ok) {
+        QMessageBox::warning(m_pMainWnd, QStringLiteral("打开失败"),
+            QStringLiteral("无法打开或解析文件:\n%1").arg(strPath));
+        return false;
+    }
+    return true;
 }
 
 bool CDxfManger::SaveDxfFile(const QString& strPath)
@@ -41,14 +47,8 @@ bool CDxfManger::NewDxfFile()
 
 bool CDxfManger::CloseDxfFile()
 {
-    ClearDxfMappingData();
     m_DxfTreeviewModel.clear();
     m_DxfGraphicsScene.clear();
     m_DxfLayerTableviewModel.clear();
     return false;
-}
-
-void CDxfManger::ClearDxfMappingData()
-{
-   
 }

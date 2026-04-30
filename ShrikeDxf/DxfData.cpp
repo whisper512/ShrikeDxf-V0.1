@@ -108,10 +108,7 @@ stuLayer& CDxfData::EnsureLayer(const std::string& name)
     return m_document.layers[name];
 }
 
-// =========================================================================
 // 图元添加
-// =========================================================================
-
 void CDxfData::AddEntity(const std::string& layerName, const variantDxfEntity& entity)
 {
 }
@@ -168,10 +165,8 @@ void CDxfData::AddHatch(const std::string& layerName, const EntityHatch& ent)
 {
 }
 
-// =========================================================================
-// Block 块定义管理
-// =========================================================================
 
+// Block 块定义管理
 stuBlock& CDxfData::AddBlock(const std::string& name, const Vertex3D& basePoint)
 {
     return m_document.blocks[name];
@@ -215,10 +210,7 @@ void CDxfData::AddEntityToBlock(const std::string& blockName, const variantDxfEn
 {
 }
 
-// =========================================================================
-// 查询 / 遍历
-// =========================================================================
-
+// 查询/遍历
 int CDxfData::GetTotalEntityCount() const
 {
     return m_document.GetTotalEntityCount();

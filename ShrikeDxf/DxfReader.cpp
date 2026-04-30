@@ -18,19 +18,17 @@ bool CDxfReader::ReadFile(const QString& filePath)
         std::cerr << "[CDxfReader] No data target set!" << std::endl;
         return false;
     }
-
     // libdxfrw 使用 dxfRW 进行解析
-    //dxfRW dxf(filePath.toStdString());
-    //if (!dxf.in(this, false)) {  // false = 读取模式
-    //    std::cerr << "[CDxfReader] Failed to open/parse: "
-    //        << filePath.toStdString() << std::endl;
-    //    return false;
-    //}
+    dxfRW dxf(filePath.toStdString().c_str());
+    if (!dxf.read(this, false)) { 
+        std::cerr << "[CDxfReader] Failed to open/parse: "
+            << filePath.toStdString() << std::endl;
+        return false;
+    }
     return true;
 }
 
-// ─────────────────────────────────────────
-// ─────────────────────────────────────────
+
 void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
 {
     //dst.layer = src.layer;
@@ -54,20 +52,17 @@ void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
     // dst.transparency = src.transparency;
 }
 
-// ─────────────────────────────────────────
-//  将图元存入 DxfData（块内 → AddEntityToBlock，否则 → AddEntity）
-// ─────────────────────────────────────────
 void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& layer)
 {
     if (!m_pData) return;
 
     if (m_currentBlock.empty()) {
-        // 不在块中 → 存入文档图层
+        // 存到图层
         m_pData->EnsureLayer(layer);
         m_pData->AddEntity(layer, entity);
     }
     else {
-        // 在块中 → 存入块定义
+        // 存入块定义
         m_pData->AddEntityToBlock(m_currentBlock, entity);
     }
 }
@@ -111,7 +106,7 @@ void CDxfReader::addLayer(const DRW_Layer& data)
         (data.color24 >> 8) & 0xFF,
         (data.color24) & 0xFF);
     if (data.color > 0 && data.color < 256) {
-        // 如果有 ACI 索引颜色，也可以使用
+        
     }
     layer.lineType = QString::fromStdString(data.lineType);
     //layer.lineWeight = data.lineWeight;
@@ -142,11 +137,11 @@ void CDxfReader::addBlock(const DRW_Block& data)
 
 void CDxfReader::setBlock(const int handle)
 {
-    // 在 DWG 中可能使用 handle 切换当前块
-    auto it = m_blockHandles.find(handle);
-    if (it != m_blockHandles.end()) {
-        m_currentBlock = it->second;
-    }
+    //// 在 DWG 中可能使用 handle 切换当前块
+    //auto it = m_blockHandles.find(handle);
+    //if (it != m_blockHandles.end()) {
+    //    m_currentBlock = it->second;
+    //}
 }
 
 void CDxfReader::endBlock()
@@ -167,12 +162,12 @@ void CDxfReader::addPoint(const DRW_Point& data)
 
 void CDxfReader::addLine(const DRW_Line& data)
 {
-    if (!m_pData) return;
-    EntityLine ent;
-    FillEntityProp(data, ent.prop);
-    ent.startPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
-    ent.endPoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
-    StoreEntity(ent, data.layer);
+    //if (!m_pData) return;
+    //EntityLine ent;
+    //FillEntityProp(data, ent.prop);
+    //ent.startPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
+    //ent.endPoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
+    //StoreEntity(ent, data.layer);
 }
 
 void CDxfReader::addRay(const DRW_Ray& /*data*/)
@@ -187,26 +182,26 @@ void CDxfReader::addXline(const DRW_Xline& /*data*/)
 
 void CDxfReader::addCircle(const DRW_Circle& data)
 {
-    if (!m_pData) return;
-    EntityCircle ent;
-    FillEntityProp(data, ent.prop);
-    ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
-    ent.radius = data.radious;
-    StoreEntity(ent, data.layer);
+    //if (!m_pData) return;
+    //EntityCircle ent;
+    //FillEntityProp(data, ent.prop);
+    //ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
+    //ent.radius = data.radious;
+    //StoreEntity(ent, data.layer);
 }
 
 void CDxfReader::addEllipse(const DRW_Ellipse& data)
 {
-    if (!m_pData) return;
-    EntityEllipse ent;
-    FillEntityProp(data, ent.prop);
-    ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
-    // secPoint 是长轴端点（相对于中心的向量或绝对坐标）
-    ent.majorAxisEndpoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
-    ent.ratio = data.ratio;
-    ent.startParam = data.staparam;
-    ent.endParam = data.endparam;
-    StoreEntity(ent, data.layer);
+    //if (!m_pData) return;
+    //EntityEllipse ent;
+    //FillEntityProp(data, ent.prop);
+    //ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
+    //// secPoint 是长轴端点（相对于中心的向量或绝对坐标）
+    //ent.majorAxisEndpoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
+    //ent.ratio = data.ratio;
+    //ent.startParam = data.staparam;
+    //ent.endParam = data.endparam;
+    //StoreEntity(ent, data.layer);
 }
 
 void CDxfReader::addArc(const DRW_Arc& data)
@@ -243,21 +238,21 @@ void CDxfReader::addMText(const DRW_MText& data)
 
 void CDxfReader::addText(const DRW_Text& data)
 {
-    if (!m_pData) return;
-    EntityText ent;
-    FillEntityProp(data, ent.prop);
-    ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
-    ent.alignPoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
-    ent.text = data.text;
-    ent.height = data.height;
-    ent.rotation = data.angle;
-    ent.widthFactor = data.widthscale;
-    ent.obliqueAngle = data.oblique;
-    ent.style = data.style;
-    ent.textGen = data.textgen;
-    ent.alignH = data.alignH;
-    ent.alignV = data.alignV;
-    StoreEntity(ent, data.layer);
+    //if (!m_pData) return;
+    //EntityText ent;
+    //FillEntityProp(data, ent.prop);
+    //ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
+    //ent.alignPoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
+    //ent.text = data.text;
+    //ent.height = data.height;
+    //ent.rotation = data.angle;
+    //ent.widthFactor = data.widthscale;
+    //ent.obliqueAngle = data.oblique;
+    //ent.style = data.style;
+    //ent.textGen = data.textgen;
+    //ent.alignH = data.alignH;
+    //ent.alignV = data.alignV;
+    //StoreEntity(ent, data.layer);
 }
 
 void CDxfReader::addDimAlign(const DRW_DimAligned* /*data*/) {}

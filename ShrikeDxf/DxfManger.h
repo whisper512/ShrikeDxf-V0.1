@@ -28,7 +28,6 @@ public:
 	bool SaveDxfFile(const QString& strPath);
 	bool NewDxfFile();
 	bool CloseDxfFile();
-	void ClearDxfMappingData();
 
 private:
 	//mainwindow指针
