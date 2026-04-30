@@ -33,7 +33,6 @@ private:
 	//mainwindow指针
 	QWidget* m_pMainWnd;
 	
-	// 智能指针，自动管理生命周期
 	std::unique_ptr<CDxfData>    m_DxfData;
 	std::unique_ptr<CDxfReader> m_DxfReader;
 

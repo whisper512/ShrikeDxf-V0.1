@@ -107,10 +107,10 @@ struct stuLayer
     bool    isVisible = true;
     bool    isLocked = false;
 
-    // 该图层所有图元 — 统一用 EntityVariant 存储
+    // 该图层所有图元
     std::vector<variantDxfEntity> entities;
 
-    // 辅助：获取该图层某种类型的图元数量
+    // 获取该图层某种类型的图元数量
     int GetEntityCount(EntityType type) const {
         int count = 0;
         for (auto& ent : entities) {
@@ -208,7 +208,7 @@ struct DxfDocument
 };
 
 
-// 便捷工具函数（替代原来的 GetVariantDxfEntity）
+// 便捷工具函数
 
 // 按类型过滤图元
 inline std::vector<variantDxfEntity> FilterEntitiesByType(

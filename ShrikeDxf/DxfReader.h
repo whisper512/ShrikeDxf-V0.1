@@ -23,7 +23,7 @@ public:
     bool ReadFile(const QString& filePath);
 
 private:
-    // ============ DRW_Interface 回调 ============
+    // DRW_Interface回调
     void addHeader(const DRW_Header* data) override;
     void addLType(const DRW_LType& data) override;
     void addLayer(const DRW_Layer& data) override;
@@ -79,17 +79,16 @@ private:
     void add3dFace(const DRW_3Dface& data) override;
     void addSolid(const DRW_Solid& data) override;
 
-    // ============ 辅助方法 ============
-    /// 从 DRW_Entity 公共字段填充 EntityProp
+    // 从 DRW_Entity 公共字段填充 EntityProp
     void FillEntityProp(const DRW_Entity& src, EntityProp& dst);
 
-    /// 将图元存入 DxfData（根据当前是否在块中决定去向）
+    //将图元存入 DxfData(根据当前是否在块中决定去向)
     void StoreEntity(const variantDxfEntity& entity, const std::string& layer);
 
-    // ============ 成员变量 ============
-    CDxfData* m_pData = nullptr;                // 非拥有指针
-    std::string m_currentBlock;                // 当前块名，空＝不在块中
-    std::map<int, std::string> m_blockHandles; // handle → 块名
+
+    CDxfData* m_pData = nullptr;
+    std::string m_currentBlock;                // 当前块名
+    std::map<int, std::string> m_blockHandles; // handle块名
 };
 
 #endif // DXF_MAPPING_H
