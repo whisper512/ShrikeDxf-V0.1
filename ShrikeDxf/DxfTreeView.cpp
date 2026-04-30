@@ -96,7 +96,6 @@ void CTreeViewManger::handleRefreshTreeviewAfterRead()
 	{
 		return; 
 	}
-
 	QString strLayer = model->data(firstLayerIndex, Qt::DisplayRole).toString();
 	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();
 

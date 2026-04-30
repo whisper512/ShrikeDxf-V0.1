@@ -9,6 +9,22 @@
 #include <cmath>
 #include <memory>
 
+//图元字符
+#define STR_POINT "POINT"
+#define STR_LINE "LINE"
+#define STR_CIRCLE "CIRCLE"
+#define STR_ARC "ARC"
+#define STR_POLYLINE "POLYLINE"
+#define STR_TEXT "TEXT"
+
+#define STR_POINT_LOWERCASE "point"
+#define STR_LINE_LOWERCASE "line"
+#define STR_CIRCLE_LOWERCASE "circle"
+#define STR_ARC_LOWERCASE "arc"
+#define STR_POLYLINE_LOWERCASE "polyline"
+#define STR_TEXT_LOWERCASE "text"
+
+
 struct Vertex3D
 {
     Vertex3D() = default;
@@ -57,9 +73,9 @@ enum class EntityType : int
     Line = 1,
     Circle = 2,
     Arc = 3,
-    LWPolyline = 4,
-    Polyline = 5,
-    Ellipse = 6,
+    Ellipse = 4,
+    LWPolyline = 5,
+    Polyline = 6,
     Spline = 7,
     Text = 8,
     MText = 9,

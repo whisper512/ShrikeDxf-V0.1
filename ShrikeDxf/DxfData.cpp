@@ -72,6 +72,11 @@ bool CDxfData::HasLayer(const std::string& name) const
     return m_document.layers.find(name) != m_document.layers.end();
 }
 
+const std::map<std::string, stuLayer> CDxfData::GetLayers() const
+{
+    return m_document.layers;
+}
+
 stuLayer* CDxfData::GetLayer(const std::string& name)
 {
     auto it = m_document.layers.find(name);

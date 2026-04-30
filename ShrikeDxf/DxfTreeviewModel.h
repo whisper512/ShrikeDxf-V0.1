@@ -24,10 +24,17 @@ public:
 private:
 	std::map<std::string, stuLayer> m_mapDxf;
 
+
 	QIcon m_iconPoint;
 	QIcon m_iconLine;
 	QIcon m_iconCircle;
     QIcon m_iconArc;
 	QIcon m_iconPloyline;
 	QIcon m_iconLayer;
+	QIcon m_iconEllipse;
+    QIcon m_iconSolid;
+	QIcon m_iconSpline;
+    QIcon m_iconText;
+    QIcon m_iconHatch;
+
 };

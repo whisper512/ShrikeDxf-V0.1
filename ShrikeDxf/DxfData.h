@@ -30,10 +30,12 @@ public:
     // Layer 图层管理
     void AddLayer(const stuLayer& layer);
     bool HasLayer(const std::string& name) const;
+    const  std::map<std::string, stuLayer> GetLayers() const;
     stuLayer* GetLayer(const std::string& name);
     const stuLayer* GetLayer(const std::string& name) const;
     std::vector<std::string> GetAllLayerNames() const;
-    size_t    GetLayerCount() const;
+    size_t GetLayerCount() const;
+
 
     // 确保图层存在
     stuLayer& EnsureLayer(const std::string& name);
@@ -68,7 +70,7 @@ public:
     void AddEntityToBlock(const std::string& blockName, const variantDxfEntity& entity);
 
 
-    // 查询 / 遍历
+    // 查询/遍历
     int  GetTotalEntityCount() const;
     int  GetEntityCount(EntityType type) const;
     int  GetEntityCount(const std::string& layerName, EntityType type) const;
@@ -78,18 +80,6 @@ public:
     std::vector<variantDxfEntity> GetEntitiesByLayer(const std::string& layerName) const;
     // 按图层+类型过滤
     std::vector<variantDxfEntity> GetEntities(const std::string& layerName, EntityType type) const;
-    // 遍历所有图元（回调方式，避免拷贝）
-    template<typename Func>
-    void ForEachEntity(Func&& func) const
-    {
-        for (const auto& [name, layer] : m_document.layers)
-        {
-            for (const auto& entity : layer.entities)
-            {
-                func(entity, name);
-            }
-        }
-    }
 
     void SetSelectedEntity(const stuSelectedEntity& sel);
     void ClearSelection();

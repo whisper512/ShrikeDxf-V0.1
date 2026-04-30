@@ -8,6 +8,12 @@ CDxfTreeviewModel::CDxfTreeviewModel(QObject* parent)
     m_iconArc = QIcon(":/ShrikeDxf/res/Arc.png");
     m_iconPloyline = QIcon(":/ShrikeDxf/res/Polyline.png");
     m_iconLayer = QIcon(":/ShrikeDxf/res/Layer.png");
+    m_iconEllipse = QIcon(":/ShrikeDxf/res/Ellipse.png");
+    m_iconSolid = QIcon(":/ShrikeDxf/res/Hatch.png");
+    m_iconSpline = QIcon(":/ShrikeDxf/res/Spline.png");
+    m_iconText = QIcon(":/ShrikeDxf/res/Text.png");
+    m_iconHatch = QIcon(":/ShrikeDxf/res/Hatch.png");
+
 }
 
 CDxfTreeviewModel::~CDxfTreeviewModel()
@@ -22,97 +28,103 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
     this->setHorizontalHeaderLabels(QStringList() << "LAYER" << "ENTITIES");
     QString qstr;
 
-    ////遍历图层
-    //for (auto it = mapDxf.begin(); it != mapDxf.end(); it++)
-    //{
-    //    QList<QStandardItem*> listItemLayer;
-    //    QStandardItem* itemLayer = new QStandardItem(QString::fromStdString(it->first));
-    //    itemLayer->setIcon(m_iconLayer);
-    //    QStandardItem* itemLayerPlaceHolder = new QStandardItem("");
-    //    itemLayerPlaceHolder->setFlags(itemLayerPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //    listItemLayer << itemLayer << itemLayerPlaceHolder;
-    //    appendRow(listItemLayer);
+    //遍历图层
+    for (auto it = mapDxf.begin(); it != mapDxf.end(); it++)
+    {
+        QList<QStandardItem*> listItemLayer;
+        QStandardItem* itemLayer = new QStandardItem(QString::fromStdString(it->first));
+        itemLayer->setIcon(m_iconLayer);
+        QStandardItem* itemLayerPlaceHolder = new QStandardItem("");
+        itemLayerPlaceHolder->setFlags(itemLayerPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+        listItemLayer << itemLayer << itemLayerPlaceHolder;
+        appendRow(listItemLayer);
 
-    //    int indexPoint = 1,indexLine = 1, indexCircle = 1, indexArc = 1, indexPolyline = 1, indexText = 1;
-    //    //遍历图层内的point
-    //    for (auto itPoint = it->second.vecPoints.begin(); itPoint != it->second.vecPoints.end(); itPoint++)
-    //    {
-    //        qstr= QString("%1%2").arg(STR_POINT_LOWERCASE).arg(indexPoint);
-    //        QList<QStandardItem*> listItemPoint;
-    //        QStandardItem* itemPoint = new QStandardItem(qstr);
-    //        itemPoint->setIcon(m_iconPoint);
-    //        QStandardItem* itemPointPlaceHolder = new QStandardItem("");
-    //        itemPointPlaceHolder->setFlags(itemPointPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //        listItemPoint << itemPointPlaceHolder << itemPoint;
-    //        listItemLayer.first()->appendRow(listItemPoint);
-    //        indexPoint++;
-    //    }
-
-    //    //遍历图层内的line
-    //    for(auto itLine = it->second.vecLines.begin(); itLine != it->second.vecLines.end(); itLine++)
-    //    {
-    //        qstr = QString("%1%2").arg(STR_LINE_LOWERCASE).arg(indexLine);
-    //        QList<QStandardItem*> listItemLine;
-    //        QStandardItem* itemLine = new QStandardItem(qstr);
-    //        itemLine->setIcon(m_iconLine);
-    //        QStandardItem* itemLineBooth = new QStandardItem("");
-    //        itemLineBooth->setFlags(itemLineBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //        listItemLine << itemLineBooth  << itemLine;
-    //        listItemLayer.first()->appendRow(listItemLine);
-    //        indexLine++;
-    //    }
-    //    //遍历图层内的circle
-    //    for (auto itCircle = it->second.vecCircles.begin(); itCircle != it->second.vecCircles.end(); itCircle++)
-    //    {
-    //        qstr = QString("%1%2").arg(STR_CIRCLE_LOWERCASE).arg(indexCircle);
-    //        QList<QStandardItem*> listItemCircle;
-    //        QStandardItem* itemCircle = new QStandardItem(qstr);
-    //        itemCircle->setIcon(m_iconCircle);
-    //        QStandardItem* itemCircleBooth = new QStandardItem("");
-    //        itemCircleBooth->setFlags(itemCircleBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //        listItemCircle << itemCircleBooth  << itemCircle;
-    //        listItemLayer.first()->appendRow(listItemCircle);
-    //        indexCircle++;
-    //    }
-    //    //遍历图层内的arc
-    //    for (auto itArc = it->second.vecArcs.begin(); itArc != it->second.vecArcs.end(); itArc++)
-    //    {
-    //        qstr = QString("%1%2").arg(STR_ARC_LOWERCASE).arg(indexArc);
-    //        QList<QStandardItem*> listItemArc;
-    //        QStandardItem* itemArc = new QStandardItem(qstr);
-    //        itemArc->setIcon(m_iconArc);
-    //        QStandardItem* itemArcBooth = new QStandardItem("");
-    //        itemArcBooth->setFlags(itemArcBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //        listItemArc << itemArcBooth  << itemArc;
-    //        listItemLayer.first()->appendRow(listItemArc);
-    //        indexArc++;
-    //    }
-    //    //遍历图层内的polyline
-    //    for (auto itPolyline = it->second.vecPolylines.begin(); itPolyline != it->second.vecPolylines.end(); itPolyline++)
-    //    {
-    //        qstr = QString("%1%2").arg(STR_POLYLINE_LOWERCASE).arg(indexPolyline);
-    //        QList<QStandardItem*> listItemPolyline;
-    //        QStandardItem* itemPolyline = new QStandardItem(qstr);
-    //        itemPolyline->setIcon(m_iconPloyline);
-    //        QStandardItem* itemPolylineBooth = new QStandardItem("");
-    //        itemPolylineBooth->setFlags(itemPolylineBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //        listItemPolyline << itemPolylineBooth  << itemPolyline;
-    //        listItemLayer.first()->appendRow(listItemPolyline);
-    //        indexPolyline++;
-    //    }
-    //    //遍历图层内的text
-    //    for (auto itText = it->second.vecTexts.begin(); itText != it->second.vecTexts.end(); itText++)
-    //    {
-    //        qstr = QString("%1%2").arg(STR_TEXT_LOWERCASE).arg(indexText);
-    //        QList<QStandardItem*> listItemText;
-    //        QStandardItem* itemText = new QStandardItem(qstr);
-    //        QStandardItem* itemTextBooth = new QStandardItem("");
-    //        itemTextBooth->setFlags(itemTextBooth->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-    //        listItemText << itemTextBooth  << itemText;
-    //        listItemLayer.first()->appendRow(listItemText);
-    //        indexText++;
-    //    }
-    //}
+        int indexPoint = 1, indexLine = 1, indexCircle = 1, indexArc = 1, indexPolyline = 1, indexHatch = 1,
+            indexText = 1, indexEllipse = 1, indexSpline = 1, indexMText = 1, indexSolid = 1 ,indexInsert = 1;
+        //遍历图层内图元
+        for (const auto& entity : it->second.entities)
+        {
+            EntityType type = GetEntityType(entity);
+            QString qstr;
+            QIcon icon;
+            int* pIndex = nullptr;
+            switch (type)
+            {
+            case EntityType::Point:
+                qstr = QString("Point %1").arg(indexPoint++);
+                icon = m_iconPoint;
+                pIndex = &indexPoint;
+                break;
+            case EntityType::Line:
+                qstr = QString("Line %1").arg(indexLine++);
+                icon = m_iconLine;
+                pIndex = &indexLine;
+                break;
+            case EntityType::Circle:
+                qstr = QString("Circle %1").arg(indexCircle++);
+                icon = m_iconCircle;
+                pIndex = &indexCircle;
+                break;
+            case EntityType::Arc:
+                qstr = QString("Arc %1").arg(indexArc++);
+                icon = m_iconArc;
+                pIndex = &indexArc;
+                break;
+            case EntityType::LWPolyline:
+            case EntityType::Polyline:
+                qstr = QString("Polyline %1").arg(indexPolyline++);
+                icon = m_iconPloyline;
+                pIndex = &indexPolyline;
+                break;
+            case EntityType::Ellipse:
+                qstr = QString("Ellipse %1").arg(indexEllipse++);
+                icon = m_iconEllipse;
+                pIndex = &indexEllipse;
+                break;
+            case EntityType::Spline:
+                qstr = QString("Spline %1").arg(indexSpline++);
+                icon = m_iconSpline;
+                pIndex = &indexSpline;
+                break;
+            case EntityType::Text:
+                qstr = QString("Text %1").arg(indexText++);
+                icon = m_iconText;
+                pIndex = &indexText;
+                break;
+            case EntityType::MText:
+                qstr = QString("MText %1").arg(indexMText++);
+                icon = m_iconText;
+                pIndex = &indexMText;
+                break;
+            case EntityType::Insert:
+                qstr = QString("Insert %1").arg(indexInsert++);
+                icon = m_iconLayer;
+                pIndex = &indexInsert;
+                break;
+            case EntityType::Solid:
+                qstr = QString("Solid %1").arg(indexSolid++);
+                icon = m_iconHatch;
+                pIndex = &indexSolid;
+                break;
+            case EntityType::Hatch:
+                qstr = QString("Hatch %1").arg(indexHatch++);
+                icon = m_iconHatch;
+                pIndex = &indexHatch;
+                break;
+            default:
+                qstr = QString("Unknown");
+                break;
+            }
+            // 第二列显示图元名
+            QList<QStandardItem*> listItemEnt;
+            QStandardItem* itemPlaceHolder = new QStandardItem("");
+            itemPlaceHolder->setFlags(itemPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
+            QStandardItem* itemEnt = new QStandardItem(qstr);
+            itemEnt->setIcon(icon);
+            listItemEnt << itemPlaceHolder << itemEnt;
+            itemLayer->appendRow(listItemEnt);
+        }
+    }
 }
 
 void CDxfTreeviewModel::ClearModel()

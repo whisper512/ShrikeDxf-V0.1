@@ -29,6 +29,13 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
             QStringLiteral("无法打开或解析文件:\n%1").arg(strPath));
         return false;
     }
+
+    // 更新treeview
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    emit signalRefreshTreeview(&m_DxfTreeviewModel);
+    emit signalRefreshTreeviewAfterRead();
+    // 更新graphicsview
+
     return true;
 }
 

@@ -51,7 +51,8 @@ public:
 
 
 signals:
-
+	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
+	void signalRefreshTreeviewAfterRead();
 
  public slots:
 	 

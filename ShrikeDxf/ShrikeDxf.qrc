@@ -12,5 +12,9 @@
         <file>res/Center-Radius-Circle.png</file>
         <file>res/Center-Endpoint-Arc.png</file>
         <file>res/Three-Point-Arc.png</file>
+        <file>res/Ellipse.png</file>
+        <file>res/Hatch.png</file>
+        <file>res/Spline.png</file>
+        <file>res/Text.png</file>
     </qresource>
 </RCC>
