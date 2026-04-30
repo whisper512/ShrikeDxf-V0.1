@@ -6,17 +6,23 @@
 
 CDxfManger::CDxfManger(QWidget* pMainWnd) 
     : m_pMainWnd(pMainWnd)
+    , m_DxfReader(nullptr)
+    , m_DxfData(nullptr)
 {
+    m_DxfData = std::make_unique<CDxfData>();
+    m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
 }
 
 CDxfManger::~CDxfManger()
 {
-    delete m_pMainWnd;
+    
 }
 
 bool CDxfManger::LoadDxfFile(const QString& strPath)
 {
+    ClearDxfMappingData();
     
+
     return false;
 }
 

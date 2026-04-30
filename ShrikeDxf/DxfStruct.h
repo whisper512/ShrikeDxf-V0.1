@@ -188,7 +188,7 @@ struct DxfDocument
     int GetTotalEntityCount() const {
         int count = 0;
         for (auto& [name, layer] : layers) {
-            count += layer.entities.size();
+            count += (int)layer.entities.size();
         }
         return count;
     }
