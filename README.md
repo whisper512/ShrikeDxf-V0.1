@@ -1,18 +1,8 @@
 Shrike-Dxf v0.1
 
-在**ShrikeDxf.vcxproj**中修改`<QtInstall>6.9.3_msvc2022_64</QtInstall>`适配qt版本,注意区分debug和release
+基于QT和libdxfrw的dxf文件编辑器
 
-(https://www.qcad.org/en/dxflib-downloads)
 
-1.考虑独立一个类用来操作，当前mapping与图元属性和移动的交互太多
-
-2.新建后绘图存在问题,设置rect偏移
-
-3.图元属性坐标显示范围调整
-
-4.graphics选中标记
-
-dxf数据总类，包含映射类，操作类(未实现)，绘图类(未实现)
 
 
 
