@@ -54,6 +54,7 @@ signals:
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	void signalRefreshTreeviewAfterRead();
 
+	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
  public slots:
 	 
 };

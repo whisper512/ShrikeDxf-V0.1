@@ -158,7 +158,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
-				//connect(m_pDxfDataManger, &CDxfManger::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+				connect(m_pDxfDataManger, &CDxfManger::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
 				////manger通知view正在进行复制,切换menu
 				//connect(m_pDxfDataManger, &CDxfManger::signalCopyintEntity, m_pGraphicsView, &CGraphicsView::handlelCopyintEntity);
 				////view通知manger鼠标位置

@@ -35,7 +35,8 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     emit signalRefreshTreeviewAfterRead();
     // 更新graphicsview
-
+    m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
+    emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
     return true;
 }
 
