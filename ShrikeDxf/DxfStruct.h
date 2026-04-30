@@ -101,6 +101,7 @@ public:
 // 图层信息
 struct stuLayer
 {
+    QString name;
     QColor  color = Qt::white;
     QString lineType = "BYLAYER";
     int     lineWeight = -1;
@@ -166,12 +167,12 @@ struct stuPreviewEntity
 struct DxfDocument
 {
     // 头部变量
-    QString     version;            // DXF 版本 (AC1009, AC1015...)
+    QString     version;            // DXF 版本
     double      insUnits = 1.0;     // 单位 (1=毫米)
     Vertex3D    extMin, extMax;     // 图形范围
     double      ltscale = 1.0;      // 线型比例
 
-    // 表
+    
     std::map<std::string, stuLayer> layers;     // 图层
     std::map<std::string, stuBlock> blocks;     // 块定义
 
@@ -183,7 +184,6 @@ struct DxfDocument
     double moveStep = 1.0;
     double rotateStepRad = 0.0174533;   // 1度
 
-    // 便捷查询
     // 获取所有图元
     int GetTotalEntityCount() const {
         int count = 0;

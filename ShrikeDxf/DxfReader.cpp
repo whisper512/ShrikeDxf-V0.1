@@ -18,16 +18,18 @@ bool CDxfReader::ReadFile(const QString& filePath)
         std::cerr << "[CDxfReader] No data target set!" << std::endl;
         return false;
     }
-    // libdxfrw 使用 dxfRW 进行解析
+    // 使用 dxfRW 进行解析
     dxfRW dxf(filePath.toStdString().c_str());
     if (!dxf.read(this, false)) { 
         std::cerr << "[CDxfReader] Failed to open/parse: "
             << filePath.toStdString() << std::endl;
         return false;
     }
+
+    auto it = m_pData;
+
     return true;
 }
-
 
 void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
 {
@@ -67,6 +69,12 @@ void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& 
         // 存入块定义
         m_pData->AddEntityToBlock(m_currentBlock, entity);
     }
+}
+
+void CDxfReader::StoreLayer(const stuLayer& layer)
+{
+    if (!m_pData) return;
+    m_pData->AddLayer(layer);
 }
 
 
@@ -113,7 +121,7 @@ void CDxfReader::addLType(const DRW_LType& data)
 void CDxfReader::addLayer(const DRW_Layer& data)
 {
     if (!m_pData) return;
-    stuLayer& layer = m_pData->EnsureLayer(data.name);
+    stuLayer layer;
     // ACI 颜色转 QColor
     if (data.color24 >= 0) {
         // code 420: 24-bit RGB，格式 0x00RRGGBB
@@ -128,16 +136,30 @@ void CDxfReader::addLayer(const DRW_Layer& data)
         if (it != colorMap.end())
             layer.color = it->second;
     }
+    layer.name = QString::fromStdString(data.name);
     layer.lineType = QString::fromStdString(data.lineType);
     layer.lineWeight = DRW_LW_Conv::lineWidth2dxfInt(data.lWeight);
     layer.isVisible = (data.color >= 0);    // code 62 负值 = 图层关闭
     layer.isLocked = (data.flags & 0x04) != 0;
+    StoreLayer(layer);
 }
 
-void CDxfReader::addDimStyle(const DRW_Dimstyle& /*data*/) {}
-void CDxfReader::addVport(const DRW_Vport& /*data*/) {}
-void CDxfReader::addTextStyle(const DRW_Textstyle& /*data*/) {}
-void CDxfReader::addAppId(const DRW_AppId& /*data*/) {}
+void CDxfReader::addDimStyle(const DRW_Dimstyle& data)
+{
+    // 标注风格
+}
+void CDxfReader::addVport(const DRW_Vport& data) 
+{
+    // 视口配置
+}
+void CDxfReader::addTextStyle(const DRW_Textstyle& data) 
+{
+    // 文字样式
+}
+void CDxfReader::addAppId(const DRW_AppId& data) 
+{
+    // 应用程序ID
+}
 
 
 void CDxfReader::addBlock(const DRW_Block& data)

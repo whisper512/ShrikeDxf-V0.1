@@ -3,7 +3,6 @@
 
 /**
  * @brief DXF 数据存储类
- * 作为整个 DXF 数据模型的核心容器，存储从 DXF 文件读取的所有图元、图层、块定义等数据。
  */
 class CDxfData
 {
@@ -29,19 +28,18 @@ public:
     double         GetLtScale() const;
 
     // Layer 图层管理
-    stuLayer& AddLayer(const std::string& name);
-    bool      HasLayer(const std::string& name) const;
+    void AddLayer(const stuLayer& layer);
+    bool HasLayer(const std::string& name) const;
     stuLayer* GetLayer(const std::string& name);
     const stuLayer* GetLayer(const std::string& name) const;
     std::vector<std::string> GetAllLayerNames() const;
     size_t    GetLayerCount() const;
 
-    // 确保图层存在——常用于读取过程中，图元可能引用尚未创建的图层
+    // 确保图层存在
     stuLayer& EnsureLayer(const std::string& name);
 
-    // 图元添加（由 CDxfReader 在读取时调用）
     
-    // 通用：向指定图层添加任意类型图元
+    // 指定图层添加任意类型图元
     void AddEntity(const std::string& layerName, const variantDxfEntity& entity);
     // 各类型便捷接口
     void AddPoint(const std::string& layerName, const EntityPoint& ent);

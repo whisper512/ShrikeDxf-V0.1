@@ -60,13 +60,11 @@ double CDxfData::GetLtScale() const
     return m_document.ltscale;
 }
 
-// =========================================================================
-// Layer 图层管理
-// =========================================================================
 
-stuLayer& CDxfData::AddLayer(const std::string& name)
+// Layer 图层管理
+void  CDxfData::AddLayer(const stuLayer& layer)
 {
-    return m_document.layers[name];
+    m_document.layers[layer.name.toStdString()] = layer;
 }
 
 bool CDxfData::HasLayer(const std::string& name) const
@@ -111,6 +109,8 @@ stuLayer& CDxfData::EnsureLayer(const std::string& name)
 // 图元添加
 void CDxfData::AddEntity(const std::string& layerName, const variantDxfEntity& entity)
 {
+    auto& layer = EnsureLayer(layerName);
+    layer.entities.push_back(entity);
 }
 
 void CDxfData::AddPoint(const std::string& layerName, const EntityPoint& ent)

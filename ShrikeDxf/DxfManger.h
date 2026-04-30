@@ -33,7 +33,7 @@ private:
 	//mainwindow指针
 	QWidget* m_pMainWnd;
 	
-	std::unique_ptr<CDxfData>    m_DxfData;
+	std::unique_ptr<CDxfData> m_DxfData;
 	std::unique_ptr<CDxfReader> m_DxfReader;
 
 	//treeview的model

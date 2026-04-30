@@ -82,9 +82,10 @@ private:
     // 从 DRW_Entity 公共字段填充 EntityProp
     void FillEntityProp(const DRW_Entity& src, EntityProp& dst);
 
-    //将图元存入 DxfData(根据当前是否在块中决定去向)
+    // 图元存入DxfData
     void StoreEntity(const variantDxfEntity& entity, const std::string& layer);
-
+    // 图层存入DxfData
+    void StoreLayer(const stuLayer& layer);
 
     CDxfData* m_pData = nullptr;
     std::string m_currentBlock;                // 当前块名
