@@ -31,25 +31,27 @@ bool CDxfReader::ReadFile(const QString& filePath)
 
 void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
 {
-    //dst.layer = src.layer;
-    //dst.lineType = src.lineType;
-    //dst.color = src.color;        // ACI 索引
-    //dst.color24 = src.color24;
-    //dst.lineWeight = src.lineWeight;
-    //dst.ltypeScale = src.ltypeScale;
-    //dst.visible = src.visible;
-    //dst.thickness = src.thickness;
-
-    //// 挤出方向
-    //if (src.extrusion.x != 0.0 || src.extrusion.y != 0.0 ||
-    //    std::abs(src.extrusion.z - 1.0) > 1e-9) {
-    //    dst.haveExtrusion = true;
-    //    dst.extrusionDir = Vertex3D(src.extrusion.x, src.extrusion.y, src.extrusion.z);
-    //}
-
-    // 透明度（libdxfrw 中 transparency 在 DRW_Entity 中）
-    // 注：如果你的 libdxfrw 版本没有 transparency 字段，注释掉即可
-    // dst.transparency = src.transparency;
+    dst.layer = src.layer;
+    dst.lineType = src.lineType;
+    dst.color = src.color;        // ACI 索引
+    dst.color24 = src.color24;
+    dst.lineWeight = DRW_LW_Conv::lineWidth2dxfInt(src.lWeight);  // ← 修正：lWeight
+    dst.ltypeScale = src.ltypeScale;
+    dst.visible = src.visible;
+    // 透明度
+    dst.transparency = src.transparency;
+    // 挤出方向 — extPoint 在 DRW_Point 级别
+    const DRW_Point* asPoint = dynamic_cast<const DRW_Point*>(&src);
+    if (asPoint) {
+        dst.thickness = asPoint->thickness;
+        // 判断是否有挤出方向
+        if (asPoint->extPoint.x != 0.0 || asPoint->extPoint.y != 0.0 ||
+            std::abs(asPoint->extPoint.z - 1.0) > 1e-9) {
+            dst.haveExtrusion = true;
+            dst.extrusionDir = Vertex3D(
+                asPoint->extPoint.x, asPoint->extPoint.y, asPoint->extPoint.z);
+        }
+    }
 }
 
 void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& layer)
@@ -70,22 +72,38 @@ void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& 
 
 void CDxfReader::addHeader(const DRW_Header* data)
 {
-    //if (!m_pData || !data) return;
-
-    //// 版本
-    //if (!data->getVersion().empty())
-    //    m_pData->SetVersion(QString::fromStdString(data->getVersion()));
-
-    //// 单位
-    //m_pData->SetInsUnits(data->getInsUnits());
-
-    //// 范围
-    //Vertex3D extMin(data->getExtMin().x, data->getExtMin().y, data->getExtMin().z);
-    //Vertex3D extMax(data->getExtMax().x, data->getExtMax().y, data->getExtMax().z);
-    //m_pData->SetExtents(extMin, extMax);
-
-    //// 线型比例
-    //m_pData->SetLtScale(data->getLtScale());
+    if (!m_pData || !data) return;
+    // $ACADVER
+    auto itVer = data->vars.find("$ACADVER");
+    if (itVer != data->vars.end() && itVer->second->type() == DRW_Variant::STRING) {
+        m_pData->SetVersion(QString::fromStdString(*itVer->second->content.s));
+    }
+    // $INSUNITS
+    auto itUnits = data->vars.find("$INSUNITS");
+    if (itUnits != data->vars.end() && itUnits->second->type() == DRW_Variant::INTEGER) {
+        m_pData->SetInsUnits(static_cast<double>(itUnits->second->content.i));
+    }
+    // $EXTMIN / $EXTMAX — 需要取两个值后才调用 SetExtents
+    Vertex3D extMin, extMax;
+    bool hasExtMin = false, hasExtMax = false;
+    auto itExtMin = data->vars.find("$EXTMIN");
+    if (itExtMin != data->vars.end() && itExtMin->second->type() == DRW_Variant::COORD) {
+        DRW_Coord* c = itExtMin->second->content.v;
+        if (c) { extMin = Vertex3D(c->x, c->y, c->z); hasExtMin = true; }
+    }
+    auto itExtMax = data->vars.find("$EXTMAX");
+    if (itExtMax != data->vars.end() && itExtMax->second->type() == DRW_Variant::COORD) {
+        DRW_Coord* c = itExtMax->second->content.v;
+        if (c) { extMax = Vertex3D(c->x, c->y, c->z); hasExtMax = true; }
+    }
+    if (hasExtMin && hasExtMax) {
+        m_pData->SetExtents(extMin, extMax);
+    }
+    // $LTSCALE
+    auto itLtScale = data->vars.find("$LTSCALE");
+    if (itLtScale != data->vars.end() && itLtScale->second->type() == DRW_Variant::DOUBLE) {
+        m_pData->SetLtScale(itLtScale->second->content.d);
+    }
 }
 
 void CDxfReader::addLType(const DRW_LType& data)
@@ -94,21 +112,26 @@ void CDxfReader::addLType(const DRW_LType& data)
 
 void CDxfReader::addLayer(const DRW_Layer& data)
 {
-    //if (!m_pData) return;
-
-    //// 确保图层存在，设置颜色、线型、可见性等
-    //stuLayer& layer = m_pData->EnsureLayer(data.name);
-    //layer.color = QColor::fromRgb(
-    //    (data.color24 >> 16) & 0xFF,
-    //    (data.color24 >> 8) & 0xFF,
-    //    (data.color24) & 0xFF);
-    //if (data.color > 0 && data.color < 256) {
-    //    
-    //}
-    //layer.lineType = QString::fromStdString(data.lineType);
-    ////layer.lineWeight = data.lineWeight;
-    ////layer.isVisible = data.visible;
-    //layer.isLocked = (data.flags & 0x04) != 0;  // DXF 图层标志
+    if (!m_pData) return;
+    stuLayer& layer = m_pData->EnsureLayer(data.name);
+    // ACI 颜色转 QColor
+    if (data.color24 >= 0) {
+        // code 420: 24-bit RGB，格式 0x00RRGGBB
+        layer.color = QColor::fromRgb(
+            (data.color24 >> 16) & 0xFF,
+            (data.color24 >> 8) & 0xFF,
+            (data.color24) & 0xFF);
+    }
+    else if (data.color > 0 && data.color < 256) {
+        const auto& colorMap = DxfColorMap::getColorMap();
+        auto it = colorMap.find(data.color);
+        if (it != colorMap.end())
+            layer.color = it->second;
+    }
+    layer.lineType = QString::fromStdString(data.lineType);
+    layer.lineWeight = DRW_LW_Conv::lineWidth2dxfInt(data.lWeight);
+    layer.isVisible = (data.color >= 0);    // code 62 负值 = 图层关闭
+    layer.isLocked = (data.flags & 0x04) != 0;
 }
 
 void CDxfReader::addDimStyle(const DRW_Dimstyle& /*data*/) {}
@@ -119,17 +142,12 @@ void CDxfReader::addAppId(const DRW_AppId& /*data*/) {}
 
 void CDxfReader::addBlock(const DRW_Block& data)
 {
-    //if (!m_pData) return;
-
-    //// 注册块定义
-    //m_pData->AddBlock(data.name, Vertex3D(
-    //    data.basePoint.x, data.basePoint.y, data.basePoint.z));
-
-    //// 记录 handle → 块名 映射（用于 setBlock）
-    //m_blockHandles[data.handleBlock] = data.name;
-
-    //// 设置当前块，后面 addLine / addCircle … 都会进入该块
-    //m_currentBlock = data.name;
+    if (!m_pData) return;
+    // 注册块定义
+    m_pData->AddBlock(data.name, Vertex3D(
+        data.basePoint.x, data.basePoint.y, data.basePoint.z));
+    // 记录当前块名，后续图元会进入该块
+    m_currentBlock = data.name;
 }
 
 void CDxfReader::setBlock(const int handle)
