@@ -67,6 +67,15 @@
     <ClInclude Include="DxfLayerTableviewModel.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
+    <ClInclude Include="DxfData.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="DxfEditor.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="DxfReader.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
@@ -184,6 +193,15 @@
     </ClCompile>
     <ClCompile Include="CreateEntityWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfData.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfEditor.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfReader.cpp">
+      <Filter>Source Files\Dxf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

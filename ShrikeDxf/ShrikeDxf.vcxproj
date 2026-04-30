@@ -119,10 +119,13 @@
     <QtMoc Include="ArcAttritubeWidget.h" />
     <ClInclude Include="CommonDataManger.h" />
     <QtMoc Include="CreateEntityWidget.h" />
+    <ClInclude Include="DxfData.h" />
+    <ClInclude Include="DxfEditor.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
     <QtMoc Include="DxfManger.h" />
     <QtMoc Include="DxfGraphicsScene.h" />
+    <ClInclude Include="DxfReader.h" />
     <ClInclude Include="DxfStruct.h" />
     <QtMoc Include="DxfTreeviewModel.h" />
     <QtMoc Include="GraphicsView.h" />
@@ -141,6 +144,9 @@
     <ClCompile Include="ArcAttritubeWidget.cpp" />
     <ClCompile Include="CircleAttributeWidget.cpp" />
     <ClCompile Include="CreateEntityWidget.cpp" />
+    <ClCompile Include="DxfData.cpp" />
+    <ClCompile Include="DxfEditor.cpp" />
+    <ClCompile Include="DxfReader.cpp" />
     <ClCompile Include="LineAttribute.cpp" />
     <ClCompile Include="CommonDataManger.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />
