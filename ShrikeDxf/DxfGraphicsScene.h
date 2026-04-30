@@ -41,10 +41,7 @@ public:
     //graphics鼠标当前状态
 	enumMouseStateInView m_MouseState = enumMouseStateInView_None;
 
-	void MouseMove(QPointF pos,QColor color);
-	//void MouseLeftClick(QPointF pos,QColor color);
-	//void MouseRightClick(QPointF pos);
-	//void ChangePreviewEntityByMouseState();
+	
 
 	
 	
@@ -63,10 +60,14 @@ private:
     void DrawSolid(const EntitySolid& solid);
     void DrawHatch(const EntityHatch& hatch);
 
+	void DrawSceneBackground(QRectF& rect);
 
 private:
+	// 计算场景边界
 	QRectF CalculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf);
+	// 获取entity颜色
 	QColor GetEntityColor(const EntityProp& prop) const;
+	 // B样条基函数
 	double BSplineBasis(int i, int k, double u, const std::vector<double>& knots);
 	
 

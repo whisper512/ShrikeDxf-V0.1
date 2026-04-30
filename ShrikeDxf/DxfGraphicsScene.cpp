@@ -25,6 +25,8 @@ void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
     {
         bounds = QRectF(-250, -250, 500, 500);
     }
+    DrawSceneBackground(bounds);
+    
     for (auto it = mapDxf.begin(); it != mapDxf.end(); ++it)
     {
         if (!it->second.isVisible)
@@ -184,6 +186,24 @@ void CDxfGraphicsScene::DrawEllipse(const EntityEllipse& ellipse)
     addPath(path, pen);
 }
 
+void CDxfGraphicsScene::DrawSolid(const EntitySolid& solid)
+{
+    // 画填充
+}
+
+void CDxfGraphicsScene::DrawHatch(const EntityHatch& hatch)
+{
+    // 画填充
+}
+
+void CDxfGraphicsScene::DrawSceneBackground(QRectF& rect)
+{
+    QPen pen(QColor("#0A0A0A"), 0.5 / m_scale);  // 蓝色半透明虚线
+    pen.setCosmetic(true);
+    pen.setStyle(Qt::DashLine);
+    addRect(rect, pen);
+}
+
 
 void CDxfGraphicsScene::DrawLWPolyline(const EntityLWPolyline& polyline)
 {
@@ -321,8 +341,25 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
 {
     if (mapDxf.empty())
         return QRectF();
+
     bool first = true;
     qreal minX = 0, minY = 0, maxX = 0, maxY = 0;
+
+    auto updateBounds = [&](qreal x, qreal y)
+        {
+            if (first) {
+                minX = maxX = x;
+                minY = maxY = y;
+                first = false;
+            }
+            else {
+                minX = qMin(minX, x);
+                maxX = qMax(maxX, x);
+                minY = qMin(minY, y);
+                maxY = qMax(maxY, y);
+            }
+        };
+
     for (const auto& [name, layer] : mapDxf)
     {
         for (const auto& entity : layer.entities)
@@ -333,19 +370,88 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
             case EntityType::Point:
             {
                 const auto& pt = std::get<EntityPoint>(entity);
-                qreal x = pt.point.x();
-                qreal y = pt.point.y();
-                if (first) {
-                    minX = maxX = x;
-                    minY = maxY = y;
-                    first = false;
-                }
-                else {
-                    minX = qMin(minX, x);
-                    maxX = qMax(maxX, x);
-                    minY = qMin(minY, y);
-                    maxY = qMax(maxY, y);
-                }
+                updateBounds(pt.point.x(), pt.point.y());
+                break;
+            }
+            case EntityType::Line:
+            {
+                const auto& line = std::get<EntityLine>(entity);
+                updateBounds(line.startPoint.x(), line.startPoint.y());
+                updateBounds(line.endPoint.x(), line.endPoint.y());
+                break;
+            }
+            case EntityType::Circle:
+            {
+                const auto& circle = std::get<EntityCircle>(entity);
+                qreal r = circle.radius;
+                updateBounds(circle.center.x() - r, circle.center.y() - r);
+                updateBounds(circle.center.x() + r, circle.center.y() + r);
+                break;
+            }
+            case EntityType::Arc:
+            {
+                const auto& arc = std::get<EntityArc>(entity);
+                qreal r = arc.radius;
+                updateBounds(arc.center.x() - r, arc.center.y() - r);
+                updateBounds(arc.center.x() + r, arc.center.y() + r);
+                break;
+            }
+            case EntityType::Ellipse:
+            {
+                const auto& ellipse = std::get<EntityEllipse>(entity);
+                qreal majorLen = std::sqrt(
+                    ellipse.majorAxisEndpoint.x() * ellipse.majorAxisEndpoint.x() +
+                    ellipse.majorAxisEndpoint.y() * ellipse.majorAxisEndpoint.y());
+                qreal minorLen = majorLen * ellipse.ratio;
+                qreal maxRadius = qMax(majorLen, minorLen);
+                updateBounds(ellipse.center.x() - maxRadius, ellipse.center.y() - maxRadius);
+                updateBounds(ellipse.center.x() + maxRadius, ellipse.center.y() + maxRadius);
+                break;
+            }
+            case EntityType::LWPolyline:
+            {
+                const auto& poly = std::get<EntityLWPolyline>(entity);
+                for (const auto& v : poly.vertices)
+                    updateBounds(v.point.x(), v.point.y());
+                break;
+            }
+            case EntityType::Polyline:
+            {
+                const auto& poly = std::get<EntityPolyline>(entity);
+                for (const auto& v : poly.vertices)
+                    updateBounds(v.point.x(), v.point.y());
+                break;
+            }
+            case EntityType::Spline:
+            {
+                const auto& spline = std::get<EntitySpline>(entity);
+                for (const auto& cp : spline.controlPoints)
+                    updateBounds(cp.x(), cp.y());
+                for (const auto& fp : spline.fitPoints)
+                    updateBounds(fp.x(), fp.y());
+                break;
+            }
+            case EntityType::Text:
+            {
+                const auto& txt = std::get<EntityText>(entity);
+                updateBounds(txt.insertPoint.x(), txt.insertPoint.y());
+                // 文字有宽度和高度，粗略估算范围
+                double w = txt.height * txt.text.length() * 0.6;
+                double h = txt.height;
+                updateBounds(txt.insertPoint.x() + w, txt.insertPoint.y() + h);
+                break;
+            }
+            case EntityType::MText:
+            {
+                const auto& mtext = std::get<EntityMText>(entity);
+                updateBounds(mtext.insertPoint.x(), mtext.insertPoint.y());
+                // 粗略估算多行文本范围
+                double lineCount = 1;
+                for (char c : mtext.text)
+                    if (c == '\\' || c == '\n') lineCount++;
+                double w = mtext.height * mtext.text.length() * 0.4;
+                double h = mtext.height * lineCount * 1.5;
+                updateBounds(mtext.insertPoint.x() + w, mtext.insertPoint.y() + h);
                 break;
             }
             default:
@@ -353,14 +459,17 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
             }
         }
     }
+
     if (first)
         return QRectF();
+
     // 加一些边距
     qreal margin = 50;
     return QRectF(minX - margin, minY - margin,
         maxX - minX + margin * 2,
         maxY - minY + margin * 2);
 }
+
 
 
 void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
@@ -566,8 +675,6 @@ double CDxfGraphicsScene::BSplineBasis(int i, int k, double u, const std::vector
         return a + b;
     }
 }
-
-
 
 
 QColor CDxfGraphicsScene::GetEntityColor(const EntityProp& prop) const

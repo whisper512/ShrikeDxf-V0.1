@@ -133,6 +133,7 @@
     <QtMoc Include="PolylineAttributeWidget.h" />
     <QtMoc Include="MoveBtnsWidget.h" />
     <QtMoc Include="Ruler.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />

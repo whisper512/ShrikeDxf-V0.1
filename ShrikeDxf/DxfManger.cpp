@@ -20,7 +20,7 @@ CDxfManger::~CDxfManger()
 
 bool CDxfManger::LoadDxfFile(const QString& strPath)
 {
-    // 确保 Reader 持有 Data 指针
+    // 确保 Reader持有Data指针
     m_DxfReader->SetDataTarget(m_DxfData.get());
     // 执行读取
     bool ok = m_DxfReader->ReadFile(strPath);

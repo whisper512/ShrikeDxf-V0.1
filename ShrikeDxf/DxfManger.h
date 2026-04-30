@@ -10,7 +10,7 @@
 #include "DxfLayerTableviewModel.h"
 
 
-//dxf管理类,包含映射,操作，绘图
+//dxf管理类
 class CDxfManger : public QObject
 {
 	Q_OBJECT
@@ -33,7 +33,9 @@ private:
 	//mainwindow指针
 	QWidget* m_pMainWnd;
 	
+	// dxf数据类
 	std::unique_ptr<CDxfData> m_DxfData;
+	// dxf读取类
 	std::unique_ptr<CDxfReader> m_DxfReader;
 
 	//treeview的model

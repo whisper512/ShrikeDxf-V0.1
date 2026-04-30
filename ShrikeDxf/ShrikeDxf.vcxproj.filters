@@ -76,6 +76,9 @@
     <ClInclude Include="DxfReader.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">

@@ -246,7 +246,7 @@ void CGraphicsView::handleStartPreviewEntity(int index)
 
 void CGraphicsView::wheelEvent(QWheelEvent* pEvent)
 {
-    if (m_bLockZoom) 
+    if (m_bLockZoom)
     {
         return;
     }
