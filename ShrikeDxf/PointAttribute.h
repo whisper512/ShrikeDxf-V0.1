@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "ui_PointAttribute.h"
-#include "Primitive.h"
+#include "DxfStruct.h"
 
 class CPointAttributeWidget : public QWidget
 {
@@ -13,7 +13,7 @@ public:
 	~CPointAttributeWidget();
 
 private:
-	Point m_point;
+	EntityPoint m_EntityPoint;
 	Ui::CPointAttribute ui;
 private:
 
@@ -21,9 +21,9 @@ private:
 
 
 signals:
-	void signalPointAttributeChanged(Point point);
+	void signalPointAttributeChanged(EntityPoint point);
 
 public slots:
-	void handleNoticePointAttribute(Point point);
+	void handleNoticePointAttribute(EntityPoint point);
 };
 

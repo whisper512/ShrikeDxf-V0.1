@@ -12,8 +12,7 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pLineAttributeWidget(nullptr),
 	m_pCircleAttributeWidget(nullptr),
 	m_pArcAttributeWidget(nullptr),
-	m_pPolylineAttributeWidget(nullptr),
-	m_entityType(enumEntity_None)
+	m_pPolylineAttributeWidget(nullptr)
 {
 	
 }
@@ -82,23 +81,23 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 	{
 			if (m_pStackedWidget && m_pPointAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::NoticePointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
+				connect(this, &CStackedWidgetManger::signalPointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
 			}
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::NoticeLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
+				//connect(this, &CStackedWidgetManger::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
 			}
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::NoticeCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
+				//connect(this, &CStackedWidgetManger::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
 			}
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::NoticeArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
+				//connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
 			}
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::NoticePolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+				//connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
 			}
 	});
 }
@@ -108,24 +107,24 @@ void CStackedWidgetManger::ChangeWidgets()
 	int nIndex = -1;
 	switch (m_entityType)
 	{
-	case enumEntity_None:
+	case EntityType::None:
 		break;
-	case enumEntity_Point:
+	case EntityType::Point:
 		nIndex = 0;
 		break;
-	case enumEntity_Line:
+	case EntityType::Line:
 		nIndex = 1;
 		break;
-	case enumEntity_Circle:
+	case EntityType::Circle:
 		nIndex = 2;
 		break;
-	case enumEntity_Arc:
+	case EntityType::Arc:
 		nIndex = 3;
 		break;
-	case enumEntity_Polyline:
+	case EntityType::Polyline:
 		nIndex = 4;
 		break;
-	case enumEntity_Text:
+	case EntityType::Text:
 		break;
 	default:
 		break;
@@ -136,80 +135,59 @@ void CStackedWidgetManger::ChangeWidgets()
 	}
 }
 
-void CStackedWidgetManger::handleRefreshStackedWidget(variantDxfEntity dxfentity )
+void CStackedWidgetManger::handleRefreshStackedWidget(const stuSelectedEntity& SelectedEntity)
 {
-	Point point;
-	Line line;
-	Circle circle;
-	Arc arc;
-	Polyline polyline;
-	
+	m_entityType = SelectedEntity.type;
 
-	// 使用 Lambda 捕获外部变量引用
-	std::visit([&](auto&& arg) {
-		using T = std::decay_t<decltype(arg)>;
-
-		if constexpr (std::is_same_v<T, Point>) 
-		{
-			point = arg;
-			m_entityType = enumEntity_Point;
-		}
-		else if constexpr (std::is_same_v<T, Line>) 
-		{
-			line = arg;
-			m_entityType = enumEntity_Line;
-		}
-		else if constexpr (std::is_same_v<T, Circle>) 
-		{
-			circle = arg;
-			m_entityType = enumEntity_Circle;
-		}
-		else if constexpr (std::is_same_v<T, Arc>)
-		{
-			arc = arg;
-			m_entityType = enumEntity_Arc;
-		}
-		else if constexpr (std::is_same_v<T, Polyline>)
-		{
-			polyline = arg;
-			m_entityType = enumEntity_Polyline;
-		}
-		else if constexpr (std::is_same_v<T, Text>)
-		{
-			
-		}
-	}
-	,dxfentity);
-
+	ChangeWidgets();
 
 	
-	if (m_entityType != enumEntity_None)
+	if (SelectedEntity.entityIndex < 0) return;
+
+	switch (m_entityType)
 	{
-		switch (m_entityType)
-		{
-		case enumEntity_Point:
-			ChangeWidgets();
-			emit NoticePointAttribute(point);
-			break;
-		case enumEntity_Line:
-			ChangeWidgets();
-			emit NoticeLineAttribute(line);
-			break;
-		case enumEntity_Circle:
-			ChangeWidgets();
-			emit NoticeCircleAttribute(circle);
-			break;
-		case enumEntity_Arc:
-			ChangeWidgets();
-			emit NoticeArcAttribute(arc);
-			break;
-		case enumEntity_Polyline:
-			ChangeWidgets();
-			emit NoticePolylineAttribute(polyline);
-			break;
-		default:
-			break;
-		}
+	case EntityType::Point:
+	{
+		const EntityPoint* pPoint = std::get_if<EntityPoint>(&SelectedEntity.entity);
+		if (pPoint) emit signalPointAttribute(*pPoint);
+		break;
 	}
-	
+	case EntityType::Line:
+	{
+		const EntityLine* pLine = std::get_if<EntityLine>(&SelectedEntity.entity);
+		if (pLine) emit signalLineAttribute(*pLine);
+		break;
+	}
+	case EntityType::Circle:
+	{
+		const EntityCircle* pCircle = std::get_if<EntityCircle>(&SelectedEntity.entity);
+		if (pCircle) emit signalCircleAttribute(*pCircle);
+		break;
+	}
+	case EntityType::Arc:
+	{
+		const EntityArc* pArc = std::get_if<EntityArc>(&SelectedEntity.entity);
+		if (pArc) emit signalArcAttribute(*pArc);
+		break;
+	}
+	case EntityType::LWPolyline:
+	{
+		const EntityLWPolyline* pLW = std::get_if<EntityLWPolyline>(&SelectedEntity.entity);
+		//if (pLW) { emit signalPolylineAttribute(*pLW); break; }
+		break;
+	}
+	case EntityType::Polyline:
+	{
+		const EntityPolyline* pPoly = std::get_if<EntityPolyline>(&SelectedEntity.entity);
+		if (pPoly) { emit signalPolylineAttribute(*pPoly); break; }
+		break;
+	}
+	case EntityType::Text:
+	{
+		const EntityText* pText = std::get_if<EntityText>(&SelectedEntity.entity);
+		if (pText) emit signalTextAttribute(*pText);
+		break;
+	}
+	default:break;
+	}
 }

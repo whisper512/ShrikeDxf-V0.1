@@ -1,10 +1,10 @@
 ﻿#include "DxfManager.h"
-#include "CommonDataManger.h"
+#include "CommonDataManager.h"
 #include <QMessageBox>
 
 
 
-CDxfManger::CDxfManger(QWidget* pMainWnd) 
+CDxfManager::CDxfManager(QWidget* pMainWnd) 
     : m_pMainWnd(pMainWnd)
     , m_DxfReader(nullptr)
     , m_DxfData(nullptr)
@@ -13,12 +13,12 @@ CDxfManger::CDxfManger(QWidget* pMainWnd)
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
 }
 
-CDxfManger::~CDxfManger()
+CDxfManager::~CDxfManager()
 {
     
 }
 
-bool CDxfManger::LoadDxfFile(const QString& strPath)
+bool CDxfManager::LoadDxfFile(const QString& strPath)
 {
     // 确保 Reader持有Data指针
     m_DxfReader->SetDataTarget(m_DxfData.get());
@@ -37,23 +37,28 @@ bool CDxfManger::LoadDxfFile(const QString& strPath)
     // 更新graphicsview
     m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
+
+
+    // 更新文件路径
+    emit signalFileName(strPath);
+
     return true;
 }
 
-bool CDxfManger::SaveDxfFile(const QString& strPath)
+bool CDxfManager::SaveDxfFile(const QString& strPath)
 {
 
 
     return true;
 }
 
-bool CDxfManger::NewDxfFile()
+bool CDxfManager::NewDxfFile()
 {
 
     return true;
 }
 
-bool CDxfManger::CloseDxfFile()
+bool CDxfManager::CloseDxfFile()
 {
     m_DxfTreeviewModel.clear();
     m_DxfGraphicsScene.clear();
@@ -62,7 +67,7 @@ bool CDxfManger::CloseDxfFile()
 }
 
 
-void CDxfManger::OnTreeViewEntitySelected(const QString& strLayer, int entityIndex)
+void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIndex)
 {
     m_SelectedEntity.strLayer = strLayer;
     m_SelectedEntity.entityIndex = entityIndex;

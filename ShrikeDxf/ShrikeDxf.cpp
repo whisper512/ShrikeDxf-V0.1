@@ -63,7 +63,7 @@ void ShrikeDxf::InitDataManagers()
 	QTimer::singleShot(0, this, [this]()
 	{
 		m_pDataManager = new CCommonDataManager(this);
-		m_pDxfDataManger = new CDxfManger(this);
+		m_pDxfDataManger = new CDxfManager(this);
 	});
 }
 
@@ -149,12 +149,10 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 		{
 			if (m_pDxfDataManger && m_pTreeViewManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::signalRefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
-				connect(m_pDxfDataManger, &CDxfManger::signalRefreshTreeviewAfterRead, m_pTreeViewManger, &CTreeViewManger::handleRefreshTreeviewAfterRead);
-				connect(m_pTreeViewManger, &CTreeViewManger::signalEntitySelected, m_pDxfDataManger, &CDxfManger::OnTreeViewEntitySelected);
+				connect(m_pDxfDataManger, &CDxfManager::signalRefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
+				connect(m_pDxfDataManger, &CDxfManager::signalRefreshTreeviewAfterRead, m_pTreeViewManger, &CTreeViewManger::handleRefreshTreeviewAfterRead);
+				connect(m_pTreeViewManger, &CTreeViewManger::signalEntitySelected, m_pDxfDataManger, &CDxfManager::OnTreeViewEntitySelected);
 
-				
-				
 
 				//connect(m_pDxfDataManger, &CDxfManger::signalReturnEntityInfo, m_pTreeViewManger, &CTreeViewManger::handleReturnEntityInfo);
 				//connect(m_pTreeViewManger, &CTreeViewManger::signalSaveSelectedEntity, m_pDxfDataManger, &CDxfManger::handleSaveSelectedEntity);
@@ -163,7 +161,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
-				connect(m_pDxfDataManger, &CDxfManger::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+				connect(m_pDxfDataManger, &CDxfManager::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
 				////manger通知view正在进行复制,切换menu
 				//connect(m_pDxfDataManger, &CDxfManger::signalCopyintEntity, m_pGraphicsView, &CGraphicsView::handlelCopyintEntity);
 				////view通知manger鼠标位置
@@ -177,7 +175,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
-
+				connect(m_pDxfDataManger, &CDxfManager::signalSelectedEntityChanged, m_pStackedWidgetManger, &CStackedWidgetManger::handleRefreshStackedWidget);
 			}
 			if (m_pDxfDataManger && m_pLayerTableViewManger)
 			{
@@ -212,7 +210,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (this && m_pDxfDataManger)
 			{
-    //            connect(m_pDxfDataManger,&CDxfManger::signalShowFileName, this, &ShrikeDxf::handleShowDocName);
+                connect(m_pDxfDataManger,&CDxfManager::signalFileName, this, &ShrikeDxf::handleShowDocName);
 				//connect(m_pDxfDataManger,&CDxfManger::signalCurrentLayer,this,&ShrikeDxf::handleShowLayerName);
 			}
 			if (m_pCreateEntityWidget && m_pDxfDataManger)

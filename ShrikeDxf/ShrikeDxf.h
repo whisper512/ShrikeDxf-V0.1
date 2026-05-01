@@ -14,7 +14,7 @@
 #include "MoveBtnsWidget.h"
 #include "CreateEntityWidget.h"
 
-#include "CommonDataManger.h"
+#include "CommonDataManager.h"
 #include "DxfManager.h"
 
 class ShrikeDxf : public QMainWindow
@@ -81,7 +81,7 @@ public:
     //界面通用数据管理
     CCommonDataManager* m_pDataManager;
     //Dxf数据管理
-    CDxfManger* m_pDxfDataManger;
+    CDxfManager* m_pDxfDataManger;
 
 public slots:
     void handleMousePos(QString strPos);

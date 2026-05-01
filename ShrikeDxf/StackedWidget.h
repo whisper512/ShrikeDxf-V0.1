@@ -37,21 +37,23 @@ public:
 
 
 
-	enumEntity m_entityType;
+	EntityType m_entityType = EntityType::None;
 
 
 	std::map<int, QString> m_mapPages;
 
 
 signals:
-	void NoticePointAttribute(Point point);
-	void NoticeLineAttribute(Line line);
-	void NoticeCircleAttribute(Circle circle);
-	void NoticeArcAttribute(Arc arc);
-	void NoticePolylineAttribute(Polyline polyline);
-    void NoticeTextAttribute(Text text);
+	// 统治对应图元界面修改属性
+	void signalPointAttribute(EntityPoint point);
+	void signalLineAttribute(EntityLine line);
+	void signalCircleAttribute(EntityCircle circle);
+	void signalArcAttribute(EntityArc arc);
+	void signalPolylineAttribute(EntityPolyline polyline);
+    void signalTextAttribute(EntityText text);
 public slots:
-	void handleRefreshStackedWidget(variantDxfEntity dxfentity);
+
+	void handleRefreshStackedWidget(const stuSelectedEntity& entity);
 
 
 };

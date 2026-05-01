@@ -13,12 +13,12 @@
 
 
 //dxf管理类
-class CDxfManger : public QObject
+class CDxfManager : public QObject
 {
 	Q_OBJECT
 public:
-	CDxfManger(QWidget* pMainWnd);
-	~CDxfManger();
+	CDxfManager(QWidget* pMainWnd);
+	~CDxfManager();
 
 	// 暴露数据对象连接信号用
 	CDxfData* GetDxfData() const { return m_DxfData.get(); }
@@ -69,6 +69,9 @@ signals:
 
 	// 选中图元发生变化
 	void signalSelectedEntityChanged(const stuSelectedEntity& entity);
+
+	// 更新dxf文件路径
+	void signalFileName(const QString& filePath);
 
  public slots:
 	 // treeview选中图元发生变化

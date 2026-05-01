@@ -1,4 +1,4 @@
-﻿#include "CommonDataManger.h"
+﻿#include "CommonDataManager.h"
 
 
 CCommonDataManager::CCommonDataManager():
