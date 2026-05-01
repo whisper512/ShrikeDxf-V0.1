@@ -97,11 +97,7 @@ void CTreeViewManger::handleRefreshTreeviewAfterRead()
 		return; 
 	}
 	QString strLayer = model->data(firstLayerIndex, Qt::DisplayRole).toString();
-	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();
-
-	emit signalSaveSelectedEntity(strLayer, strEntity);
-
-	
+	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();	
 }
 
 void CTreeViewManger::DeleteEntity()
@@ -139,22 +135,26 @@ void CTreeViewManger::handleReturnEntityInfo(QString strInfo)
 
 void CTreeViewManger::handleOnItemClicked(const QModelIndex& index)
 {
-	if (index.isValid())
-	{
-		QAbstractItemModel* model = m_pTreeView->model();
-		QModelIndex ParentIndex = index.parent();
-		QString strLayer;
+	if (!index.isValid()) return;
 
-		if (ParentIndex.isValid())
+	QAbstractItemModel* model = m_pTreeView->model();
+	QModelIndex parentIndex = index.parent();
+
+	if (parentIndex.isValid())
+	{
+		QString strLayer = model->data(parentIndex, Qt::DisplayRole).toString();
+		QModelIndex entityIndexIdx = index.sibling(index.row(), 1);
+		int entityIndex = model->data(entityIndexIdx, Qt::UserRole).toInt();
+
+		emit signalEntitySelected(strLayer, entityIndex);
+	}
+	else
+	{
+		if (index.column() == 0)
 		{
-			strLayer = model->data(ParentIndex, Qt::DisplayRole).toString();
+			QString strLayer = model->data(index, Qt::DisplayRole).toString();
+			emit signalEntitySelected(strLayer, -1);
 		}
-		else
-		{
-			//选择到了图层本身
-		}
-		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-		emit signalSaveSelectedEntity(strLayer, strEntity);
 	}
 }
 
@@ -166,7 +166,6 @@ void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)
 	if (pModel)
 	{
 		m_pTreeView->setModel(pModel);
-		//m_pTreeView->setIconSize(QSize(16, 16));
 		QHeaderView* pHeader = m_pTreeView->header();
 		pHeader->setSectionResizeMode(0, QHeaderView::Stretch);
 		pHeader->setSectionResizeMode(1, QHeaderView::Stretch);

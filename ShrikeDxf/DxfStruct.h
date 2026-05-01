@@ -137,9 +137,9 @@ struct stuBlock
 struct stuSelectedEntity
 {
     EntityType  type = EntityType::None;
-    QString     strLayer;
-    int         index = -1;     // 在 stuLayer::entities 中的索引
-    variantDxfEntity entity;
+    QString     strLayer;               //所在图层
+    int         entityIndex = -1;       //所在图层中的索引
+    variantDxfEntity entity;            //图元本身
 
     stuSelectedEntity() = default;
 };

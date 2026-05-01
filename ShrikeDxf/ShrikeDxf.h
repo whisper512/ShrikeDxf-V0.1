@@ -15,7 +15,7 @@
 #include "CreateEntityWidget.h"
 
 #include "CommonDataManger.h"
-#include "DxfManger.h"
+#include "DxfManager.h"
 
 class ShrikeDxf : public QMainWindow
 {

@@ -84,7 +84,7 @@
     <QtMoc Include="ShrikeDxf.h">
       <Filter>Header Files\Common</Filter>
     </QtMoc>
-    <QtMoc Include="DxfManger.h">
+    <QtMoc Include="DxfManager.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="DxfTreeView.h">
@@ -131,7 +131,7 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DxfManger.cpp">
+    <ClCompile Include="DxfManager.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="CommonDataManger.cpp">

@@ -24,13 +24,14 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
 {
 
     ClearModel();
-    
+
     this->setHorizontalHeaderLabels(QStringList() << "LAYER" << "ENTITIES");
     QString qstr;
 
     //遍历图层
     for (auto it = mapDxf.begin(); it != mapDxf.end(); it++)
     {
+        //图层
         QList<QStandardItem*> listItemLayer;
         QStandardItem* itemLayer = new QStandardItem(QString::fromStdString(it->first));
         itemLayer->setIcon(m_iconLayer);
@@ -38,9 +39,12 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
         itemLayerPlaceHolder->setFlags(itemLayerPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
         listItemLayer << itemLayer << itemLayerPlaceHolder;
         appendRow(listItemLayer);
-
+        // 图元索引
         int indexPoint = 1, indexLine = 1, indexCircle = 1, indexArc = 1, indexPolyline = 1, indexHatch = 1,
             indexText = 1, indexEllipse = 1, indexSpline = 1, indexMText = 1, indexSolid = 1 ,indexInsert = 1;
+        // 图元索引
+        int entityIndex = 0;
+        
         //遍历图层内图元
         for (const auto& entity : it->second.entities)
         {
@@ -121,8 +125,10 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
             itemPlaceHolder->setFlags(itemPlaceHolder->flags() & ~(Qt::ItemIsSelectable | Qt::ItemIsEnabled));
             QStandardItem* itemEnt = new QStandardItem(qstr);
             itemEnt->setIcon(icon);
+            itemEnt->setData(entityIndex, Qt::UserRole);
             listItemEnt << itemPlaceHolder << itemEnt;
             itemLayer->appendRow(listItemEnt);
+            entityIndex++;
         }
     }
 }
@@ -130,7 +136,6 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
 void CDxfTreeviewModel::ClearModel()
 {
     clear();
-    m_mapDxf.clear();
 }
 
 

@@ -27,12 +27,10 @@ private:
 
 
 signals:
-	//通知dxfmanger当前选择的图元
-	void signalSaveSelectedEntity(const QString& strLayer, const QString& strEntity);
-	//通知dxfmanger删除图元
+	void signalEntitySelected(const QString& strLayer, int entityIndex);
 	void signalDeleteEntityData(const QString& strLayer, const QString& strEntity);
-	//通知dxfmanger复制图元
 	void signalCopyEntityData();
+
 public slots:
 	//获取模型用于刷新
 	void handleRefreshTree(CDxfTreeviewModel* pModel);

@@ -22,7 +22,6 @@ public:
 	void ClearModel();
 
 private:
-	std::map<std::string, stuLayer> m_mapDxf;
 
 
 	QIcon m_iconPoint;

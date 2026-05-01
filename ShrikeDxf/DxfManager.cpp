@@ -1,4 +1,4 @@
-﻿#include "DxfManger.h"
+﻿#include "DxfManager.h"
 #include "CommonDataManger.h"
 #include <QMessageBox>
 
@@ -59,4 +59,26 @@ bool CDxfManger::CloseDxfFile()
     m_DxfGraphicsScene.clear();
     m_DxfLayerTableviewModel.clear();
     return false;
+}
+
+
+void CDxfManger::OnTreeViewEntitySelected(const QString& strLayer, int entityIndex)
+{
+    m_SelectedEntity.strLayer = strLayer;
+    m_SelectedEntity.entityIndex = entityIndex;
+    m_SelectedEntity.type = EntityType::None;
+
+    if (entityIndex >= 0)
+    {
+        // 从DxfData中根据图层名+索引找到对应的实体
+        const auto& layers = m_DxfData->GetLayers();
+        auto it = layers.find(strLayer.toStdString());
+        if (it != layers.end() && entityIndex < (int)it->second.entities.size())
+        {
+            m_SelectedEntity.entity = it->second.entities[entityIndex];
+            m_SelectedEntity.type = GetEntityType(m_SelectedEntity.entity);
+        }
+    }
+    // 发出信号通知关注者
+    emit signalSelectedEntityChanged(m_SelectedEntity);
 }

@@ -8,6 +8,8 @@
 #include "DxfTreeviewModel.h"
 #include "DxfGraphicsScene.h"
 #include "DxfLayerTableviewModel.h"
+#include "DxfStruct.h"
+
 
 
 //dxf管理类
@@ -18,17 +20,21 @@ public:
 	CDxfManger(QWidget* pMainWnd);
 	~CDxfManger();
 
-	// 暴露数据对象
+	// 暴露数据对象连接信号用
 	CDxfData* GetDxfData() const { return m_DxfData.get(); }
 	CDxfReader* GetDxfReader() const { return m_DxfReader.get(); }
+	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
+    CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
+	CDxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
 
+	//获取选中图元
+	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
 
 public:
 	bool LoadDxfFile(const QString& strPath);
 	bool SaveDxfFile(const QString& strPath);
 	bool NewDxfFile();
 	bool CloseDxfFile();
-
 private:
 	//mainwindow指针
 	QWidget* m_pMainWnd;
@@ -45,18 +51,26 @@ private:
 	//graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 
+	stuSelectedEntity m_SelectedEntity;
+	
 	
 public:
 	
 public:
-	
 
 
 signals:
+	// 通知树状图刷新
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	void signalRefreshTreeviewAfterRead();
 
+	// 通知图层graphics刷新
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
+
+	// 选中图元发生变化
+	void signalSelectedEntityChanged(const stuSelectedEntity& entity);
+
  public slots:
-	 
+	 // treeview选中图元发生变化
+	 void OnTreeViewEntitySelected(const QString& strLayer, int entityIndex);
 };

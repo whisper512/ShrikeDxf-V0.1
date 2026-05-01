@@ -123,7 +123,7 @@
     <ClInclude Include="DxfEditor.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
-    <QtMoc Include="DxfManger.h" />
+    <QtMoc Include="DxfManager.h" />
     <QtMoc Include="DxfGraphicsScene.h" />
     <ClInclude Include="DxfReader.h" />
     <ClInclude Include="DxfStruct.h" />
@@ -152,7 +152,7 @@
     <ClCompile Include="CommonDataManger.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />
     <ClCompile Include="DxfLayerTableviewModel.cpp" />
-    <ClCompile Include="DxfManger.cpp" />
+    <ClCompile Include="DxfManager.cpp" />
     <ClCompile Include="DxfStruct.cpp" />
     <ClCompile Include="DxfTreeviewModel.cpp" />
     <ClCompile Include="GraphicsView.cpp" />
