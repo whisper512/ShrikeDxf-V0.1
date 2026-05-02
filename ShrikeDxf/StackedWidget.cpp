@@ -85,19 +85,19 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			}
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
-				//connect(this, &CStackedWidgetManger::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
+				connect(this, &CStackedWidgetManger::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
 			}
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
-				//connect(this, &CStackedWidgetManger::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
+				connect(this, &CStackedWidgetManger::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
 			}
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
-				//connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
+				connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
 			}
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{
-				//connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
 			}
 	});
 }
@@ -173,7 +173,7 @@ void CStackedWidgetManger::handleRefreshStackedWidget(const stuSelectedEntity& S
 	case EntityType::LWPolyline:
 	{
 		const EntityLWPolyline* pLW = std::get_if<EntityLWPolyline>(&SelectedEntity.entity);
-		//if (pLW) { emit signalPolylineAttribute(*pLW); break; }
+		if (pLW) { emit signalLWPolylineAttribute(*pLW); break; }
 		break;
 	}
 	case EntityType::Polyline:

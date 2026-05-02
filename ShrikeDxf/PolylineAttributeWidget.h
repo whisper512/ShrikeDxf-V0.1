@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_PolylineAttributeWidget.h"
-#include "Primitive.h"
+#include "DxfStruct.h"
 
 class CPolylineAttributeWidget : public QWidget
 {
@@ -16,7 +16,7 @@ public:
 private:
 	Ui::CPolylineAttributeWidgetClass ui;
 
-	Polyline m_polyline;
+	EntityPolyline m_polyline;
 
 	void RefreshTable();
 
@@ -26,10 +26,10 @@ protected:
 
 
 signals:
-	void signalPolylineAttributeChanged(Polyline polyline);
+	void signalPolylineAttributeChanged(EntityPolyline polyline);
 
 
 public slots:
-	void handleNoticePolylineAttribute(Polyline polyline);
+	void handleNoticePolylineAttribute(EntityPolyline polyline);
 
 };

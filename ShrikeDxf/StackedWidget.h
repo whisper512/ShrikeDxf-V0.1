@@ -49,6 +49,7 @@ signals:
 	void signalLineAttribute(EntityLine line);
 	void signalCircleAttribute(EntityCircle circle);
 	void signalArcAttribute(EntityArc arc);
+	void signalLWPolylineAttribute(EntityLWPolyline lwpolyline);
 	void signalPolylineAttribute(EntityPolyline polyline);
     void signalTextAttribute(EntityText text);
 public slots:

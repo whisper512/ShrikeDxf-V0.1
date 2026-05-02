@@ -28,31 +28,31 @@ CArcAttritubeWidget::~CArcAttritubeWidget()
 
 void CArcAttritubeWidget::OnSpinBoxXYRChanged()
 {
-	m_arc.pointCenter.setX(ui.doubleSpinBox_X->value());
-	m_arc.pointCenter.setY(ui.doubleSpinBox_Y->value());
-	m_arc.radius = ui.doubleSpinBox_Radius->value();
+	//m_arc.pointCenter.setX(ui.doubleSpinBox_X->value());
+	//m_arc.pointCenter.setY(ui.doubleSpinBox_Y->value());
+	//m_arc.radius = ui.doubleSpinBox_Radius->value();
 	emit signalArcAttributeChanged(m_arc);
 }
 
 void CArcAttritubeWidget::OnSpinBoxAngleRADChanged()
 {
-	m_arc.startAngle = ui.doubleSpinBox_StartAngle_RAD->value() * 180.0 /M_PI;
-	m_arc.endAngle = ui.doubleSpinBox_EndAngle_RAD->value() * 180.0 /M_PI;
-	emit signalArcAttributeChanged(m_arc);
-	ui.doubleSpinBox_StartAngle_DEG->setValue(m_arc.startAngle);
-	ui.doubleSpinBox_EndAngle_DEG->setValue(m_arc.endAngle);
+	//m_arc.startAngle = ui.doubleSpinBox_StartAngle_RAD->value() * 180.0 /M_PI;
+	//m_arc.endAngle = ui.doubleSpinBox_EndAngle_RAD->value() * 180.0 /M_PI;
+	//emit signalArcAttributeChanged(m_arc);
+	//ui.doubleSpinBox_StartAngle_DEG->setValue(m_arc.startAngle);
+	//ui.doubleSpinBox_EndAngle_DEG->setValue(m_arc.endAngle);
 }
 
 void CArcAttritubeWidget::OnSpinBoxAngleDEGChanged()
 {
-	m_arc.startAngle = ui.doubleSpinBox_StartAngle_DEG->value();
-	m_arc.endAngle = ui.doubleSpinBox_EndAngle_DEG->value();
-	emit signalArcAttributeChanged(m_arc);
-	ui.doubleSpinBox_StartAngle_RAD->setValue(m_arc.startAngle * M_PI / 180.0);
-	ui.doubleSpinBox_EndAngle_RAD->setValue(m_arc.endAngle * M_PI / 180.0);
+	//m_arc.startAngle = ui.doubleSpinBox_StartAngle_DEG->value();
+	//m_arc.endAngle = ui.doubleSpinBox_EndAngle_DEG->value();
+	//emit signalArcAttributeChanged(m_arc);
+	//ui.doubleSpinBox_StartAngle_RAD->setValue(m_arc.startAngle * M_PI / 180.0);
+	//ui.doubleSpinBox_EndAngle_RAD->setValue(m_arc.endAngle * M_PI / 180.0);
 }
 
-void CArcAttritubeWidget::handleNoticeArcAttribute(Arc arc)
+void CArcAttritubeWidget::handleNoticeArcAttribute(EntityArc arc)
 {
 	ui.doubleSpinBox_X->blockSignals(true);
 	ui.doubleSpinBox_Y->blockSignals(true);
@@ -63,13 +63,13 @@ void CArcAttritubeWidget::handleNoticeArcAttribute(Arc arc)
     ui.doubleSpinBox_EndAngle_DEG->blockSignals(true);
 
 	m_arc = arc;
-	ui.doubleSpinBox_X->setValue(m_arc.pointCenter.x());
-	ui.doubleSpinBox_Y->setValue(m_arc.pointCenter.y());
+	ui.doubleSpinBox_X->setValue(m_arc.center.x());
+	ui.doubleSpinBox_Y->setValue(m_arc.center.y());
 	ui.doubleSpinBox_Radius->setValue(m_arc.radius);
-	ui.doubleSpinBox_StartAngle_DEG->setValue(m_arc.startAngle);
-    ui.doubleSpinBox_EndAngle_DEG->setValue(m_arc.endAngle);
-	ui.doubleSpinBox_EndAngle_RAD->setValue(m_arc.endAngle * M_PI / 180.0);
-    ui.doubleSpinBox_StartAngle_RAD->setValue(m_arc.startAngle * M_PI / 180.0);
+	ui.doubleSpinBox_StartAngle_DEG->setValue(m_arc.startAngle * 180.0 / M_PI);
+    ui.doubleSpinBox_EndAngle_DEG->setValue(m_arc.endAngle * 180.0 / M_PI);
+	ui.doubleSpinBox_EndAngle_RAD->setValue(m_arc.endAngle);
+    ui.doubleSpinBox_StartAngle_RAD->setValue(m_arc.startAngle);
 
 	ui.doubleSpinBox_X->blockSignals(false);
 	ui.doubleSpinBox_Y->blockSignals(false);

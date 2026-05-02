@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_CircleAttributeWidget.h"
-#include "Primitive.h"
+#include "DxfStruct.h"
 
 class CCircleAttributeWidget : public QWidget
 {
@@ -16,14 +16,14 @@ public:
 private:
 	Ui::CCircleAttributeWidgetClass ui;
 
-	Circle m_cirlce;
+	EntityCircle m_cirlce;
 
 	void OnSpinBoxChanged();
 
 signals:
-		void signalCircleAttributeChanged(Circle circle);
+		void signalCircleAttributeChanged(EntityCircle circle);
 
 public slots:
-	void handleNoticeCircleAttribute(Circle circle);
+	void handleNoticeCircleAttribute(EntityCircle circle);
 };
 

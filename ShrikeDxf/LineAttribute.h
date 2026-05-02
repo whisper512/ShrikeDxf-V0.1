@@ -3,7 +3,8 @@
 #include <QWidget>
 
 #include "ui_LineAttribute.h"
-#include "Primitive.h"
+#include "DxfStruct.h"
+
 
 
 class CLineAttributeWidget : public QWidget
@@ -17,7 +18,7 @@ public:
 private:
 	Ui::CLineAttribute ui;
 	
-	Line m_line;
+	EntityLine m_line;
 
 	void OnSpinBoxStartChanged();
     void OnSpinBoxEndChanged();
@@ -29,9 +30,9 @@ private:
 
 
 signals:
-		void signalLineAttributeChanged(Line line);
+		void signalLineAttributeChanged(EntityLine line);
 
 public slots:
-	void handleNoticeLineAttribute(Line line);
+	void handleNoticeLineAttribute(EntityLine line);
 
 };

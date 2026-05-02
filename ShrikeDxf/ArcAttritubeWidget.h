@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_ArcAttritubeWidget.h"
-#include "Primitive.h"
+#include "DxfStruct.h"
 
 class CArcAttritubeWidget : public QWidget
 {
@@ -16,15 +16,15 @@ public:
 private:
 	Ui::ArcAttritubeWidgetClass ui;
 	
-	Arc m_arc;
+	EntityArc m_arc;
 
 	void OnSpinBoxXYRChanged();
 	void OnSpinBoxAngleRADChanged();
     void OnSpinBoxAngleDEGChanged();
 signals:
-	void signalArcAttributeChanged(Arc arc);
+	void signalArcAttributeChanged(EntityArc arc);
 
 public slots:
-	void handleNoticeArcAttribute(Arc arc);
+	void handleNoticeArcAttribute(EntityArc arc);
 };
 
