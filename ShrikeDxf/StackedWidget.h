@@ -33,7 +33,7 @@ public:
 	CLineAttributeWidget* m_pLineAttributeWidget;
 	CCircleAttributeWidget* m_pCircleAttributeWidget;
 	CArcAttritubeWidget* m_pArcAttributeWidget;
-	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
+	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
 
 
 

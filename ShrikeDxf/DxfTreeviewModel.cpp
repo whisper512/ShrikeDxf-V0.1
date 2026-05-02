@@ -75,8 +75,13 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
                 pIndex = &indexArc;
                 break;
             case EntityType::LWPolyline:
-            case EntityType::Polyline:
                 qstr = QString("LWPolyline %1").arg(indexPolyline++);
+                icon = m_iconPloyline;
+                pIndex = &indexPolyline;
+                break;
+                break;
+            case EntityType::Polyline:
+                qstr = QString("Polyline %1").arg(indexPolyline++);
                 icon = m_iconPloyline;
                 pIndex = &indexPolyline;
                 break;

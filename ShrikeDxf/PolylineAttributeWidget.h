@@ -5,18 +5,18 @@
 #include "ui_PolylineAttributeWidget.h"
 #include "DxfStruct.h"
 
-class CPolylineAttributeWidget : public QWidget
+class CLWPolylineAttributeWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	CPolylineAttributeWidget(QWidget *parent = nullptr);
-	~CPolylineAttributeWidget();
+	CLWPolylineAttributeWidget(QWidget *parent = nullptr);
+	~CLWPolylineAttributeWidget();
 
 private:
-	Ui::CPolylineAttributeWidgetClass ui;
+	Ui::CLWPolylineAttributeWidgetClass ui;
 
-	EntityPolyline m_polyline;
+	EntityLWPolyline m_polyline;
 
 	void RefreshTable();
 
@@ -26,10 +26,10 @@ protected:
 
 
 signals:
-	void signalPolylineAttributeChanged(EntityPolyline polyline);
+	void signalPolylineAttributeChanged(EntityLWPolyline polyline);
 
 
 public slots:
-	void handleNoticePolylineAttribute(EntityPolyline polyline);
+	void handleNoticeLWPolylineAttribute(EntityLWPolyline polyline);
 
 };

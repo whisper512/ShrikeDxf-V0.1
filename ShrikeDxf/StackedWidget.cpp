@@ -12,7 +12,7 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pLineAttributeWidget(nullptr),
 	m_pCircleAttributeWidget(nullptr),
 	m_pArcAttributeWidget(nullptr),
-	m_pPolylineAttributeWidget(nullptr)
+	m_pLWPolylineAttributeWidget(nullptr)
 {
 	
 }
@@ -68,9 +68,9 @@ void CStackedWidgetManger::AddPages()
 	m_pStackedWidget->widget(3)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[3] = STR_ARC_LOWERCASE;
 
-	m_pPolylineAttributeWidget = new CPolylineAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pPolylineAttributeWidget);
-	m_pPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_pLWPolylineAttributeWidget = new CLWPolylineAttributeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pLWPolylineAttributeWidget);
+	m_pLWPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[4] = STR_POLYLINE_LOWERCASE;
 }
@@ -95,9 +95,9 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
 			}
-			if (m_pStackedWidget && m_pPolylineAttributeWidget)
+			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+				connect(this, &CStackedWidgetManger::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
 			}
 	});
 }
@@ -121,7 +121,7 @@ void CStackedWidgetManger::ChangeWidgets()
 	case EntityType::Arc:
 		nIndex = 3;
 		break;
-	case EntityType::Polyline:
+	case EntityType::LWPolyline:
 		nIndex = 4;
 		break;
 	case EntityType::Text:

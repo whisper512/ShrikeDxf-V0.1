@@ -1,6 +1,6 @@
 ﻿#include "PolylineAttributeWidget.h"
 
-CPolylineAttributeWidget::CPolylineAttributeWidget(QWidget* parent)
+CLWPolylineAttributeWidget::CLWPolylineAttributeWidget(QWidget* parent)
 	: QWidget(parent),
 	m_polyline()
 {
@@ -8,22 +8,22 @@ CPolylineAttributeWidget::CPolylineAttributeWidget(QWidget* parent)
 	ui.spinBox_Vertices->setButtonSymbols(QAbstractSpinBox::NoButtons);
 	ui.spinBox_Linenum->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
-	connect(ui.tableWidget, &QTableWidget::itemChanged, this, &CPolylineAttributeWidget::OnTableValueChanged);
+	connect(ui.tableWidget, &QTableWidget::itemChanged, this, &CLWPolylineAttributeWidget::OnTableValueChanged);
 }
 
-CPolylineAttributeWidget::~CPolylineAttributeWidget()
+CLWPolylineAttributeWidget::~CLWPolylineAttributeWidget()
 {
 }
 
-void CPolylineAttributeWidget::RefreshTable()
+void CLWPolylineAttributeWidget::RefreshTable()
 {
-	ui.tableWidget->setRowCount(m_polyline.vertexCount);
+	ui.tableWidget->setRowCount(m_polyline.numVertices());
 	ui.tableWidget->setColumnCount(2);
 
 	QStringList header;
 	header << "X" << "Y";
 	ui.tableWidget->setHorizontalHeaderLabels(header);
-	for (int i = 0; i < m_polyline.vertexCount; i++)
+	for (int i = 0; i < m_polyline.numVertices(); i++)
 	{
 		QTableWidgetItem* itemX = new QTableWidgetItem(QString::number(m_polyline.vertices[i].point.x()));
 		ui.tableWidget->setItem(i, 0, itemX);
@@ -34,7 +34,7 @@ void CPolylineAttributeWidget::RefreshTable()
 	ui.tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-void CPolylineAttributeWidget::OnTableValueChanged()
+void CLWPolylineAttributeWidget::OnTableValueChanged()
 {
 	//m_polyline.vecVertices.clear();
 	//for (int i = 0; i < ui.tableWidget->rowCount(); i++)
@@ -55,13 +55,13 @@ void CPolylineAttributeWidget::OnTableValueChanged()
 }
 
 
-void CPolylineAttributeWidget::handleNoticePolylineAttribute(EntityPolyline polyline)
+void CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute(EntityLWPolyline polyline)
 {
 	ui.tableWidget->blockSignals(true);
 
 	m_polyline = polyline;
-	ui.spinBox_Vertices->setValue(m_polyline.vertexCount);
-	ui.spinBox_Linenum->setValue(m_polyline.vertexCount - 1);
+	ui.spinBox_Vertices->setValue(m_polyline.numVertices());
+	ui.spinBox_Linenum->setValue(m_polyline.numVertices() - 1);
 	RefreshTable();
 
 	ui.tableWidget->blockSignals(false);
