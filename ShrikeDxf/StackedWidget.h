@@ -8,6 +8,7 @@
 #include "CircleAttributeWidget.h"
 #include "ArcAttritubeWidget.h"
 #include "PolylineAttributeWidget.h"
+#include "EllipseAttritube.h"
 
 #include "DxfStruct.h"
 
@@ -34,6 +35,7 @@ public:
 	CCircleAttributeWidget* m_pCircleAttributeWidget;
 	CArcAttritubeWidget* m_pArcAttributeWidget;
 	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
+	CEllipseAttritubeWidget* m_pEllipseAttributeWidget;
 
 
 
@@ -52,6 +54,7 @@ signals:
 	void signalLWPolylineAttribute(EntityLWPolyline lwpolyline);
 	void signalPolylineAttribute(EntityPolyline polyline);
     void signalTextAttribute(EntityText text);
+	void signalEllipseAttribute(EntityEllipse ellipse);
 public slots:
 
 	void handleRefreshStackedWidget(const stuSelectedEntity& entity);

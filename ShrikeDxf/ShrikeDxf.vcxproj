@@ -107,6 +107,7 @@
     <QtUic Include="ArcAttritubeWidget.ui" />
     <QtUic Include="CircleAttributeWidget.ui" />
     <QtUic Include="CreateEntityWidget.ui" />
+    <QtUic Include="EllipseAttritubeWidget.ui" />
     <QtUic Include="LineAttribute.ui" />
     <QtUic Include="MoveBtnsWidget.ui" />
     <QtUic Include="PointAttribute.ui" />
@@ -133,6 +134,7 @@
     <QtMoc Include="PolylineAttributeWidget.h" />
     <QtMoc Include="MoveBtnsWidget.h" />
     <QtMoc Include="Ruler.h" />
+    <QtMoc Include="EllipseAttritube.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
@@ -148,6 +150,7 @@
     <ClCompile Include="DxfData.cpp" />
     <ClCompile Include="DxfEditor.cpp" />
     <ClCompile Include="DxfReader.cpp" />
+    <ClCompile Include="EllipseAttritube.cpp" />
     <ClCompile Include="LineAttribute.cpp" />
     <ClCompile Include="CommonDataManager.cpp" />
     <ClCompile Include="DxfGraphicsScene.cpp" />

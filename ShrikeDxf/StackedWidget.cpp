@@ -12,7 +12,9 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pLineAttributeWidget(nullptr),
 	m_pCircleAttributeWidget(nullptr),
 	m_pArcAttributeWidget(nullptr),
-	m_pLWPolylineAttributeWidget(nullptr)
+	m_pLWPolylineAttributeWidget(nullptr),
+	m_pEllipseAttributeWidget(nullptr)
+
 {
 	
 }
@@ -73,6 +75,13 @@ void CStackedWidgetManger::AddPages()
 	m_pLWPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[4] = STR_POLYLINE_LOWERCASE;
+
+	m_pEllipseAttributeWidget = new CEllipseAttritubeWidget(m_pStackedWidget);
+    m_pStackedWidget->addWidget(m_pEllipseAttributeWidget);
+	m_pEllipseAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_pStackedWidget->widget(5)->setContentsMargins(0, 0, 0, 0);
+    m_mapPages[5] = STR_ELLIPSE_LOWERCASE;
+
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -99,6 +108,10 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
 			}
+			if (m_pStackedWidget && m_pEllipseAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
+			}
 	});
 }
 
@@ -124,8 +137,12 @@ void CStackedWidgetManger::ChangeWidgets()
 	case EntityType::LWPolyline:
 		nIndex = 4;
 		break;
+	case EntityType::Ellipse:
+        nIndex = 5;
+		break;
 	case EntityType::Text:
 		break;
+
 	default:
 		break;
 	}
@@ -188,6 +205,13 @@ void CStackedWidgetManger::handleRefreshStackedWidget(const stuSelectedEntity& S
 		if (pText) emit signalTextAttribute(*pText);
 		break;
 	}
+	case EntityType::Ellipse:
+	{
+		const EntityEllipse* pEllipse = std::get_if<EntityEllipse>(&SelectedEntity.entity);
+        if(pEllipse) emit signalEllipseAttribute(*pEllipse);
+        break;
+	}
+
 	default:break;
 	}
 }
