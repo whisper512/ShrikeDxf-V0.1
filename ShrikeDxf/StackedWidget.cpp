@@ -13,8 +13,8 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pCircleAttributeWidget(nullptr),
 	m_pArcAttributeWidget(nullptr),
 	m_pLWPolylineAttributeWidget(nullptr),
-	m_pEllipseAttributeWidget(nullptr)
-
+	m_pEllipseAttributeWidget(nullptr),
+	m_pTextAttributeWidget(nullptr)
 {
 	
 }
@@ -82,6 +82,13 @@ void CStackedWidgetManger::AddPages()
     m_pStackedWidget->widget(5)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[5] = STR_ELLIPSE_LOWERCASE;
 
+	m_pTextAttributeWidget = new CTextAttritubeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pTextAttributeWidget);
+    m_pTextAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_pStackedWidget->widget(6)->setContentsMargins(0, 0, 0, 0);
+    m_mapPages[6] = STR_TEXT_LOWERCASE;
+
+
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -112,6 +119,10 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
 			}
+			if (m_pStackedWidget && m_pTextAttributeWidget)
+			{
+				connect(this , &CStackedWidgetManger::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
+			}
 	});
 }
 
@@ -141,8 +152,8 @@ void CStackedWidgetManger::ChangeWidgets()
         nIndex = 5;
 		break;
 	case EntityType::Text:
+		nIndex = 6;
 		break;
-
 	default:
 		break;
 	}

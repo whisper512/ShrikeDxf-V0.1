@@ -9,6 +9,7 @@
 #include "ArcAttritubeWidget.h"
 #include "PolylineAttributeWidget.h"
 #include "EllipseAttritube.h"
+#include "TextAttritubeWidget.h"
 
 #include "DxfStruct.h"
 
@@ -36,6 +37,7 @@ public:
 	CArcAttritubeWidget* m_pArcAttributeWidget;
 	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
 	CEllipseAttritubeWidget* m_pEllipseAttributeWidget;
+	CTextAttritubeWidget* m_pTextAttributeWidget;
 
 
 
