@@ -34,6 +34,9 @@
        <property name="text">
         <string>Text:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
@@ -43,6 +46,9 @@
       <widget class="QLabel" name="label_Style">
        <property name="text">
         <string>Style:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -58,6 +64,9 @@
        <property name="text">
         <string>InsertX:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
@@ -71,6 +80,9 @@
       <widget class="QLabel" name="label_InsertPtY">
        <property name="text">
         <string>InsertY:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -86,6 +98,9 @@
        <property name="text">
         <string>alignX:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
@@ -99,6 +114,9 @@
       <widget class="QLabel" name="label_alignPtY">
        <property name="text">
         <string>alignY:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -114,6 +132,9 @@
        <property name="text">
         <string>Height:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="4" column="1">
@@ -127,6 +148,9 @@
       <widget class="QLabel" name="label_Angle">
        <property name="text">
         <string>Angle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -142,6 +166,9 @@
        <property name="text">
         <string>WidthFactor:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="6" column="1">
@@ -155,6 +182,9 @@
       <widget class="QLabel" name="label_ObliqueAngle">
        <property name="text">
         <string>ObliqueAngle:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -170,6 +200,9 @@
        <property name="text">
         <string>TextGen:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="8" column="1">
@@ -180,6 +213,9 @@
        <property name="text">
         <string>alignH:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="9" column="1">
@@ -189,6 +225,9 @@
       <widget class="QLabel" name="label_alignV">
        <property name="text">
         <string>alignV:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
