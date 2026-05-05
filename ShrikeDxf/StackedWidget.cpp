@@ -14,7 +14,8 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pArcAttributeWidget(nullptr),
 	m_pLWPolylineAttributeWidget(nullptr),
 	m_pEllipseAttributeWidget(nullptr),
-	m_pTextAttributeWidget(nullptr)
+	m_pTextAttributeWidget(nullptr),
+    m_pMTextAttributeWidget(nullptr)
 {
 	
 }
@@ -88,6 +89,11 @@ void CStackedWidgetManger::AddPages()
     m_pStackedWidget->widget(6)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[6] = STR_TEXT_LOWERCASE;
 
+	m_pMTextAttributeWidget = new CMTextAttritubeWidget(m_pStackedWidget);
+    m_pStackedWidget->addWidget(m_pMTextAttributeWidget);
+    m_pMTextAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_pStackedWidget->widget(7)->setContentsMargins(0, 0, 0, 0);
+    m_mapPages[7] = STR_MTEXT_LOWERCASE;
 
 }
 
@@ -123,6 +129,10 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this , &CStackedWidgetManger::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
 			}
+			if (m_pStackedWidget && m_pMTextAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
+			}
 	});
 }
 
@@ -153,6 +163,9 @@ void CStackedWidgetManger::ChangeWidgets()
 		break;
 	case EntityType::Text:
 		nIndex = 6;
+		break;
+	case EntityType::MText:
+        nIndex = 7;
 		break;
 	default:
 		break;
@@ -215,6 +228,12 @@ void CStackedWidgetManger::handleRefreshStackedWidget(const stuSelectedEntity& S
 		const EntityText* pText = std::get_if<EntityText>(&SelectedEntity.entity);
 		if (pText) emit signalTextAttribute(*pText);
 		break;
+	}
+	case EntityType::MText:
+	{
+        const EntityMText* pMText = std::get_if<EntityMText>(&SelectedEntity.entity);
+        if (pMText) emit signalMTextAttribute(*pMText);
+        break;
 	}
 	case EntityType::Ellipse:
 	{

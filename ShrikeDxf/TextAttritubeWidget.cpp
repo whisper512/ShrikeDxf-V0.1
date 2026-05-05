@@ -12,6 +12,20 @@ CTextAttritubeWidget::~CTextAttritubeWidget()
 
 void CTextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
 {
+	ui.doubleSpinBox_alignPtX->blockSignals(true);
+    ui.doubleSpinBox_alignPtY->blockSignals(true);
+	ui.doubleSpinBox_InsertPtX->blockSignals(true);
+    ui.doubleSpinBox_InsertPtY->blockSignals(true);
+    ui.doubleSpinBox_Angle->blockSignals(true);
+    ui.doubleSpinBox_Height->blockSignals(true);
+    ui.doubleSpinBox_WidthFactor->blockSignals(true);
+    ui.doubleSpinBox_ObliqueAngle->blockSignals(true);
+    ui.spinBox_TextGen->blockSignals(true);
+    ui.spinBox_alignH->blockSignals(true);
+    ui.spinBox_alignV->blockSignals(true);
+    ui.lineEdit_Text->blockSignals(true);
+    ui.lineEdit_Style->blockSignals(true);
+
 	m_text = text;
 	ui.doubleSpinBox_InsertPtX->setValue(m_text.insertPoint.x());
     ui.doubleSpinBox_InsertPtY->setValue(m_text.insertPoint.y());
@@ -26,4 +40,18 @@ void CTextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
 	ui.spinBox_alignV->setValue(m_text.alignV);
 	ui.lineEdit_Text->setText(QString::fromStdString(m_text.text));
 	ui.lineEdit_Style->setText(QString::fromStdString(m_text.style));
+
+    ui.doubleSpinBox_alignPtX->blockSignals(false);
+    ui.doubleSpinBox_alignPtY->blockSignals(false);
+    ui.doubleSpinBox_InsertPtX->blockSignals(false);
+    ui.doubleSpinBox_InsertPtY->blockSignals(false);
+    ui.doubleSpinBox_Angle->blockSignals(false);
+    ui.doubleSpinBox_Height->blockSignals(false);
+    ui.doubleSpinBox_WidthFactor->blockSignals(false);
+    ui.doubleSpinBox_ObliqueAngle->blockSignals(false);
+    ui.spinBox_TextGen->blockSignals(false);
+    ui.spinBox_alignH->blockSignals(false);
+    ui.spinBox_alignV->blockSignals(false);
+    ui.lineEdit_Text->blockSignals(false);
+    ui.lineEdit_Style->blockSignals(false);
 }

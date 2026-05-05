@@ -79,6 +79,9 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
+    <ClInclude Include="MTextAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
@@ -218,6 +221,9 @@
     <ClCompile Include="TextAttritubeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
+    <ClCompile Include="MTextAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PointAttribute.ui">
@@ -245,6 +251,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="TextAttritubeWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MTextAttritubeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

@@ -10,6 +10,7 @@
 #include "PolylineAttributeWidget.h"
 #include "EllipseAttritube.h"
 #include "TextAttritubeWidget.h"
+#include "MTextAttritubeWidget.h"
 
 #include "DxfStruct.h"
 
@@ -38,7 +39,7 @@ public:
 	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
 	CEllipseAttritubeWidget* m_pEllipseAttributeWidget;
 	CTextAttritubeWidget* m_pTextAttributeWidget;
-
+	CMTextAttritubeWidget* m_pMTextAttributeWidget;
 
 
 	EntityType m_entityType = EntityType::None;
@@ -56,6 +57,7 @@ signals:
 	void signalLWPolylineAttribute(EntityLWPolyline lwpolyline);
 	void signalPolylineAttribute(EntityPolyline polyline);
     void signalTextAttribute(EntityText text);
+	void signalMTextAttribute(EntityMText mtext);
 	void signalEllipseAttribute(EntityEllipse ellipse);
 public slots:
 

@@ -16,6 +16,7 @@
 #define STR_ARC "ARC"
 #define STR_POLYLINE "POLYLINE"
 #define STR_TEXT "TEXT"
+#define STR_MTEXT "MTEXT"
 #define STR_ELLIPSE "ELLIPSE"
 
 #define STR_POINT_LOWERCASE "point"
@@ -24,6 +25,7 @@
 #define STR_ARC_LOWERCASE "arc"
 #define STR_POLYLINE_LOWERCASE "polyline"
 #define STR_TEXT_LOWERCASE "text"
+#define STR_MTEXT_LOWERCASE "mtext"
 #define STR_ELLIPSE_LOWERCASE "ellipse"
 
 
