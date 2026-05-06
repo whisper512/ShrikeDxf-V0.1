@@ -11,6 +11,7 @@
 #include "EllipseAttritube.h"
 #include "TextAttritubeWidget.h"
 #include "MTextAttritubeWidget.h"
+#include "PolylineAttritubeWidget.h"
 
 #include "DxfStruct.h"
 
@@ -40,7 +41,7 @@ public:
 	CEllipseAttritubeWidget* m_pEllipseAttributeWidget;
 	CTextAttritubeWidget* m_pTextAttributeWidget;
 	CMTextAttritubeWidget* m_pMTextAttributeWidget;
-
+	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
 
 	EntityType m_entityType = EntityType::None;
 

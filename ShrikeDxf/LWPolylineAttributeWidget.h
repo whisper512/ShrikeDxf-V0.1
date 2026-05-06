@@ -2,7 +2,7 @@
 
 #include <QWidget>
 
-#include "ui_PolylineAttributeWidget.h"
+#include "ui_LWPolylineAttributeWidget.h"
 #include "DxfStruct.h"
 
 class CLWPolylineAttributeWidget : public QWidget

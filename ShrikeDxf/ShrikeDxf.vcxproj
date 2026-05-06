@@ -141,6 +141,7 @@
     <ClInclude Include="Entity.h" />
     <QtMoc Include="TextAttritubeWidget.h" />
     <ClInclude Include="MTextAttritubeWidget.h" />
+    <ClInclude Include="PolylineAttritubeWidget.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="MTextAttritubeWidget.cpp" />
     <ClCompile Include="PointAttribute.cpp" />
     <ClCompile Include="LWPolylineAttributeWidget.cpp" />
+    <ClCompile Include="PolylineAttritubeWidget.cpp" />
     <ClCompile Include="Ruler.cpp" />
     <ClCompile Include="TextAttritubeWidget.cpp" />
     <ClCompile Include="TopMenu.cpp" />

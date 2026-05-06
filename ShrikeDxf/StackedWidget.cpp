@@ -15,7 +15,8 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pLWPolylineAttributeWidget(nullptr),
 	m_pEllipseAttributeWidget(nullptr),
 	m_pTextAttributeWidget(nullptr),
-    m_pMTextAttributeWidget(nullptr)
+    m_pMTextAttributeWidget(nullptr),
+	m_pPolylineAttributeWidget(nullptr)
 {
 	
 }
@@ -51,13 +52,13 @@ void CStackedWidgetManger::AddPages()
 	m_pStackedWidget->addWidget(m_pPointAttributeWidget);
 	m_pPointAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(0)->setContentsMargins(0, 0, 0, 0);
-	m_mapPages[0] = STR_POINT;
+	m_mapPages[0] = STR_POINT_LOWERCASE;
 
 	m_pLineAttributeWidget = new CLineAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
 	m_pLineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
-	m_mapPages[1] = STR_LINE;
+	m_mapPages[1] = STR_LINE_LOWERCASE;
 
     m_pCircleAttributeWidget = new CCircleAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pCircleAttributeWidget);
@@ -75,7 +76,7 @@ void CStackedWidgetManger::AddPages()
 	m_pStackedWidget->addWidget(m_pLWPolylineAttributeWidget);
 	m_pLWPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
-    m_mapPages[4] = STR_POLYLINE_LOWERCASE;
+    m_mapPages[4] = STR_LWPOLYLINE_LOWERCASE;
 
 	m_pEllipseAttributeWidget = new CEllipseAttritubeWidget(m_pStackedWidget);
     m_pStackedWidget->addWidget(m_pEllipseAttributeWidget);
@@ -95,6 +96,11 @@ void CStackedWidgetManger::AddPages()
     m_pStackedWidget->widget(7)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[7] = STR_MTEXT_LOWERCASE;
 
+	m_pPolylineAttributeWidget = new CPolylineAttributeWidget(m_pStackedWidget);
+	m_pStackedWidget->addWidget(m_pPolylineAttributeWidget);
+    m_pPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_pStackedWidget->widget(8)->setContentsMargins(0, 0, 0, 0);
+    m_mapPages[8] = STR_POLYLINE_LOWERCASE;
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -133,6 +139,10 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
 			}
+			if (m_pStackedWidget && m_pPolylineAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+			}
 	});
 }
 
@@ -166,6 +176,9 @@ void CStackedWidgetManger::ChangeWidgets()
 		break;
 	case EntityType::MText:
         nIndex = 7;
+		break;
+	case EntityType::Polyline:
+        nIndex = 8;
 		break;
 	default:
 		break;

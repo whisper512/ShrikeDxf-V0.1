@@ -82,6 +82,9 @@
     <ClInclude Include="MTextAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </ClInclude>
+    <ClInclude Include="PolylineAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
@@ -222,6 +225,9 @@
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="MTextAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="PolylineAttritubeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
   </ItemGroup>
