@@ -111,6 +111,7 @@
     <QtUic Include="LineAttribute.ui" />
     <QtUic Include="MoveBtnsWidget.ui" />
     <QtUic Include="MTextAttritubeWidget.ui" />
+    <QtUic Include="PloylineAttributeWidget.ui" />
     <QtUic Include="PointAttribute.ui" />
     <QtUic Include="LWPolylineAttributeWidget.ui" />
     <QtUic Include="ShrikeDxf.ui" />
@@ -133,7 +134,7 @@
     <QtMoc Include="DxfTreeviewModel.h" />
     <QtMoc Include="GraphicsView.h" />
     <QtMoc Include="PointAttribute.h" />
-    <QtMoc Include="PolylineAttributeWidget.h" />
+    <QtMoc Include="LWPolylineAttributeWidget.h" />
     <QtMoc Include="MoveBtnsWidget.h" />
     <QtMoc Include="Ruler.h" />
     <QtMoc Include="EllipseAttritube.h" />
@@ -167,7 +168,7 @@
     <ClCompile Include="MoveBtnsWidget.cpp" />
     <ClCompile Include="MTextAttritubeWidget.cpp" />
     <ClCompile Include="PointAttribute.cpp" />
-    <ClCompile Include="PolylineAttributeWidget.cpp" />
+    <ClCompile Include="LWPolylineAttributeWidget.cpp" />
     <ClCompile Include="Ruler.cpp" />
     <ClCompile Include="TextAttritubeWidget.cpp" />
     <ClCompile Include="TopMenu.cpp" />

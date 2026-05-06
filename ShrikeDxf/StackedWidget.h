@@ -7,7 +7,7 @@
 #include "LineAttribute.h"
 #include "CircleAttributeWidget.h"
 #include "ArcAttritubeWidget.h"
-#include "PolylineAttributeWidget.h"
+#include "LWPolylineAttributeWidget.h"
 #include "EllipseAttritube.h"
 #include "TextAttritubeWidget.h"
 #include "MTextAttritubeWidget.h"

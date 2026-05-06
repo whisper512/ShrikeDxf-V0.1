@@ -1,4 +1,4 @@
-﻿#include "PolylineAttributeWidget.h"
+﻿#include "LWPolylineAttributeWidget.h"
 
 CLWPolylineAttributeWidget::CLWPolylineAttributeWidget(QWidget* parent)
 	: QWidget(parent),

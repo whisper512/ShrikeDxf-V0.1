@@ -120,7 +120,7 @@
     <QtMoc Include="ArcAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
-    <QtMoc Include="PolylineAttributeWidget.h">
+    <QtMoc Include="LWPolylineAttributeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="MoveBtnsWidget.h">
@@ -194,7 +194,7 @@
     <ClCompile Include="ArcAttritubeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
-    <ClCompile Include="PolylineAttributeWidget.cpp">
+    <ClCompile Include="LWPolylineAttributeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="MoveBtnsWidget.cpp">
@@ -254,6 +254,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MTextAttritubeWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="PloylineAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
