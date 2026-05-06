@@ -1,7 +1,7 @@
 #pragma once
 #include <QWidget>
 
-#include "ui_PolylineAttributeWidget.h"
+#include "ui_PloylineAttributeWidget.h"
 #include "DxfStruct.h"
 
 class CPolylineAttributeWidget : public QWidget
@@ -11,7 +11,7 @@ public:
     ~CPolylineAttributeWidget();
 
 private:
-	Ui::CPolylineAttributeWidgetClass ui;
+	Ui::PolylineAttritubeWidget ui;
 	EntityPolyline m_polyline;
 
 	void RefreshTable();

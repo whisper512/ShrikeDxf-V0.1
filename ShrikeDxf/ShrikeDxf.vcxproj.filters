@@ -85,6 +85,9 @@
     <ClInclude Include="PolylineAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </ClInclude>
+    <ClInclude Include="SplineAttributeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
@@ -230,6 +233,9 @@
     <ClCompile Include="PolylineAttritubeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
+    <ClCompile Include="SplineAttributeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PointAttribute.ui">
@@ -263,6 +269,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="PloylineAttributeWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SplineAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
