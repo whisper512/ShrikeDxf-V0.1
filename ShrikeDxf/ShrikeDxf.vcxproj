@@ -112,7 +112,7 @@
     <QtUic Include="MoveBtnsWidget.ui" />
     <QtUic Include="MTextAttritubeWidget.ui" />
     <QtUic Include="PointAttribute.ui" />
-    <QtUic Include="PolylineAttributeWidget.ui" />
+    <QtUic Include="LWPolylineAttributeWidget.ui" />
     <QtUic Include="ShrikeDxf.ui" />
     <QtUic Include="TextAttritubeWidget.ui" />
   </ItemGroup>

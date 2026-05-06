@@ -41,10 +41,7 @@ public:
     //graphics鼠标当前状态
 	enumMouseStateInView m_MouseState = enumMouseStateInView_None;
 
-	
 
-	
-	
 
 private:
 	void DrawPoint(const EntityPoint& point);

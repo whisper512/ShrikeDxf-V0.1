@@ -238,7 +238,7 @@
     <QtUic Include="ArcAttritubeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="PolylineAttributeWidget.ui">
+    <QtUic Include="LWPolylineAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="MoveBtnsWidget.ui">
