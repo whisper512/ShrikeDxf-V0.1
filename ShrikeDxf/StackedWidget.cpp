@@ -16,8 +16,7 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pEllipseAttributeWidget(nullptr),
 	m_pTextAttributeWidget(nullptr),
     m_pMTextAttributeWidget(nullptr),
-	m_pPolylineAttributeWidget(nullptr),
-	m_pSplineAttributeWidget(nullptr)
+	m_pPolylineAttributeWidget(nullptr)
 {
 	
 }
@@ -103,11 +102,7 @@ void CStackedWidgetManger::AddPages()
     m_pStackedWidget->widget(8)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[8] = STR_POLYLINE_LOWERCASE;
 
-    m_pSplineAttributeWidget = new CSplineAttributeWidget(m_pStackedWidget);
-    m_pStackedWidget->addWidget(m_pSplineAttributeWidget);
-	m_pSplineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(9)->setContentsMargins(0, 0, 0, 0);
-    m_mapPages[9] = STR_SPLINE_LOWERCASE;
+
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -150,10 +145,7 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
 				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
 			}
-			if (m_pStackedWidget && m_pSplineAttributeWidget)
-			{
-                connect(this, &CStackedWidgetManger::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handledSplineAttritube);
-			}
+			
 	});
 }
 

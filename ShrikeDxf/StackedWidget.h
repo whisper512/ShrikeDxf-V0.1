@@ -12,7 +12,6 @@
 #include "TextAttritubeWidget.h"
 #include "MTextAttritubeWidget.h"
 #include "PolylineAttritubeWidget.h"
-#include "SplineAttributeWidget.h"
 
 #include "DxfStruct.h"
 
@@ -43,7 +42,6 @@ public:
 	CTextAttritubeWidget* m_pTextAttributeWidget;
 	CMTextAttritubeWidget* m_pMTextAttributeWidget;
 	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
-	CSplineAttributeWidget* m_pSplineAttributeWidget;
 
 	EntityType m_entityType = EntityType::None;
 
