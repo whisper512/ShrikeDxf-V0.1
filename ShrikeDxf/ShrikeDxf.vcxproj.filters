@@ -141,6 +141,9 @@
     <QtMoc Include="TextAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
+    <QtMoc Include="SplineAttributeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManager.cpp">
@@ -228,6 +231,9 @@
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="PolylineAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="SplineAttributeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
   </ItemGroup>

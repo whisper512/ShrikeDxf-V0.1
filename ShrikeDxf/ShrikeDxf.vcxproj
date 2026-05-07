@@ -143,6 +143,7 @@
     <QtMoc Include="TextAttritubeWidget.h" />
     <ClInclude Include="MTextAttritubeWidget.h" />
     <ClInclude Include="PolylineAttritubeWidget.h" />
+    <QtMoc Include="SplineAttributeWidget.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="LWPolylineAttributeWidget.cpp" />
     <ClCompile Include="PolylineAttritubeWidget.cpp" />
     <ClCompile Include="Ruler.cpp" />
+    <ClCompile Include="SplineAttributeWidget.cpp" />
     <ClCompile Include="TextAttritubeWidget.cpp" />
     <ClCompile Include="TopMenu.cpp" />
     <ClCompile Include="ShrikeDxf.cpp" />
