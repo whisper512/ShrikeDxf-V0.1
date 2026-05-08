@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <map>
 
-#include "Entity.h"
+#include "../EntitiesLib/Entity.h"
 #include "DxfData.h"
 #include "libdxfrw.h"
 

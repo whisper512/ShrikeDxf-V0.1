@@ -9,8 +9,8 @@
 #include <map>
 #include <variant>
 
-#include "Entity.h"
-
+//#include "Entity.h"
+#include "../EntitiesLib/Entity.h"
 
 // DXF 颜色索引映射
 class DxfColorMap

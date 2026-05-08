@@ -39,6 +39,9 @@
     <Filter Include="Source Files\WeightView">
       <UniqueIdentifier>{945372ab-f294-404f-9005-8fd91583feb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EntitiesLib">
+      <UniqueIdentifier>{725a9d6d-f176-4d0e-8f65-0e69c5eda564}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc">
@@ -84,6 +87,51 @@
     </ClInclude>
     <ClInclude Include="PolylineAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\EntityBase.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Point.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Line.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Circle.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Arc.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Ellipse.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\LWPolyline.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Polyline.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Spline.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Text.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\MText.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Insert.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Soild.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Hatch.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Entity.h">
+      <Filter>EntitiesLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
