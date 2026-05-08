@@ -4,12 +4,11 @@
 
 #include "DxfReader.h"
 #include "DxfData.h"
-
 #include "DxfTreeviewModel.h"
 #include "DxfGraphicsScene.h"
 #include "DxfLayerTableviewModel.h"
+#include "DxfEditor.h"
 #include "DxfStruct.h"
-
 
 
 //dxf管理类
@@ -27,7 +26,7 @@ public:
     CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	CDxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
 
-	//获取选中图元
+	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
 
 public:
@@ -36,7 +35,7 @@ public:
 	bool NewDxfFile();
 	bool CloseDxfFile();
 private:
-	//mainwindow指针
+	// mainwindow指针
 	QWidget* m_pMainWnd;
 	
 	// dxf数据类
@@ -44,13 +43,15 @@ private:
 	// dxf读取类
 	std::unique_ptr<CDxfReader> m_DxfReader;
 
-	//treeview的model
+	// treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;
-	//图层tableview的model
+	// 图层tableview的model
 	CDxfLayerTableviewModel m_DxfLayerTableviewModel;
-	//graphicview的model
+	// graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
-
+	// dxf编辑类
+	CDxfEditor m_DxfEditor;
+	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	
 	
@@ -76,4 +77,17 @@ signals:
  public slots:
 	 // treeview选中图元发生变化
 	 void OnTreeViewEntitySelected(const QString& strLayer, int entityIndex);
+
+	 // 图元属性发生变化
+	 void handlePointAttributeChanged(EntityPoint point);
+     void handleLineAttributeChanged(EntityLine line);
+	 void handleCircleAttributeChanged(EntityCircle circle);
+	 void handleArcAttributeChanged(EntityArc arc);
+     void handleEllipseAttributeChanged(EntityEllipse ellipse);
+     void handleSplineAttributeChanged(EntitySpline spline);
+     void handlePolylineAttributeChanged(EntityPolyline polyline);
+     void handleLwpolylineAttributeChanged(EntityLWPolyline lwpolyline);
+	 void handleTextAttributeChanged(EntityText text);
+     void handleMTextAttributeChanged(EntityMText mtext);
+     void handleHatchAttributeChanged(EntityHatch hatch);
 };

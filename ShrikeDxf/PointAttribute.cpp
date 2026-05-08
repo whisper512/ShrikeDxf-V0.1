@@ -21,9 +21,9 @@ CPointAttributeWidget::~CPointAttributeWidget()
 
 void CPointAttributeWidget::OnSpinBoxChanged()
 {
- //   m_point.setX(ui.doubleSpinBox_X->value());
- //   m_point.setY(ui.doubleSpinBox_Y->value());
-	//emit signalPointAttributeChanged(m_point);
+	m_EntityPoint.point.setX(ui.doubleSpinBox_X->value());
+    m_EntityPoint.point.setY(ui.doubleSpinBox_Y->value());
+	emit signalPointAttributeChanged(m_EntityPoint);
 }
 
 void CPointAttributeWidget::handleNoticePointAttribute(EntityPoint point)

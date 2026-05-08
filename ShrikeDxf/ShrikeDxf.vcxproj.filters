@@ -73,9 +73,6 @@
     <ClInclude Include="DxfData.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="DxfEditor.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
     <ClInclude Include="DxfReader.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
@@ -194,6 +191,9 @@
     </QtMoc>
     <QtMoc Include="HatchAttributeWidget.h">
       <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="DxfEditor.h">
+      <Filter>Header Files\Dxf</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

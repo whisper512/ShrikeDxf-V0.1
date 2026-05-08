@@ -11,6 +11,8 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
 {
     m_DxfData = std::make_unique<CDxfData>();
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
+
+    m_DxfEditor.m_DxfData = GetDxfData();
 }
 
 CDxfManager::~CDxfManager()
@@ -43,6 +45,7 @@ bool CDxfManager::LoadDxfFile(const QString& strPath)
     // 更新文件路径
     emit signalFileName(strPath);
 
+    
     return true;
 }
 
@@ -87,4 +90,61 @@ void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIn
     }
     // 发出信号通知关注者
     emit signalSelectedEntityChanged(m_SelectedEntity);
+}
+
+
+void CDxfManager::handlePointAttributeChanged(EntityPoint point)
+{
+    m_DxfEditor.editPoint(&m_SelectedEntity, point);
+    m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
+    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
+}
+
+void CDxfManager::handleLineAttributeChanged(EntityLine line)
+{
+
+}
+
+void CDxfManager::handleCircleAttributeChanged(EntityCircle circle)
+{
+
+}
+
+void CDxfManager::handleArcAttributeChanged(EntityArc arc)
+{
+
+}
+
+void CDxfManager::handleEllipseAttributeChanged(EntityEllipse ellipse)
+{
+
+}
+
+void CDxfManager::handleSplineAttributeChanged(EntitySpline spline)
+{
+
+}
+
+void CDxfManager::handlePolylineAttributeChanged(EntityPolyline polyline)
+{
+
+}
+
+void CDxfManager::handleLwpolylineAttributeChanged(EntityLWPolyline lwpolyline)
+{
+
+}
+void CDxfManager::handleTextAttributeChanged(EntityText text)
+{
+
+}
+
+void CDxfManager::handleMTextAttributeChanged(EntityMText mtext)
+{
+
+}
+
+void CDxfManager::handleHatchAttributeChanged(EntityHatch hatch)
+{
+
 }

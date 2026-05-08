@@ -54,7 +54,7 @@ public:
 
 
 signals:
-	// 统治对应图元界面修改属性
+	// 通知对应图元界面修改属性
 	void signalPointAttribute(EntityPoint point);
 	void signalLineAttribute(EntityLine line);
 	void signalCircleAttribute(EntityCircle circle);
@@ -66,9 +66,12 @@ signals:
 	void signalEllipseAttribute(EntityEllipse ellipse);
 	void signalSplineAttribute(EntitySpline spline);
 	void signalHatchAttribute(EntityHatch hatch);
+
+	// 图元数据发生变化
+	void signalPointChanged(EntityPoint point);
+
 public slots:
 
 	void handleRefreshStackedWidget(const stuSelectedEntity& entity);
-
 
 };

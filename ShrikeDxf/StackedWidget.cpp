@@ -124,6 +124,7 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pPointAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalPointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
+				connect(m_pPointAttributeWidget, &CPointAttributeWidget::signalPointAttributeChanged, this, &CStackedWidgetManger::signalPointChanged);
 			}
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
