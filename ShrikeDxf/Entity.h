@@ -20,6 +20,7 @@
 #define STR_MTEXT "MTEXT"
 #define STR_ELLIPSE "ELLIPSE"
 #define STR_SPLINE "SPLINE"
+#define STR_HATCH "HATCH"
 
 #define STR_POINT_LOWERCASE "point"
 #define STR_LINE_LOWERCASE "line"
@@ -31,6 +32,7 @@
 #define STR_MTEXT_LOWERCASE "mtext"
 #define STR_ELLIPSE_LOWERCASE "ellipse"
 #define STR_SPLINE_LOWERCASE "spline"
+#define STR_HATCH_LOWERCASE "hatch"
 
 
 struct Vertex3D
@@ -319,8 +321,8 @@ struct EntityHatch
     double      scale = 1.0;            // 图案缩放 (code 41)
 
     // 边界路径
-    int                  loopCount = 0;  // (code 91)
-    std::vector<HatchLoop> loops;        // 所有边界环
+    int   loopCount = 0;                // (code 91)
+    std::vector<HatchLoop> loops;       // 所有边界环
 };
 
 

@@ -13,6 +13,7 @@
 #include "MTextAttritubeWidget.h"
 #include "PolylineAttritubeWidget.h"
 #include "SplineAttributeWidget.h"
+#include "HatchAttributeWidget.h"
 
 #include "DxfStruct.h"
 
@@ -44,7 +45,7 @@ public:
 	CMTextAttritubeWidget* m_pMTextAttributeWidget;
 	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
 	CSplineAttributeWidget* m_pSplineAttributeWidget;
-
+	CHatchAttributeWidget* m_pHatchAttributeWidget;
 
 	EntityType m_entityType = EntityType::None;
 
@@ -64,6 +65,7 @@ signals:
 	void signalMTextAttribute(EntityMText mtext);
 	void signalEllipseAttribute(EntityEllipse ellipse);
 	void signalSplineAttribute(EntitySpline spline);
+	void signalHatchAttribute(EntityHatch hatch);
 public slots:
 
 	void handleRefreshStackedWidget(const stuSelectedEntity& entity);

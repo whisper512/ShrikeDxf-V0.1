@@ -17,7 +17,8 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	m_pTextAttributeWidget(nullptr),
 	m_pMTextAttributeWidget(nullptr),
 	m_pPolylineAttributeWidget(nullptr),
-	m_pSplineAttributeWidget(nullptr)
+	m_pSplineAttributeWidget(nullptr),
+    m_pHatchAttributeWidget(nullptr)
 {
 	
 }
@@ -108,6 +109,12 @@ void CStackedWidgetManger::AddPages()
 	m_pSplineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_pStackedWidget->widget(9)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[9] = STR_SPLINE_LOWERCASE;
+
+	m_pHatchAttributeWidget = new CHatchAttributeWidget(m_pStackedWidget);
+    m_pStackedWidget->addWidget(m_pHatchAttributeWidget);
+    m_pHatchAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_pStackedWidget->widget(10)->setContentsMargins(0, 0, 0, 0);
+    m_mapPages[10] = STR_HATCH_LOWERCASE;
 }
 
 void CStackedWidgetManger::ConnectSignalAndSlot()
@@ -154,6 +161,10 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			{
                 connect(this, &CStackedWidgetManger::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handleNoticeSplineAttribute);
 			}
+			if (m_pStackedWidget && m_pHatchAttributeWidget)
+			{
+				connect(this, &CStackedWidgetManger::signalHatchAttribute, m_pHatchAttributeWidget, &CHatchAttributeWidget::handleNoticeHatchAtttribute);
+			}
 			
 	});
 }
@@ -194,6 +205,9 @@ void CStackedWidgetManger::ChangeWidgets()
 		break;
 	case EntityType::Spline:
         nIndex = 9;
+        break;
+	case EntityType::Hatch:
+        nIndex = 10;
         break;
 	default:
 		break;
@@ -273,6 +287,12 @@ void CStackedWidgetManger::handleRefreshStackedWidget(const stuSelectedEntity& S
 	{
 		const EntitySpline* pSpline = std::get_if<EntitySpline>(&SelectedEntity.entity);
 		if (pSpline) emit signalSplineAttribute(*pSpline);
+        break;
+	}
+	case EntityType::Hatch:
+	{
+		const EntityHatch* pHatch = std::get_if<EntityHatch>(&SelectedEntity.entity);
+        if (pHatch) emit signalHatchAttribute(*pHatch);
         break;
 	}
 
