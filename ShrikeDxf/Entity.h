@@ -321,8 +321,8 @@ struct EntityHatch
     double      scale = 1.0;            // 图案缩放 (code 41)
 
     // 边界路径
-    int   loopCount = 0;                // (code 91)
-    std::vector<HatchLoop> loops;       // 所有边界环
+    int                  loopCount = 0;  // (code 91)
+    std::vector<HatchLoop> loops;        // 所有边界环
 };
 
 
