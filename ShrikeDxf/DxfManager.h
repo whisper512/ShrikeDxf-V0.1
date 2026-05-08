@@ -63,15 +63,15 @@ signals:
 	// 通知树状图刷新
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	void signalRefreshTreeviewAfterRead();
-
 	// 通知图层graphics刷新
 	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
-
 	// 选中图元发生变化
 	void signalSelectedEntityChanged(const stuSelectedEntity& entity);
-
 	// 更新dxf文件路径
 	void signalFileName(const QString& filePath);
+	// 更新图层属性
+	void signalRefreshLayerTable(CDxfLayerTableviewModel* pModel);
+
 
  public slots:
 	 // treeview选中图元发生变化

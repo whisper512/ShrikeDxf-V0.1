@@ -37,8 +37,9 @@ bool CDxfManager::LoadDxfFile(const QString& strPath)
     // 更新graphicsview
     m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
-
-
+    // 更新图层tableview
+    m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfData->GetLayers());
+    emit signalRefreshLayerTable(&m_DxfLayerTableviewModel);
     // 更新文件路径
     emit signalFileName(strPath);
 

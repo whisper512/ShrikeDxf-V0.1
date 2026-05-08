@@ -60,7 +60,6 @@ double CDxfData::GetLtScale() const
     return m_document.ltscale;
 }
 
-
 // Layer 图层管理
 void  CDxfData::AddLayer(const stuLayer& layer)
 {
