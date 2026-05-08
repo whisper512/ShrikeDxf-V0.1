@@ -71,9 +71,9 @@ public:
 
 
     // 查询/遍历
-    int  GetTotalEntityCount() const;
-    int  GetEntityCount(EntityType type) const;
-    int  GetEntityCount(const std::string& layerName, EntityType type) const;
+    int GetTotalEntityCount() const;
+    int GetEntityCount(EntityType type) const;
+    int GetEntityCount(const std::string& layerName, EntityType type) const;
     // 按类型过滤
     std::vector<variantDxfEntity> GetEntitiesByType(EntityType type) const;
     // 按图层过滤
