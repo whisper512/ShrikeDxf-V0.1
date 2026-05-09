@@ -6,16 +6,22 @@
 
 class CMTextAttritubeWidget : public QWidget
 {
+    Q_OBJECT
+
 public:
-	CMTextAttritubeWidget(QWidget *parent = nullptr);
+    CMTextAttritubeWidget(QWidget* parent = nullptr);
     ~CMTextAttritubeWidget();
 
 private:
-	Ui::MTextAttritubeWidget ui;
+    Ui::MTextAttritubeWidget ui;
+    EntityMText m_Mtext;
+    bool m_bUpdating = false;
 
-	EntityMText m_Mtext;
+    void OnValueChanged();
+
+signals:
+    void signalMTextAttributeChanged(EntityMText Mtext);
 
 public slots:
-	void handleNoticeMTextAttribute(EntityMText Mtext);
+    void handleNoticeMTextAttribute(EntityMText Mtext);
 };
-

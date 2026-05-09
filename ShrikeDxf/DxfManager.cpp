@@ -125,7 +125,8 @@ void CDxfManager::handleEllipseAttributeChanged(EntityEllipse ellipse)
 
 void CDxfManager::handleSplineAttributeChanged(EntitySpline spline)
 {
-
+    m_DxfEditor.editSpline(&m_SelectedEntity, spline);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handlePolylineAttributeChanged(EntityPolyline polyline)
@@ -141,15 +142,18 @@ void CDxfManager::handleLwpolylineAttributeChanged(EntityLWPolyline lwpolyline)
 }
 void CDxfManager::handleTextAttributeChanged(EntityText text)
 {
-
+    m_DxfEditor.editText(&m_SelectedEntity, text);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleMTextAttributeChanged(EntityMText mtext)
 {
-
+    m_DxfEditor.editMText(&m_SelectedEntity, mtext);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleHatchAttributeChanged(EntityHatch hatch)
 {
-
+    m_DxfEditor.editHatch(&m_SelectedEntity, hatch);
+    RefreshSceneCalRect();
 }

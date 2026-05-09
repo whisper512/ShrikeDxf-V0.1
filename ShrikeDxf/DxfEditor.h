@@ -19,10 +19,12 @@ public:
     void editArc(stuSelectedEntity* selectedEntity, EntityArc arc);
     void editCircle(stuSelectedEntity* selectedEntity, EntityCircle circle);
     void editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse ellipse);
+    void editText(stuSelectedEntity* selectedEntity, EntityText text);
+    void editMText(stuSelectedEntity* selectedEntity, EntityMText mtext);
     void editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline polyline);
     void editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyline lwpolyline);
     void editSpline(stuSelectedEntity* selectedEntity, EntitySpline spline);
-
+    void editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch);
 
 private:
     

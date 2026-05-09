@@ -6,17 +6,22 @@
 
 class CHatchAttributeWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
+
 public:
-	CHatchAttributeWidget(QWidget *parent = nullptr);
+    CHatchAttributeWidget(QWidget* parent = nullptr);
     ~CHatchAttributeWidget();
 
 private:
-	Ui::HatchAttributeWidget ui;
+    Ui::HatchAttributeWidget ui;
     EntityHatch m_hatch;
+    bool m_bUpdating = false;
+
+    void OnValueChanged();
+
+signals:
+    void signalHatchAtttributeChanged(EntityHatch hatch);
 
 public slots:
-	void handleNoticeHatchAtttribute(EntityHatch hatch);
-
+    void handleNoticeHatchAtttribute(EntityHatch hatch);
 };
-

@@ -1,57 +1,73 @@
 #include "TextAttritubeWidget.h"
 
 CTextAttritubeWidget::CTextAttritubeWidget(QWidget* parent)
-	: QWidget(parent)
+    : QWidget(parent)
 {
     ui.setupUi(this);
+
+    // DoubleSpinBox
+    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_alignPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_alignPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_ObliqueAngle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+
+    // SpinBox
+    connect(ui.spinBox_TextGen, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.spinBox_alignH, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.spinBox_alignV, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+
+    // LineEdit
+    connect(ui.lineEdit_Text, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
 }
 
 CTextAttritubeWidget::~CTextAttritubeWidget()
 {
 }
 
+void CTextAttritubeWidget::OnValueChanged()
+{
+    if (m_bUpdating) return;
+
+    m_text.insertPoint.setX(ui.doubleSpinBox_InsertPtX->value());
+    m_text.insertPoint.setY(ui.doubleSpinBox_InsertPtY->value());
+    m_text.alignPoint.setX(ui.doubleSpinBox_alignPtX->value());
+    m_text.alignPoint.setY(ui.doubleSpinBox_alignPtY->value());
+    m_text.rotation = ui.doubleSpinBox_Angle->value();
+    m_text.height = ui.doubleSpinBox_Height->value();
+    m_text.widthFactor = ui.doubleSpinBox_WidthFactor->value();
+    m_text.obliqueAngle = ui.doubleSpinBox_ObliqueAngle->value();
+    m_text.textGen = ui.spinBox_TextGen->value();
+    m_text.alignH = ui.spinBox_alignH->value();
+    m_text.alignV = ui.spinBox_alignV->value();
+    m_text.text = ui.lineEdit_Text->text().toStdString();
+    m_text.style = ui.lineEdit_Style->text().toStdString();
+
+    emit signalTextAttributeChanged(m_text);
+}
+
 void CTextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
 {
-	ui.doubleSpinBox_alignPtX->blockSignals(true);
-    ui.doubleSpinBox_alignPtY->blockSignals(true);
-	ui.doubleSpinBox_InsertPtX->blockSignals(true);
-    ui.doubleSpinBox_InsertPtY->blockSignals(true);
-    ui.doubleSpinBox_Angle->blockSignals(true);
-    ui.doubleSpinBox_Height->blockSignals(true);
-    ui.doubleSpinBox_WidthFactor->blockSignals(true);
-    ui.doubleSpinBox_ObliqueAngle->blockSignals(true);
-    ui.spinBox_TextGen->blockSignals(true);
-    ui.spinBox_alignH->blockSignals(true);
-    ui.spinBox_alignV->blockSignals(true);
-    ui.lineEdit_Text->blockSignals(true);
-    ui.lineEdit_Style->blockSignals(true);
+    m_bUpdating = true;
 
-	m_text = text;
-	ui.doubleSpinBox_InsertPtX->setValue(m_text.insertPoint.x());
-    ui.doubleSpinBox_InsertPtY->setValue(m_text.insertPoint.y());
-	ui.doubleSpinBox_alignPtX->setValue(m_text.alignPoint.x());
-	ui.doubleSpinBox_alignPtY->setValue(m_text.alignPoint.y());
-	ui.doubleSpinBox_Angle->setValue(m_text.rotation);
-	ui.doubleSpinBox_Height->setValue(m_text.height);
-	ui.doubleSpinBox_WidthFactor->setValue(m_text.widthFactor);
-	ui.doubleSpinBox_ObliqueAngle->setValue(m_text.obliqueAngle);
-	ui.spinBox_TextGen->setValue(m_text.textGen);
-	ui.spinBox_alignH->setValue(m_text.alignH);
-	ui.spinBox_alignV->setValue(m_text.alignV);
-	ui.lineEdit_Text->setText(QString::fromStdString(m_text.text));
-	ui.lineEdit_Style->setText(QString::fromStdString(m_text.style));
+    m_text = text;
+    ui.doubleSpinBox_InsertPtX->setValue(text.insertPoint.x());
+    ui.doubleSpinBox_InsertPtY->setValue(text.insertPoint.y());
+    ui.doubleSpinBox_alignPtX->setValue(text.alignPoint.x());
+    ui.doubleSpinBox_alignPtY->setValue(text.alignPoint.y());
+    ui.doubleSpinBox_Angle->setValue(text.rotation);
+    ui.doubleSpinBox_Height->setValue(text.height);
+    ui.doubleSpinBox_WidthFactor->setValue(text.widthFactor);
+    ui.doubleSpinBox_ObliqueAngle->setValue(text.obliqueAngle);
+    ui.spinBox_TextGen->setValue(text.textGen);
+    ui.spinBox_alignH->setValue(text.alignH);
+    ui.spinBox_alignV->setValue(text.alignV);
+    ui.lineEdit_Text->setText(QString::fromStdString(text.text));
+    ui.lineEdit_Style->setText(QString::fromStdString(text.style));
 
-    ui.doubleSpinBox_alignPtX->blockSignals(false);
-    ui.doubleSpinBox_alignPtY->blockSignals(false);
-    ui.doubleSpinBox_InsertPtX->blockSignals(false);
-    ui.doubleSpinBox_InsertPtY->blockSignals(false);
-    ui.doubleSpinBox_Angle->blockSignals(false);
-    ui.doubleSpinBox_Height->blockSignals(false);
-    ui.doubleSpinBox_WidthFactor->blockSignals(false);
-    ui.doubleSpinBox_ObliqueAngle->blockSignals(false);
-    ui.spinBox_TextGen->blockSignals(false);
-    ui.spinBox_alignH->blockSignals(false);
-    ui.spinBox_alignV->blockSignals(false);
-    ui.lineEdit_Text->blockSignals(false);
-    ui.lineEdit_Style->blockSignals(false);
+    m_bUpdating = false;
 }

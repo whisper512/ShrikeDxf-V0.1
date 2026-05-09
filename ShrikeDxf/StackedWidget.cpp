@@ -155,10 +155,12 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pTextAttributeWidget)
 			{
 				connect(this , &CStackedWidgetManger::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
+                connect(m_pTextAttributeWidget, &CTextAttritubeWidget::signalTextAttributeChanged, this, &CStackedWidgetManger::signalTextChanged);
 			} // 多行文本
 			if (m_pStackedWidget && m_pMTextAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
+                connect(m_pMTextAttributeWidget, &CMTextAttritubeWidget::signalMTextAttributeChanged, this, &CStackedWidgetManger::signalMTextChanged);
 			} // 多段线
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{
@@ -173,6 +175,7 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pHatchAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalHatchAttribute, m_pHatchAttributeWidget, &CHatchAttributeWidget::handleNoticeHatchAtttribute);
+				connect(m_pHatchAttributeWidget, &CHatchAttributeWidget::signalHatchAtttributeChanged, this, &CStackedWidgetManger::signalHatchChanged);
 			}
 			
 	});

@@ -79,9 +79,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="MTextAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </ClInclude>
     <ClInclude Include="..\EntitiesLib\EntityBase.h">
       <Filter>EntitiesLib</Filter>
     </ClInclude>
@@ -193,6 +190,9 @@
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="PolylineAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="MTextAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>

@@ -130,6 +130,54 @@ void CDxfEditor::editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse el
     selectedEntity->entity = selectedEllipse;
 }
 
+void CDxfEditor::editText(stuSelectedEntity* selectedEntity, EntityText text)
+{
+    if (!selectedEntity || !m_DxfData)
+        return;
+
+    if (selectedEntity->type != EntityType::Text)
+        return;
+
+    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    if (!pLayer)
+        return;
+
+    if (selectedEntity->entityIndex < 0 || selectedEntity->entityIndex >= static_cast<int>(pLayer->entities.size()))
+        return;
+
+    auto& entity = pLayer->entities[selectedEntity->entityIndex];
+    if (!std::holds_alternative<EntityText>(entity))
+        return;
+
+    auto& selectedText = std::get<EntityText>(entity);
+    selectedText = text;
+    selectedEntity->entity = selectedText;
+}
+
+void CDxfEditor::editMText(stuSelectedEntity* selectedEntity, EntityMText mtext)
+{
+    if (!selectedEntity || !m_DxfData)
+        return;
+
+    if (selectedEntity->type != EntityType::MText)
+        return;
+
+    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    if (!pLayer)
+        return;
+
+    if (selectedEntity->entityIndex < 0 || selectedEntity->entityIndex >= static_cast<int>(pLayer->entities.size()))
+        return;
+
+    auto& entity = pLayer->entities[selectedEntity->entityIndex];
+    if (!std::holds_alternative<EntityMText>(entity))
+        return;
+
+    auto& selectedMText = std::get<EntityMText>(entity);
+    selectedMText = mtext;
+    selectedEntity->entity = selectedMText;
+}
+
 void CDxfEditor::editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline polyline)
 {
     if (!selectedEntity || !m_DxfData)
@@ -176,4 +224,12 @@ void CDxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyl
     auto& selectedLWPolyline = std::get<EntityLWPolyline>(entity);
     selectedLWPolyline = lwpolyline;
     selectedEntity->entity = selectedLWPolyline;
+}
+
+void CDxfEditor::editSpline(stuSelectedEntity* selectedEntity, EntitySpline spline)
+{
+}
+
+void CDxfEditor::editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch)
+{
 }
