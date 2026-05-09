@@ -130,7 +130,8 @@ void CDxfManager::handleSplineAttributeChanged(EntitySpline spline)
 
 void CDxfManager::handlePolylineAttributeChanged(EntityPolyline polyline)
 {
-
+    m_DxfEditor.editPolyline(&m_SelectedEntity, polyline);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleLwpolylineAttributeChanged(EntityLWPolyline lwpolyline)

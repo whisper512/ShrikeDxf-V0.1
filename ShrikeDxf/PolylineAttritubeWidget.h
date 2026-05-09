@@ -6,6 +6,7 @@
 
 class CPolylineAttributeWidget : public QWidget
 {
+	Q_OBJECT
 public:
 	CPolylineAttributeWidget(QWidget* parent = nullptr);
     ~CPolylineAttributeWidget();
@@ -15,6 +16,9 @@ private:
 	EntityPolyline m_polyline;
 
 	void RefreshTable();
+
+signals:
+	void signalPolylineAttributeChanged(EntityPolyline polyline);
 
 public slots:
 	void handleNoticePolylineAttribute(EntityPolyline polyline);

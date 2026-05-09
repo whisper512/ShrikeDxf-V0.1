@@ -54,12 +54,12 @@ void CLWPolylineAttributeWidget::OnTableValueChanged()
 
 void CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute(EntityLWPolyline lwpolyline)
 {
-    m_bUpdating = true;         // ← 替代 blockSignals
+    m_bUpdating = true;
 
     m_polyline = lwpolyline;
     ui.spinBox_Vertices->setValue(m_polyline.numVertices());
     ui.spinBox_Linenum->setValue(m_polyline.numVertices() - 1);
     RefreshTable();
 
-    m_bUpdating = false;        // ← 完成
+    m_bUpdating = false;
 }

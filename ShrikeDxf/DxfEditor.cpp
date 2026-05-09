@@ -130,6 +130,30 @@ void CDxfEditor::editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse el
     selectedEntity->entity = selectedEllipse;
 }
 
+void CDxfEditor::editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline polyline)
+{
+    if (!selectedEntity || !m_DxfData)
+        return;
+
+    if (selectedEntity->type != EntityType::Polyline)
+        return;
+
+    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    if (!pLayer)
+        return;
+
+    if (selectedEntity->entityIndex < 0 || selectedEntity->entityIndex >= static_cast<int>(pLayer->entities.size()))
+        return;
+
+    auto& entity = pLayer->entities[selectedEntity->entityIndex];
+    if (!std::holds_alternative<EntityPolyline>(entity))
+        return;
+
+    auto& selectedPolyline = std::get<EntityPolyline>(entity);
+    selectedPolyline = polyline;
+    selectedEntity->entity = selectedPolyline;
+}
+
 void CDxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyline lwpolyline)
 {
     if (!selectedEntity || !m_DxfData)

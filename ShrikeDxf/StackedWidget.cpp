@@ -163,6 +163,8 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+				connect(m_pPolylineAttributeWidget, &CPolylineAttributeWidget::signalPolylineAttributeChanged, this, &CStackedWidgetManger::signalPolylineChanged);
+
 			} // 样条曲线
 			if (m_pStackedWidget && m_pSplineAttributeWidget)
 			{
