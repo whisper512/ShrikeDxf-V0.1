@@ -1,38 +1,29 @@
 ﻿#pragma once
 
 #include <QWidget>
-
 #include "ui_LineAttribute.h"
 #include "DxfStruct.h"
 
-
-
 class CLineAttributeWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CLineAttributeWidget(QWidget *parent = nullptr);
-	~CLineAttributeWidget();
+    CLineAttributeWidget(QWidget* parent = nullptr);
+    ~CLineAttributeWidget();
 
 private:
-	Ui::CLineAttribute ui;
-	
-	EntityLine m_line;
+    Ui::CLineAttribute ui;
+    EntityLine m_line;
+    bool m_bUpdating = false;
 
-	void OnSpinBoxStartChanged();
-    void OnSpinBoxEndChanged();
-	void OnAngleSpinBoxChanged();
-	void OnLengthSpinBoxChanged();
-	void RefreshData();
-	void LockOrReleaseStartSpainBoxSignal(bool lock);
-    void LockOrReleaseEndSpainBoxSignal(bool lock);
-
+    void onAnySpinChanged();
 
 signals:
-		void signalLineAttributeChanged(EntityLine line);
+    // 通知线属性改变
+    void signalLineAttributeChanged(EntityLine line);
 
 public slots:
-	void handleNoticeLineAttribute(EntityLine line);
-
+    // 设置线属性
+    void handleNoticeLineAttribute(EntityLine line);
 };

@@ -1,148 +1,76 @@
 ﻿#include "LineAttribute.h"
 
 CLineAttributeWidget::CLineAttributeWidget(QWidget* parent)
-	: QWidget(parent),
-    m_line()
+    : QWidget(parent), m_line()
 {
-	ui.setupUi(this);
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui.setupUi(this);
 
-	//connect(ui.doubleSpinBox_StartX, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnSpinBoxStartChanged);
- //   connect(ui.doubleSpinBox_StartX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnSpinBoxStartChanged);
-	//connect(ui.doubleSpinBox_StartY, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnSpinBoxStartChanged);
-	//connect(ui.doubleSpinBox_StartY, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnSpinBoxStartChanged);
-	//connect(ui.doubleSpinBox_EndX, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnSpinBoxEndChanged);
-	//connect(ui.doubleSpinBox_EndX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnSpinBoxEndChanged);
-	//connect(ui.doubleSpinBox_EndY, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnSpinBoxEndChanged);
- //   connect(ui.doubleSpinBox_EndY, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnSpinBoxEndChanged);
-	//connect(ui.doubleSpinBox_Length, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnLengthSpinBoxChanged);
-	//connect(ui.doubleSpinBox_Length, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnLengthSpinBoxChanged);
-	//connect(ui.doubleSpinBox_Angle, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &CLineAttributeWidget::OnAngleSpinBoxChanged);
-	//connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::OnAngleSpinBoxChanged);
+    connect(ui.doubleSpinBox_StartX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_StartY, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_EndX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_EndY, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_Length, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
 }
 
 CLineAttributeWidget::~CLineAttributeWidget()
 {
 }
 
-
-
-void CLineAttributeWidget::OnSpinBoxStartChanged()
+void CLineAttributeWidget::onAnySpinChanged()
 {
- //   double startX = ui.doubleSpinBox_StartX->value();
- //   double startY = ui.doubleSpinBox_StartY->value();
-	//m_line.setStartX(startX);
-	//m_line.setStartY(startY);
- //   ui.doubleSpinBox_Length->blockSignals(true);
- //   ui.doubleSpinBox_Angle->blockSignals(true);
- //   ui.doubleSpinBox_Length->setValue(m_line.Length());
- //   ui.doubleSpinBox_Angle->setValue(m_line.Angle());
- //   ui.doubleSpinBox_Length->blockSignals(false);
- //   ui.doubleSpinBox_Angle->blockSignals(false);
- //   emit signalLineAttributeChanged(m_line);
-}
+    if (m_bUpdating) return;
+    m_bUpdating = true;
 
-void CLineAttributeWidget::OnSpinBoxEndChanged()
-{
-	//double endX = ui.doubleSpinBox_EndX->value();
- //   double endY = ui.doubleSpinBox_EndY->value();
- //   m_line.setEndX(endX);
- //   m_line.setEndY(endY);
- //   ui.doubleSpinBox_Length->blockSignals(true);
- //   ui.doubleSpinBox_Angle->blockSignals(true);
- //   ui.doubleSpinBox_Length->setValue(m_line.Length());
- //   ui.doubleSpinBox_Angle->setValue(m_line.Angle());
- //   ui.doubleSpinBox_Length->blockSignals(false);
- //   ui.doubleSpinBox_Angle->blockSignals(false);
- //   emit signalLineAttributeChanged(m_line);
-}
+    double startX = ui.doubleSpinBox_StartX->value();
+    double startY = ui.doubleSpinBox_StartY->value();
+    double endX = ui.doubleSpinBox_EndX->value();
+    double endY = ui.doubleSpinBox_EndY->value();
+    double length = ui.doubleSpinBox_Length->value();
+    double angle = ui.doubleSpinBox_Angle->value();
 
-void CLineAttributeWidget::OnAngleSpinBoxChanged()
-{
-    double newAngle = ui.doubleSpinBox_Angle->value();
-    //double startX = m_line.StartX();
-    //double startY = m_line.StartY();
-    //double length = m_line.Length();
+    m_line.startPoint.setX(startX);
+    m_line.startPoint.setY(startY);
 
-    //double endX = startX + length * qCos(qDegreesToRadians(newAngle));
-    //double endY = startY + length * qSin(qDegreesToRadians(newAngle));
+    QDoubleSpinBox* sender = qobject_cast<QDoubleSpinBox*>(QObject::sender());
 
-    //m_line.setEndX(endX);
-    //m_line.setEndY(endY);
+    if (sender == ui.doubleSpinBox_Length || sender == ui.doubleSpinBox_Angle)
+    {
+        // 长度/角度变了
+        double rad = qDegreesToRadians(angle);
+        endX = startX + length * qCos(rad);
+        endY = startY + length * qSin(rad);
+        m_line.endPoint.setX(endX);
+        m_line.endPoint.setY(endY);
 
-    
-    LockOrReleaseEndSpainBoxSignal(true);
-    //ui.doubleSpinBox_EndX->setValue(endX);
-    //ui.doubleSpinBox_EndY->setValue(endY);
-    LockOrReleaseEndSpainBoxSignal(false);
+        ui.doubleSpinBox_EndX->setValue(endX);
+        ui.doubleSpinBox_EndY->setValue(endY);
+    }
+    else
+    {
+        // 起点/终点变了
+        m_line.endPoint.setX(endX);
+        m_line.endPoint.setY(endY);
 
+        ui.doubleSpinBox_Length->setValue(m_line.length());
+        ui.doubleSpinBox_Angle->setValue(m_line.angle());
+    }
+
+    m_bUpdating = false;
     emit signalLineAttributeChanged(m_line);
 }
-
-void CLineAttributeWidget::OnLengthSpinBoxChanged()
-{
-    //double newLength = ui.doubleSpinBox_Length->value();
-    //double startX = m_line.StartX();
-    //double startY = m_line.StartY();
-    //double angle = ui.doubleSpinBox_Angle->value();
-    //double endX = startX + newLength * qCos(qDegreesToRadians(angle));
-    //double endY = startY + newLength * qSin(qDegreesToRadians(angle));
-
-    //m_line.setEndX(endX);
-    //m_line.setEndY(endY);
-
-    LockOrReleaseEndSpainBoxSignal(true);
-    //ui.doubleSpinBox_EndX->setValue(endX);
-    //ui.doubleSpinBox_EndY->setValue(endY);
-    LockOrReleaseEndSpainBoxSignal(false);
-
-    emit signalLineAttributeChanged(m_line);
-}
-
-void CLineAttributeWidget::RefreshData()
-{
-    ui.doubleSpinBox_StartX->setValue(m_line.startPoint.x());
-    ui.doubleSpinBox_StartY->setValue(m_line.startPoint.y());
-    ui.doubleSpinBox_EndX->setValue(m_line.endPoint.x());
-    ui.doubleSpinBox_EndY->setValue(m_line.endPoint.y());
-    ui.doubleSpinBox_Length->setValue(m_line.length());
-    ui.doubleSpinBox_Angle->setValue(m_line.angle());
-}
-
-void CLineAttributeWidget::LockOrReleaseStartSpainBoxSignal(bool lock)
-{
-    ui.doubleSpinBox_StartX->blockSignals(lock);
-    ui.doubleSpinBox_StartY->blockSignals(lock);
-}
-
-void CLineAttributeWidget::LockOrReleaseEndSpainBoxSignal(bool lock)
-{
-    ui.doubleSpinBox_EndX->blockSignals(lock);
-    ui.doubleSpinBox_EndY->blockSignals(lock);
-}
-
 
 void CLineAttributeWidget::handleNoticeLineAttribute(EntityLine line)
 {
-	ui.doubleSpinBox_StartX->blockSignals(true);
-	ui.doubleSpinBox_StartY->blockSignals(true);
-	ui.doubleSpinBox_EndX->blockSignals(true);
-	ui.doubleSpinBox_EndY->blockSignals(true);
-    ui.doubleSpinBox_Length->blockSignals(true);
-    ui.doubleSpinBox_Angle->blockSignals(true);
+    m_bUpdating = true;     // 阻止信号递归
 
-	m_line = line;
-	ui.doubleSpinBox_StartX->setValue(m_line.startPoint.x());
-    ui.doubleSpinBox_StartY->setValue(m_line.startPoint.y());
-	ui.doubleSpinBox_EndX->setValue(m_line.endPoint.x());
-    ui.doubleSpinBox_EndY->setValue(m_line.endPoint.y());
-	ui.doubleSpinBox_Length->setValue(m_line.length());
-    ui.doubleSpinBox_Angle->setValue(m_line.angle());
+    m_line = line;
+    ui.doubleSpinBox_StartX->setValue(line.startPoint.x());
+    ui.doubleSpinBox_StartY->setValue(line.startPoint.y());
+    ui.doubleSpinBox_EndX->setValue(line.endPoint.x());
+    ui.doubleSpinBox_EndY->setValue(line.endPoint.y());
+    ui.doubleSpinBox_Length->setValue(line.length());
+    ui.doubleSpinBox_Angle->setValue(line.angle());
 
-	ui.doubleSpinBox_StartX->blockSignals(false);
-	ui.doubleSpinBox_StartY->blockSignals(false);
-	ui.doubleSpinBox_EndX->blockSignals(false);
-	ui.doubleSpinBox_EndY->blockSignals(false);
-    ui.doubleSpinBox_Length->blockSignals(false);
-    ui.doubleSpinBox_Angle->blockSignals(false);
+    m_bUpdating = false;
 }

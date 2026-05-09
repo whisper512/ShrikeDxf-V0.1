@@ -29,6 +29,13 @@ public:
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
 
+	// 刷新scene重新计算边界
+	void RefreshSceneCalRect(){
+		m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
+		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
+	}
+
+
 public:
 	bool LoadDxfFile(const QString& strPath);
 	bool SaveDxfFile(const QString& strPath);

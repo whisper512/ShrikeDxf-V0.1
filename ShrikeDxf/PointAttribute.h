@@ -6,24 +6,22 @@
 
 class CPointAttributeWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CPointAttributeWidget(QWidget *parent = nullptr);
-	~CPointAttributeWidget();
+    CPointAttributeWidget(QWidget* parent = nullptr);
+    ~CPointAttributeWidget();
 
 private:
-	EntityPoint m_EntityPoint;
-	Ui::CPointAttribute ui;
-private:
+    EntityPoint m_EntityPoint;
+    Ui::CPointAttribute ui;
+    bool m_bUpdating = false;
 
-	void OnSpinBoxChanged();
-
+    void OnSpinBoxChanged();
 
 signals:
-	void signalPointAttributeChanged(EntityPoint point);
+    void signalPointAttributeChanged(EntityPoint point);
 
 public slots:
-	void handleNoticePointAttribute(EntityPoint point);
+    void handleNoticePointAttribute(EntityPoint point);
 };
-

@@ -186,7 +186,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalPointChanged, m_pDxfDataManger, &CDxfManager::handlePointAttributeChanged);
-				//connect(m_pStackedWidgetManger->m_pLineAttributeWidget, &CLineAttributeWidget::signalLineAttributeChanged, m_pDxfDataManger, &CDxfManager::handleLineAttributeChanged);
+				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalLineChanged, m_pDxfDataManger, &CDxfManager::handleLineAttributeChanged);
 				//connect(m_pStackedWidgetManger->m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, m_pDxfDataManger, &CDxfManager::handleCircleAttributeChanged);
 				//connect(m_pStackedWidgetManger->m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, m_pDxfDataManger, &CDxfManager::handleArcAttributeChanged);
 				

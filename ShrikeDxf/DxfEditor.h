@@ -15,7 +15,7 @@ public:
     CDxfData* m_DxfData;
 
     void editPoint(stuSelectedEntity* selectedEntity, EntityPoint point);
-
+    void editLine(stuSelectedEntity* selectedEntity, EntityLine line);
 private:
     
 public slots:

@@ -96,13 +96,13 @@ void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIn
 void CDxfManager::handlePointAttributeChanged(EntityPoint point)
 {
     m_DxfEditor.editPoint(&m_SelectedEntity, point);
-    m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
-    emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleLineAttributeChanged(EntityLine line)
 {
-
+    m_DxfEditor.editLine(&m_SelectedEntity, line);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleCircleAttributeChanged(EntityCircle circle)

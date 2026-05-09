@@ -69,6 +69,7 @@ signals:
 
 	// 图元数据发生变化
 	void signalPointChanged(EntityPoint point);
+	void signalLineChanged(EntityLine line);
 
 public slots:
 
