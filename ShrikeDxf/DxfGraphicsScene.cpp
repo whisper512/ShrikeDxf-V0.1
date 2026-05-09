@@ -207,13 +207,13 @@ void CDxfGraphicsScene::DrawSceneBackground(QRectF& rect)
 
 void CDxfGraphicsScene::DrawLWPolyline(const EntityLWPolyline& polyline)
 {
-    if (!polyline.prop.visible || polyline.vertices.empty()) return;
+    if (!polyline.prop.visible || polyline.vecVertices.empty()) return;
     QColor color = GetEntityColor(polyline.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     pen.setJoinStyle(Qt::RoundJoin);
     QPainterPath path;
-    const auto& verts = polyline.vertices;
+    const auto& verts = polyline.vecVertices;
     int n = static_cast<int>(verts.size());
     // 移动到第一个点
     path.moveTo(verts[0].point.x(), verts[0].point.y());
@@ -516,7 +516,7 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
             case EntityType::LWPolyline:
             {
                 const auto& poly = std::get<EntityLWPolyline>(entity);
-                for (const auto& v : poly.vertices)
+                for (const auto& v : poly.vecVertices)
                     updateBounds(v.point.x(), v.point.y());
                 break;
             }

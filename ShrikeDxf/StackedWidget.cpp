@@ -121,52 +121,53 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
+			  // 点
 			if (m_pStackedWidget && m_pPointAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalPointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
 				connect(m_pPointAttributeWidget, &CPointAttributeWidget::signalPointAttributeChanged, this, &CStackedWidgetManger::signalPointChanged);
-			}
+			} // 线
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
 				connect(m_pLineAttributeWidget, &CLineAttributeWidget::signalLineAttributeChanged, this, &CStackedWidgetManger::signalLineChanged);
-			}
+			} // 圆
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
 				connect(m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, this, &CStackedWidgetManger::signalCircleChanged);
-			}
+			} // 圆弧
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
                 connect(m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, this, &CStackedWidgetManger::signalArcChanged);
-			}
+			} // 轻量多段线
 			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
-                
-			}
+				connect(m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &CStackedWidgetManger::signalLWPolylineChanged);
+			} // 椭圆
 			if (m_pStackedWidget && m_pEllipseAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
 				connect(m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::signalEllipseAttributeChanged, this, &CStackedWidgetManger::signalEllipseChanged);
-			}
+			} // 文本
 			if (m_pStackedWidget && m_pTextAttributeWidget)
 			{
 				connect(this , &CStackedWidgetManger::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
-			}
+			} // 多行文本
 			if (m_pStackedWidget && m_pMTextAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
-			}
+			} // 多段线
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
-			}
+			} // 样条曲线
 			if (m_pStackedWidget && m_pSplineAttributeWidget)
 			{
                 connect(this, &CStackedWidgetManger::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handleNoticeSplineAttribute);
-			}
+			} // 填充
 			if (m_pStackedWidget && m_pHatchAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalHatchAttribute, m_pHatchAttributeWidget, &CHatchAttributeWidget::handleNoticeHatchAtttribute);

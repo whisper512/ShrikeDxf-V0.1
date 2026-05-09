@@ -7,29 +7,23 @@
 
 class CLWPolylineAttributeWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CLWPolylineAttributeWidget(QWidget *parent = nullptr);
-	~CLWPolylineAttributeWidget();
+    CLWPolylineAttributeWidget(QWidget* parent = nullptr);
+    ~CLWPolylineAttributeWidget();
 
 private:
-	Ui::CLWPolylineAttributeWidgetClass ui;
+    Ui::CLWPolylineAttributeWidgetClass ui;
+    EntityLWPolyline m_polyline;
+    bool m_bUpdating = false;
 
-	EntityLWPolyline m_polyline;
-
-	void RefreshTable();
-
-	void OnTableValueChanged();
-
-protected:
-
+    void RefreshTable();
+    void OnTableValueChanged();
 
 signals:
-	void signalPolylineAttributeChanged(EntityLWPolyline polyline);
-
+    void signalLWPolylineAttributeChanged(EntityLWPolyline polyline);
 
 public slots:
-	void handleNoticeLWPolylineAttribute(EntityLWPolyline polyline);
-
+    void handleNoticeLWPolylineAttribute(EntityLWPolyline lwpolyline);
 };

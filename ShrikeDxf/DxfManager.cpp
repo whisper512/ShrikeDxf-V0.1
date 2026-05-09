@@ -135,7 +135,8 @@ void CDxfManager::handlePolylineAttributeChanged(EntityPolyline polyline)
 
 void CDxfManager::handleLwpolylineAttributeChanged(EntityLWPolyline lwpolyline)
 {
-
+    m_DxfEditor.editLwpolyline(&m_SelectedEntity, lwpolyline);
+    RefreshSceneCalRect();
 }
 void CDxfManager::handleTextAttributeChanged(EntityText text)
 {

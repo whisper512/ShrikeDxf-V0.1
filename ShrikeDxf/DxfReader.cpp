@@ -450,7 +450,7 @@ void CDxfReader::addLWPolyline(const DRW_LWPolyline& data)
         pv.bulge = vptr->bulge;
         pv.startWidth = vptr->stawidth;   // stawidth
         pv.endWidth = vptr->endwidth;     // endwidth
-        ent.vertices.push_back(pv);
+        ent.vecVertices.push_back(pv);
     }
     StoreEntity(ent, data.layer);
 }
