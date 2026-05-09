@@ -7,23 +7,22 @@
 
 class CCircleAttributeWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CCircleAttributeWidget(QWidget *parent = nullptr);
-	~CCircleAttributeWidget();
+    CCircleAttributeWidget(QWidget* parent = nullptr);
+    ~CCircleAttributeWidget();
 
 private:
-	Ui::CCircleAttributeWidgetClass ui;
+    Ui::CCircleAttributeWidgetClass ui;
+    EntityCircle m_cirlce;
+    bool m_bUpdating = false;
 
-	EntityCircle m_cirlce;
-
-	void OnSpinBoxChanged();
+    void OnSpinBoxChanged();
 
 signals:
-		void signalCircleAttributeChanged(EntityCircle circle);
+    void signalCircleAttributeChanged(EntityCircle circle);
 
 public slots:
-	void handleNoticeCircleAttribute(EntityCircle circle);
+    void handleNoticeCircleAttribute(EntityCircle circle);
 };
-

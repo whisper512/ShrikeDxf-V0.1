@@ -70,6 +70,15 @@ signals:
 	// 图元数据发生变化
 	void signalPointChanged(EntityPoint point);
 	void signalLineChanged(EntityLine line);
+	void signalCircleChanged(EntityCircle circle);
+	void signalArcChanged(EntityArc arc);
+    void signalLWPolylineChanged(EntityLWPolyline lwpolyline);
+	void signalPolylineChanged(EntityPolyline polyline);
+	void signalTextChanged(EntityText text);
+    void signalMTextChanged(EntityMText mtext);
+	void signalEllipseChanged(EntityEllipse ellipse);
+    void signalSplineChanged(EntitySpline spline);
+	void signalHatchChanged(EntityHatch hatch);
 
 public slots:
 

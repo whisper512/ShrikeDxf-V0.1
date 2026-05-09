@@ -134,14 +134,17 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
+				connect(m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, this, &CStackedWidgetManger::signalCircleChanged);
 			}
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
+                connect(m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, this, &CStackedWidgetManger::signalArcChanged);
 			}
 			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
+                
 			}
 			if (m_pStackedWidget && m_pEllipseAttributeWidget)
 			{

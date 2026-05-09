@@ -187,21 +187,13 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalPointChanged, m_pDxfDataManger, &CDxfManager::handlePointAttributeChanged);
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalLineChanged, m_pDxfDataManger, &CDxfManager::handleLineAttributeChanged);
-				//connect(m_pStackedWidgetManger->m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, m_pDxfDataManger, &CDxfManager::handleCircleAttributeChanged);
-				//connect(m_pStackedWidgetManger->m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, m_pDxfDataManger, &CDxfManager::handleArcAttributeChanged);
+				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalCircleChanged, m_pDxfDataManger, &CDxfManager::handleCircleAttributeChanged);
+				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalArcChanged, m_pDxfDataManger, &CDxfManager::handleArcAttributeChanged);
 				
 			}
 			if (m_pDxfDataManger && m_pMoveBtnsWidget)
 			{
-				//connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnUpClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnUpClicked);
-				//connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnDownClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnDownClicked);
-				//connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnLeftClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnLeftClicked);
-				//connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnRightClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnRightClicked);
-				//connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCWClicked,m_pDxfDataManger, &CDxfManger::handleOnBtnCWClicked);
-    //            connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnBtnCCWClicked, m_pDxfDataManger, &CDxfManger::handleOnBtnCCWClicked);
-				//connect(m_pMoveBtnsWidget, &CMoveBtnsWidget::signalOnStepLengthOrAngleChanged, m_pDxfDataManger, &CDxfManger::handleOnStepLengthOrAngleChanged);
-				//connect(m_pDxfDataManger, &CDxfManger::signalSetStepLengthAndAngle, m_pMoveBtnsWidget, &CMoveBtnsWidget::handleSetStepLengthAndAngle);
-				//connect(m_pDxfDataManger,&CDxfManger::signalSelectedEntityType,m_pMoveBtnsWidget,&CMoveBtnsWidget::handleSetBtnEnabled);
+
 			}
 			if (this && m_pGraphicsView)
 			{

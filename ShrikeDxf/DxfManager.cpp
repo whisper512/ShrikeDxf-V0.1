@@ -107,12 +107,14 @@ void CDxfManager::handleLineAttributeChanged(EntityLine line)
 
 void CDxfManager::handleCircleAttributeChanged(EntityCircle circle)
 {
-
+    m_DxfEditor.editCircle(&m_SelectedEntity, circle);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleArcAttributeChanged(EntityArc arc)
 {
-
+    m_DxfEditor.editArc(&m_SelectedEntity, arc);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleEllipseAttributeChanged(EntityEllipse ellipse)
