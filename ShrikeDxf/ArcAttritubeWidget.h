@@ -7,24 +7,22 @@
 
 class CArcAttritubeWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CArcAttritubeWidget(QWidget *parent = nullptr);
-	~CArcAttritubeWidget();
+    CArcAttritubeWidget(QWidget* parent = nullptr);
+    ~CArcAttritubeWidget();
 
 private:
-	Ui::ArcAttritubeWidgetClass ui;
-	
-	EntityArc m_arc;
+    Ui::ArcAttritubeWidgetClass ui;
+    EntityArc m_arc;
+    bool m_bUpdating = false;
 
-	void OnSpinBoxXYRChanged();
-	void OnSpinBoxAngleRADChanged();
-    void OnSpinBoxAngleDEGChanged();
+    void OnSpinBoxChanged();
+
 signals:
-	void signalArcAttributeChanged(EntityArc arc);
+    void signalArcAttributeChanged(EntityArc arc);
 
 public slots:
-	void handleNoticeArcAttribute(EntityArc arc);
+    void handleNoticeArcAttribute(EntityArc arc);
 };
-

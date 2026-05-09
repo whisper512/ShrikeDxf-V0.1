@@ -60,6 +60,26 @@ void CDxfEditor::editLine(stuSelectedEntity* selectedEntity, EntityLine line)
 
 void CDxfEditor::editArc(stuSelectedEntity* selectedEntity, EntityArc arc)
 {
+    if (!selectedEntity || !m_DxfData)
+        return;
+
+    if (selectedEntity->type != EntityType::Arc)
+        return;
+
+    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    if (!pLayer)
+        return;
+
+    if (selectedEntity->entityIndex < 0 || selectedEntity->entityIndex >= static_cast<int>(pLayer->entities.size()))
+        return;
+
+    auto& entity = pLayer->entities[selectedEntity->entityIndex];
+    if (!std::holds_alternative<EntityArc>(entity))
+        return;
+
+    auto& selectedArc = std::get<EntityArc>(entity);
+    selectedArc = arc;
+    selectedEntity->entity = selectedArc;
 }
 
 void CDxfEditor::editCircle(stuSelectedEntity* selectedEntity, EntityCircle circle)
