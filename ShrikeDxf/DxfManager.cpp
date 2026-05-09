@@ -119,7 +119,8 @@ void CDxfManager::handleArcAttributeChanged(EntityArc arc)
 
 void CDxfManager::handleEllipseAttributeChanged(EntityEllipse ellipse)
 {
-
+    m_DxfEditor.editEllipse(&m_SelectedEntity, ellipse);
+    RefreshSceneCalRect();
 }
 
 void CDxfManager::handleSplineAttributeChanged(EntitySpline spline)

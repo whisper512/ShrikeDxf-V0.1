@@ -189,7 +189,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalLineChanged, m_pDxfDataManger, &CDxfManager::handleLineAttributeChanged);
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalCircleChanged, m_pDxfDataManger, &CDxfManager::handleCircleAttributeChanged);
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalArcChanged, m_pDxfDataManger, &CDxfManager::handleArcAttributeChanged);
-				
+				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalEllipseChanged, m_pDxfDataManger, &CDxfManager::handleEllipseAttributeChanged);
 			}
 			if (m_pDxfDataManger && m_pMoveBtnsWidget)
 			{

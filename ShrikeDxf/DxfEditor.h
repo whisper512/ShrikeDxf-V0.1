@@ -18,6 +18,12 @@ public:
     void editLine(stuSelectedEntity* selectedEntity, EntityLine line);
     void editArc(stuSelectedEntity* selectedEntity, EntityArc arc);
     void editCircle(stuSelectedEntity* selectedEntity, EntityCircle circle);
+    void editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse ellipse);
+    void editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline polyline);
+    void editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyline lwpolyline);
+    void editSpline(stuSelectedEntity* selectedEntity, EntitySpline spline);
+
+
 private:
     
 public slots:

@@ -149,6 +149,7 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pEllipseAttributeWidget)
 			{
 				connect(this, &CStackedWidgetManger::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
+				connect(m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::signalEllipseAttributeChanged, this, &CStackedWidgetManger::signalEllipseChanged);
 			}
 			if (m_pStackedWidget && m_pTextAttributeWidget)
 			{
