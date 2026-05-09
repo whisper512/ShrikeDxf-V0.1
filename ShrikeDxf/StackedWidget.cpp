@@ -171,6 +171,7 @@ void CStackedWidgetManger::ConnectSignalAndSlot()
 			if (m_pStackedWidget && m_pSplineAttributeWidget)
 			{
                 connect(this, &CStackedWidgetManger::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handleNoticeSplineAttribute);
+				connect(m_pSplineAttributeWidget, &CSplineAttributeWidget::signalSplineAttributeChanged, this, &CStackedWidgetManger::signalSplineChanged);
 			} // 填充
 			if (m_pStackedWidget && m_pHatchAttributeWidget)
 			{

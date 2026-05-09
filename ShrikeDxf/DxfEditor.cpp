@@ -228,8 +228,48 @@ void CDxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyl
 
 void CDxfEditor::editSpline(stuSelectedEntity* selectedEntity, EntitySpline spline)
 {
+    if (!selectedEntity || !m_DxfData)
+        return;
+
+    if (selectedEntity->type != EntityType::Spline)
+        return;
+
+    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    if (!pLayer)
+        return;
+
+    if (selectedEntity->entityIndex < 0 || selectedEntity->entityIndex >= static_cast<int>(pLayer->entities.size()))
+        return;
+
+    auto& entity = pLayer->entities[selectedEntity->entityIndex];
+    if (!std::holds_alternative<EntitySpline>(entity))
+        return;
+
+    auto& selectedSpline = std::get<EntitySpline>(entity);
+    selectedSpline = spline;
+    selectedEntity->entity = selectedSpline;
 }
 
 void CDxfEditor::editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch)
 {
+    if (!selectedEntity || !m_DxfData)
+        return;
+
+    if (selectedEntity->type != EntityType::Hatch)
+        return;
+
+    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    if (!pLayer)
+        return;
+
+    if (selectedEntity->entityIndex < 0 || selectedEntity->entityIndex >= static_cast<int>(pLayer->entities.size()))
+        return;
+
+    auto& entity = pLayer->entities[selectedEntity->entityIndex];
+    if (!std::holds_alternative<EntityHatch>(entity))
+        return;
+
+    auto& selectedHatch = std::get<EntityHatch>(entity);
+    selectedHatch = hatch;
+    selectedEntity->entity = selectedHatch;
 }

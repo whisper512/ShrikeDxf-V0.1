@@ -195,6 +195,7 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalLWPolylineChanged, m_pDxfDataManger, &CDxfManager::handleLwpolylineAttributeChanged);
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalPolylineChanged, m_pDxfDataManger, &CDxfManager::handlePolylineAttributeChanged);
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalHatchChanged, m_pDxfDataManger, &CDxfManager::handleHatchAttributeChanged);
+				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalSplineChanged, m_pDxfDataManger, &CDxfManager::handleSplineAttributeChanged);
 			}
 			if (m_pDxfDataManger && m_pMoveBtnsWidget)
 			{
