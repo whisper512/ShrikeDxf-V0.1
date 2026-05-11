@@ -290,7 +290,7 @@ void CGraphicsView::handleDrag(bool bChecked)
 }
 
 
-void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect)
+void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewTransform)
 {
     if (pScene)
     {
@@ -301,7 +301,7 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
         int vValue = verticalScrollBar()->value();
         // 设置场景到视图
         setScene(pScene);
-        if (bResetViewRect)
+        if (bResetViewTransform)
         {
             // 重置视口到场景边界
             m_rectInitialScene = pScene->sceneRect();
