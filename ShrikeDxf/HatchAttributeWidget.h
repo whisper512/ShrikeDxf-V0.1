@@ -20,7 +20,7 @@ private:
     void OnValueChanged();
 
 signals:
-    void signalHatchAtttributeChanged(EntityHatch hatch);
+    void signalHatchAtttributeChanged(const EntityHatch& hatch);
 
 public slots:
     void handleNoticeHatchAtttribute(EntityHatch hatch);

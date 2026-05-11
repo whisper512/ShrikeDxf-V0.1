@@ -89,15 +89,15 @@ signals:
 	 void OnTreeViewEntitySelected(const QString& strLayer, int entityIndex);
 
 	 // 图元属性发生变化
-	 void handlePointAttributeChanged(EntityPoint point);
-     void handleLineAttributeChanged(EntityLine line);
-	 void handleCircleAttributeChanged(EntityCircle circle);
-	 void handleArcAttributeChanged(EntityArc arc);
-     void handleEllipseAttributeChanged(EntityEllipse ellipse);
-     void handleSplineAttributeChanged(EntitySpline spline);
-     void handlePolylineAttributeChanged(EntityPolyline polyline);
-     void handleLwpolylineAttributeChanged(EntityLWPolyline lwpolyline);
-	 void handleTextAttributeChanged(EntityText text);
-     void handleMTextAttributeChanged(EntityMText mtext);
-     void handleHatchAttributeChanged(EntityHatch hatch);
+	 void handlePointAttributeChanged(const EntityPoint& point);
+     void handleLineAttributeChanged(const EntityLine& line);
+	 void handleCircleAttributeChanged(const EntityCircle& circle);
+	 void handleArcAttributeChanged(const EntityArc& arc);
+     void handleEllipseAttributeChanged(const EntityEllipse& ellipse);
+     void handleSplineAttributeChanged(const EntitySpline& spline);
+     void handlePolylineAttributeChanged(const EntityPolyline& polyline);
+     void handleLwpolylineAttributeChanged(const EntityLWPolyline& lwpolyline);
+	 void handleTextAttributeChanged(const EntityText& text);
+     void handleMTextAttributeChanged(const EntityMText& mtext);
+     void handleHatchAttributeChanged(const EntityHatch& hatch);
 };

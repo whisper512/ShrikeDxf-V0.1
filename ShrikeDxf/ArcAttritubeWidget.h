@@ -21,7 +21,7 @@ private:
     void OnSpinBoxChanged();
 
 signals:
-    void signalArcAttributeChanged(EntityArc arc);
+    void signalArcAttributeChanged(const EntityArc& arc);
 
 public slots:
     void handleNoticeArcAttribute(EntityArc arc);

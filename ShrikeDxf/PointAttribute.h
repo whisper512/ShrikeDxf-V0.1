@@ -20,7 +20,7 @@ private:
     void OnSpinBoxChanged();
 
 signals:
-    void signalPointAttributeChanged(EntityPoint point);
+    void signalPointAttributeChanged(const EntityPoint& point);
 
 public slots:
     void handleNoticePointAttribute(EntityPoint point);

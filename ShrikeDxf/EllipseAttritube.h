@@ -20,7 +20,7 @@ private:
     void OnSpinBoxChanged();
 
 signals:
-    void signalEllipseAttributeChanged(EntityEllipse ellipse);
+    void signalEllipseAttributeChanged(const EntityEllipse& ellipse);
 
 public slots:
     void handleNoticeEllipseAttribute(EntityEllipse polyline);

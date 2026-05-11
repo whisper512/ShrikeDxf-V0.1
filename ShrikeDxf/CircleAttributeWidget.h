@@ -21,7 +21,7 @@ private:
     void OnSpinBoxChanged();
 
 signals:
-    void signalCircleAttributeChanged(EntityCircle circle);
+    void signalCircleAttributeChanged(const EntityCircle& circle);
 
 public slots:
     void handleNoticeCircleAttribute(EntityCircle circle);

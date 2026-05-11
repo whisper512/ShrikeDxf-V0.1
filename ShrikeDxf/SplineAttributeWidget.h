@@ -24,7 +24,7 @@ private:
     void RefreshTable();
 
 signals:
-    void signalSplineAttributeChanged(EntitySpline spline);
+    void signalSplineAttributeChanged(const EntitySpline& spline);
 
 private slots:
     void OnTabChanged(int index);

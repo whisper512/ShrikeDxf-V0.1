@@ -18,7 +18,7 @@ private:
 	void RefreshTable();
 
 signals:
-	void signalPolylineAttributeChanged(EntityPolyline polyline);
+	void signalPolylineAttributeChanged(const EntityPolyline& polyline);
 
 public slots:
 	void handleNoticePolylineAttribute(EntityPolyline polyline);

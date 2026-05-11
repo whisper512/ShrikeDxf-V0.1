@@ -22,7 +22,7 @@ private:
     void OnTableValueChanged();
 
 signals:
-    void signalLWPolylineAttributeChanged(EntityLWPolyline polyline);
+    void signalLWPolylineAttributeChanged(const EntityLWPolyline& polyline);
 
 public slots:
     void handleNoticeLWPolylineAttribute(EntityLWPolyline lwpolyline);

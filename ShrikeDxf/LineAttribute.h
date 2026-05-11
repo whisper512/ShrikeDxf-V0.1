@@ -21,7 +21,7 @@ private:
 
 signals:
     // 通知线属性改变
-    void signalLineAttributeChanged(EntityLine line);
+    void signalLineAttributeChanged(const EntityLine& line);
 
 public slots:
     // 设置线属性

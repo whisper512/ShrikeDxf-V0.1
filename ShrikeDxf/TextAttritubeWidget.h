@@ -20,7 +20,7 @@ private:
     void OnValueChanged();
 
 signals:
-    void signalTextAttributeChanged(EntityText text);
+    void signalTextAttributeChanged(const EntityText& text);
 
 public slots:
     void handleNoticeTextAttribute(EntityText text);

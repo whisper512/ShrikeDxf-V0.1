@@ -20,7 +20,7 @@ private:
     void OnValueChanged();
 
 signals:
-    void signalMTextAttributeChanged(EntityMText Mtext);
+    void signalMTextAttributeChanged(const EntityMText& Mtext);
 
 public slots:
     void handleNoticeMTextAttribute(EntityMText Mtext);
