@@ -294,41 +294,35 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
 {
     if (pScene)
     {
-        //保留当前view的状态
+        // 保留当前view的状态
         QTransform currentTransform = transform();
         QPointF currentCenter = mapToScene(viewport()->rect().center());
         int hValue = horizontalScrollBar()->value();
         int vValue = verticalScrollBar()->value();
-        QRectF curRect = sceneRect();
-
         // 设置场景到视图
         setScene(pScene);
-
         if (bResetViewRect)
         {
-            // 计算所有项目的边界矩形
-            QRectF boundingRect;
-            for (const auto& item : pScene->items())
-            {
-                boundingRect = boundingRect.united(item->boundingRect());
-            }
+            // 重置视口到场景边界
             m_rectInitialScene = pScene->sceneRect();
             m_rectLastScene = pScene->sceneRect();
-            QTimer::singleShot(0, [this, pScene]() {fitInView(pScene->sceneRect(), Qt::KeepAspectRatio); });
-            // 强制更新视图
-            update();
-            //延时更新尺子
-            QTimer::singleShot(0, [this, pScene]() 
-            {
+            QTimer::singleShot(0, [this, pScene]() {
                 fitInView(pScene->sceneRect(), Qt::KeepAspectRatio);
                 UpdateRulers();
                 });
         }
         else
         {
+            setTransform(currentTransform);
+            centerOn(currentCenter);
+            
+            horizontalScrollBar()->setValue(hValue);
+            verticalScrollBar()->setValue(vValue);
+            UpdateRulers();
         }
+        // 强制更新视图
+        update();
     }
-    return;
 }
 
 void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)

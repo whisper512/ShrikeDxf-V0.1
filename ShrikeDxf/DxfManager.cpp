@@ -127,66 +127,66 @@ void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIn
 void CDxfManager::handlePointAttributeChanged(const EntityPoint& point)
 {
     m_DxfEditor.editPoint(&m_SelectedEntity, point);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleLineAttributeChanged(const EntityLine& line)
 {
     m_DxfEditor.editLine(&m_SelectedEntity, line);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleCircleAttributeChanged(const EntityCircle& circle)
 {
     m_DxfEditor.editCircle(&m_SelectedEntity, circle);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleArcAttributeChanged(const EntityArc& arc)
 {
     m_DxfEditor.editArc(&m_SelectedEntity, arc);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleEllipseAttributeChanged(const EntityEllipse& ellipse)
 {
     m_DxfEditor.editEllipse(&m_SelectedEntity, ellipse);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleSplineAttributeChanged(const EntitySpline& spline)
 {
     m_DxfEditor.editSpline(&m_SelectedEntity, spline);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handlePolylineAttributeChanged(const EntityPolyline& polyline)
 {
     m_DxfEditor.editPolyline(&m_SelectedEntity, polyline);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleLwpolylineAttributeChanged(const EntityLWPolyline& lwpolyline)
 {
     m_DxfEditor.editLwpolyline(&m_SelectedEntity, lwpolyline);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 void CDxfManager::handleTextAttributeChanged(const EntityText& text)
 {
     m_DxfEditor.editText(&m_SelectedEntity, text);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleMTextAttributeChanged(const EntityMText& mtext)
 {
     m_DxfEditor.editMText(&m_SelectedEntity, mtext);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleHatchAttributeChanged(const EntityHatch& hatch)
 {
     m_DxfEditor.editHatch(&m_SelectedEntity, hatch);
-    RefreshSceneCalRect();
+    RefreshScene();
 }
 
 void CDxfManager::handleLayerAttributeChanged()

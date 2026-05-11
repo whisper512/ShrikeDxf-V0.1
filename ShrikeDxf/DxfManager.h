@@ -29,12 +29,12 @@ public:
 
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
-	// 刷新scene重新计算边界
-	void RefreshSceneCalRect(){
+	// 刷新scene重并重置graphicsview
+	void RefreshSceneResetview(){
 		m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
 	}
-	// 刷新scene但不计算边界
+	// 刷新scene不重置graphicsview
 	void RefreshScene() {
 		m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
