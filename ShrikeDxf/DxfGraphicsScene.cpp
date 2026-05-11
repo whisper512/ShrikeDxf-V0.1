@@ -195,7 +195,7 @@ void CDxfGraphicsScene::DrawHatch(const EntityHatch& hatch)
 
 void CDxfGraphicsScene::DrawSceneBackground(QRectF& rect)
 {
-    QPen pen(QColor("#0A0A0A"), 0.5 / m_scale);  // 蓝色半透明虚线
+    QPen pen(QColor("#999999"), 0.5 / m_scale);
     pen.setCosmetic(true);
     pen.setStyle(Qt::DashLine);
     addRect(rect, pen);
