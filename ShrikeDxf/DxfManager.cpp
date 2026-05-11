@@ -51,7 +51,16 @@ bool CDxfManager::LoadDxfFile(const QString& strPath)
 
 bool CDxfManager::SaveDxfFile(const QString& strPath)
 {
-
+    CDxfWriter writer(m_DxfData.get());
+    bool ok = writer.SaveFile(strPath);
+    if (!ok)
+    {
+        QMessageBox::warning(m_pMainWnd, QStringLiteral("保存失败"),
+            QStringLiteral("无法保存文件:\n%1").arg(strPath));
+        return false;
+    }
+    emit signalFileName(strPath);
+    return true;
 
     return true;
 }

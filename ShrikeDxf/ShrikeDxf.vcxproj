@@ -155,6 +155,7 @@
     <QtMoc Include="MoveBtnsWidget.h" />
     <QtMoc Include="Ruler.h" />
     <QtMoc Include="EllipseAttritube.h" />
+    <ClInclude Include="DxfWriter.h" />
     <ClInclude Include="Entity.h" />
     <QtMoc Include="TextAttritubeWidget.h" />
     <QtMoc Include="HatchAttributeWidget.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="DxfData.cpp" />
     <ClCompile Include="DxfEditor.cpp" />
     <ClCompile Include="DxfReader.cpp" />
+    <ClCompile Include="DxfWriter.cpp" />
     <ClCompile Include="EllipseAttritube.cpp" />
     <ClCompile Include="HatchAttributeWidget.cpp" />
     <ClCompile Include="LineAttribute.cpp" />

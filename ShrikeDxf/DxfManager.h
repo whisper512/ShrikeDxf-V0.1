@@ -9,6 +9,7 @@
 #include "DxfLayerTableviewModel.h"
 #include "DxfEditor.h"
 #include "DxfStruct.h"
+#include "DxfWriter.h"
 
 
 //dxf管理类
