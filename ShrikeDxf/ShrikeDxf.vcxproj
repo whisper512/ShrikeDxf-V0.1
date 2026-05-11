@@ -162,6 +162,7 @@
     <QtMoc Include="MTextAttritubeWidget.h" />
     <QtMoc Include="PolylineAttritubeWidget.h" />
     <QtMoc Include="SplineAttributeWidget.h" />
+    <ClInclude Include="Tools.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />

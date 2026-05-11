@@ -1,7 +1,9 @@
 ﻿#pragma once
 
 #include <QWidget>
+
 #include "ui_CreateEntityWidget.h"
+#include "Tools.h"
 
 class CCreateEntityWidget : public QWidget
 {
@@ -18,7 +20,7 @@ private:
 	Ui::CCreateEntityWidgetClass ui;
 	QWidget* m_pMainWnd;
 	//当前选择的按钮
-	int m_iSlectedIndex;
+	enumMouseStateInView m_iSlectedIndex;
 
 	void SetIconAndTip();
 	void AdjustBtn();
@@ -26,9 +28,11 @@ private:
 	void RefreshBtn();
 
 signals:
-	void signalMouseStatus(int index);
+	void signalMouseStatus(enumMouseStateInView state);
+
 private slots:
 	void OnToolBtnClicked();
+
 public slots:
 	void handleChangeCreateBtnStatus(int index);
 

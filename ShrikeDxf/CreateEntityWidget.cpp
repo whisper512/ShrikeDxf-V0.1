@@ -4,7 +4,7 @@
 CCreateEntityWidget::CCreateEntityWidget(QWidget* parent)
 	: QWidget(parent),
 	m_pMainWnd(parent),
-	m_iSlectedIndex(-1)
+	m_iSlectedIndex(enumMouseStateInView::enumMouseState_None)
 {
 	ui.setupUi(this);
 }
@@ -115,35 +115,35 @@ void CCreateEntityWidget::OnToolBtnClicked()
 
 	if (pBtn == ui.toolButton_Mouse)
 	{
-		m_iSlectedIndex = -1;
+		m_iSlectedIndex = enumMouseStateInView::enumMouseState_None;
 	}
 	else if (pBtn == ui.toolButton_Point)
 	{
-        m_iSlectedIndex = 0;
+        m_iSlectedIndex = enumMouseStateInView::enumMouseState_Point;
 	}
 	else if (pBtn == ui.toolButton_Line)
 	{
-        m_iSlectedIndex = 1;
+        m_iSlectedIndex = enumMouseStateInView::enumMouseState_Line;
 	}
 	else if(pBtn == ui.toolButton_Center_Radius_Circle)
 	{
-		m_iSlectedIndex = 2;
+		m_iSlectedIndex = enumMouseStateInView::enumMouseState_CircleCenterRadius;
 	}
 	else if (pBtn == ui.toolButton_Center_Diameter_Circle)
 	{
-        m_iSlectedIndex = 3;
+		m_iSlectedIndex = enumMouseStateInView::enumMouseState_CircleDiameter;
 	}
 	else if (pBtn == ui.toolButton_Center_Endpoint_Arc)
 	{
-		m_iSlectedIndex = 4;
+		m_iSlectedIndex = enumMouseStateInView::enumMouseState_ArcCenterEndpoint;
 	}
 	else if (pBtn == ui.toolButton_ThreePoint_Arc)
 	{
-        m_iSlectedIndex = 5;
+        m_iSlectedIndex = enumMouseStateInView::enumMouseState_ArcThreePoints;
 	}
 	else if (pBtn == ui.toolButton_Polyline)
 	{
-        m_iSlectedIndex = 6;
+        m_iSlectedIndex = enumMouseStateInView::enumMouseState_Polyline;
 	}
 	emit signalMouseStatus(m_iSlectedIndex);
 	RefreshBtn();
@@ -152,7 +152,7 @@ void CCreateEntityWidget::OnToolBtnClicked()
 
 void CCreateEntityWidget::handleChangeCreateBtnStatus(int index)
 {
-	m_iSlectedIndex = index;
+	m_iSlectedIndex = static_cast<enumMouseStateInView>(index);
     RefreshBtn();
 	emit signalMouseStatus(m_iSlectedIndex);
 }

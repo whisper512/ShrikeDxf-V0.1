@@ -6,17 +6,7 @@
 
 #include "DxfStruct.h"
 
-enum enumMouseStateInView
-{
-	enumMouseStateInView_None = -1,
-	enumMouseStateInView_PreviewPoint,
-	enumMouseStateInView_PreviewLine,
-	enumMouseStateInView_PreviewCircleCenterRadius,
-	enumMouseStateInView_PreviewCircleDiameter,
-	enumMouseStateInView_PreviewArcCenterEndpoint,
-	enumMouseStateInView_PreviewArcThreePoints,
-	enumMouseStateInView_PreviewPolyline,
-};
+
 
 class CDxfGraphicsScene : public QGraphicsScene
 {
@@ -37,7 +27,7 @@ public:
 	//缩放比例
 	double m_scale;
 	//graphics鼠标当前状态
-	enumMouseStateInView m_MouseState = enumMouseStateInView_None;
+	//enumMouseStateInView m_MouseState = enumMouseStateInView::enumMouseState_None;
 
 
 private:
