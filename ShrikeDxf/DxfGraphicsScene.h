@@ -27,7 +27,7 @@ public:
 	//缩放比例
 	double m_scale;
 	//graphics鼠标当前状态
-	//enumMouseStateInView m_MouseState = enumMouseStateInView::enumMouseState_None;
+	
 
 
 private:
