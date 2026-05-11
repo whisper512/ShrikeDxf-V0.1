@@ -47,11 +47,7 @@ void CDxfWriter::writeHeader(DRW_Header& data)
 
 void CDxfWriter::writeLTypes()
 {
-    // 库已自动处理 BYBLOCK / BYLAYER / CONTINUOUS
-    // 如果有自定义线型，在此添加：
-    // DRW_LType lt;
-    // lt.name = "...";
-    // m_pDxfRW->writeLType(&lt);
+    
 }
 
 void CDxfWriter::writeLayers()
@@ -63,7 +59,7 @@ void CDxfWriter::writeLayers()
         drwLayer.color = DxfColorMap::getColorIndex(layer.color);
         drwLayer.lineType = layer.lineType.toStdString();
         drwLayer.flags = layer.isLocked ? 4 : 0;
-        //drwLayer.lWeight = DRW_LW_Conv::lineWidth2dxfInt(layer.lineWeight);
+        drwLayer.lWeight = DRW_LW_Conv::dwgInt2lineWidth(layer.lineWeight);
 
         if (!layer.isVisible)
             drwLayer.color = -drwLayer.color;   // 负数为关闭
@@ -74,35 +70,34 @@ void CDxfWriter::writeLayers()
 
 void CDxfWriter::writeTextstyles()
 {
-    // 库会自动写入 STANDARD，故此处可为空
-    // 如有自定义文字样式可在此添加
+    
 }
 
 void CDxfWriter::writeVports()
 {
-    // 库会自动写入 *ACTIVE，故此处可为空
+    
 }
 
 void CDxfWriter::writeDimstyles()
 {
-    // 库会自动写入 STANDARD，故此处可为空
+    
 }
 
 void CDxfWriter::writeAppId()
 {
-    // 库会自动写入 ACAD，故此处可为空
+    
 }
 
 
 void CDxfWriter::writeObjects()
 {
-    // 无需写入对象段
+    
 }
 
 
 void CDxfWriter::writeBlockRecords()
 {
-    // 注册块记录（库会自动处理 *Model_Space 和 *Paper_Space）
+    // 注册块记录
     for (const auto& [name, block] : m_pData->GetDocument().blocks)
     {
         m_pDxfRW->writeBlockRecord(name);
@@ -111,8 +106,6 @@ void CDxfWriter::writeBlockRecords()
 
 void CDxfWriter::writeBlocks()
 {
-    // *Model_Space 和 *Paper_Space 由 libdxfrw 自动写入
-    // 此处写入自定义块定义
     for (const auto& [name, block] : m_pData->GetDocument().blocks)
     {
         DRW_Block drwBlock;
@@ -134,7 +127,7 @@ void CDxfWriter::writeBlocks()
             case EntityType::Line:
                 WriteLine(std::get<EntityLine>(entity));
                 break;
-                // ... 其他图元类型
+                
             default:
                 break;
             }
@@ -323,7 +316,6 @@ void CDxfWriter::WriteSpline(const EntitySpline& spline)
     drw.degree = spline.degree;
     drw.nknots = static_cast<dint32>(spline.knots.size());
     drw.ncontrol = static_cast<dint32>(spline.controlPoints.size());
-    // ★ 现在可以完整写拟合点了
     drw.nfit = static_cast<dint32>(spline.fitPoints.size());
     drw.tolknot = spline.knotTolerance;
     drw.tolcontrol = spline.controlTolerance;
@@ -342,10 +334,10 @@ void CDxfWriter::WriteSpline(const EntitySpline& spline)
     // 控制点
     for (const auto& cp : spline.controlPoints)
         drw.controllist.push_back(std::make_shared<DRW_Coord>(cp.x(), cp.y(), cp.z()));
-    // ★ 拟合点 — 现在 libdxfrw 会输出 11/21/31
+    // 拟合点
     for (const auto& fp : spline.fitPoints)
         drw.fitlist.push_back(std::make_shared<DRW_Coord>(fp.x(), fp.y(), fp.z()));
-    // ★ 切向量 — 现在 libdxfrw 会输出 12/22/32, 13/23/33
+    // 切向量
     if (spline.tgStart != Vertex3D())
         drw.tgStart = DRW_Coord(spline.tgStart.x(), spline.tgStart.y(), spline.tgStart.z());
     if (spline.tgEnd != Vertex3D())
@@ -426,14 +418,14 @@ void CDxfWriter::WriteHatch(const EntityHatch& hatch)
     DRW_Hatch drw;
     SetEntityCommon(drw, hatch.prop);
     drw.name = hatch.patternName;
-    drw.solid = hatch.solidFill ? 1 : 0;     // DRW_Hatch::solid 是 int
+    drw.solid = hatch.solidFill ? 1 : 0;
     drw.associative = hatch.associative;
-    drw.hstyle = hatch.style;                  // ← 修正：hstyle
-    drw.hpattern = hatch.patternType;             // ← 修正：hpattern
-    drw.doubleflag = hatch.doubleFlag;              // ← 修正：doubleflag
+    drw.hstyle = hatch.style;    
+    drw.hpattern = hatch.patternType;
+    drw.doubleflag = hatch.doubleFlag;
     drw.angle = hatch.angle;
     drw.scale = hatch.scale;
-    drw.loopsnum = hatch.loopCount;               // ← 修正：loopsnum
+    drw.loopsnum = hatch.loopCount;
     // 转换边界环
     for (const auto& loop : hatch.loops)
     {
@@ -441,7 +433,7 @@ void CDxfWriter::WriteHatch(const EntityHatch& hatch)
         drwLoop->numedges = 0;
         if (loop.isPolyline)
         {
-            // 多段线边界：type 的位 1 设为 1
+            // 多段线边界
             drwLoop->type |= 2;
             // 多段线顶点存成 LWPolyline
             auto pl = std::make_shared<DRW_LWPolyline>();

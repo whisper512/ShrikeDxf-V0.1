@@ -10,12 +10,7 @@
 #include "drw_interface.h"
 #include "libdxfrw.h"
 
-/**
- * @brief DXF 文件写入类（使用 libdxfrw）
- *
- * 继承 DRW_Interface，与 CDxfReader 对称。
- * 内部持有 dxfRW 指针，利用其 write*() 方法输出各图元。
- */
+
 class CDxfWriter : public DRW_Interface
 {
 public:
@@ -25,9 +20,8 @@ public:
     bool SaveFile(const QString& strPath, DRW::Version ver = DRW::AC1021, bool bin = false);
 
 private:
-    // ======== DRW_Interface 回调 ========
-
-    // 读取回调
+    
+    // 读取回调,不实现
     void addHeader(const DRW_Header* data) override {}
     void addLType(const DRW_LType& data) override {}
     void addLayer(const DRW_Layer& data) override {}
@@ -70,7 +64,7 @@ private:
     void addComment(const char* comment) override {}
     void addPlotSettings(const DRW_PlotSettings* data) override {}
 
-    // ======== 写入回调 ========
+    
     void writeHeader(DRW_Header& data) override;
     void writeBlocks() override;
     void writeBlockRecords() override;
@@ -84,7 +78,7 @@ private:
     void writeAppId() override;
 
 private:
-    // ---- 图元转写辅助 ----
+    
     void WritePoint(const EntityPoint& pt);
     void WriteLine(const EntityLine& line);
     void WriteCircle(const EntityCircle& circle);
@@ -100,5 +94,5 @@ private:
     void WriteHatch(const EntityHatch& hatch);
 
     CDxfData* m_pData = nullptr;
-    dxfRW* m_pDxfRW = nullptr;   // 写入时由 SaveFile 传入
+    dxfRW* m_pDxfRW = nullptr;
 };
