@@ -507,7 +507,6 @@ void CDxfReader::addSpline(const DRW_Spline* data)
         data->tgEnd.x, data->tgEnd.y, data->tgEnd.z);
     ent.knots = data->knotslist; 
     ent.weights = data->weightlist;
-    // controllist / fitlist 元素是 shared_ptr<DRW_Coord>
     for (const auto& cp : data->controllist) {
         if (cp)
             ent.controlPoints.emplace_back(cp->x, cp->y, cp->z);
