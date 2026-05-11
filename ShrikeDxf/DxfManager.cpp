@@ -79,6 +79,28 @@ bool CDxfManager::CloseDxfFile()
     return false;
 }
 
+void CDxfManager::SynLayerModelToDxfData()
+{
+    int rowCount = m_DxfLayerTableviewModel.rowCount();
+    if (rowCount <= 0) return;
+    // 获取 DxfData 中可修改的 layers
+    auto& layers = m_DxfData->GetDocument().layers;
+    for (int row = 0; row < rowCount; ++row)
+    {
+        QStandardItem* pItemName = m_DxfLayerTableviewModel.item(row, 1);   // NAME 列
+        QStandardItem* pItemColor = m_DxfLayerTableviewModel.item(row, 2);   // COLOR 列
+        if (!pItemName) continue;
+        std::string layerName = pItemName->text().toStdString();
+        auto it = layers.find(layerName);
+        if (it == layers.end()) continue;
+        // 同步颜色
+        if (pItemColor)
+        {
+            it->second.color = pItemColor->background().color();
+        }
+    }
+}
+
 
 void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIndex)
 {
@@ -165,4 +187,10 @@ void CDxfManager::handleHatchAttributeChanged(const EntityHatch& hatch)
 {
     m_DxfEditor.editHatch(&m_SelectedEntity, hatch);
     RefreshSceneCalRect();
+}
+
+void CDxfManager::handleLayerAttributeChanged()
+{
+    SynLayerModelToDxfData();
+    RefreshScene();
 }

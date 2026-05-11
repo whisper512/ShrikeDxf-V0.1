@@ -65,9 +65,10 @@ private:
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	
-	
 public:
-	
+	// 同步图层模型数据到dxf数据结构
+	void SynLayerModelToDxfData();
+
 
 
 signals:
@@ -100,4 +101,7 @@ signals:
 	 void handleTextAttributeChanged(const EntityText& text);
      void handleMTextAttributeChanged(const EntityMText& mtext);
      void handleHatchAttributeChanged(const EntityHatch& hatch);
+
+	 // 图层属性发生变化
+	 void handleLayerAttributeChanged();
 };

@@ -152,26 +152,11 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pDxfDataManger, &CDxfManager::signalRefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
 				connect(m_pDxfDataManger, &CDxfManager::signalRefreshTreeviewAfterRead, m_pTreeViewManger, &CTreeViewManger::handleRefreshTreeviewAfterRead);
 				connect(m_pTreeViewManger, &CTreeViewManger::signalEntitySelected, m_pDxfDataManger, &CDxfManager::OnTreeViewEntitySelected);
-				connect(m_pDxfDataManger, &CDxfManager::signalRefreshLayerTable, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
-
-				//connect(m_pDxfDataManger, &CDxfManger::signalReturnEntityInfo, m_pTreeViewManger, &CTreeViewManger::handleReturnEntityInfo);
-				//connect(m_pTreeViewManger, &CTreeViewManger::signalSaveSelectedEntity, m_pDxfDataManger, &CDxfManger::handleSaveSelectedEntity);
-				//connect(m_pTreeViewManger,&CTreeViewManger::signalDeleteEntityData,m_pDxfDataManger, &CDxfManger::handleDeleteEntity);
-				//connect(m_pTreeViewManger, &CTreeViewManger::signalCopyEntityData, m_pDxfDataManger, &CDxfManger::handleCopyEntity);
+				
 			}
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
 				connect(m_pDxfDataManger, &CDxfManager::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
-				////manger通知view正在进行复制,切换menu
-				//connect(m_pDxfDataManger, &CDxfManger::signalCopyintEntity, m_pGraphicsView, &CGraphicsView::handlelCopyintEntity);
-				////view通知manger鼠标位置
-				//connect(m_pGraphicsView,&CGraphicsView::signalPaste,m_pDxfDataManger, &CDxfManger::handlePaste);
-				//connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewMouseMove,m_pDxfDataManger,&CDxfManger::handleGraphicsViewMouseMove);
-				//connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftCLick,m_pDxfDataManger, &CDxfManger::handleGraphicsViewLeftClick);
-				//connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewRightClick, m_pDxfDataManger, &CDxfManger::handleGraphicsViewRightClick);
-				////preview相关
-				//connect(m_pDxfDataManger,&CDxfManger::signalStartPreviewEntity,m_pGraphicsView,&CGraphicsView::handleStartPreviewEntity);
-				//connect(m_pGraphicsView,&CGraphicsView::signalEndDrawingPreview,m_pDxfDataManger, &CDxfManger::handleEndDrawPreview);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -179,9 +164,8 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			}
 			if (m_pDxfDataManger && m_pLayerTableViewManger)
 			{
-				//connect(m_pDxfDataManger, &CDxfManger::signalRefreshLayerTableview, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
-				//connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalLayerModelChanged, m_pDxfDataManger, &CDxfManger::handleLayerModelChanged);
-				//connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalChangeCurrentLayer, m_pDxfDataManger, &CDxfManger::handleChangeCurrentLayer);
+				connect(m_pDxfDataManger, &CDxfManager::signalRefreshLayerTable, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
+				connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalLayerModelChanged, m_pDxfDataManger, &CDxfManager::handleLayerAttributeChanged);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -208,12 +192,11 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (this && m_pDxfDataManger)
 			{
                 connect(m_pDxfDataManger,&CDxfManager::signalFileName, this, &ShrikeDxf::handleShowDocName);
-				//connect(m_pDxfDataManger,&CDxfManger::signalCurrentLayer,this,&ShrikeDxf::handleShowLayerName);
+
 			}
 			if (m_pCreateEntityWidget && m_pDxfDataManger)
 			{
-				//connect(m_pCreateEntityWidget,&CCreateEntityWidget::signalMouseStatus,m_pDxfDataManger, &CDxfManger::handleMouseStatus);
-				//connect(m_pDxfDataManger,&CDxfManger::signalChangeCreateBtnStatus,m_pCreateEntityWidget,&CCreateEntityWidget::handleChangeCreateBtnStatus);
+
 			}
 			if (m_pCreateEntityWidget && m_pGraphicsView)
 			{

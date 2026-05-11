@@ -19,6 +19,7 @@ CDxfGraphicsScene::~CDxfGraphicsScene()
 
 void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
 {
+    m_pCurrentLayers = &(mapDxf);
     ClearScene();
     QRectF bounds = CalculateSceneBounds(mapDxf);
     if (bounds.isNull() || bounds.width() == 0 || bounds.height() == 0)
@@ -84,11 +85,7 @@ void CDxfGraphicsScene::ClearScene()
 
 void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
 {
-    QColor color = Qt::black;
-    const auto& colorMap = DxfColorMap::getColorMap();
-    auto it = colorMap.find(point.prop.color);
-    if (it != colorMap.end())
-        color = it->second;
+    QColor color = GetEntityColor(point.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true); //线宽不受缩放影响
     qreal x = point.point.x();
@@ -679,15 +676,29 @@ double CDxfGraphicsScene::BSplineBasis(int i, int k, double u, const std::vector
 
 QColor CDxfGraphicsScene::GetEntityColor(const EntityProp& prop) const
 {
-    QColor color = Qt::black;
-    if (prop.color == 256) {
+    if (!m_pCurrentLayers) return Qt::black;
 
-        return Qt::black;
+    if (prop.color == 256)
+    {
+        auto it = m_pCurrentLayers->find(prop.layer);
+        if (it != m_pCurrentLayers->end())
+        {
+            QColor layerColor = it->second.color;
+            // 如果图层颜色是白色或极浅色,在浅色背景下显示为黑色
+            if (layerColor == Qt::white || layerColor.lightness() > 200)
+                return Qt::black;
+            return layerColor;
+        }
+        return Qt::black;   // 找不到图层,兜底黑色
     }
+    // ── BYBLOCK（0）:用默认黑色 ──
+    if (prop.color == 0)
+        return Qt::black;
+    // ── ACI 索引色（1-255） ──
     const auto& colorMap = DxfColorMap::getColorMap();
     auto it = colorMap.find(prop.color);
     if (it != colorMap.end())
-        color = it->second;
-    return color;
+        return it->second;
+    return Qt::black;
 }
 

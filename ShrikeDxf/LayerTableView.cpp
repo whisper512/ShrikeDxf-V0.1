@@ -57,15 +57,6 @@ void CLayerTableViewManger::handleTableViewClicked(const QModelIndex& index)
 		}
 	}
 
-	// 获取点击行的图层名称并发送信号
-	QAbstractItemModel* pModel = m_pTableView->model();
-	if (pModel)
-	{
-		QModelIndex nameIndex = pModel->index(index.row(), 1);
-		QString strLayerName = pModel->data(nameIndex).toString(); // 获取图层名称
-		emit signalChangeCurrentLayer(strLayerName);
-	}
-
 	//通知模型已经修改,刷新
 	emit signalLayerModelChanged();
 }

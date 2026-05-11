@@ -36,12 +36,12 @@ public:
 public:
 	//缩放比例
 	double m_scale;
-
-public:
-    //graphics鼠标当前状态
+	//graphics鼠标当前状态
 	enumMouseStateInView m_MouseState = enumMouseStateInView_None;
 
 
+private:
+	const std::map<std::string, stuLayer>* m_pCurrentLayers = nullptr;
 
 private:
 	void DrawPoint(const EntityPoint& point);
