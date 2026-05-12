@@ -7,6 +7,7 @@
 #include <QScrollBar>
 #include <QLabel>
 
+#include "Tools.h"
 #include "DxfGraphicsScene.h"
 #include "DxfStruct.h"
 #include "Ruler.h"
@@ -113,9 +114,10 @@ public slots:
 	void handleLockZoom(bool bChecked);
 	// operate动作
 	void handlePasteEntity();
-	// preview动作s
-	void handleEndDrawingPreview();
-	void handleStartPreviewEntity(int index);
+	// 在绘制预览新图元
+	void handleMouseStatusChanged(enumMouseStateInView mouseState);
+
+
 
 protected:
 	void wheelEvent(QWheelEvent* pEvent) override;

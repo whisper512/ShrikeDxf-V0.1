@@ -204,6 +204,7 @@ void CDxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
     {
         m_DxfTools->SetMouseStatus(mouseState);
     }
+    emit signalMouseStatusChanged(mouseState);
 }
 
 void CDxfManager::handleMousePos(QPointF pos)

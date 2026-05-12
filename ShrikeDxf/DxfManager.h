@@ -92,6 +92,8 @@ signals:
 	void signalRefreshLayerTable(CDxfLayerTableviewModel* pModel);
 	// 通知当前工作图层
 	void signalCurrentLayerChanged(const QString& strLayer);
+	//通知graphicsview新建图元
+	void signalMouseStatusChanged(enumMouseStateInView mouseState);
 
  public slots:
 	 // treeview选中图元发生变化

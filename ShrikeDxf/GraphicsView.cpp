@@ -138,16 +138,6 @@ void CGraphicsView::InitGraphicsViewAction()
     connect(m_pActionFilpX, &QAction::toggled, this, &CGraphicsView::handleFilpAlongX);
     connect(m_pActionFilpY, &QAction::toggled, this, &CGraphicsView::handleFilpAlongY);
     connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
-
-    //************
-    m_pActionPasteEntity = new QAction("Paste", this);
-    m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
-    connect(m_pActionPasteEntity,&QAction::triggered,this,&CGraphicsView::handlePasteEntity);
-
-    //************
-    m_pActionEndDrawing = new QAction("End Drawing", this);
-    m_pGraphicsPreviewMenu->addAction(m_pActionEndDrawing);
-    connect(m_pActionEndDrawing, &QAction::triggered, this, &CGraphicsView::handleEndDrawingPreview);
 }
 
 
@@ -225,23 +215,18 @@ void CGraphicsView::handlePasteEntity()
     emit signalPaste(mapToScene(m_pointRightClickPos));
 }
 
-void CGraphicsView::handleEndDrawingPreview()
+void CGraphicsView::handleMouseStatusChanged(enumMouseStateInView mouseState)
 {
-    m_bDrawingPreview = false;
-    emit signalEndDrawingPreview();
-}
-
-void CGraphicsView::handleStartPreviewEntity(int index)
-{
-    if (index != -1)
+    if (mouseState == enumMouseStateInView::enumMouseState_Polyline)
     {
-        m_bDrawingPreview = true;
+        disconnect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
     }
     else
     {
-        m_bDrawingPreview = false;
+        connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
     }
 }
+
 
 
 void CGraphicsView::wheelEvent(QWheelEvent* pEvent)
