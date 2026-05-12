@@ -37,6 +37,12 @@ void CCreateEntityWidget::SetIconAndTip()
 	ui.toolButton_Center_Endpoint_Arc->setIcon(QIcon(":/ShrikeDxf/res/Center-Endpoint-Arc.png"));
 	ui.toolButton_ThreePoint_Arc->setIcon(QIcon(":/ShrikeDxf/res/Three-Point-Arc.png"));
     ui.toolButton_Polyline->setIcon(QIcon(":/ShrikeDxf/res/Polyline.png"));
+    ui.toolButton_Ellipse->setIcon(QIcon(":/ShrikeDxf/res/Ellipse.png"));
+	ui.toolButton_SplineFitPoint->setIcon(QIcon(":/ShrikeDxf/res/Spline.png"));
+	ui.toolButton_SplineControlPoint->setIcon(QIcon(":/ShrikeDxf/res/Spline_ControlPt.png"));
+    ui.toolButton_Text->setIcon(QIcon(":/ShrikeDxf/res/Text.png"));
+	ui.toolButton_Mtext->setIcon(QIcon(":/ShrikeDxf/res/MText.png"));
+	ui.toolButton_Rectangle->setIcon(QIcon(":/ShrikeDxf/res/Rectangle.png"));
 
 	ui.toolButton_Mouse->setToolTip("Mouse");
     ui.toolButton_Point->setToolTip("Point");
@@ -46,6 +52,12 @@ void CCreateEntityWidget::SetIconAndTip()
     ui.toolButton_Center_Endpoint_Arc->setToolTip("Center Endpoint Arc");
     ui.toolButton_ThreePoint_Arc->setToolTip("Three Points Arc");
     ui.toolButton_Polyline->setToolTip("Polyline");
+	ui.toolButton_Ellipse->setToolTip("Ellipse");
+	ui.toolButton_Rectangle->setToolTip("Rectangle");
+	ui.toolButton_SplineFitPoint->setToolTip("Spline Fit Point");
+    ui.toolButton_SplineControlPoint->setToolTip("Spline Control Point");
+	ui.toolButton_Text->setToolTip("Text");
+    ui.toolButton_Mtext->setToolTip("Mtext");
 }
 
 void CCreateEntityWidget::ConnectBtnSignals()
@@ -58,6 +70,12 @@ void CCreateEntityWidget::ConnectBtnSignals()
     connect(ui.toolButton_Center_Endpoint_Arc, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
     connect(ui.toolButton_ThreePoint_Arc, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
     connect(ui.toolButton_Polyline, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Ellipse, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Rectangle, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_SplineFitPoint, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_SplineControlPoint, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Text, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+	connect(ui.toolButton_Mtext, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
 }
 
 void CCreateEntityWidget::RefreshBtn()
@@ -74,37 +92,27 @@ void CCreateEntityWidget::AdjustBtn()
 		int iconSize = CurWidth * 0.5;
 		QSize icon(iconSize, iconSize);
 
-		ui.toolButton_Mouse->setMinimumSize(CurWidth, CurWidth);
-		ui.toolButton_Mouse->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_Mouse->setIconSize(icon);
+		auto setButtonSize = [CurWidth, icon](QToolButton* btn) {
+			if (!btn) return;
+			btn->setMinimumSize(CurWidth, CurWidth);
+			btn->setMaximumSize(CurWidth, CurWidth);
+			btn->setIconSize(icon);
+			};
 
-		ui.toolButton_Point->setMinimumSize(CurWidth, CurWidth);
-		ui.toolButton_Point->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_Point->setIconSize(icon);
-
-		ui.toolButton_Line->setMinimumSize(CurWidth, CurWidth);
-        ui.toolButton_Line->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_Line->setIconSize(icon);
-
-		ui.toolButton_Center_Radius_Circle->setMinimumSize(CurWidth, CurWidth);
-        ui.toolButton_Center_Radius_Circle->setMaximumSize(CurWidth, CurWidth);
-		ui.toolButton_Center_Radius_Circle->setIconSize(icon);
-
-        ui.toolButton_Center_Diameter_Circle->setMinimumSize(CurWidth, CurWidth);
-        ui.toolButton_Center_Diameter_Circle->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_Center_Diameter_Circle->setIconSize(icon);
-
-        ui.toolButton_Center_Endpoint_Arc->setMinimumSize(CurWidth, CurWidth);
-		ui.toolButton_Center_Endpoint_Arc->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_Center_Endpoint_Arc->setIconSize(icon);
-
-        ui.toolButton_ThreePoint_Arc->setMinimumSize(CurWidth, CurWidth);
-        ui.toolButton_ThreePoint_Arc->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_ThreePoint_Arc->setIconSize(icon);
-
-        ui.toolButton_Polyline->setMinimumSize(CurWidth, CurWidth);
-        ui.toolButton_Polyline->setMaximumSize(CurWidth, CurWidth);
-        ui.toolButton_Polyline->setIconSize(icon);
+		setButtonSize(ui.toolButton_Mouse);
+		setButtonSize(ui.toolButton_Point);
+		setButtonSize(ui.toolButton_Line);
+		setButtonSize(ui.toolButton_Center_Radius_Circle);
+		setButtonSize(ui.toolButton_Center_Diameter_Circle);
+		setButtonSize(ui.toolButton_Center_Endpoint_Arc);
+		setButtonSize(ui.toolButton_ThreePoint_Arc);
+		setButtonSize(ui.toolButton_Polyline);
+		setButtonSize(ui.toolButton_Ellipse);
+		setButtonSize(ui.toolButton_Rectangle);
+		setButtonSize(ui.toolButton_SplineFitPoint);
+		setButtonSize(ui.toolButton_SplineControlPoint);
+		setButtonSize(ui.toolButton_Text);
+		setButtonSize(ui.toolButton_Mtext);
 	}
 }
 

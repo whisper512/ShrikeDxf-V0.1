@@ -9,4 +9,10 @@ enum class enumMouseStateInView
 	enumMouseState_ArcCenterEndpoint,
 	enumMouseState_ArcThreePoints,
 	enumMouseState_Polyline,
+	enumMouseState_EllipseCenterRadius,
+	enumMouseState_Rectangle,
+    enumMouseState_SplineFitPoint,
+    enumMouseState_SplineControlPoint,
+	enumMouseState_Text,
+    enumMouseState_MText,
 };

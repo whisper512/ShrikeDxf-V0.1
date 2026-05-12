@@ -16,5 +16,8 @@
         <file>res/Hatch.png</file>
         <file>res/Spline.png</file>
         <file>res/Text.png</file>
+        <file>res/MText.png</file>
+        <file>res/Rectangle.png</file>
+        <file>res/Spline_ControlPt.png</file>
     </qresource>
 </RCC>
