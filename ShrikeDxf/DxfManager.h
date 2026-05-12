@@ -10,7 +10,7 @@
 #include "DxfEditor.h"
 #include "DxfStruct.h"
 #include "DxfWriter.h"
-
+#include "DxfTools.h"
 
 //dxf管理类
 class CDxfManager : public QObject
@@ -40,6 +40,9 @@ public:
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 	}
 
+	// 获取当前工作图层
+	const QString& GetCurrentLayer() const { return m_strCurrentLayer; }
+
 public:
 	bool LoadDxfFile(const QString& strPath);
 	bool SaveDxfFile(const QString& strPath);
@@ -62,8 +65,12 @@ private:
 	CDxfGraphicsScene m_DxfGraphicsScene;
 	// dxf编辑类
 	CDxfEditor m_DxfEditor;
+	// dxf工具类
+	std::unique_ptr<CDxfTools> m_DxfTools;
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
+	// 当前工作图层
+    QString m_strCurrentLayer;
 	
 public:
 	// 同步图层模型数据到dxf数据结构
@@ -83,7 +90,8 @@ signals:
 	void signalFileName(const QString& filePath);
 	// 更新图层属性
 	void signalRefreshLayerTable(CDxfLayerTableviewModel* pModel);
-
+	// 通知当前工作图层
+	void signalCurrentLayerChanged(const QString& strLayer);
 
  public slots:
 	 // treeview选中图元发生变化
@@ -104,4 +112,11 @@ signals:
 
 	 // 图层属性发生变化
 	 void handleLayerAttributeChanged();
+
+	 // 新建图元
+	 void handleOnMouseStatusChanged(enumMouseStateInView mouseState);
+	 // 鼠标移动
+	 void handleMousePos(QPointF pos);
+	 // 鼠标左键点击
+	 void handleMouseLeftButtonClicked(QPointF pos);
 };

@@ -19,7 +19,7 @@ CDxfGraphicsScene::~CDxfGraphicsScene()
 
 void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
 {
-    m_pCurrentLayers = &(mapDxf);
+    m_pCurrentLayersEntitiesData = &(mapDxf);
     ClearScene();
     QRectF bounds = CalculateSceneBounds(mapDxf);
     if (bounds.isNull() || bounds.width() == 0 || bounds.height() == 0)
@@ -78,9 +78,36 @@ void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
     setSceneRect(bounds);
 }
 
+
+
 void CDxfGraphicsScene::ClearScene()
 {
     clear();
+    m_previewItems.clear();
+}
+
+void CDxfGraphicsScene::AddPreviewPoint(QPointF pos)
+{
+    // 直接用绿色虚线画一个预览十字
+    QPen pen(QColor(0, 255, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+    qreal s = 1.0 / m_scale;   // 十字大小跟随缩放
+    qreal x = pos.x();
+    qreal y = pos.y();
+    // 横线
+    m_previewItems.append(addLine(x - s, y, x + s, y, pen));
+    // 竖线
+    m_previewItems.append(addLine(x, y - s, x, y + s, pen));
+}
+
+void CDxfGraphicsScene::ClearPreview()
+{
+    for (auto* item : m_previewItems)
+    {
+        removeItem(item);
+        delete item;
+    }
+    m_previewItems.clear();
 }
 
 void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
@@ -200,6 +227,7 @@ void CDxfGraphicsScene::DrawSceneBackground(QRectF& rect)
     pen.setStyle(Qt::DashLine);
     addRect(rect, pen);
 }
+
 
 
 void CDxfGraphicsScene::DrawLWPolyline(const EntityLWPolyline& polyline)
@@ -336,8 +364,8 @@ void CDxfGraphicsScene::DrawPolyline(const EntityPolyline& polyline)
 
 void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
 {
-    if (!spline.prop.visible ||
-        (spline.controlPoints.empty() && spline.fitPoints.empty())) return;
+    if (!spline.prop.visible ||(spline.controlPoints.empty() && spline.fitPoints.empty())) return;
+
     QColor color = GetEntityColor(spline.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
@@ -676,12 +704,12 @@ double CDxfGraphicsScene::BSplineBasis(int i, int k, double u, const std::vector
 
 QColor CDxfGraphicsScene::GetEntityColor(const EntityProp& prop) const
 {
-    if (!m_pCurrentLayers) return Qt::black;
+    if (!m_pCurrentLayersEntitiesData) return Qt::black;
 
     if (prop.color == 256)
     {
-        auto it = m_pCurrentLayers->find(prop.layer);
-        if (it != m_pCurrentLayers->end())
+        auto it = m_pCurrentLayersEntitiesData->find(prop.layer);
+        if (it != m_pCurrentLayersEntitiesData->end())
         {
             QColor layerColor = it->second.color;
             // 如果图层颜色是白色或极浅色,在浅色背景下显示为黑色

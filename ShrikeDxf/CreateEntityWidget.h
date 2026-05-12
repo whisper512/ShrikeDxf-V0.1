@@ -20,7 +20,7 @@ private:
 	Ui::CCreateEntityWidgetClass ui;
 	QWidget* m_pMainWnd;
 	//当前选择的按钮
-	enumMouseStateInView m_iSlectedIndex;
+	enumMouseStateInView m_eSlectedIndex;
 
 	void SetIconAndTip();
 	void AdjustBtn();
@@ -34,7 +34,7 @@ private slots:
 	void OnToolBtnClicked();
 
 public slots:
-	void handleChangeCreateBtnStatus(int index);
+	
 
 protected:
 	void resizeEvent(QResizeEvent *event) override;

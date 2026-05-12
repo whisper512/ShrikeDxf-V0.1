@@ -1,4 +1,5 @@
 ﻿#include "DxfData.h"
+#include "DxfGraphicsScene.h"
 
 CDxfData::CDxfData()
 {
@@ -103,6 +104,13 @@ std::vector<std::string> CDxfData::GetAllLayerNames() const
 size_t CDxfData::GetLayerCount() const
 {
     return m_document.layers.size();
+}
+
+QString CDxfData::GetFirstLayerName() const
+{
+    if (m_document.layers.empty())
+        return QString();
+    return QString::fromStdString(m_document.layers.begin()->first);
 }
 
 stuLayer& CDxfData::EnsureLayer(const std::string& name)
@@ -274,13 +282,6 @@ const stuSelectedEntity& CDxfData::GetSelectedEntity() const
 // 预览
 // =========================================================================
 
-void CDxfData::SetPreviewEntity(const stuPreviewEntity& prev)
-{
-}
-
-void CDxfData::ClearPreview()
-{
-}
 
 stuPreviewEntity& CDxfData::GetPreviewEntity()
 {

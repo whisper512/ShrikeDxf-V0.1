@@ -11,8 +11,8 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
 {
     m_DxfData = std::make_unique<CDxfData>();
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
-
     m_DxfEditor.m_DxfData = GetDxfData();
+    m_DxfTools = std::make_unique<CDxfTools>(m_DxfData.get(), &m_DxfGraphicsScene, this);
 }
 
 CDxfManager::~CDxfManager()
@@ -44,6 +44,9 @@ bool CDxfManager::LoadDxfFile(const QString& strPath)
     emit signalRefreshLayerTable(&m_DxfLayerTableviewModel);
     // 更新文件路径
     emit signalFileName(strPath);
+    // 更新当前图层
+    m_strCurrentLayer = m_DxfData->GetFirstLayerName();
+    emit signalCurrentLayerChanged(m_strCurrentLayer);
 
     
     return true;
@@ -193,4 +196,32 @@ void CDxfManager::handleLayerAttributeChanged()
 {
     SynLayerModelToDxfData();
     RefreshScene();
+}
+
+void CDxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
+{
+    if (m_DxfTools)
+    {
+        m_DxfTools->SetMouseStatus(mouseState);
+    }
+}
+
+void CDxfManager::handleMousePos(QPointF pos)
+{
+    if (m_DxfTools)
+    {
+        m_DxfTools->SetMousePos(pos);
+    }
+}
+
+void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
+{
+    if (m_DxfTools)
+    {
+        m_DxfTools->OnGraphicsViewLeftClick(pos);
+    }
+    
+    // 更新tree的model刷新treeview
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }

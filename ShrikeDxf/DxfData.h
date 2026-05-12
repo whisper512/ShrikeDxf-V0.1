@@ -35,7 +35,7 @@ public:
     const stuLayer* GetLayer(const std::string& name) const;
     std::vector<std::string> GetAllLayerNames() const;
     size_t GetLayerCount() const;
-
+    QString GetFirstLayerName() const;
 
     // 确保图层存在
     stuLayer& EnsureLayer(const std::string& name);

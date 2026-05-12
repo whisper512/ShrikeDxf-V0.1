@@ -157,6 +157,8 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (m_pDxfDataManger && m_pGraphicsView)
 			{
 				connect(m_pDxfDataManger, &CDxfManager::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
+				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, m_pDxfDataManger, &CDxfManager::handleMousePos);
+				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftCLick, m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonClicked);
 			}
 			if (m_pDxfDataManger && m_pStackedWidgetManger)
 			{
@@ -181,27 +183,21 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalHatchChanged, m_pDxfDataManger, &CDxfManager::handleHatchAttributeChanged);
 				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalSplineChanged, m_pDxfDataManger, &CDxfManager::handleSplineAttributeChanged);
 			}
-			if (m_pDxfDataManger && m_pMoveBtnsWidget)
-			{
-
-			}
 			if (this && m_pGraphicsView)
 			{
-				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, this, &ShrikeDxf::handleMousePos);
+				connect(m_pGraphicsView, &CGraphicsView::signalMousePosString, this, &ShrikeDxf::handleMousePos);
 			}
 			if (this && m_pDxfDataManger)
 			{
                 connect(m_pDxfDataManger,&CDxfManager::signalFileName, this, &ShrikeDxf::handleShowDocName);
-
+				connect(m_pDxfDataManger, &CDxfManager::signalCurrentLayerChanged, this, &ShrikeDxf::handleShowLayerName);
 			}
 			if (m_pCreateEntityWidget && m_pDxfDataManger)
 			{
-
-			}
-			if (m_pCreateEntityWidget && m_pGraphicsView)
-			{
+				connect(m_pCreateEntityWidget,&CCreateEntityWidget::signalMouseStatus,m_pDxfDataManger, &CDxfManager::handleOnMouseStatusChanged);
 				
 			}
+			
 
 		});
 }

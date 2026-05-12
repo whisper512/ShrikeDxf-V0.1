@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <QString>
+#include <QList>
 #include <map>
 #include <vector>
 #include < QGraphicsScene>
@@ -18,9 +19,12 @@ public:
 
 	//获取数据并且绘制
 	void DxfDraw(const std::map<std::string, stuLayer>& mapDxf);
-	void ClearScene();
+	
 	double GetScale() { return m_scale; }
+	void ClearScene();
 
+	void ClearPreview();
+	void AddPreviewPoint(QPointF pos);
 
 
 public:
@@ -31,9 +35,13 @@ public:
 
 
 private:
-	const std::map<std::string, stuLayer>* m_pCurrentLayers = nullptr;
+	const std::map<std::string, stuLayer>* m_pCurrentLayersEntitiesData = nullptr;
+
+	// 预览图元存储列表
+	QList<QGraphicsItem*> m_previewItems;
 
 private:
+	// 绘制图元
 	void DrawPoint(const EntityPoint& point);
     void DrawLine(const EntityLine& line);
     void DrawCircle(const EntityCircle& circle);
@@ -46,8 +54,8 @@ private:
     void DrawEllipse(const EntityEllipse& ellipse);
     void DrawSolid(const EntitySolid& solid);
     void DrawHatch(const EntityHatch& hatch);
-
 	void DrawSceneBackground(QRectF& rect);
+
 
 private:
 	// 计算场景边界

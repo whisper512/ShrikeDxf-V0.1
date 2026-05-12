@@ -332,7 +332,8 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
 
     QPointF posScene = mapToScene(pEvent->pos());
     QString strPos = QString("X:%1 Y:%2").arg(posScene.x(),0,'f',3).arg(posScene.y(),0,'f',3);
-    emit signalMousePos(strPos);
+    emit signalMousePosString(strPos);
+    emit signalMousePos(posScene);
     emit signalGraphicsViewMouseMove(posScene);
 
     if (m_bDrag && (pEvent->buttons() & Qt::LeftButton))

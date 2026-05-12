@@ -4,7 +4,7 @@
 CCreateEntityWidget::CCreateEntityWidget(QWidget* parent)
 	: QWidget(parent),
 	m_pMainWnd(parent),
-	m_iSlectedIndex(enumMouseStateInView::enumMouseState_None)
+	m_eSlectedIndex(enumMouseStateInView::enumMouseState_None)
 {
 	ui.setupUi(this);
 }
@@ -108,6 +108,13 @@ void CCreateEntityWidget::AdjustBtn()
 	}
 }
 
+void CCreateEntityWidget::resizeEvent(QResizeEvent* event)
+{
+	QWidget::resizeEvent(event);
+	AdjustBtn();
+}
+
+
 void CCreateEntityWidget::OnToolBtnClicked()
 {
 	QToolButton* pBtn = qobject_cast<QToolButton*>(sender());
@@ -115,51 +122,38 @@ void CCreateEntityWidget::OnToolBtnClicked()
 
 	if (pBtn == ui.toolButton_Mouse)
 	{
-		m_iSlectedIndex = enumMouseStateInView::enumMouseState_None;
+		m_eSlectedIndex = enumMouseStateInView::enumMouseState_None;
 	}
 	else if (pBtn == ui.toolButton_Point)
 	{
-        m_iSlectedIndex = enumMouseStateInView::enumMouseState_Point;
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Point;
 	}
 	else if (pBtn == ui.toolButton_Line)
 	{
-        m_iSlectedIndex = enumMouseStateInView::enumMouseState_Line;
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Line;
 	}
 	else if(pBtn == ui.toolButton_Center_Radius_Circle)
 	{
-		m_iSlectedIndex = enumMouseStateInView::enumMouseState_CircleCenterRadius;
+		m_eSlectedIndex = enumMouseStateInView::enumMouseState_CircleCenterRadius;
 	}
 	else if (pBtn == ui.toolButton_Center_Diameter_Circle)
 	{
-		m_iSlectedIndex = enumMouseStateInView::enumMouseState_CircleDiameter;
+		m_eSlectedIndex = enumMouseStateInView::enumMouseState_CircleDiameter;
 	}
 	else if (pBtn == ui.toolButton_Center_Endpoint_Arc)
 	{
-		m_iSlectedIndex = enumMouseStateInView::enumMouseState_ArcCenterEndpoint;
+		m_eSlectedIndex = enumMouseStateInView::enumMouseState_ArcCenterEndpoint;
 	}
 	else if (pBtn == ui.toolButton_ThreePoint_Arc)
 	{
-        m_iSlectedIndex = enumMouseStateInView::enumMouseState_ArcThreePoints;
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_ArcThreePoints;
 	}
 	else if (pBtn == ui.toolButton_Polyline)
 	{
-        m_iSlectedIndex = enumMouseStateInView::enumMouseState_Polyline;
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Polyline;
 	}
-	emit signalMouseStatus(m_iSlectedIndex);
+	emit signalMouseStatus(m_eSlectedIndex);
 	RefreshBtn();
 }
 
-
-void CCreateEntityWidget::handleChangeCreateBtnStatus(int index)
-{
-	m_iSlectedIndex = static_cast<enumMouseStateInView>(index);
-    RefreshBtn();
-	emit signalMouseStatus(m_iSlectedIndex);
-}
-
-void CCreateEntityWidget::resizeEvent(QResizeEvent* event)
-{
-	QWidget::resizeEvent(event);
-	AdjustBtn();
-}
 

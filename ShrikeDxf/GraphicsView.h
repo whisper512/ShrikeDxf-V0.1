@@ -87,11 +87,15 @@ signals:
 	// 粘贴信号
 	void signalPaste(QPointF pos);
 	// 鼠标位置,用来显示在label
-	void signalMousePos(QString strPos);
+	void signalMousePosString(QString strPos);
+	// 鼠标位置
+	void signalMousePos(QPointF pos);
+	// 鼠标移动
 	void signalGraphicsViewMouseMove(QPointF pos);
+	// 鼠标左键点击
 	void signalGraphicsViewLeftCLick(QPointF pos);
+	// 鼠标右键点击
 	void signalGraphicsViewRightClick(QPointF pos);
-
 	// preview信号
 	void signalEndDrawingPreview();
 
