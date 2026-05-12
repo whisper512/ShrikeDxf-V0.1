@@ -225,3 +225,15 @@ void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
+
+void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
+{
+    if (m_DxfTools)
+    {
+        m_DxfTools->OnGraphicsViewRightClick(pos);
+    }
+
+    // 更新tree的model刷新treeview
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    emit signalRefreshTreeview(&m_DxfTreeviewModel);
+}

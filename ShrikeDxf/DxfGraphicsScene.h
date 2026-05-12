@@ -27,6 +27,8 @@ public:
 	void AddPreviewPoint(QPointF pos);
 	void AddPreviewLine(QPointF p1, QPointF p2);
 	void AddPreviewCircle(QPointF center, qreal radius);
+	void AddPreviewArc(QPointF center, qreal radius, qreal startAngle, qreal endAngle);
+	void AddPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos);
 
 public:
 	//缩放比例

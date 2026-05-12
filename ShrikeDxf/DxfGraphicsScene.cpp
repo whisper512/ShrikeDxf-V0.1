@@ -127,6 +127,51 @@ void CDxfGraphicsScene::AddPreviewCircle(QPointF center, qreal radius)
             radius * 2, radius * 2, pen));
 }
 
+void CDxfGraphicsScene::AddPreviewArc(QPointF center, qreal radius, qreal startAngle, qreal endAngle)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+    QPainterPath path;
+    qreal cx = center.x();
+    qreal cy = center.y();
+    // 弧度转度，处理 Qt 顺时针为正的坐标系统
+    qreal startDeg = startAngle * 180.0 / M_PI;
+    qreal sweepDeg = (endAngle - startAngle) * 180.0 / M_PI;
+    QRectF rect(cx - radius, cy - radius, radius * 2, radius * 2);
+    path.arcMoveTo(rect, -startDeg);
+    path.arcTo(rect, -startDeg, -sweepDeg);
+    m_previewItems.append(addPath(path, pen));
+}
+
+void CDxfGraphicsScene::AddPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+    // 画已确定的线段
+    for (int i = 0; i < points.size() - 1; ++i)
+    {
+        m_previewItems.append(
+            addLine(points[i].x(), points[i].y(),
+                points[i + 1].x(), points[i + 1].y(), pen));
+    }
+    // 画从最后一个点连接到鼠标位置的预览线
+    if (!points.isEmpty())
+    {
+        m_previewItems.append(
+            addLine(points.last().x(), points.last().y(),
+                mousePos.x(), mousePos.y(), pen));
+    }
+    // 在每个已确定的顶点画预览十字
+    for (const auto& pt : points)
+    {
+        qreal s = 1.0 / m_scale;
+        m_previewItems.append(
+            addLine(pt.x() - s, pt.y(), pt.x() + s, pt.y(), pen));
+        m_previewItems.append(
+            addLine(pt.x(), pt.y() - s, pt.x(), pt.y() + s, pen));
+    }
+}
+
 void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
 {
     QColor color = GetEntityColor(point.prop);

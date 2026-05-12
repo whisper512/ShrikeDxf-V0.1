@@ -119,4 +119,6 @@ signals:
 	 void handleMousePos(QPointF pos);
 	 // 鼠标左键点击
 	 void handleMouseLeftButtonClicked(QPointF pos);
+	 // 鼠标右键点击
+     void handleMouseRightButtonClicked(QPointF pos);
 };

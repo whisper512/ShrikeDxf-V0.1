@@ -3,6 +3,8 @@
 #define ENTITIES_H
 
 #include <QPointF>
+#include <QtMath> 
+#include <QLineF>
 #include <string>
 #include <vector>
 #include <variant>
