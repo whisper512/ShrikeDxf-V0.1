@@ -25,7 +25,8 @@ public:
 
 	void ClearPreview();
 	void AddPreviewPoint(QPointF pos);
-
+	void AddPreviewLine(QPointF p1, QPointF p2);
+	void AddPreviewCircle(QPointF center, qreal radius);
 
 public:
 	//缩放比例

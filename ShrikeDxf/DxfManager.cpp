@@ -210,7 +210,7 @@ void CDxfManager::handleMousePos(QPointF pos)
 {
     if (m_DxfTools)
     {
-        m_DxfTools->SetMousePos(pos);
+        m_DxfTools->OnMouseMove(pos);
     }
 }
 

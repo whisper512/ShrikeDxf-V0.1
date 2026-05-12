@@ -18,13 +18,16 @@ public:
     // 设置当前工具
     void SetMouseStatus(enumMouseStateInView mouseState);
     // 鼠标移动
-    void SetMousePos(QPointF scenePos);
+    void OnMouseMove(QPointF scenePos);
     // 鼠标左键点击
     void OnGraphicsViewLeftClick(QPointF scenePos);
 
 private:
     enumMouseStateInView m_eCurrentTool = enumMouseStateInView::enumMouseState_None;
     int m_step = 0;
+
+    QPointF m_ptStart;
+
     CDxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
 };

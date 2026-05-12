@@ -86,10 +86,20 @@ void CDxfGraphicsScene::ClearScene()
     m_previewItems.clear();
 }
 
+void CDxfGraphicsScene::ClearPreview()
+{
+    for (auto* item : m_previewItems)
+    {
+        removeItem(item);
+        delete item;
+    }
+    m_previewItems.clear();
+}
+
 void CDxfGraphicsScene::AddPreviewPoint(QPointF pos)
 {
-    // 直接用绿色虚线画一个预览十字
-    QPen pen(QColor(0, 255, 0), 1.0 / m_scale, Qt::DotLine);
+    // 直接用红色虚线画一个预览十字
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
     qreal s = 1.0 / m_scale;   // 十字大小跟随缩放
     qreal x = pos.x();
@@ -100,14 +110,21 @@ void CDxfGraphicsScene::AddPreviewPoint(QPointF pos)
     m_previewItems.append(addLine(x, y - s, x, y + s, pen));
 }
 
-void CDxfGraphicsScene::ClearPreview()
+void CDxfGraphicsScene::AddPreviewLine(QPointF p1, QPointF p2)
 {
-    for (auto* item : m_previewItems)
-    {
-        removeItem(item);
-        delete item;
-    }
-    m_previewItems.clear();
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+    m_previewItems.append(
+        addLine(p1.x(), p1.y(), p2.x(), p2.y(), pen));
+}
+
+void CDxfGraphicsScene::AddPreviewCircle(QPointF center, qreal radius)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+    m_previewItems.append(
+        addEllipse(center.x() - radius, center.y() - radius,
+            radius * 2, radius * 2, pen));
 }
 
 void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
