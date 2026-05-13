@@ -26,7 +26,9 @@ const QString& CDxfTools::GetCurrentLayer() const
 void CDxfTools::SetMouseStatus(enumMouseStateInView mouseState)
 {
     if (m_pScene)
+    {
         m_pScene->ClearPreview();
+    }
     m_eCurrentTool = mouseState;
     m_step = 0;
     m_vecPolyPoints.clear();
@@ -155,16 +157,16 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewRectangle(m_ptStart, scenePos);
         }
     }
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineFitPoint)
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineFitPoint)        // 拟合点样条预览
     {
         if (m_step >= 1 && !m_vecSplinePoints.isEmpty())
         {
             m_pScene->ClearPreview();
             m_pScene->AddPreviewSplineFit(m_vecSplinePoints, scenePos);
         }
-        }
+    }
         // === 控制点样条预览 ===
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineControlPoint)
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineControlPoint)    // 控制点样条预览
     {
         if (m_step >= 1 && !m_vecSplinePoints.isEmpty())
         {
@@ -172,7 +174,7 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewSplineControl(m_vecSplinePoints, scenePos);
         }
     }
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Text)
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Text)                   // 文本预览
     {
         if (m_step == 1)
         {
@@ -180,8 +182,7 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewTextRect(m_ptStart, scenePos);
         }
     }
-        // 多行文本预览
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_MText)
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_MText)                  // 多行文本预览
     {
         if (m_step == 1)
         {
@@ -199,7 +200,6 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
     {
     case enumMouseStateInView::enumMouseState_None:
         break;
-
     case enumMouseStateInView::enumMouseState_Point:                    // 画点
     {
         std::string layerName = GetCurrentLayer().toStdString();
@@ -215,18 +215,15 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
     }
     case enumMouseStateInView::enumMouseState_Line:                      // 画线
     {
-        if (m_step == 0)
+        if (m_step == 0)                                                 // 第一步:记录起点
         {
-            // 第一步:记录起点
             m_ptStart = scenePos;
             m_step = 1;
-            // 在起点处画一个预览点,提示已选起点
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
-        else if (m_step == 1)
+        else if (m_step == 1)                                            // 第二步:终点点击,创建实际线段
         {
-            // 第二步:终点点击,创建实际线段
             std::string layerName = GetCurrentLayer().toStdString();
             EntityLine line;
             line.prop.layer = layerName;
@@ -244,18 +241,15 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
     }
     case enumMouseStateInView::enumMouseState_CircleCenterRadius:       // 圆心-半径画圆
     {
-        if (m_step == 0)
+        if (m_step == 0)                                                // 第一步:记录圆心
         {
-            // 第一步:记录圆心
             m_ptStart = scenePos;
             m_step = 1;
-            // 在圆心处画预览十字
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
-        else if (m_step == 1)
+        else if (m_step == 1)                                           // 第二步:点击确定半径,创建实际圆
         {
-            // 第二步:点击确定半径,创建实际圆
             std::string layerName = GetCurrentLayer().toStdString();
             qreal radius = QLineF(m_ptStart, scenePos).length();
             EntityCircle circle;
@@ -271,7 +265,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_CircleDiameter:           // 直径画圆 
+    case enumMouseStateInView::enumMouseState_CircleDiameter:            // 直径画圆 
     {
         if (m_step == 0)
         {
@@ -305,26 +299,22 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
     {
         if (m_step == 0)
         {
-            // 第一步:点击圆心
-            m_ptStart = scenePos;
+            m_ptStart = scenePos;                                       // 第一步:点击圆心
             m_step = 1;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
         else if (m_step == 1)
         {
-            // 第二步:点击起点,确定半径和起始角度
-            m_ptMid = scenePos;
+            m_ptMid = scenePos;                                         // 第二步:点击起点,确定半径和起始角度
             m_step = 2;
-            // 在起点画预览十字,并绘制半径线和圆
             qreal radius = QLineF(m_ptStart, m_ptMid).length();
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptMid);
             m_pScene->AddPreviewCircle(m_ptStart, radius);
         }
-        else if (m_step == 2)
-        {
-            // 第三步:点击终点,确定结束角度,创建弧
+        else if (m_step == 2)                                           // 第三步:点击终点,确定结束角度,创建弧
+        {   
             std::string layerName = GetCurrentLayer().toStdString();
             qreal radius = QLineF(m_ptStart, m_ptMid).length();
             qreal startAngle = atan2(m_ptMid.y() - m_ptStart.y(),
@@ -350,25 +340,22 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
     case enumMouseStateInView::enumMouseState_ArcThreePoints:           // 三点画弧
     {
         if (m_step == 0)
-        {
-            // 第一步:点击第一点(起点)
-            m_ptStart = scenePos;
+        {   
+            m_ptStart = scenePos;                                       // 第一步:点击第一点(起点)
             m_step = 1;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
         else if (m_step == 1)
         {
-            // 第二步:点击第二点(弧上一点)
-            m_ptMid = scenePos;
+            m_ptMid = scenePos;                                         // 第二步:点击第二点(弧上一点)
             m_step = 2;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptMid);
         }
         else if (m_step == 2)
         {
-            // 第三步:点击第三点终点,计算并创建弧
-            std::string layerName = GetCurrentLayer().toStdString();
+            std::string layerName = GetCurrentLayer().toStdString();    // 第三步:点击第三点终点,计算并创建弧
             QPointF center;
             qreal radius, startAngle, endAngle;
             if (ThreePointsToArc(m_ptStart, m_ptMid, scenePos, center, radius, startAngle, endAngle))
@@ -392,21 +379,18 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_Polyline:
+    case enumMouseStateInView::enumMouseState_Polyline:                // 多段线
     {
         if (m_step == 0)
         {
-            // 第一步:点击第一个点
-            m_vecPolyPoints.clear();
+            m_vecPolyPoints.clear();                                   // 第一步:点击第一个点
             m_vecPolyPoints.append(scenePos);
             m_step = 1;
-            // 在起点画预览十字
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(scenePos);
         }
-        else
+        else                                                           // 后续步骤:添加新顶点   
         {
-            // 后续步骤:添加新顶点
             m_vecPolyPoints.append(scenePos);
             m_step++;
             // 更新预览(画所有已确定的线段 + 新顶点十字)
@@ -415,49 +399,44 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_EllipseCenterRadius:             // 圆心+半径画椭圆
+    case enumMouseStateInView::enumMouseState_EllipseCenterRadius:      // 圆心+半径画椭圆
     {
-        if (m_step == 0)
+        if (m_step == 0)                                                // 第一步:点击中心
         {
-            // 第一步:点击中心
             m_ptStart = scenePos;
             m_step = 1;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
-        else if (m_step == 1)
+        else if (m_step == 1)                                            // 第二步:点击长轴端点
         {
-            // 第二步:点击长轴端点
             m_ptMid = scenePos;
             m_step = 2;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptMid);
         }
-        else if (m_step == 2)
+        else if (m_step == 2)                                            // 第三步:点击确定短轴比例
         {
-            // 第三步:点击确定短轴比例
             FinishEllipse(scenePos);
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_Rectangle:                          // 矩形(两点对角)
+    case enumMouseStateInView::enumMouseState_Rectangle:                  // 矩形(两点对角)
     {
-        if (m_step == 0)
+        if (m_step == 0)                                                  // 第一步：点击第一个角点
         {
-            // 第一步：点击第一个角点
             m_ptStart = scenePos;
             m_step = 1;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
-        else if (m_step == 1)
+        else if (m_step == 1)                                             // 第二步:点击对角点，完成矩形
         {
-            // 第二步：点击对角点，完成矩形
             FinishRectangle(scenePos);
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_SplineFitPoint:                 // 拟合样条
+    case enumMouseStateInView::enumMouseState_SplineFitPoint:             // 拟合点样条
     {
         if (m_step == 0)
         {
@@ -476,7 +455,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_SplineControlPoint:              // 控制点样条
+    case enumMouseStateInView::enumMouseState_SplineControlPoint:           // 控制点样条
     {
         if (m_step == 0)
         {
@@ -495,11 +474,10 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_Text:
+    case enumMouseStateInView::enumMouseState_Text:                         // 单行文本
     {
-        if (m_step == 0)
+        if (m_step == 0)                                                    // 第一步:点击插入点
         {
-            // 第一步：点击插入点
             m_ptStart = scenePos;
             m_step = 1;
             m_pScene->ClearPreview();
@@ -507,24 +485,21 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         else if (m_step == 1)
         {
-            // 第二步：点击确定文本区域，创建文本
-            FinishText(scenePos);
+            FinishText(scenePos);                                           // 第二步:点击确定文本区域，创建文本
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_MText:
+    case enumMouseStateInView::enumMouseState_MText:                        // 多行文本
     {
-        if (m_step == 0)
+        if (m_step == 0)                                                    // 第一步:点击插入点
         {
-            // 第一步：点击插入点
             m_ptStart = scenePos;
             m_step = 1;
             m_pScene->ClearPreview();
             m_pScene->AddPreviewPoint(m_ptStart);
         }
-        else if (m_step == 1)
+        else if (m_step == 1)                                               // 第二步:点击确定文本宽度，创建多行文本
         {
-            // 第二步：点击确定文本宽度，创建多行文本
             FinishMText(scenePos);
         }
         break;
@@ -535,16 +510,13 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
 }
 
 
-
-
 void CDxfTools::OnGraphicsViewRightClick(QPointF scenePos)
 {
     if (!m_pData || !m_pScene) return;
     switch (m_eCurrentTool)
     {
-    case enumMouseStateInView::enumMouseState_Polyline:
+    case enumMouseStateInView::enumMouseState_Polyline:                   // 右键:完成多段线
     {
-        // 右键:完成多段线
         if (m_step >= 1 && m_vecPolyPoints.size() >= 2)
         {
             FinishPolyline();
@@ -831,12 +803,12 @@ void CDxfTools::FinishText(QPointF scenePos)
     text.prop.color = 256;
     text.prop.visible = true;
     text.text = "Text";
-    text.style = "";
+    text.style = "STANDARD";
     text.insertPoint = m_ptStart;
     text.height = height;
     text.rotation = 0.0;
-    text.alignH = 1;  // Left
-    text.alignV = 2;  // Middle
+    text.alignH = 0;  // Left
+    text.alignV = 0;  // Middle
 
     m_pData->AddEntity(layerName, text);
 
@@ -865,7 +837,7 @@ void CDxfTools::FinishMText(QPointF scenePos)
     mtext.prop.color = 256;
     mtext.prop.visible = true;
     mtext.text = "MText";
-    mtext.style = "";
+    mtext.style = "STANDARD";
     mtext.insertPoint = m_ptStart;
     mtext.height = height;
     mtext.rotation = 0.0;

@@ -32,9 +32,9 @@ public:
     void FinishRectangle(QPointF scenePos);
     // 完成椭圆
     void FinishEllipse(QPointF scenePos);
-    // 完成样条曲线
+    // 完成样条曲线(拟合点)
     void FinishSplineFit();
-    // 完成样条曲线（控制点）
+    // 完成样条曲线(控制点)
     void FinishSplineControl();
     // 取消当前样条
     void CancelSpline();
@@ -45,6 +45,7 @@ public:
 
 private:
     enumMouseStateInView m_eCurrentTool = enumMouseStateInView::enumMouseState_None;
+    // 绘图的步骤
     int m_step = 0;
 
     QPointF m_ptStart;
