@@ -27,7 +27,11 @@ public:
     // 完成/闭合多段线
     void FinishPolyline();
     // 取消当前多段线
-    void CancelPolyline();          
+    void CancelPolyline();
+    // 完成矩形
+    void FinishRectangle(QPointF scenePos);
+    // 完成椭圆
+    void FinishEllipse(QPointF scenePos);
 
 private:
     enumMouseStateInView m_eCurrentTool = enumMouseStateInView::enumMouseState_None;

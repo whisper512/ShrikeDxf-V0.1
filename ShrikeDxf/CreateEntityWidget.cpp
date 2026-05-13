@@ -160,6 +160,31 @@ void CCreateEntityWidget::OnToolBtnClicked()
 	{
         m_eSlectedIndex = enumMouseStateInView::enumMouseState_Polyline;
 	}
+	else if (pBtn == ui.toolButton_Ellipse)
+	{
+		m_eSlectedIndex = enumMouseStateInView::enumMouseState_EllipseCenterRadius;
+	}
+	else if (pBtn == ui.toolButton_Rectangle)
+	{
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Rectangle;
+	}
+	else if (pBtn == ui.toolButton_SplineFitPoint)
+	{
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_SplineFitPoint;
+	}
+	else if (pBtn == ui.toolButton_SplineControlPoint)
+	{
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_SplineControlPoint;
+	}
+	else if (pBtn == ui.toolButton_Text)
+	{
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Text;
+	}
+	else if (pBtn == ui.toolButton_Mtext)
+	{
+        m_eSlectedIndex = enumMouseStateInView::enumMouseState_MText;
+	}
+
 	emit signalMouseStatus(m_eSlectedIndex);
 	RefreshBtn();
 }

@@ -172,6 +172,46 @@ void CDxfGraphicsScene::AddPreviewPolyline(const QVector<QPointF>& points, const
     }
 }
 
+void CDxfGraphicsScene::AddPreviewRectangle(QPointF p1, QPointF p2)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+
+    qreal x1 = p1.x(), y1 = p1.y();
+    qreal x2 = p2.x(), y2 = p2.y();
+
+    // 四条边
+    m_previewItems.append(addLine(x1, y1, x2, y1, pen));
+    m_previewItems.append(addLine(x2, y1, x2, y2, pen));
+    m_previewItems.append(addLine(x2, y2, x1, y2, pen));
+    m_previewItems.append(addLine(x1, y2, x1, y1, pen));
+}
+
+void CDxfGraphicsScene::AddPreviewEllipse(QPointF center, QPointF majorEnd, double ratio)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+
+    double majorLen = QLineF(center, majorEnd).length();
+    if (majorLen < 1e-10) return;
+    double minorLen = majorLen * ratio;
+
+    double angleRad = atan2(majorEnd.y() - center.y(), majorEnd.x() - center.x());
+
+    QPainterPath path;
+    QRectF rect(-majorLen, -minorLen, majorLen * 2, minorLen * 2);
+    path.addEllipse(rect);
+
+    QTransform tf;
+    tf.translate(center.x(), center.y());
+    tf.rotate(angleRad * 180.0 / M_PI);
+    path = tf.map(path);
+
+    m_previewItems.append(addPath(path, pen));
+}
+
+
+
 void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
 {
     QColor color = GetEntityColor(point.prop);

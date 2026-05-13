@@ -124,6 +124,36 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewPolyline(m_vecPolyPoints, scenePos);
         }
     }
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_EllipseCenterRadius)  // 中心-半径画椭圆预览
+    {
+        if (m_step == 1)
+        {
+            // 已选中心,画中心到鼠标的预览线 + 预览圆(临时)
+            m_pScene->ClearPreview();
+            qreal radius = QLineF(m_ptStart, scenePos).length();
+            m_pScene->AddPreviewLine(m_ptStart, scenePos);
+            m_pScene->AddPreviewCircle(m_ptStart, radius);
+        }
+        else if (m_step == 2)
+        {
+            // 已选第一轴端点,画完整椭圆预览
+            m_pScene->ClearPreview();
+            double majorLen = QLineF(m_ptStart, m_ptMid).length();
+            double mouseDist = QLineF(m_ptStart, scenePos).length();
+            double ratio = (majorLen > 1e-10) ? (mouseDist / majorLen) : 0.1;
+            if (ratio > 1.0) ratio = 1.0;   // 短轴不能超过长轴
+            if (ratio < 0.01) ratio = 0.01;
+            m_pScene->AddPreviewEllipse(m_ptStart, m_ptMid, ratio);
+        }
+    }
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Rectangle)           // 矩形预览 
+    {
+        if (m_step == 1)
+        {
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewRectangle(m_ptStart, scenePos);
+        }
+    }
 }
 
 void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
@@ -359,11 +389,57 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
+    case enumMouseStateInView::enumMouseState_EllipseCenterRadius:
+    {
+        if (m_step == 0)
+        {
+            // 第一步：点击中心
+            m_ptStart = scenePos;
+            m_step = 1;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(m_ptStart);
+        }
+        else if (m_step == 1)
+        {
+            // 第二步：点击长轴端点
+            m_ptMid = scenePos;
+            m_step = 2;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(m_ptMid);
+        }
+        else if (m_step == 2)
+        {
+            // 第三步：点击确定短轴比例
+            FinishEllipse(scenePos);
+        }
+        break;
+    }
+    // === 矩形（两点对角）===
+    case enumMouseStateInView::enumMouseState_Rectangle:
+    {
+        if (m_step == 0)
+        {
+            // 第一步：点击第一个角点
+            m_ptStart = scenePos;
+            m_step = 1;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(m_ptStart);
+        }
+        else if (m_step == 1)
+        {
+            // 第二步：点击对角点，完成矩形
+            FinishRectangle(scenePos);
+        }
+        break;
+    }
 
     default:
         break;
     }
 }
+
+
+
 
 void CDxfTools::OnGraphicsViewRightClick(QPointF scenePos)
 {
@@ -437,5 +513,74 @@ void CDxfTools::CancelPolyline()
     if (m_pScene)
         m_pScene->ClearPreview();
     m_vecPolyPoints.clear();
+    m_step = 0;
+}
+
+void CDxfTools::FinishEllipse(QPointF scenePos)
+{
+    if (!m_pData || !m_pScene) return;
+    if (m_eCurrentTool != enumMouseStateInView::enumMouseState_EllipseCenterRadius)
+        return;
+
+    std::string layerName = GetCurrentLayer().toStdString();
+
+    double majorLen = QLineF(m_ptStart, m_ptMid).length();
+    double mouseDist = QLineF(m_ptStart, scenePos).length();
+    double ratio = (majorLen > 1e-10) ? (mouseDist / majorLen) : 0.1;
+    if (ratio > 1.0) ratio = 1.0;
+    if (ratio < 0.01) ratio = 0.01;
+
+    EntityEllipse ellipse;
+    ellipse.prop.layer = layerName;
+    ellipse.prop.color = 256;
+    ellipse.prop.visible = true;
+    ellipse.center.setX(m_ptStart.x());
+    ellipse.center.setY(m_ptStart.y());
+    ellipse.majorAxisEndpoint.setX(m_ptMid.x() - m_ptStart.x());
+    ellipse.majorAxisEndpoint.setY(m_ptMid.y() - m_ptStart.y());
+    ellipse.ratio = ratio;
+    ellipse.startParam = 0.0;
+    ellipse.endParam = 2.0 * M_PI;
+
+    m_pData->AddEntity(layerName, ellipse);
+
+    m_pScene->ClearPreview();
+    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_step = 0;
+}
+
+void CDxfTools::FinishRectangle(QPointF scenePos)
+{
+    if (!m_pData || !m_pScene) return;
+    if (m_eCurrentTool != enumMouseStateInView::enumMouseState_Rectangle)
+        return;
+
+    std::string layerName = GetCurrentLayer().toStdString();
+
+    qreal x1 = m_ptStart.x(), y1 = m_ptStart.y();
+    qreal x2 = scenePos.x(), y2 = scenePos.y();
+
+    EntityLWPolyline poly;
+    poly.prop.layer = layerName;
+    poly.prop.color = 256;
+    poly.prop.visible = true;
+    poly.flags = 1;  // 闭合
+
+    // 四个顶点：左下/右下/右上/左上（或任意顺时针/逆时针顺序）
+    PolylineVertex2D v1, v2, v3, v4;
+    v1.point.setX(x1);  v1.point.setY(y1);  v1.bulge = 0.0;
+    v2.point.setX(x2);  v2.point.setY(y1);  v2.bulge = 0.0;
+    v3.point.setX(x2);  v3.point.setY(y2);  v3.bulge = 0.0;
+    v4.point.setX(x1);  v4.point.setY(y2);  v4.bulge = 0.0;
+
+    poly.vecVertices.push_back(v1);
+    poly.vecVertices.push_back(v2);
+    poly.vecVertices.push_back(v3);
+    poly.vecVertices.push_back(v4);
+
+    m_pData->AddEntity(layerName, poly);
+
+    m_pScene->ClearPreview();
+    m_pScene->DxfDraw(m_pData->GetLayers());
     m_step = 0;
 }
