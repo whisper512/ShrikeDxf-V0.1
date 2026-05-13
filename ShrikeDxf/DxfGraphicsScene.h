@@ -31,6 +31,10 @@ public:
 	void AddPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos);
 	void AddPreviewRectangle(QPointF p1, QPointF p2);
 	void AddPreviewEllipse(QPointF center, QPointF majorEnd, double ratio);
+	void AddPreviewSplineFit(const QVector<QPointF>& fitPoints, const QPointF& mousePos);
+	void AddPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos);
+	void AddPreviewTextRect(QPointF p1, QPointF p2);
+
 
 public:
 	//缩放比例

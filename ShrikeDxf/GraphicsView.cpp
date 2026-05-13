@@ -217,7 +217,8 @@ void CGraphicsView::handlePasteEntity()
 
 void CGraphicsView::handleMouseStatusChanged(enumMouseStateInView mouseState)
 {
-    if (mouseState == enumMouseStateInView::enumMouseState_Polyline)
+    if (mouseState == enumMouseStateInView::enumMouseState_Polyline || mouseState == enumMouseStateInView::enumMouseState_SplineFitPoint
+        || mouseState == enumMouseStateInView::enumMouseState_SplineControlPoint)
     {
         disconnect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
     }

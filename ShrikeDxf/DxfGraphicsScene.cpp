@@ -210,6 +210,154 @@ void CDxfGraphicsScene::AddPreviewEllipse(QPointF center, QPointF majorEnd, doub
     m_previewItems.append(addPath(path, pen));
 }
 
+void CDxfGraphicsScene::AddPreviewSplineFit(const QVector<QPointF>& fitPoints, const QPointF& mousePos)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+
+    QVector<QPointF> allPoints = fitPoints;
+    allPoints.append(mousePos);
+
+    if (allPoints.size() < 2)
+        return;
+
+    // Catmull-Rom 插值（同 DrawSpline 的拟合点逻辑）
+    QPainterPath path;
+    int n = static_cast<int>(allPoints.size());
+    path.moveTo(allPoints[0].x(), allPoints[0].y());
+
+    for (int i = 0; i < n - 1; ++i)
+    {
+        QPointF p0 = (i == 0) ? allPoints[0] : allPoints[i - 1];
+        QPointF p1 = allPoints[i];
+        QPointF p2 = allPoints[i + 1];
+        QPointF p3 = (i + 2 >= n) ? allPoints[n - 1] : allPoints[i + 2];
+
+        double t = 0.5;
+        QPointF cp1 = p1 + (p2 - p0) * t / 3.0;
+        QPointF cp2 = p2 - (p3 - p1) * t / 3.0;
+        path.cubicTo(cp1, cp2, p2);
+    }
+
+    m_previewItems.append(addPath(path, pen));
+
+    // 已确定的点画十字标记
+    for (const auto& pt : fitPoints)
+    {
+        qreal s = 1.0 / m_scale;
+        m_previewItems.append(addLine(pt.x() - s, pt.y(), pt.x() + s, pt.y(), pen));
+        m_previewItems.append(addLine(pt.x(), pt.y() - s, pt.x(), pt.y() + s, pen));
+    }
+}
+
+void CDxfGraphicsScene::AddPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos)
+{
+    QPen penCurve(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    penCurve.setCosmetic(true);
+    QPen penCtrl(QColor(255, 0, 0), 1.0 / m_scale, Qt::DashDotLine);
+    penCtrl.setCosmetic(true);
+
+    QVector<QPointF> allPoints = ctrlPoints;
+    allPoints.append(mousePos);
+
+    if (allPoints.size() < 2)
+        return;
+
+    // 画控制多边形（虚线）
+    for (int i = 0; i < allPoints.size() - 1; ++i)
+    {
+        m_previewItems.append(
+            addLine(allPoints[i].x(), allPoints[i].y(),
+                allPoints[i + 1].x(), allPoints[i + 1].y(), penCtrl));
+    }
+
+    // 如果点数 >= degree+1，画 B 样条曲线（采样 100 点）
+    int degree = 3;
+    int n = allPoints.size();
+    if (n > degree)
+    {
+        // 生成 clamped 节点向量
+        int m = n + degree + 1;
+        std::vector<double> knots(m);
+        for (int i = 0; i < m; ++i)
+        {
+            if (i <= degree)
+                knots[i] = 0.0;
+            else if (i >= n)
+                knots[i] = 1.0;
+            else
+                knots[i] = static_cast<double>(i - degree) / (n - degree);
+        }
+
+        // 采样
+        QPainterPath path;
+        double uMin = knots[degree];
+        double uMax = knots[n];
+        int numSamples = 100;
+        bool first = true;
+        for (int i = 0; i <= numSamples; ++i)
+        {
+            double u = uMin + (uMax - uMin) * i / numSamples;
+            double x = 0, y = 0;
+            for (int j = 0; j < n; ++j)
+            {
+                double basis = BSplineBasis(j, degree, u, knots);
+                if (basis < 1e-15) continue;
+                x += allPoints[j].x() * basis;
+                y += allPoints[j].y() * basis;
+            }
+            if (first) {
+                path.moveTo(x, y);
+                first = false;
+            }
+            else {
+                path.lineTo(x, y);
+            }
+        }
+        m_previewItems.append(addPath(path, penCurve));
+    }
+    else
+    {
+        // 点数不够，直接画折线
+        QPainterPath path;
+        path.moveTo(allPoints[0].x(), allPoints[0].y());
+        for (int i = 1; i < allPoints.size(); ++i)
+            path.lineTo(allPoints[i].x(), allPoints[i].y());
+        m_previewItems.append(addPath(path, penCurve));
+    }
+
+    // 控制点画十字
+    for (const auto& pt : ctrlPoints)
+    {
+        qreal s = 1.0 / m_scale;
+        m_previewItems.append(addLine(pt.x() - s, pt.y(), pt.x() + s, pt.y(), penCurve));
+        m_previewItems.append(addLine(pt.x(), pt.y() - s, pt.x(), pt.y() + s, penCurve));
+    }
+}
+
+void CDxfGraphicsScene::AddPreviewTextRect(QPointF p1, QPointF p2)
+{
+    QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
+    pen.setCosmetic(true);
+
+    qreal x1 = p1.x(), y1 = p1.y();
+    qreal x2 = p2.x(), y2 = p2.y();
+
+    // 四条边
+    m_previewItems.append(addLine(x1, y1, x2, y1, pen));
+    m_previewItems.append(addLine(x2, y1, x2, y2, pen));
+    m_previewItems.append(addLine(x2, y2, x1, y2, pen));
+    m_previewItems.append(addLine(x1, y2, x1, y1, pen));
+
+    // 从中心往上的小箭头表示文本方向
+    qreal cx = (x1 + x2) / 2.0;
+    qreal cy = (y1 + y2) / 2.0;
+    qreal s = 1.0 / m_scale;
+    m_previewItems.append(addLine(cx, cy, cx, cy - s * 3, pen));
+    m_previewItems.append(addLine(cx, cy - s * 3, cx - s, cy - s * 2, pen));
+    m_previewItems.append(addLine(cx, cy - s * 3, cx + s, cy - s * 2, pen));
+}
+
 
 
 void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)

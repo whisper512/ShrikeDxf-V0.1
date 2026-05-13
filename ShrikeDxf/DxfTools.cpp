@@ -30,6 +30,7 @@ void CDxfTools::SetMouseStatus(enumMouseStateInView mouseState)
     m_eCurrentTool = mouseState;
     m_step = 0;
     m_vecPolyPoints.clear();
+    m_vecSplinePoints.clear();
 }
 
 void CDxfTools::OnMouseMove(QPointF scenePos)
@@ -116,7 +117,7 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             }
         }
     }
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Polyline)          // 多段线预览
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Polyline)              // 多段线预览
     {
         if (m_step >= 1 && !m_vecPolyPoints.isEmpty())
         {
@@ -124,7 +125,7 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewPolyline(m_vecPolyPoints, scenePos);
         }
     }
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_EllipseCenterRadius)  // 中心-半径画椭圆预览
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_EllipseCenterRadius)   // 中心-半径画椭圆预览
     {
         if (m_step == 1)
         {
@@ -146,12 +147,46 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewEllipse(m_ptStart, m_ptMid, ratio);
         }
     }
-    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Rectangle)           // 矩形预览 
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Rectangle)             // 矩形预览 
     {
         if (m_step == 1)
         {
             m_pScene->ClearPreview();
             m_pScene->AddPreviewRectangle(m_ptStart, scenePos);
+        }
+    }
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineFitPoint)
+    {
+        if (m_step >= 1 && !m_vecSplinePoints.isEmpty())
+        {
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewSplineFit(m_vecSplinePoints, scenePos);
+        }
+        }
+        // === 控制点样条预览 ===
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineControlPoint)
+    {
+        if (m_step >= 1 && !m_vecSplinePoints.isEmpty())
+        {
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewSplineControl(m_vecSplinePoints, scenePos);
+        }
+    }
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Text)
+    {
+        if (m_step == 1)
+        {
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewTextRect(m_ptStart, scenePos);
+        }
+    }
+        // 多行文本预览
+    else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_MText)
+    {
+        if (m_step == 1)
+        {
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewTextRect(m_ptStart, scenePos);
         }
     }
 }
@@ -380,11 +415,11 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case enumMouseStateInView::enumMouseState_EllipseCenterRadius:
+    case enumMouseStateInView::enumMouseState_EllipseCenterRadius:             // 圆心+半径画椭圆
     {
         if (m_step == 0)
         {
-            // 第一步：点击中心
+            // 第一步:点击中心
             m_ptStart = scenePos;
             m_step = 1;
             m_pScene->ClearPreview();
@@ -392,7 +427,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         else if (m_step == 1)
         {
-            // 第二步：点击长轴端点
+            // 第二步:点击长轴端点
             m_ptMid = scenePos;
             m_step = 2;
             m_pScene->ClearPreview();
@@ -400,13 +435,12 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         else if (m_step == 2)
         {
-            // 第三步：点击确定短轴比例
+            // 第三步:点击确定短轴比例
             FinishEllipse(scenePos);
         }
         break;
     }
-    // 矩形(两点对角)
-    case enumMouseStateInView::enumMouseState_Rectangle:
+    case enumMouseStateInView::enumMouseState_Rectangle:                          // 矩形(两点对角)
     {
         if (m_step == 0)
         {
@@ -423,7 +457,78 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-
+    case enumMouseStateInView::enumMouseState_SplineFitPoint:                 // 拟合样条
+    {
+        if (m_step == 0)
+        {
+            m_vecSplinePoints.clear();
+            m_vecSplinePoints.append(scenePos);
+            m_step = 1;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(scenePos);
+        }
+        else
+        {
+            m_vecSplinePoints.append(scenePos);
+            m_step++;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewSplineFit(m_vecSplinePoints, scenePos);
+        }
+        break;
+    }
+    case enumMouseStateInView::enumMouseState_SplineControlPoint:              // 控制点样条
+    {
+        if (m_step == 0)
+        {
+            m_vecSplinePoints.clear();
+            m_vecSplinePoints.append(scenePos);
+            m_step = 1;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(scenePos);
+        }
+        else
+        {
+            m_vecSplinePoints.append(scenePos);
+            m_step++;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewSplineControl(m_vecSplinePoints, scenePos);
+        }
+        break;
+    }
+    case enumMouseStateInView::enumMouseState_Text:
+    {
+        if (m_step == 0)
+        {
+            // 第一步：点击插入点
+            m_ptStart = scenePos;
+            m_step = 1;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(m_ptStart);
+        }
+        else if (m_step == 1)
+        {
+            // 第二步：点击确定文本区域，创建文本
+            FinishText(scenePos);
+        }
+        break;
+    }
+    case enumMouseStateInView::enumMouseState_MText:
+    {
+        if (m_step == 0)
+        {
+            // 第一步：点击插入点
+            m_ptStart = scenePos;
+            m_step = 1;
+            m_pScene->ClearPreview();
+            m_pScene->AddPreviewPoint(m_ptStart);
+        }
+        else if (m_step == 1)
+        {
+            // 第二步：点击确定文本宽度，创建多行文本
+            FinishMText(scenePos);
+        }
+        break;
+    }
     default:
         break;
     }
@@ -451,6 +556,22 @@ void CDxfTools::OnGraphicsViewRightClick(QPointF scenePos)
         }
         break;
     }
+    case enumMouseStateInView::enumMouseState_SplineFitPoint:
+    {
+        if (m_step >= 1 && m_vecSplinePoints.size() >= 2)
+            FinishSplineFit();
+        else
+            CancelSpline();
+        break;
+    }
+    case enumMouseStateInView::enumMouseState_SplineControlPoint:
+    {
+        if (m_step >= 1 && m_vecSplinePoints.size() >= 2)
+            FinishSplineControl();
+        else
+            CancelSpline();
+        break;
+    }
     default:
         
         break;
@@ -466,7 +587,7 @@ void CDxfTools::FinishPolyline()
         return;
     if (m_vecPolyPoints.size() < 2)
     {
-        // 点数不够，取消
+        // 点数不够,取消
         CancelPolyline();
         return;
     }
@@ -568,6 +689,191 @@ void CDxfTools::FinishRectangle(QPointF scenePos)
     poly.vecVertices.push_back(v4);
 
     m_pData->AddEntity(layerName, poly);
+
+    m_pScene->ClearPreview();
+    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_step = 0;
+}
+
+
+void CDxfTools::FinishSplineFit()
+{
+    if (!m_pData || !m_pScene) return;
+    if (m_eCurrentTool != enumMouseStateInView::enumMouseState_SplineFitPoint)
+        return;
+    if (m_vecSplinePoints.size() < 2)
+    {
+        CancelSpline();
+        return;
+    }
+
+    std::string layerName = GetCurrentLayer().toStdString();
+
+    EntitySpline spline;
+    spline.prop.layer = layerName;
+    spline.prop.color = 256;
+    spline.prop.visible = true;
+    spline.degree = 3;
+
+    // 拟合点
+    for (const auto& pt : m_vecSplinePoints)
+    {
+        Vertex3D vertext;
+        vertext = pt;
+        spline.fitPoints.push_back(vertext);
+    }
+
+    
+    for (const auto& pt : m_vecSplinePoints)
+    {
+        Vertex3D vertext;
+        vertext = pt;
+        spline.controlPoints.push_back(vertext);
+    }
+
+    // 生成 clamped 节点向量
+    int n = spline.controlPoints.size();
+    int k = spline.degree;
+    int m = n + k + 1;
+    spline.knots.resize(m);
+    for (int i = 0; i < m; ++i)
+    {
+        if (i <= k)
+            spline.knots[i] = 0.0;
+        else if (i >= n)
+            spline.knots[i] = 1.0;
+        else
+            spline.knots[i] = static_cast<double>(i - k) / (n - k);
+    }
+
+    m_pData->AddEntity(layerName, spline);
+
+    m_pScene->ClearPreview();
+    m_pScene->DxfDraw(m_pData->GetLayers());
+
+    m_vecSplinePoints.clear();
+    m_step = 0;
+}
+
+void CDxfTools::FinishSplineControl()
+{
+    if (!m_pData || !m_pScene) return;
+    if (m_eCurrentTool != enumMouseStateInView::enumMouseState_SplineControlPoint)
+        return;
+    if (m_vecSplinePoints.size() < 2)
+    {
+        CancelSpline();
+        return;
+    }
+
+    std::string layerName = GetCurrentLayer().toStdString();
+
+    EntitySpline spline;
+    spline.prop.layer = layerName;
+    spline.prop.color = 256;
+    spline.prop.visible = true;
+    spline.degree = 3;
+
+    // 控制点
+    for (const auto& pt : m_vecSplinePoints)
+    {
+        Vertex3D vertext;
+        vertext = pt;
+        spline.controlPoints.push_back(vertext);
+    }
+
+    // 生成 clamped 节点向量
+    int n = spline.controlPoints.size();
+    int k = spline.degree;
+    int m = n + k + 1;
+    spline.knots.resize(m);
+    for (int i = 0; i < m; ++i)
+    {
+        if (i <= k)
+            spline.knots[i] = 0.0;
+        else if (i >= n)
+            spline.knots[i] = 1.0;
+        else
+            spline.knots[i] = static_cast<double>(i - k) / (n - k);
+    }
+
+    m_pData->AddEntity(layerName, spline);
+
+    m_pScene->ClearPreview();
+    m_pScene->DxfDraw(m_pData->GetLayers());
+
+    m_vecSplinePoints.clear();
+    m_step = 0;
+}
+
+void CDxfTools::CancelSpline()
+{
+    if (m_pScene)
+        m_pScene->ClearPreview();
+    m_vecSplinePoints.clear();
+    m_step = 0;
+}
+
+void CDxfTools::FinishText(QPointF scenePos)
+{
+    if (!m_pData || !m_pScene) return;
+    if (m_eCurrentTool != enumMouseStateInView::enumMouseState_Text)
+        return;
+
+    std::string layerName = GetCurrentLayer().toStdString();
+
+    // 计算文本高度 = 矩形高度的一半
+    double height = std::abs(scenePos.y() - m_ptStart.y());
+    if (height < 1.0) height = 3.0;
+
+    EntityText text;
+    text.prop.layer = layerName;
+    text.prop.color = 256;
+    text.prop.visible = true;
+    text.text = "Text";
+    text.style = "";
+    text.insertPoint = m_ptStart;
+    text.height = height;
+    text.rotation = 0.0;
+    text.alignH = 1;  // Left
+    text.alignV = 2;  // Middle
+
+    m_pData->AddEntity(layerName, text);
+
+    m_pScene->ClearPreview();
+    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_step = 0;
+}
+
+void CDxfTools::FinishMText(QPointF scenePos)
+{
+    if (!m_pData || !m_pScene) return;
+    if (m_eCurrentTool != enumMouseStateInView::enumMouseState_MText)
+        return;
+
+    std::string layerName = GetCurrentLayer().toStdString();
+
+    // 计算文本高度和宽度
+    double height = std::abs(scenePos.y() - m_ptStart.y());
+    if (height < 1.0) height = 3.0;
+
+    double width = std::abs(scenePos.x() - m_ptStart.x());
+    if (width < 1.0) width = 20.0;
+
+    EntityMText mtext;
+    mtext.prop.layer = layerName;
+    mtext.prop.color = 256;
+    mtext.prop.visible = true;
+    mtext.text = "MText";
+    mtext.style = "";
+    mtext.insertPoint = m_ptStart;
+    mtext.height = height;
+    mtext.rotation = 0.0;
+    mtext.attachPoint = 1;   // TopLeft
+    mtext.xAxisDir.setX(width);
+    mtext.xAxisDir.setY(0);
+
+    m_pData->AddEntity(layerName, mtext);
 
     m_pScene->ClearPreview();
     m_pScene->DxfDraw(m_pData->GetLayers());

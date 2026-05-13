@@ -32,6 +32,16 @@ public:
     void FinishRectangle(QPointF scenePos);
     // 完成椭圆
     void FinishEllipse(QPointF scenePos);
+    // 完成样条曲线
+    void FinishSplineFit();
+    // 完成样条曲线（控制点）
+    void FinishSplineControl();
+    // 取消当前样条
+    void CancelSpline();
+    // 完成文本
+    void FinishText(QPointF scenePos);
+    // 完成多行文本
+    void FinishMText(QPointF scenePos);
 
 private:
     enumMouseStateInView m_eCurrentTool = enumMouseStateInView::enumMouseState_None;
@@ -40,6 +50,7 @@ private:
     QPointF m_ptStart;
     QPointF m_ptMid;
     QVector<QPointF> m_vecPolyPoints;
+    QVector<QPointF> m_vecSplinePoints;
 
     CDxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
