@@ -292,7 +292,7 @@ void CDxfGraphicsScene::AddPreviewSplineControl(const QVector<QPointF>& ctrlPoin
         // 采样
         QPainterPath path;
         double uMin = knots[degree];
-        double uMax = knots[n];
+        double uMax = knots[n] - 1e-10;
         int numSamples = 100;
         bool first = true;
         for (int i = 0; i <= numSamples; ++i)
@@ -675,7 +675,7 @@ void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
             // 采样 100 个点
             int numSamples = 200;
             double uMin = knots[degree];
-            double uMax = knots[n];
+            double uMax = knots[n] - 1e-10;
             if (uMax <= uMin) {
                 uMin = knots.front();
                 uMax = knots.back();
@@ -933,7 +933,12 @@ double CDxfGraphicsScene::BSplineBasis(int i, int k, double u, const std::vector
 {
     if (k == 0)
     {
-        return (u >= knots[i] && u < knots[i + 1]) ? 1.0 : 0.0;
+        int knotCount = static_cast<int>(knots.size());
+        // 最后一个区间用 <=，避免 u=1.0 时基函数全部为 0
+        if (i == knotCount - 2)
+            return (u >= knots[i] && u <= knots[i + 1]) ? 1.0 : 0.0;
+        else
+            return (u >= knots[i] && u < knots[i + 1]) ? 1.0 : 0.0;
     }
     else
     {
