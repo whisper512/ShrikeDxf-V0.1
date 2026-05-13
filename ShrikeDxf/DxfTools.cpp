@@ -172,11 +172,8 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         EntityPoint pt;
         pt.prop.layer = layerName;
         pt.prop.color = 256;
-        pt.point.setX(scenePos.x());
-        pt.point.setY(scenePos.y());
-
+        pt.point = scenePos;
         m_pData->AddEntity(layerName, pt);
-
         m_pScene->ClearPreview();
         m_pScene->DxfDraw(m_pData->GetLayers());
         break;
@@ -200,10 +197,8 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
             line.prop.layer = layerName;
             line.prop.color = 256;
             line.prop.visible = true;
-            line.startPoint.setX(m_ptStart.x());
-            line.startPoint.setY(m_ptStart.y());
-            line.endPoint.setX(scenePos.x());
-            line.endPoint.setY(scenePos.y());
+            line.startPoint = m_ptStart;
+            line.endPoint = scenePos;
             m_pData->AddEntity(layerName, line);
             // 清理预览,重绘场景
             m_pScene->ClearPreview();
@@ -232,8 +227,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
             circle.prop.layer = layerName;
             circle.prop.color = 256;
             circle.prop.visible = true;
-            circle.center.setX(m_ptStart.x());
-            circle.center.setY(m_ptStart.y());
+            circle.center = m_ptStart;
             circle.radius = radius;
             m_pData->AddEntity(layerName, circle);
             m_pScene->ClearPreview();
@@ -263,8 +257,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
             circle.prop.layer = layerName;
             circle.prop.color = 256;
             circle.prop.visible = true;
-            circle.center.setX(center.x());
-            circle.center.setY(center.y());
+            circle.center = center;
             circle.radius = radius;
             m_pData->AddEntity(layerName, circle);
             m_pScene->ClearPreview();
@@ -307,8 +300,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
             arc.prop.layer = layerName;
             arc.prop.color = 256;
             arc.prop.visible = true;
-            arc.center.setX(m_ptStart.x());
-            arc.center.setY(m_ptStart.y());
+            arc.center = m_ptStart;
             arc.radius = radius;
             arc.startAngle = startAngle;
             arc.endAngle = endAngle;
@@ -352,8 +344,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
                 arc.prop.layer = layerName;
                 arc.prop.color = 256;
                 arc.prop.visible = true;
-                arc.center.setX(center.x());
-                arc.center.setY(center.y());
+                arc.center = center;
                 arc.radius = radius;
                 arc.startAngle = startAngle;
                 arc.endAngle = endAngle;
@@ -414,7 +405,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    // === 矩形（两点对角）===
+    // 矩形(两点对角)
     case enumMouseStateInView::enumMouseState_Rectangle:
     {
         if (m_step == 0)
@@ -492,8 +483,7 @@ void CDxfTools::FinishPolyline()
     for (const auto& pt : m_vecPolyPoints)
     {
         PolylineVertex2D vertex;
-        vertex.point.setX(pt.x());
-        vertex.point.setY(pt.y());
+        vertex.point = pt;
         vertex.bulge = 0.0;     // 直线段
         poly.vecVertices.push_back(vertex);
     }
@@ -534,8 +524,7 @@ void CDxfTools::FinishEllipse(QPointF scenePos)
     ellipse.prop.layer = layerName;
     ellipse.prop.color = 256;
     ellipse.prop.visible = true;
-    ellipse.center.setX(m_ptStart.x());
-    ellipse.center.setY(m_ptStart.y());
+    ellipse.center = m_ptStart;
     ellipse.majorAxisEndpoint.setX(m_ptMid.x() - m_ptStart.x());
     ellipse.majorAxisEndpoint.setY(m_ptMid.y() - m_ptStart.y());
     ellipse.ratio = ratio;
@@ -566,7 +555,7 @@ void CDxfTools::FinishRectangle(QPointF scenePos)
     poly.prop.visible = true;
     poly.flags = 1;  // 闭合
 
-    // 四个顶点：左下/右下/右上/左上（或任意顺时针/逆时针顺序）
+    // 四个顶点：左下/右下/右上/左上(或任意顺时针/逆时针顺序)
     PolylineVertex2D v1, v2, v3, v4;
     v1.point.setX(x1);  v1.point.setY(y1);  v1.bulge = 0.0;
     v2.point.setX(x2);  v2.point.setY(y1);  v2.bulge = 0.0;

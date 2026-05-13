@@ -56,7 +56,15 @@ struct Vertex3D
     bool operator==(const Vertex3D& o) const {
         return m_x == o.m_x && m_y == o.m_y && m_z == o.m_z;
     }
+
     bool operator!=(const Vertex3D& o) const { return !(*this == o); }
+
+    Vertex3D& operator=(const QPointF& pt) {
+        m_x = pt.x();
+        m_y = pt.y();
+        return *this;
+    }
+
 
 private:
     double m_x = 0.0, m_y = 0.0, m_z = 0.0;
