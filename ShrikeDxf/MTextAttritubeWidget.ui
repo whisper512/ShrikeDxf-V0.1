@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>450</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -28,211 +28,205 @@
     </spacer>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_Text">
-       <property name="text">
-        <string>Text:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTextEdit" name="textEdit"/>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_Text"/>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_Style">
+         <property name="text">
+          <string>Style:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_Style"/>
+       </item>
+      </layout>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_Style">
-       <property name="text">
-        <string>Style:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_Style"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_InsertPtX">
-       <property name="text">
-        <string>InsertX:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_InsertPtX">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_InsertPtY">
-       <property name="text">
-        <string>InsertY:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_InsertPtY">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_xAxisDirX">
-       <property name="text">
-        <string>xAxisDirX:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_xAxisDirX">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_xAxisDirY">
-       <property name="text">
-        <string>xAxisDirY:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_xAxisDirY">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_Height">
-       <property name="text">
-        <string>Height:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_Height">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_Angle">
-       <property name="text">
-        <string>Angle:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_Angle">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_WidthFactor">
-       <property name="text">
-        <string>WidthFactor:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_WidthFactor">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_LineSpacing">
-       <property name="text">
-        <string>LineSpacing:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBox_LineSpacing">
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_AttachPoint">
-       <property name="text">
-        <string>AttachPoint:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QSpinBox" name="spinBox_AttachPoint"/>
-     </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_textDir">
-       <property name="text">
-        <string>textDir:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
-      <widget class="QSpinBox" name="spinBox_textDir"/>
-     </item>
-     <item row="10" column="0">
-      <widget class="QLabel" name="label_LineSpaceStyle">
-       <property name="text">
-        <string>LineSpaceStyle:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="1">
-      <widget class="QSpinBox" name="spinBox_LineSpaceStyle"/>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_InsertPtX">
+         <property name="text">
+          <string>InsertX:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_InsertPtX">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_InsertPtY">
+         <property name="text">
+          <string>InsertY:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_InsertPtY">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_xAxisDirX">
+         <property name="text">
+          <string>xAxisDirX:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_xAxisDirX">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_xAxisDirY">
+         <property name="text">
+          <string>xAxisDirY:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_xAxisDirY">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_Height">
+         <property name="text">
+          <string>Height:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_Height">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_Angle">
+         <property name="text">
+          <string>Angle:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_Angle">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_WidthFactor">
+         <property name="text">
+          <string>WidthFactor:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_WidthFactor">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_LineSpacing">
+         <property name="text">
+          <string>LineSpacing:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_LineSpacing">
+         <property name="maximum">
+          <double>999999.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_AttachPoint">
+         <property name="text">
+          <string>AttachPoint:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QSpinBox" name="spinBox_AttachPoint"/>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_textDir">
+         <property name="text">
+          <string>textDir:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QSpinBox" name="spinBox_textDir"/>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_LineSpaceStyle">
+         <property name="text">
+          <string>LineSpaceStyle:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QSpinBox" name="spinBox_LineSpaceStyle"/>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

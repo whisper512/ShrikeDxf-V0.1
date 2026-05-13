@@ -620,7 +620,7 @@ void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     QPainterPath path;
-    // 优先用拟合点做 Catmull-Rom 插值（平滑曲线）
+    // 优先用拟合点做 Catmull-Rom 插值(平滑曲线)
     if (spline.fitPoints.size() >= 2)
     {
         const auto& pts = spline.fitPoints;

@@ -21,7 +21,7 @@ CMTextAttritubeWidget::CMTextAttritubeWidget(QWidget* parent)
     connect(ui.spinBox_LineSpaceStyle, &QSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
 
     // LineEdit
-    connect(ui.lineEdit_Text, &QLineEdit::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
+    connect(ui.textEdit,&QTextEdit::textChanged, this, &CMTextAttritubeWidget::OnValueChanged);
     connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
 }
 
@@ -44,8 +44,10 @@ void CMTextAttritubeWidget::OnValueChanged()
     m_Mtext.attachPoint = ui.spinBox_AttachPoint->value();
     m_Mtext.textDir = ui.spinBox_textDir->value();
     m_Mtext.lineSpaceStyle = ui.spinBox_LineSpaceStyle->value();
-    m_Mtext.text = ui.lineEdit_Text->text().toStdString();
     m_Mtext.style = ui.lineEdit_Style->text().toStdString();
+    QString rawText = ui.textEdit->toPlainText();
+    rawText.replace("\n", "\\P");
+    m_Mtext.text = rawText.toStdString();
 
     emit signalMTextAttributeChanged(m_Mtext);
 }
@@ -66,7 +68,9 @@ void CMTextAttritubeWidget::handleNoticeMTextAttribute(EntityMText Mtext)
     ui.spinBox_AttachPoint->setValue(Mtext.attachPoint);
     ui.spinBox_textDir->setValue(Mtext.textDir);
     ui.spinBox_LineSpaceStyle->setValue(Mtext.lineSpaceStyle);
-    ui.lineEdit_Text->setText(QString::fromStdString(Mtext.text));
+    QString displayText = QString::fromStdString(Mtext.text);
+    displayText.replace("\\P", "\n");
+    ui.textEdit->setPlainText(displayText);
     ui.lineEdit_Style->setText(QString::fromStdString(Mtext.style));
 
     m_bUpdating = false;
