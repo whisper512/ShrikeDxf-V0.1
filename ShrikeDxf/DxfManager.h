@@ -52,7 +52,7 @@ public:
 
 private:
 	// 连接内部信号
-	void ConnectSignal();
+	void ConnectSignals();
 
 private:
 	// mainwindow指针
