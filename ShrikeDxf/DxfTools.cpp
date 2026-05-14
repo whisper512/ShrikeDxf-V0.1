@@ -1267,22 +1267,73 @@ QRectF CDxfTools::CalcEntityBounds(const QString& strLayer, int entityIndex)
     case EntityType::Text:
     {
         const auto& text = std::get<EntityText>(entity);
-        double w = text.height * 3.0;   // 估算宽度
+        // ★ 和 HitTest 完全一致
         double h = text.height;
-        return QRectF(text.insertPoint.x() - s,
-            text.insertPoint.y() - h * 0.5 - s,
-            w + s * 2, h + s * 2);
+        double w = h * 2.0;
+        QPointF pt(text.insertPoint.x(), text.insertPoint.y());
+        QRectF textRect(pt.x() - w * 0.1, pt.y() - h * 0.5, w, h);
+        // 考虑旋转（和 HitTest 一致）
+        if (std::abs(text.rotation) > 1e-6)
+        {
+            double cosR = std::cos(text.rotation), sinR = std::sin(text.rotation);
+            QPointF center = textRect.center();
+            QPointF corners[4] = {
+                QPointF(textRect.left(), textRect.top()),
+                QPointF(textRect.right(), textRect.top()),
+                QPointF(textRect.right(), textRect.bottom()),
+                QPointF(textRect.left(), textRect.bottom())
+            };
+            double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
+            for (int i = 0; i < 4; ++i)
+            {
+                double dx = corners[i].x() - center.x();
+                double dy = corners[i].y() - center.y();
+                double rx = center.x() + dx * cosR - dy * sinR;
+                double ry = center.y() + dx * sinR + dy * cosR;
+                minX = std::min(minX, rx); maxX = std::max(maxX, rx);
+                minY = std::min(minY, ry); maxY = std::max(maxY, ry);
+            }
+            return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
+        }
+        return QRectF(textRect.left() - s, textRect.top() - s,
+            textRect.width() + s * 2, textRect.height() + s * 2);
     }
     case EntityType::MText:
     {
         const auto& mtext = std::get<EntityMText>(entity);
+        // ★ 和 HitTest 完全一致
+        double h = mtext.height;
         double w = std::sqrt(mtext.xAxisDir.x() * mtext.xAxisDir.x() +
             mtext.xAxisDir.y() * mtext.xAxisDir.y());
-        if (w < 1.0) w = mtext.height * 5.0;
-        double h = mtext.height;
-        return QRectF(mtext.insertPoint.x() - s,
-            mtext.insertPoint.y() - s,
-            w + s * 2, h + s * 2);
+        if (w < 1.0) w = h * 10.0;
+        QPointF pt(mtext.insertPoint.x(), mtext.insertPoint.y());
+        QRectF mtextRect(pt.x(), pt.y() - h * 0.5, w, h);
+        // 考虑旋转（和 HitTest 一致）
+        double angRad = std::atan2(mtext.xAxisDir.y(), mtext.xAxisDir.x());
+        if (std::abs(angRad) > 1e-6)
+        {
+            double cosR = std::cos(angRad), sinR = std::sin(angRad);
+            QPointF center = mtextRect.center();
+            QPointF corners[4] = {
+                QPointF(mtextRect.left(), mtextRect.top()),
+                QPointF(mtextRect.right(), mtextRect.top()),
+                QPointF(mtextRect.right(), mtextRect.bottom()),
+                QPointF(mtextRect.left(), mtextRect.bottom())
+            };
+            double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
+            for (int i = 0; i < 4; ++i)
+            {
+                double dx = corners[i].x() - center.x();
+                double dy = corners[i].y() - center.y();
+                double rx = center.x() + dx * cosR - dy * sinR;
+                double ry = center.y() + dx * sinR + dy * cosR;
+                minX = std::min(minX, rx); maxX = std::max(maxX, rx);
+                minY = std::min(minY, ry); maxY = std::max(maxY, ry);
+            }
+            return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
+        }
+        return QRectF(mtextRect.left() - s, mtextRect.top() - s,
+            mtextRect.width() + s * 2, mtextRect.height() + s * 2);
     }
     default:
         return QRectF();
