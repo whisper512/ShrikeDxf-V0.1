@@ -26,6 +26,9 @@ const QString& CDxfTools::GetCurrentLayer() const
 
 void CDxfTools::SetMouseStatus(enumMouseStateInView mouseState)
 {
+    if (mouseState != enumMouseStateInView::enumMouseState_None)
+        ClearSelection();
+
     if (m_pScene)
     {
         m_pScene->ClearPreview();
@@ -1104,23 +1107,184 @@ void CDxfTools::HitTest(QPointF scenePos)
         m_bEntitySelected = true;
         m_strSelectedLayer = hitLayer;
         m_nSelectedIndex = hitIndex;
+        QRectF bounds = CalcEntityBounds(hitLayer, hitIndex);
+        if (bounds.isValid())
+        {
+            m_pScene->ShowGrips(bounds);
+        }
         emit signalEntitySelected(hitLayer, hitIndex);
     }
     else
     {
-        // 点击空白处取消选中
         ClearSelection();
     }
 }
-
 
 void CDxfTools::ClearSelection()
 {
     if (m_bEntitySelected)
     {
+        if (m_pScene)
+            m_pScene->RemoveGrips();
+
         m_bEntitySelected = false;
         m_strSelectedLayer.clear();
         m_nSelectedIndex = -1;
         emit signalEntityDeselected();
+    }
+}
+
+
+template<typename T>
+static QRectF CalcVertsBoundsT(const std::vector<T>& verts, double s)
+{
+    if (verts.empty()) return QRectF();
+    double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
+    for (const auto& v : verts) {
+        minX = std::min(minX, v.point.x());
+        minY = std::min(minY, v.point.y());
+        maxX = std::max(maxX, v.point.x());
+        maxY = std::max(maxY, v.point.y());
+    }
+    return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
+}
+
+QRectF CDxfTools::CalcVertsBounds(const std::vector<PolylineVertex2D>& verts, double s)
+{
+    return CalcVertsBoundsT(verts, s);
+}
+
+QRectF CDxfTools::CalcVertsBounds(const std::vector<PolylineVertex3D>& verts, double s)
+{
+    return CalcVertsBoundsT(verts, s);
+}
+
+QRectF CDxfTools::CalcEntityBounds(const QString& strLayer, int entityIndex)
+{
+    if (!m_pData) return QRectF();
+
+    const auto& layers = m_pData->GetLayers();
+    auto it = layers.find(strLayer.toStdString());
+    if (it == layers.end() || entityIndex < 0 ||
+        entityIndex >= static_cast<int>(it->second.entities.size()))
+        return QRectF();
+
+    const auto& entity = it->second.entities[entityIndex];
+    EntityType type = GetEntityType(entity);
+
+    const double s = 5.0 / (m_pScene ? m_pScene->GetScale() : 1.0);
+
+    switch (type)
+    {
+    case EntityType::Point:
+    {
+        const auto& pt = std::get<EntityPoint>(entity);
+        return QRectF(pt.point.x() - s, pt.point.y() - s, s * 2, s * 2);
+    }
+    case EntityType::Line:
+    {
+        const auto& line = std::get<EntityLine>(entity);
+        qreal x1 = line.startPoint.x(), y1 = line.startPoint.y();
+        qreal x2 = line.endPoint.x(), y2 = line.endPoint.y();
+        return QRectF(std::min(x1, x2), std::min(y1, y2),
+            std::abs(x2 - x1), std::abs(y2 - y1)).adjusted(-s, -s, s, s);
+    }
+    case EntityType::Circle:
+    {
+        const auto& circle = std::get<EntityCircle>(entity);
+        return QRectF(circle.center.x() - circle.radius - s,
+            circle.center.y() - circle.radius - s,
+            circle.radius * 2 + s * 2,
+            circle.radius * 2 + s * 2);
+    }
+    case EntityType::Arc:
+    {
+        const auto& arc = std::get<EntityArc>(entity);
+        return QRectF(arc.center.x() - arc.radius - s,
+            arc.center.y() - arc.radius - s,
+            arc.radius * 2 + s * 2,
+            arc.radius * 2 + s * 2);
+    }
+    case EntityType::Ellipse:
+    {
+        const auto& ellipse = std::get<EntityEllipse>(entity);
+        double majorLen = std::sqrt(
+            ellipse.majorAxisEndpoint.x() * ellipse.majorAxisEndpoint.x() +
+            ellipse.majorAxisEndpoint.y() * ellipse.majorAxisEndpoint.y());
+        if (majorLen < 1e-10) return QRectF();
+        double minorLen = majorLen * ellipse.ratio;
+        double angleRad = std::atan2(ellipse.majorAxisEndpoint.y(),
+            ellipse.majorAxisEndpoint.x());
+        double cosA = std::cos(angleRad), sinA = std::sin(angleRad);
+        double cx = ellipse.center.x(), cy = ellipse.center.y();
+        // 采样 64 个点求精确包围盒
+        double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
+        double startP = ellipse.startParam;
+        double endP = ellipse.endParam;
+        int numSamples = 64;
+        for (int i = 0; i <= numSamples; ++i)
+        {
+            double theta = startP + (endP - startP) * i / numSamples;
+            // 局部坐标 (长轴方向为 X)
+            double lx = majorLen * std::cos(theta);
+            double ly = minorLen * std::sin(theta);
+            // 旋转到世界坐标
+            double wx = cx + lx * cosA - ly * sinA;
+            double wy = cy + lx * sinA + ly * cosA;
+            minX = std::min(minX, wx);
+            maxX = std::max(maxX, wx);
+            minY = std::min(minY, wy);
+            maxY = std::max(maxY, wy);
+        }
+        return QRectF(minX - s, minY - s,
+            maxX - minX + s * 2, maxY - minY + s * 2);
+    }
+    case EntityType::LWPolyline:
+    {
+        const auto& poly = std::get<EntityLWPolyline>(entity);
+        return CalcVertsBounds(poly.vecVertices, s);
+    }
+    case EntityType::Polyline:
+    {
+        const auto& poly = std::get<EntityPolyline>(entity);
+        return CalcVertsBounds(poly.vertices, s);
+    }
+    case EntityType::Spline:
+    {
+        const auto& spline = std::get<EntitySpline>(entity);
+        double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
+        auto update = [&](double x, double y) {
+            minX = std::min(minX, x); minY = std::min(minY, y);
+            maxX = std::max(maxX, x); maxY = std::max(maxY, y);
+            };
+        for (const auto& pt : spline.controlPoints)
+            update(pt.x(), pt.y());
+        for (const auto& pt : spline.fitPoints)
+            update(pt.x(), pt.y());
+        if (minX > maxX) return QRectF();
+        return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
+    }
+    case EntityType::Text:
+    {
+        const auto& text = std::get<EntityText>(entity);
+        double w = text.height * 3.0;   // 估算宽度
+        double h = text.height;
+        return QRectF(text.insertPoint.x() - s,
+            text.insertPoint.y() - h * 0.5 - s,
+            w + s * 2, h + s * 2);
+    }
+    case EntityType::MText:
+    {
+        const auto& mtext = std::get<EntityMText>(entity);
+        double w = std::sqrt(mtext.xAxisDir.x() * mtext.xAxisDir.x() +
+            mtext.xAxisDir.y() * mtext.xAxisDir.y());
+        if (w < 1.0) w = mtext.height * 5.0;
+        double h = mtext.height;
+        return QRectF(mtext.insertPoint.x() - s,
+            mtext.insertPoint.y() - s,
+            w + s * 2, h + s * 2);
+    }
+    default:
+        return QRectF();
     }
 }

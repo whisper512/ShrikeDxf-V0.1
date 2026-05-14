@@ -363,11 +363,13 @@ void CDxfGraphicsScene::AddPreviewTextRect(QPointF p1, QPointF p2)
 void CDxfGraphicsScene::ShowGrips(const QRectF& bounds)
 {
     RemoveGrips();
-    qreal gripSize = 6.0 / m_scale;
-    if (gripSize < 4.0) gripSize = 4.0;
-    QPen boxPen(QColor(0, 100, 255), 1.0 / m_scale, Qt::DashLine);
+    qreal gripSize = 2.0 / m_scale;
+    qreal halfSize = gripSize / 2.0;
+    QPen boxPen(QColor(0, 100, 255), 1.0, Qt::DashLine);
     boxPen.setCosmetic(true);
     QBrush gripBrush(QColor(0, 100, 255));
+    QPen gripPen(QColor(255, 255, 255), 1.0);
+    gripPen.setCosmetic(true);
     // 虚线框
     m_pBoundingBox = addRect(bounds, boxPen);
     m_pBoundingBox->setZValue(9998);
@@ -384,11 +386,12 @@ void CDxfGraphicsScene::ShowGrips(const QRectF& bounds)
     for (int i = 0; i < 8; ++i)
     {
         QGraphicsRectItem* grip = addRect(
-            gripPositions[i].x() - gripSize / 2,
-            gripPositions[i].y() - gripSize / 2,
-            gripSize, gripSize, QPen(Qt::NoPen), gripBrush);
+            gripPositions[i].x() - halfSize,
+            gripPositions[i].y() - halfSize,
+            gripSize, gripSize,
+            gripPen, gripBrush);
         grip->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        grip->setData(0, i);              // 存储手柄索引
+        grip->setData(0, i);
         grip->setZValue(9999);
         m_gripItems.append(grip);
     }
