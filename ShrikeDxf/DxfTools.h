@@ -38,8 +38,6 @@ public:
     // 拖拽手柄结束
     void OnGripDragFinished(int gripIndex, QPointF finalPos);
 
-
-
 private:
     // 完成/闭合多段线
     void FinishPolyline();

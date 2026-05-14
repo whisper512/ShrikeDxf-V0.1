@@ -2,8 +2,6 @@
 #include "DxfManager.h"
 
 
-
-
 CDxfTools::CDxfTools(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
     : QObject(parent)
     , m_pData(pData)
@@ -45,7 +43,6 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
 
     if (m_nDragGripIndex >= 0 && m_bEntitySelected)
     {
-       
         return;
     }
 
@@ -175,7 +172,6 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
             m_pScene->AddPreviewSplineFit(m_vecSplinePoints, scenePos);
         }
     }
-        // === 控制点样条预览 ===
     else if (m_eCurrentTool == enumMouseStateInView::enumMouseState_SplineControlPoint)    // 控制点样条预览
     {
         if (m_step >= 1 && !m_vecSplinePoints.isEmpty())
@@ -1020,13 +1016,13 @@ void CDxfTools::HitTest(QPointF scenePos)
             {
                 const auto& spline = std::get<EntitySpline>(entity);
                 double minPtDist = std::numeric_limits<double>::max();
-                // 用控制点做近似检测（足够精确）
+                // 用控制点做近似检测(足够精确)
                 for (const auto& cp : spline.controlPoints)
                 {
                     double d = QLineF(scenePos, QPointF(cp.x(), cp.y())).length();
                     minPtDist = std::min(minPtDist, d);
                 }
-                // 也检查拟合点（如果有）
+                // 也检查拟合点(如果有)
                 for (const auto& fp : spline.fitPoints)
                 {
                     double d = QLineF(scenePos, QPointF(fp.x(), fp.y())).length();

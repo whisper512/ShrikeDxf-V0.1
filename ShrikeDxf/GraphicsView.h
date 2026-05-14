@@ -43,7 +43,7 @@ private:
 	CRulerV* m_pRulerV;
 
 
-	// 右键鼠标显示的针对view的操作*****
+	// 右键鼠标显示的针对view的操作
 	// 锁定缩放
 	bool m_bLockZoom;
 	// 沿x轴翻转
