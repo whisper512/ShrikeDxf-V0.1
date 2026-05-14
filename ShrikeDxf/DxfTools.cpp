@@ -1,6 +1,46 @@
 ﻿#include "DxfTools.h"
 #include "DxfManager.h"
 
+// 点到线段的最短距离
+static double pointToSegmentDist(QPointF p, QPointF a, QPointF b)
+{
+    QPointF ab = b - a;
+    QPointF ap = p - a;
+    double ab2 = QPointF::dotProduct(ab, ab);
+    if (ab2 < 1e-12) return QLineF(p, a).length();  // a 和 b 重合
+
+    double t = QPointF::dotProduct(ap, ab) / ab2;
+    t = qBound(0.0, t, 1.0);
+    QPointF closest = a + ab * t;
+    return QLineF(p, closest).length();
+}
+
+// 点到矩形的最短距离
+static double pointToRectDist(QPointF p, QRectF r)
+{
+    // 如果点在矩形内部，距离为 0
+    if (r.contains(p)) return 0.0;
+
+    // 到四条边的最短距离
+    double dLeft = std::abs(p.x() - r.left());
+    double dRight = std::abs(p.x() - r.right());
+    double dTop = std::abs(p.y() - r.top());
+    double dBottom = std::abs(p.y() - r.bottom());
+
+    // 点在上方或下方
+    if (p.x() >= r.left() && p.x() <= r.right())
+        return std::min(dTop, dBottom);
+    // 点在左侧或右侧
+    if (p.y() >= r.top() && p.y() <= r.bottom())
+        return std::min(dLeft, dRight);
+    // 点在角部区域
+    return std::sqrt(std::min(dLeft * dLeft + dTop * dTop,
+        std::min(dLeft * dLeft + dBottom * dBottom,
+            std::min(dRight * dRight + dTop * dTop,
+                dRight * dRight + dBottom * dBottom))));
+}
+
+
 CDxfTools::CDxfTools(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
     : QObject(parent)
     , m_pData(pData)
@@ -33,11 +73,18 @@ void CDxfTools::SetMouseStatus(enumMouseStateInView mouseState)
     m_step = 0;
     m_vecPolyPoints.clear();
     m_vecSplinePoints.clear();
+
 }
 
 void CDxfTools::OnMouseMove(QPointF scenePos)
 {
     if (!m_pScene) return;
+
+    if (m_nDragGripIndex >= 0 && m_bEntitySelected)
+    {
+       
+        return;
+    }
 
     if (m_eCurrentTool == enumMouseStateInView::enumMouseState_Point)                    // 画点预览
     {
@@ -194,12 +241,18 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
 
 void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
 {
-    if (!m_pData || !m_pScene) return;
+    // 如果在拖拽手柄中,忽略
+    if (m_nDragGripIndex >= 0)
+        return;
+
+    if (!m_pData || !m_pScene) 
+        return;
 
     switch (m_eCurrentTool)
     {
     case enumMouseStateInView::enumMouseState_None:
-        break;
+        HitTest(scenePos);                                              // 判断有没有选中scene中的图元
+        return;
     case enumMouseStateInView::enumMouseState_Point:                    // 画点
     {
         std::string layerName = GetCurrentLayer().toStdString();
@@ -505,6 +558,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
         break;
     }
     default:
+        
         break;
     }
 }
@@ -548,6 +602,27 @@ void CDxfTools::OnGraphicsViewRightClick(QPointF scenePos)
         
         break;
     }
+}
+
+void CDxfTools::OnGraphicsViewLeftPress(QPointF scenePos)
+{
+ 
+}
+void CDxfTools::OnGraphicsViewLeftRelease(QPointF scenePos)
+{
+    
+}
+
+void CDxfTools::OnGripDragStarted(int gripIndex)
+{
+}
+
+void CDxfTools::OnGripDragged(int gripIndex, QPointF newPos)
+{
+}
+
+void CDxfTools::OnGripDragFinished(int gripIndex, QPointF finalPos)
+{
 }
 
 
@@ -704,7 +779,7 @@ void CDxfTools::FinishSplineFit()
     }
 
     // 生成 clamped 节点向量
-    int n = spline.controlPoints.size();
+    int n = (int)spline.controlPoints.size();
     int k = spline.degree;
     int m = n + k + 1;
     spline.knots.resize(m);
@@ -755,7 +830,7 @@ void CDxfTools::FinishSplineControl()
     }
 
     // 生成 clamped 节点向量
-    int n = spline.controlPoints.size();
+    int n =(int)spline.controlPoints.size();
     int k = spline.degree;
     int m = n + k + 1;
     spline.knots.resize(m);
@@ -850,4 +925,243 @@ void CDxfTools::FinishMText(QPointF scenePos)
     m_pScene->ClearPreview();
     m_pScene->DxfDraw(m_pData->GetLayers());
     m_step = 0;
+}
+
+
+void CDxfTools::HitTest(QPointF scenePos)
+{
+    // 清除之前选中
+    ClearSelection();
+
+    if (!m_pData || !m_pScene) return;
+
+    const auto& layers = m_pData->GetLayers();
+
+    // 用像素转场景坐标算容差
+    double threshold = 15.0 / m_pScene->GetScale();
+    if (threshold < 0.5) threshold = 0.5;   // 最小 0.5 场景单位
+
+    QString hitLayer;
+    int hitIndex = -1;
+    double minDist = threshold;
+
+    // 遍历所有可见图层（后画的在上层用 reverse）
+    for (auto it = layers.rbegin(); it != layers.rend(); ++it)
+    {
+        if (!it->second.isVisible) continue;
+
+        const auto& entities = it->second.entities;
+        for (int i = static_cast<int>(entities.size()) - 1; i >= 0; --i)
+        {
+            const auto& entity = entities[i];
+            EntityType type = GetEntityType(entity);
+            double dist = -1.0;
+
+            switch (type)
+            {
+            case EntityType::Point:
+            {
+                const auto& pt = std::get<EntityPoint>(entity);
+                dist = QLineF(scenePos, QPointF(pt.point.x(), pt.point.y())).length();
+                break;
+            }
+            case EntityType::Line:
+            {
+                const auto& line = std::get<EntityLine>(entity);
+                dist = pointToSegmentDist(scenePos,
+                    QPointF(line.startPoint.x(), line.startPoint.y()),
+                    QPointF(line.endPoint.x(), line.endPoint.y()));
+                break;
+            }
+            case EntityType::Circle:
+            {
+                const auto& circle = std::get<EntityCircle>(entity);
+                double d = QLineF(scenePos, QPointF(circle.center.x(), circle.center.y())).length();
+                dist = std::abs(d - circle.radius);
+                break;
+            }
+            case EntityType::Arc:
+            {
+                const auto& arc = std::get<EntityArc>(entity);
+                double d = QLineF(scenePos, QPointF(arc.center.x(), arc.center.y())).length();
+                dist = std::abs(d - arc.radius);
+                break;
+            }
+            case EntityType::Ellipse:
+            {
+                const auto& ellipse = std::get<EntityEllipse>(entity);
+                // 用椭圆方程近似计算点到椭圆边的距离
+                double dx = scenePos.x() - ellipse.center.x();
+                double dy = scenePos.y() - ellipse.center.y();
+                double majorLen = std::sqrt(
+                    ellipse.majorAxisEndpoint.x() * ellipse.majorAxisEndpoint.x() +
+                    ellipse.majorAxisEndpoint.y() * ellipse.majorAxisEndpoint.y());
+                if (majorLen < 1e-10) continue;
+                double minorLen = majorLen * ellipse.ratio;
+                double angleRad = std::atan2(ellipse.majorAxisEndpoint.y(),
+                    ellipse.majorAxisEndpoint.x());
+                // 旋转到局部坐标系
+                double cosA = std::cos(-angleRad), sinA = std::sin(-angleRad);
+                double lx = dx * cosA - dy * sinA;
+                double ly = dx * sinA + dy * cosA;
+                // 椭圆方程: lx^2/a^2 + ly^2/b^2 = 1
+                double val = (lx * lx) / (majorLen * majorLen) + (ly * ly) / (minorLen * minorLen);
+                if (val < 1e-6) {
+                    dist = 0;
+                }
+                else {
+                    double sqrtVal = std::sqrt(val);
+                    dist = std::abs(sqrtVal - 1.0) * std::min(majorLen, minorLen);
+                }
+                break;
+            }
+            case EntityType::LWPolyline:
+            {
+                const auto& poly = std::get<EntityLWPolyline>(entity);
+                const auto& verts = poly.vecVertices;
+                if (verts.empty()) continue;
+                double minSegDist = std::numeric_limits<double>::max();
+                int n = static_cast<int>(verts.size());
+                for (int j = 0; j < n; ++j)
+                {
+                    int next = (j + 1) % n;
+                    if (!poly.isClosed() && next == 0) break;
+                    double d = pointToSegmentDist(scenePos,
+                        QPointF(verts[j].point.x(), verts[j].point.y()),
+                        QPointF(verts[next].point.x(), verts[next].point.y()));
+                    minSegDist = std::min(minSegDist, d);
+                }
+                dist = minSegDist;
+                break;
+            }
+            case EntityType::Polyline:
+            {
+                const auto& poly = std::get<EntityPolyline>(entity);
+                const auto& verts = poly.vertices;
+                if (verts.empty()) continue;
+                double minSegDist = std::numeric_limits<double>::max();
+                int n = static_cast<int>(verts.size());
+                for (int j = 0; j < n; ++j)
+                {
+                    int next = (j + 1) % n;
+                    if (!poly.isClosed() && next == 0) break;
+                    double d = pointToSegmentDist(scenePos,
+                        QPointF(verts[j].point.x(), verts[j].point.y()),
+                        QPointF(verts[next].point.x(), verts[next].point.y()));
+                    minSegDist = std::min(minSegDist, d);
+                }
+                dist = minSegDist;
+                break;
+            }
+            case EntityType::Spline:
+            {
+                const auto& spline = std::get<EntitySpline>(entity);
+                double minPtDist = std::numeric_limits<double>::max();
+                // 用控制点做近似检测（足够精确）
+                for (const auto& cp : spline.controlPoints)
+                {
+                    double d = QLineF(scenePos, QPointF(cp.x(), cp.y())).length();
+                    minPtDist = std::min(minPtDist, d);
+                }
+                // 也检查拟合点（如果有）
+                for (const auto& fp : spline.fitPoints)
+                {
+                    double d = QLineF(scenePos, QPointF(fp.x(), fp.y())).length();
+                    minPtDist = std::min(minPtDist, d);
+                }
+                dist = minPtDist;
+                break;
+            }
+            case EntityType::Text:
+            {
+                const auto& text = std::get<EntityText>(entity);
+                // 文本近似包围盒检测
+                double h = text.height;
+                double w = h * 2.0;  // 估算宽度
+                QPointF pt(text.insertPoint.x(), text.insertPoint.y());
+                QRectF textRect(pt.x() - w * 0.1, pt.y() - h * 0.5, w, h);
+                // 旋转处理
+                if (std::abs(text.rotation) > 1e-6)
+                {
+                    QPointF center = textRect.center();
+                    QPointF local = scenePos - center;
+                    double rad = -text.rotation;
+                    double cosR = std::cos(rad), sinR = std::sin(rad);
+                    QPointF rotated(local.x() * cosR - local.y() * sinR,
+                        local.x() * sinR + local.y() * cosR);
+                    rotated += center;
+                    dist = pointToRectDist(rotated, textRect);
+                }
+                else
+                {
+                    dist = pointToRectDist(scenePos, textRect);
+                }
+                if (dist < threshold * 2) dist *= 0.5;  // 文本更易选中
+                break;
+            }
+            case EntityType::MText:
+            {
+                const auto& mtext = std::get<EntityMText>(entity);
+                double h = mtext.height;
+                double w = std::sqrt(mtext.xAxisDir.x() * mtext.xAxisDir.x() +
+                    mtext.xAxisDir.y() * mtext.xAxisDir.y());
+                if (w < 1.0) w = h * 10.0;
+                QPointF pt(mtext.insertPoint.x(), mtext.insertPoint.y());
+                QRectF mtextRect(pt.x(), pt.y() - h * 0.5, w, h);
+                double angRad = std::atan2(mtext.xAxisDir.y(), mtext.xAxisDir.x());
+                if (std::abs(angRad) > 1e-6)
+                {
+                    QPointF center = mtextRect.center();
+                    QPointF local = scenePos - center;
+                    double cosR = std::cos(-angRad), sinR = std::sin(-angRad);
+                    QPointF rotated(local.x() * cosR - local.y() * sinR,
+                        local.x() * sinR + local.y() * cosR);
+                    rotated += center;
+                    dist = pointToRectDist(rotated, mtextRect);
+                }
+                else
+                {
+                    dist = pointToRectDist(scenePos, mtextRect);
+                }
+                if (dist < threshold * 2) dist *= 0.5;
+                break;
+            }
+            default:
+                
+                continue;
+            }
+
+            if (dist >= 0 && dist < minDist)
+            {
+                minDist = dist;
+                hitLayer = QString::fromStdString(it->first);
+                hitIndex = i;
+            }
+        }
+    }
+
+    if (hitIndex >= 0)
+    {
+        m_bEntitySelected = true;
+        m_strSelectedLayer = hitLayer;
+        m_nSelectedIndex = hitIndex;
+        emit signalEntitySelected(hitLayer, hitIndex);
+    }
+    else
+    {
+        // 点击空白处取消选中
+        ClearSelection();
+    }
+}
+
+
+void CDxfTools::ClearSelection()
+{
+    if (m_bEntitySelected)
+    {
+        m_bEntitySelected = false;
+        m_strSelectedLayer.clear();
+        m_nSelectedIndex = -1;
+        emit signalEntityDeselected();
+    }
 }

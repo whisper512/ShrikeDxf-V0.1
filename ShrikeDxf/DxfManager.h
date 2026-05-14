@@ -43,11 +43,17 @@ public:
 	// 获取当前工作图层
 	const QString& GetCurrentLayer() const { return m_strCurrentLayer; }
 
+
 public:
 	bool LoadDxfFile(const QString& strPath);
 	bool SaveDxfFile(const QString& strPath);
 	bool NewDxfFile();
 	bool CloseDxfFile();
+
+private:
+	// 连接内部信号
+	void ConnectSignal();
+
 private:
 	// mainwindow指针
 	QWidget* m_pMainWnd;
@@ -123,4 +129,9 @@ signals:
 	 void handleMouseLeftButtonClicked(QPointF pos);
 	 // 鼠标右键点击
      void handleMouseRightButtonClicked(QPointF pos);
+
+	 // 选中图元
+	 void handleEntitySelected(const QString& strLayer, int entityIndex);
+	 // 取消选中图元
+	 void handleEntityDeselected();
 };

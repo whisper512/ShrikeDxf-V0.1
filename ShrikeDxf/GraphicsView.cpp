@@ -112,7 +112,6 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
 
 void CGraphicsView::InitGraphicsViewAction()
 {
-    //************
     m_pActionDrag = new QAction("Drag", this);
     m_pActionDrag->setCheckable(true);
     m_pActionDrag->setChecked(false);

@@ -3,7 +3,8 @@
 #include <QList>
 #include <map>
 #include <vector>
-#include < QGraphicsScene>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem> 
 
 #include "DxfStruct.h"
 
@@ -35,11 +36,17 @@ public:
 	void AddPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos);
 	void AddPreviewTextRect(QPointF p1, QPointF p2);
 
+	void ShowGrips(const QRectF& bounds);
+	void RemoveGrips();
+	bool HasGrips() const { return !m_gripItems.isEmpty(); }
+	int  GripAtPos(QPointF scenePos) const;   // 返回 -1 表示没点到, 0~7 表示手柄索引
+	void UpdateGripRect(const QRectF& bounds); // 拖拽中更新虚线框
+	QRectF GetGripBounds() const;
 
 public:
 	//缩放比例
 	double m_scale;
-	//graphics鼠标当前状态
+	
 	
 
 
@@ -48,6 +55,11 @@ private:
 
 	// 预览图元存储列表
 	QList<QGraphicsItem*> m_previewItems;
+
+	// 虚线框
+	QGraphicsRectItem* m_pBoundingBox = nullptr;
+	// 8个手柄方块
+	QVector<QGraphicsRectItem*> m_gripItems;
 
 private:
 	// 绘制图元

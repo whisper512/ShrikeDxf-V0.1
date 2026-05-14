@@ -84,6 +84,8 @@ void CDxfGraphicsScene::ClearScene()
 {
     clear();
     m_previewItems.clear();
+    m_gripItems.clear();
+    m_pBoundingBox = nullptr;
 }
 
 void CDxfGraphicsScene::ClearPreview()
@@ -356,6 +358,81 @@ void CDxfGraphicsScene::AddPreviewTextRect(QPointF p1, QPointF p2)
     m_previewItems.append(addLine(cx, cy, cx, cy - s * 3, pen));
     m_previewItems.append(addLine(cx, cy - s * 3, cx - s, cy - s * 2, pen));
     m_previewItems.append(addLine(cx, cy - s * 3, cx + s, cy - s * 2, pen));
+}
+
+void CDxfGraphicsScene::ShowGrips(const QRectF& bounds)
+{
+    RemoveGrips();
+    qreal gripSize = 6.0 / m_scale;
+    if (gripSize < 4.0) gripSize = 4.0;
+    QPen boxPen(QColor(0, 100, 255), 1.0 / m_scale, Qt::DashLine);
+    boxPen.setCosmetic(true);
+    QBrush gripBrush(QColor(0, 100, 255));
+    // 虚线框
+    m_pBoundingBox = addRect(bounds, boxPen);
+    m_pBoundingBox->setZValue(9998);
+    // 8个手柄：0=左上,1=上中,2=右上,3=右中,4=右下,5=下中,6=左下,7=左中
+    qreal x1 = bounds.left(), y1 = bounds.top();
+    qreal x2 = bounds.right(), y2 = bounds.bottom();
+    qreal cx = (x1 + x2) / 2.0;
+    qreal cy = (y1 + y2) / 2.0;
+    QVector<QPointF> gripPositions = {
+        QPointF(x1, y1), QPointF(cx, y1), QPointF(x2, y1),
+        QPointF(x2, cy), QPointF(x2, y2), QPointF(cx, y2),
+        QPointF(x1, y2), QPointF(x1, cy)
+    };
+    for (int i = 0; i < 8; ++i)
+    {
+        QGraphicsRectItem* grip = addRect(
+            gripPositions[i].x() - gripSize / 2,
+            gripPositions[i].y() - gripSize / 2,
+            gripSize, gripSize, QPen(Qt::NoPen), gripBrush);
+        grip->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        grip->setData(0, i);              // 存储手柄索引
+        grip->setZValue(9999);
+        m_gripItems.append(grip);
+    }
+}
+void CDxfGraphicsScene::RemoveGrips()
+{
+    if (m_pBoundingBox)
+    {
+        removeItem(m_pBoundingBox);
+        delete m_pBoundingBox;
+        m_pBoundingBox = nullptr;
+    }
+    for (auto* grip : m_gripItems)
+    {
+        removeItem(grip);
+        delete grip;
+    }
+    m_gripItems.clear();
+}
+int CDxfGraphicsScene::GripAtPos(QPointF scenePos) const
+{
+    // 用 ItemAtPos 检测是否点到了手柄
+    // 由于手柄很小，直接遍历检查距离
+    for (int i = 0; i < m_gripItems.size(); ++i)
+    {
+        QRectF r = m_gripItems[i]->rect();
+        QPointF center = m_gripItems[i]->pos() + r.center();
+        if (QLineF(scenePos, center).length() < r.width())
+            return i;
+    }
+    return -1;
+}
+void CDxfGraphicsScene::UpdateGripRect(const QRectF& bounds)
+{
+    if (m_pBoundingBox)
+    {
+        m_pBoundingBox->setRect(bounds);
+    }
+}
+QRectF CDxfGraphicsScene::GetGripBounds() const
+{
+    if (m_pBoundingBox)
+        return m_pBoundingBox->rect();
+    return QRectF();
 }
 
 

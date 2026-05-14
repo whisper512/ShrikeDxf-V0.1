@@ -1,6 +1,7 @@
 ﻿#include "DxfManager.h"
 #include "CommonDataManager.h"
 #include <QMessageBox>
+#include <QTimer>
 
 
 
@@ -13,6 +14,8 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
     m_DxfEditor.m_DxfData = GetDxfData();
     m_DxfTools = std::make_unique<CDxfTools>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+
+    ConnectSignal();
 }
 
 CDxfManager::~CDxfManager()
@@ -80,6 +83,14 @@ bool CDxfManager::CloseDxfFile()
     m_DxfGraphicsScene.clear();
     m_DxfLayerTableviewModel.clear();
     return false;
+}
+
+void CDxfManager::ConnectSignal()
+{
+    QTimer::singleShot(0, this, [this]() {
+        connect(m_DxfTools.get(), &CDxfTools::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
+        connect(m_DxfTools.get(), &CDxfTools::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
+        });
 }
 
 void CDxfManager::SynLayerModelToDxfData()
@@ -237,4 +248,29 @@ void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
     // 更新tree的model刷新treeview
     m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
+}
+
+void CDxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
+{
+    // 更新 Manager 中的选中信息
+    m_SelectedEntity.strLayer = strLayer;
+    m_SelectedEntity.entityIndex = entityIndex;
+    m_SelectedEntity.type = EntityType::None;
+
+    const auto& layers = m_DxfData->GetLayers();
+    auto it = layers.find(strLayer.toStdString());
+    if (it != layers.end() && entityIndex >= 0 && entityIndex < static_cast<int>(it->second.entities.size()))
+    {
+        m_SelectedEntity.entity = it->second.entities[entityIndex];
+        m_SelectedEntity.type = GetEntityType(m_SelectedEntity.entity);
+    }
+
+    // 通知其他关注者
+    emit signalSelectedEntityChanged(m_SelectedEntity);
+}
+
+void CDxfManager::handleEntityDeselected()
+{
+    m_SelectedEntity = stuSelectedEntity();
+    emit signalSelectedEntityChanged(m_SelectedEntity);
 }
