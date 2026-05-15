@@ -1,4 +1,4 @@
-﻿#include "DxfTreeView.h"
+﻿#include "TreeView.h"
 #include "ShrikeDxf.h"
 
 #include <QHeaderView>
@@ -55,9 +55,9 @@ void CTreeViewManger::CreateTreeView()
 
 void CTreeViewManger::handleShowContextMenu(const QPoint& pos)
 {
-	InitContextMenu();
+	//InitContextMenu();
 
-	m_pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
+	//m_pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
 }
 
 void CTreeViewManger::InitContextMenu()

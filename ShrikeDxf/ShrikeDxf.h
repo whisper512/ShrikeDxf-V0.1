@@ -7,7 +7,7 @@
 #include <QTimer.h>
 
 #include "TopMenu.h"
-#include "DxfTreeView.h"
+#include "TreeView.h"
 #include "GraphicsView.h"
 #include "StackedWidget.h"
 #include "LayerTableView.h"

@@ -168,7 +168,7 @@
     <ClInclude Include="Primitive.h" />
     <QtMoc Include="StackedWidget.h" />
     <ClInclude Include="StyleSheet.h" />
-    <QtMoc Include="DxfTreeView.h" />
+    <QtMoc Include="TreeView.h" />
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +204,7 @@
     <ClCompile Include="StackedWidget.cpp" />
     <ClCompile Include="StyleSheet.cpp" />
     <ClCompile Include="LayerTableView.cpp" />
-    <ClCompile Include="DxfTreeView.cpp" />
+    <ClCompile Include="TreeView.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
