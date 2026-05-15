@@ -17,7 +17,7 @@ struct PolylineVertex3D
 struct EntityPolyline
 {
     EntityProp prop;
-    std::vector<PolylineVertex3D> vertices;
+    std::vector<PolylineVertex3D> vecVertices;
     int     flags = 0;
     double  defStartWidth = 0.0;
     double  defEndWidth = 0.0;
@@ -32,9 +32,9 @@ struct EntityPolyline
     // 计算边界
     QRectF boundingBox(double padding = 0.0) const
     {
-        if (vertices.empty()) return QRectF();
+        if (vecVertices.empty()) return QRectF();
         double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
-        for (const auto& v : vertices) {
+        for (const auto& v : vecVertices) {
             minX = std::min(minX, v.point.x());
             minY = std::min(minY, v.point.y());
             maxX = std::max(maxX, v.point.x());
@@ -45,14 +45,14 @@ struct EntityPolyline
 
     // 计算到指定点距离
     double distanceTo(double px, double py) const {
-        if (vertices.empty()) return -1;
+        if (vecVertices.empty()) return -1;
         double minDist = 1e100;
-        int n = static_cast<int>(vertices.size());
+        int n = static_cast<int>(vecVertices.size());
         for (int i = 0; i < n; ++i) {
             int next = (i + 1) % n;
             if (!isClosed() && next == 0) break;
-            double ax = vertices[i].point.x(), ay = vertices[i].point.y();
-            double bx = vertices[next].point.x(), by = vertices[next].point.y();
+            double ax = vecVertices[i].point.x(), ay = vecVertices[i].point.y();
+            double bx = vecVertices[next].point.x(), by = vecVertices[next].point.y();
             double abx = bx - ax, aby = by - ay;
             double apx = px - ax, apy = py - ay;
             double ab2 = abx * abx + aby * aby;

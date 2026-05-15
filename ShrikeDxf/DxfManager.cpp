@@ -135,6 +135,7 @@ void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIn
     }
     // 发出信号通知关注者
     emit signalSelectedEntityChanged(m_SelectedEntity);
+    
 }
 
 

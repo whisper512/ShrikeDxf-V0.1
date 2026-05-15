@@ -484,7 +484,7 @@ void CDxfReader::addPolyline(const DRW_Polyline& data)
         pv.vIndex[2] = vptr->vindex3;
         pv.vIndex[3] = vptr->vindex4;
         pv.vertexFlags = vptr->flags;            
-        ent.vertices.push_back(pv);
+        ent.vecVertices.push_back(pv);
     }
     StoreEntity(ent, data.layer);
 }

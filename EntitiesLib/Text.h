@@ -2,6 +2,7 @@
 #include "EntityBase.h"
 #include <QFontMetricsF>
 #include <QGraphicsTextItem>
+
 // ─── Text ───────────────────────────────────────────────────
 struct EntityText
 {
@@ -18,7 +19,7 @@ struct EntityText
     int     alignH = 0;
     int     alignV = 0;
 
-    // 计算边界（场景坐标，Y-down）
+    // 计算边界(场景坐标Y-down)
     QRectF boundingBox(double padding = 0.0) const
     {
         QFont font(QString::fromStdString(style));

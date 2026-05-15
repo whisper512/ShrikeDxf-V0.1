@@ -20,9 +20,9 @@ void CPolylineAttributeWidget::RefreshTable()
 	ui.tableWidget->setHorizontalHeaderLabels(header);
 	for (int i = 0; i < m_polyline.vertexCount; i++)
 	{
-		QTableWidgetItem* itemX = new QTableWidgetItem(QString::number(m_polyline.vertices[i].point.x()));
+		QTableWidgetItem* itemX = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].point.x()));
 		ui.tableWidget->setItem(i, 0, itemX);
-		QTableWidgetItem* itemY = new QTableWidgetItem(QString::number(m_polyline.vertices[i].point.y()));
+		QTableWidgetItem* itemY = new QTableWidgetItem(QString::number(m_polyline.vecVertices[i].point.y()));
 		ui.tableWidget->setItem(i, 1, itemY);
 	}
 

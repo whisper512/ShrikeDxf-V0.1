@@ -294,7 +294,7 @@ void CDxfWriter::WritePolyline(const EntityPolyline& polyline)
     drw.defendwidth = polyline.defEndWidth;
     drw.vertexcount = polyline.vertexCount;
 
-    for (const auto& v : polyline.vertices)
+    for (const auto& v : polyline.vecVertices)
     {
         DRW_Vertex vert;
         vert.basePoint = DRW_Coord(v.point.x(), v.point.y(), v.point.z());

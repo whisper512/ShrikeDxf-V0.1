@@ -638,13 +638,13 @@ void CDxfGraphicsScene::DrawLWPolyline(const EntityLWPolyline& polyline)
 
 void CDxfGraphicsScene::DrawPolyline(const EntityPolyline& polyline)
 {
-    if (!polyline.prop.visible || polyline.vertices.empty()) return;
+    if (!polyline.prop.visible || polyline.vecVertices.empty()) return;
     QColor color = GetEntityColor(polyline.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     pen.setJoinStyle(Qt::RoundJoin);
     QPainterPath path;
-    const auto& verts = polyline.vertices;
+    const auto& verts = polyline.vecVertices;
     int n = static_cast<int>(verts.size());
     path.moveTo(verts[0].point.x(), verts[0].point.y());
     for (int i = 0; i < n; ++i)
@@ -796,6 +796,76 @@ void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
     addPath(path, pen);
 }
 
+void CDxfGraphicsScene::DrawText(const EntityText& text)
+{
+    if (!text.prop.visible) return;
+    QColor color = GetEntityColor(text.prop);
+    QFont font(QString::fromStdString(text.style));
+    if (text.height < 1.0)
+        font.setPixelSize(1);
+    else
+        font.setPixelSize(static_cast<int>(text.height));
+
+    QGraphicsTextItem tempItem;
+    tempItem.setPlainText(QString::fromStdString(text.text));
+    tempItem.setFont(font);
+    QRectF localRect = tempItem.boundingRect();
+    QFontMetricsF fm(font);
+    double ascent = fm.ascent();
+    double setX = text.insertPoint.x() - localRect.left();
+    double setY = text.insertPoint.y() + localRect.top() + ascent;
+    QGraphicsTextItem* pItem = addText(QString::fromStdString(text.text), font);
+    pItem->setDefaultTextColor(color);
+    pItem->setPos(setX, setY);
+    pItem->setRotation(text.rotation * 180.0 / M_PI);
+    pItem->setTransform(QTransform::fromScale(1.0, -1.0), true);
+    pItem->setTextWidth(-1);
+}
+
+
+void CDxfGraphicsScene::DrawMText(const EntityMText& mtext)
+{
+    if (!mtext.prop.visible) return;
+    QColor color = GetEntityColor(mtext.prop);
+    QFont font(QString::fromStdString(mtext.style));
+    if (mtext.height < 1.0)
+        font.setPixelSize(1);
+    else
+        font.setPixelSize(static_cast<int>(mtext.height));
+    QString textStr = QString::fromStdString(mtext.text);
+    textStr.replace("\\P", "\n");
+    textStr.remove(QRegularExpression("\\\\[A-Za-z][^;]*;"));
+    QGraphicsTextItem tempItem;
+    tempItem.setPlainText(textStr);
+    tempItem.setFont(font);
+    QRectF lr = tempItem.boundingRect();
+    double ax, ay;
+    switch (mtext.attachPoint) {
+    case 1: ax = lr.left();            ay = lr.top();             break;
+    case 2: ax = lr.center().x();      ay = lr.top();             break;
+    case 3: ax = lr.right();           ay = lr.top();             break;
+    case 4: ax = lr.left();            ay = lr.center().y();      break;
+    case 5: ax = lr.center().x();      ay = lr.center().y();      break;
+    case 6: ax = lr.right();           ay = lr.center().y();      break;
+    case 7: ax = lr.left();            ay = lr.bottom();          break;
+    case 8: ax = lr.center().x();      ay = lr.bottom();          break;
+    case 9: ax = lr.right();           ay = lr.bottom();          break;
+    default: ax = lr.left();           ay = lr.top();             break;
+    }
+    double setX = mtext.insertPoint.x() - ax;
+    double setY = mtext.insertPoint.y() + ay;
+    QGraphicsTextItem* pItem = addText(textStr, font);
+    pItem->setDefaultTextColor(color);
+    pItem->setPos(setX, setY);
+    pItem->setRotation(mtext.rotation * 180.0 / M_PI);
+    pItem->setTransform(QTransform::fromScale(1.0, -1.0), true);
+    double textWidth = std::sqrt(
+        mtext.xAxisDir.x() * mtext.xAxisDir.x() +
+        mtext.xAxisDir.y() * mtext.xAxisDir.y());
+    if (textWidth > 0)
+        pItem->setTextWidth(textWidth);
+}
+
 
 QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf)
 {
@@ -878,7 +948,7 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
             case EntityType::Polyline:
             {
                 const auto& poly = std::get<EntityPolyline>(entity);
-                for (const auto& v : poly.vertices)
+                for (const auto& v : poly.vecVertices)
                     updateBounds(v.point.x(), v.point.y());
                 break;
             }
@@ -928,77 +998,6 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
     return QRectF(minX - margin, minY - margin,
         maxX - minX + margin * 2,
         maxY - minY + margin * 2);
-}
-
-
-void CDxfGraphicsScene::DrawText(const EntityText& text)
-{
-    if (!text.prop.visible) return;
-    QColor color = GetEntityColor(text.prop);
-    QFont font(QString::fromStdString(text.style));
-    if (text.height < 1.0)
-        font.setPixelSize(1);
-    else
-        font.setPixelSize(static_cast<int>(text.height));
-    
-    QGraphicsTextItem tempItem;
-    tempItem.setPlainText(QString::fromStdString(text.text));
-    tempItem.setFont(font);
-    QRectF localRect = tempItem.boundingRect();
-    QFontMetricsF fm(font);
-    double ascent = fm.ascent();
-    double setX = text.insertPoint.x() - localRect.left();
-    double setY = text.insertPoint.y() + localRect.top() + ascent;
-    QGraphicsTextItem* pItem = addText(QString::fromStdString(text.text), font);
-    pItem->setDefaultTextColor(color);
-    pItem->setPos(setX, setY);
-    pItem->setRotation(text.rotation * 180.0 / M_PI);
-    pItem->setTransform(QTransform::fromScale(1.0, -1.0), true);
-    pItem->setTextWidth(-1);
-}
-
-
-void CDxfGraphicsScene::DrawMText(const EntityMText& mtext)
-{
-    if (!mtext.prop.visible) return;
-    QColor color = GetEntityColor(mtext.prop);
-    QFont font(QString::fromStdString(mtext.style));
-    if (mtext.height < 1.0)
-        font.setPixelSize(1);
-    else
-        font.setPixelSize(static_cast<int>(mtext.height));
-    QString textStr = QString::fromStdString(mtext.text);
-    textStr.replace("\\P", "\n");
-    textStr.remove(QRegularExpression("\\\\[A-Za-z][^;]*;"));
-    QGraphicsTextItem tempItem;
-    tempItem.setPlainText(textStr);
-    tempItem.setFont(font);
-    QRectF lr = tempItem.boundingRect();
-    double ax, ay;
-    switch (mtext.attachPoint) {
-    case 1: ax = lr.left();            ay = lr.top();             break;
-    case 2: ax = lr.center().x();      ay = lr.top();             break;
-    case 3: ax = lr.right();           ay = lr.top();             break;
-    case 4: ax = lr.left();            ay = lr.center().y();      break;
-    case 5: ax = lr.center().x();      ay = lr.center().y();      break;
-    case 6: ax = lr.right();           ay = lr.center().y();      break;
-    case 7: ax = lr.left();            ay = lr.bottom();          break;
-    case 8: ax = lr.center().x();      ay = lr.bottom();          break;
-    case 9: ax = lr.right();           ay = lr.bottom();          break;
-    default: ax = lr.left();           ay = lr.top();             break;
-    }
-    double setX = mtext.insertPoint.x() - ax;
-    double setY = mtext.insertPoint.y() + ay;
-    QGraphicsTextItem* pItem = addText(textStr, font);
-    pItem->setDefaultTextColor(color);
-    pItem->setPos(setX, setY);
-    pItem->setRotation(mtext.rotation * 180.0 / M_PI);
-    pItem->setTransform(QTransform::fromScale(1.0, -1.0), true);
-    double textWidth = std::sqrt(
-        mtext.xAxisDir.x() * mtext.xAxisDir.x() +
-        mtext.xAxisDir.y() * mtext.xAxisDir.y());
-    if (textWidth > 0)
-        pItem->setTextWidth(textWidth);
 }
 
 
