@@ -963,7 +963,7 @@ QRectF CDxfTools::CalcEntityBounds(const QString& strLayer, int entityIndex)
         return QRectF();
 
     const auto& entity = it->second.entities[entityIndex];
-    double s = 3.0 / (m_pScene ? m_pScene->GetScale() : 1.0);
+    double s = 1.0 / (m_pScene ? m_pScene->GetScale() : 1.0);
 
     return std::visit([s](const auto& e) 
     {

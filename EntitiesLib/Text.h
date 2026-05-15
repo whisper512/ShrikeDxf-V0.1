@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "EntityBase.h"
-
+#include <QFontMetricsF>
+#include <QGraphicsTextItem>
 // ─── Text ───────────────────────────────────────────────────
 struct EntityText
 {
@@ -17,31 +18,56 @@ struct EntityText
     int     alignH = 0;
     int     alignV = 0;
 
-    // 计算边界
-    QRectF boundingBox(double padding = 0.0) const 
+    // 计算边界（场景坐标，Y-down）
+    QRectF boundingBox(double padding = 0.0) const
     {
-        double w = height * 2.0;
-        double h = height;
-        return QRectF(insertPoint.x() - w * 0.1 - padding, insertPoint.y() - h * 0.5 - padding, w + padding * 2, h + padding * 2);
+        QFont font(QString::fromStdString(style));
+        if (height < 1.0) font.setPixelSize(1);
+        else font.setPixelSize(static_cast<int>(height));
+        
+        QGraphicsTextItem tempItem;
+        tempItem.setPlainText(QString::fromStdString(text));
+        tempItem.setFont(font);
+        QRectF lr = tempItem.boundingRect();
+        QFontMetricsF fm(font);
+        double ascent = fm.ascent();
+        double top = insertPoint.y() + lr.top() + ascent - lr.bottom();
+        double left = insertPoint.x();
+        double right = insertPoint.x() - lr.left() + lr.right();
+        double bottom = insertPoint.y() + ascent;
+        return QRectF(left - padding, top - padding,
+            right - left + padding * 2, bottom - top + padding * 2);
     }
 
     // 计算到指定点距离
-    double distanceTo(double px, double py) const {
-        double w = height * 2.0;
-        double h = height;
-        double left = insertPoint.x() - w * 0.1;
-        double top = insertPoint.y() - h * 0.5;
-        if (px >= left && px <= left + w && py >= top && py <= top + h)
+    double distanceTo(double px, double py) const 
+    {
+        QFont font(QString::fromStdString(style));
+        if (height < 1.0) font.setPixelSize(1);
+        else font.setPixelSize(static_cast<int>(height));
+        QGraphicsTextItem tempItem;
+        tempItem.setPlainText(QString::fromStdString(text));
+        tempItem.setFont(font);
+        QRectF lr = tempItem.boundingRect();
+        QFontMetricsF fm(font);
+        double ascent = fm.ascent();
+        // 和 boundingBox 完全一致的矩形
+        double top = insertPoint.y() + lr.top() + ascent - lr.bottom();
+        double left = insertPoint.x();
+        double right = insertPoint.x() - lr.left() + lr.right();
+        double bottom = insertPoint.y() + ascent;
+        if (px >= left && px <= right && py >= top && py <= bottom)
             return 0.0;
         double dLeft = std::abs(px - left);
-        double dRight = std::abs(px - (left + w));
+        double dRight = std::abs(px - right);
         double dTop = std::abs(py - top);
-        double dBottom = std::abs(py - (top + h));
-        if (px >= left && px <= left + w) return std::min(dTop, dBottom);
-        if (py >= top && py <= top + h) return std::min(dLeft, dRight);
+        double dBottom = std::abs(py - bottom);
+        if (px >= left && px <= right) return std::min(dTop, dBottom);
+        if (py >= top && py <= bottom) return std::min(dLeft, dRight);
         return std::sqrt(std::min({ dLeft * dLeft + dTop * dTop,
                                    dLeft * dLeft + dBottom * dBottom,
                                    dRight * dRight + dTop * dTop,
                                    dRight * dRight + dBottom * dBottom }));
     }
+
 };

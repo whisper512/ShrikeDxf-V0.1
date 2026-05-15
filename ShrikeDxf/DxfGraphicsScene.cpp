@@ -935,27 +935,25 @@ void CDxfGraphicsScene::DrawText(const EntityText& text)
 {
     if (!text.prop.visible) return;
     QColor color = GetEntityColor(text.prop);
-    double fontSize = text.height * m_scale;
-    if (fontSize < 0.1) fontSize = 3.0;
     QFont font(QString::fromStdString(text.style));
-    font.setPixelSize(static_cast<int>(fontSize));
-    // 文本显示
+    if (text.height < 1.0)
+        font.setPixelSize(1);
+    else
+        font.setPixelSize(static_cast<int>(text.height));
+    
+    QGraphicsTextItem tempItem;
+    tempItem.setPlainText(QString::fromStdString(text.text));
+    tempItem.setFont(font);
+    QRectF localRect = tempItem.boundingRect();
+    QFontMetricsF fm(font);
+    double ascent = fm.ascent();
+    double setX = text.insertPoint.x() - localRect.left();
+    double setY = text.insertPoint.y() + localRect.top() + ascent;
     QGraphicsTextItem* pItem = addText(QString::fromStdString(text.text), font);
     pItem->setDefaultTextColor(color);
-    // 位置和旋转
-    pItem->setPos(text.insertPoint.x(), text.insertPoint.y());
+    pItem->setPos(setX, setY);
     pItem->setRotation(text.rotation * 180.0 / M_PI);
-    // 垂直翻转以补偿 Qt Y-down vs DXF Y-up
     pItem->setTransform(QTransform::fromScale(1.0, -1.0), true);
-    // 对齐方式
-    Qt::Alignment align = Qt::AlignLeft | Qt::AlignVCenter;
-    if (text.alignH == 1) align = Qt::AlignLeft | Qt::AlignVCenter;
-    else if (text.alignH == 2) align = Qt::AlignCenter;
-    else if (text.alignH == 3) align = Qt::AlignRight | Qt::AlignVCenter;
-    // 垂直对齐
-    if (text.alignV == 1) align |= Qt::AlignTop;
-    else if (text.alignV == 2) align |= Qt::AlignVCenter;
-    else if (text.alignV == 3) align |= Qt::AlignBottom;
     pItem->setTextWidth(-1);
 }
 
@@ -964,48 +962,43 @@ void CDxfGraphicsScene::DrawMText(const EntityMText& mtext)
 {
     if (!mtext.prop.visible) return;
     QColor color = GetEntityColor(mtext.prop);
-    double fontSize = mtext.height * m_scale;
-    if (fontSize < 0.1) fontSize = 3.0;
     QFont font(QString::fromStdString(mtext.style));
-    font.setPixelSize(static_cast<int>(fontSize));
-    // 替换 DXF 换行符 \P 为 Qt 换行符 \n
-    QString text = QString::fromStdString(mtext.text);
-    text.replace("\\P", "\n");
-    // 还可以处理其他 DXF 格式化代码（如 \L \Q \H 等，但先只处理换行）
-    text.remove(QRegularExpression("\\\\[A-Za-z][^;]*;"));
-    QGraphicsTextItem* pItem = addText(text, font);
+    if (mtext.height < 1.0)
+        font.setPixelSize(1);
+    else
+        font.setPixelSize(static_cast<int>(mtext.height));
+    QString textStr = QString::fromStdString(mtext.text);
+    textStr.replace("\\P", "\n");
+    textStr.remove(QRegularExpression("\\\\[A-Za-z][^;]*;"));
+    QGraphicsTextItem tempItem;
+    tempItem.setPlainText(textStr);
+    tempItem.setFont(font);
+    QRectF lr = tempItem.boundingRect();
+    double ax, ay;
+    switch (mtext.attachPoint) {
+    case 1: ax = lr.left();            ay = lr.top();             break;
+    case 2: ax = lr.center().x();      ay = lr.top();             break;
+    case 3: ax = lr.right();           ay = lr.top();             break;
+    case 4: ax = lr.left();            ay = lr.center().y();      break;
+    case 5: ax = lr.center().x();      ay = lr.center().y();      break;
+    case 6: ax = lr.right();           ay = lr.center().y();      break;
+    case 7: ax = lr.left();            ay = lr.bottom();          break;
+    case 8: ax = lr.center().x();      ay = lr.bottom();          break;
+    case 9: ax = lr.right();           ay = lr.bottom();          break;
+    default: ax = lr.left();           ay = lr.top();             break;
+    }
+    double setX = mtext.insertPoint.x() - ax;
+    double setY = mtext.insertPoint.y() + ay;
+    QGraphicsTextItem* pItem = addText(textStr, font);
     pItem->setDefaultTextColor(color);
-    // 位置
-    pItem->setPos(mtext.insertPoint.x(), mtext.insertPoint.y());
+    pItem->setPos(setX, setY);
     pItem->setRotation(mtext.rotation * 180.0 / M_PI);
-    // 垂直翻转以补偿 Qt Y-down vs DXF Y-up
     pItem->setTransform(QTransform::fromScale(1.0, -1.0), true);
-    // 设置文本宽度以支持自动换行
     double textWidth = std::sqrt(
         mtext.xAxisDir.x() * mtext.xAxisDir.x() +
         mtext.xAxisDir.y() * mtext.xAxisDir.y());
     if (textWidth > 0)
         pItem->setTextWidth(textWidth);
-    // 附着点
-    QPointF offset(0, 0);
-    QRectF rect = pItem->boundingRect();
-    qreal w = rect.width();
-    qreal h = rect.height();
-    switch (mtext.attachPoint)
-    {
-    case 1: offset = QPointF(0, 0); break;           // TL
-    case 2: offset = QPointF(-w / 2, 0); break;      // TC
-    case 3: offset = QPointF(-w, 0); break;          // TR
-    case 4: offset = QPointF(0, -h / 2); break;      // ML
-    case 5: offset = QPointF(-w / 2, -h / 2); break; // MC
-    case 6: offset = QPointF(-w, -h / 2); break;     // MR
-    case 7: offset = QPointF(0, -h); break;          // BL
-    case 8: offset = QPointF(-w / 2, -h); break;     // BC
-    case 9: offset = QPointF(-w, -h); break;         // BR
-    default: break;
-    }
-    pItem->setPos(mtext.insertPoint.x() + offset.x(),
-        mtext.insertPoint.y() + offset.y());
 }
 
 

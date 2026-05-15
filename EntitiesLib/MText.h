@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "EntityBase.h"
+#include <QRegularExpression>
+#include <QGraphicsItem>
 
 // ─── MText ──────────────────────────────────────────────────
 struct EntityMText
@@ -18,31 +20,76 @@ struct EntityMText
     int     lineSpaceStyle = 1;
 
     // 计算边界
-    QRectF boundingBox(double padding = 0.0) const 
+    QRectF boundingBox(double padding = 0.0) const
     {
-        double w = std::sqrt(xAxisDir.x() * xAxisDir.x() + xAxisDir.y() * xAxisDir.y());
-        if (w < 1.0) w = height * 10.0;
-        double h = height;
-        return QRectF(insertPoint.x() - padding, insertPoint.y() - h * 0.5 - padding, w + padding * 2, h + padding * 2);
+        QFont font(QString::fromStdString(style));
+        if (height < 1.0) font.setPixelSize(1);
+        else font.setPixelSize(static_cast<int>(height));
+        QString textStr = QString::fromStdString(text);
+        textStr.replace("\\P", "\n");
+        textStr.remove(QRegularExpression("\\\\[A-Za-z][^;]*;"));
+        QGraphicsTextItem tempItem;
+        tempItem.setPlainText(textStr);
+        tempItem.setFont(font);
+        QRectF lr = tempItem.boundingRect();
+        double ax, ay;
+        switch (attachPoint) {
+        case 1: ax = lr.left();            ay = lr.top();             break;
+        case 2: ax = lr.center().x();      ay = lr.top();             break;
+        case 3: ax = lr.right();           ay = lr.top();             break;
+        case 4: ax = lr.left();            ay = lr.center().y();      break;
+        case 5: ax = lr.center().x();      ay = lr.center().y();      break;
+        case 6: ax = lr.right();           ay = lr.center().y();      break;
+        case 7: ax = lr.left();            ay = lr.bottom();          break;
+        case 8: ax = lr.center().x();      ay = lr.bottom();          break;
+        case 9: ax = lr.right();           ay = lr.bottom();          break;
+        default: ax = lr.left();           ay = lr.top();             break;
+        }
+        double setX = insertPoint.x() - ax;
+        double setY = insertPoint.y() + ay;
+        double left = setX + lr.left();
+        double top = setY - lr.bottom();
+        double right = setX + lr.right();
+        double bottom = setY - lr.top();
+        return QRectF(left - padding, top - padding,
+            right - left + padding * 2,
+            bottom - top + padding * 2);
     }
-
-    // 计算到指定点距离
     double distanceTo(double px, double py) const {
-        double w = height * 2.0;
-        double h = height;
-        double left = insertPoint.x() - w * 0.1;
-        double top = insertPoint.y() - h * 0.5;
-        if (px >= left && px <= left + w && py >= top && py <= top + h)
-            return 0.0;
-        double dLeft = std::abs(px - left);
-        double dRight = std::abs(px - (left + w));
-        double dTop = std::abs(py - top);
-        double dBottom = std::abs(py - (top + h));
-        if (px >= left && px <= left + w) return std::min(dTop, dBottom);
-        if (py >= top && py <= top + h) return std::min(dLeft, dRight);
-        return std::sqrt(std::min({ dLeft * dLeft + dTop * dTop,
-                                   dLeft * dLeft + dBottom * dBottom,
-                                   dRight * dRight + dTop * dTop,
-                                   dRight * dRight + dBottom * dBottom }));
+        QFont font(QString::fromStdString(style));
+        if (height < 1.0) font.setPixelSize(1);
+        else font.setPixelSize(static_cast<int>(height));
+        QString textStr = QString::fromStdString(text);
+        textStr.replace("\\P", "\n");
+        textStr.remove(QRegularExpression("\\\\[A-Za-z][^;]*;"));
+        QGraphicsTextItem tempItem;
+        tempItem.setPlainText(textStr);
+        tempItem.setFont(font);
+        QRectF lr = tempItem.boundingRect();
+        double ax, ay;
+        switch (attachPoint) {
+        case 1: ax = lr.left();            ay = lr.top();             break;
+        case 2: ax = lr.center().x();      ay = lr.top();             break;
+        case 3: ax = lr.right();           ay = lr.top();             break;
+        case 4: ax = lr.left();            ay = lr.center().y();      break;
+        case 5: ax = lr.center().x();      ay = lr.center().y();      break;
+        case 6: ax = lr.right();           ay = lr.center().y();      break;
+        case 7: ax = lr.left();            ay = lr.bottom();          break;
+        case 8: ax = lr.center().x();      ay = lr.bottom();          break;
+        case 9: ax = lr.right();           ay = lr.bottom();          break;
+        default: ax = lr.left();           ay = lr.top();             break;
+        }
+        double setX = insertPoint.x() - ax;
+        double setY = insertPoint.y() + ay;
+        double left = setX + lr.left();
+        double top = setY - lr.bottom();
+        double right = setX + lr.right();
+        double bottom = setY - lr.top();
+        double dx = 0, dy = 0;
+        if (px < left) dx = left - px;
+        else if (px > right) dx = px - right;
+        if (py < top) dy = top - py;
+        else if (py > bottom) dy = py - bottom;
+        return std::sqrt(dx * dx + dy * dy);
     }
 };
