@@ -93,6 +93,25 @@ void CDxfManager::ConnectSignals()
         });
 }
 
+void CDxfManager::UpdateSelectionDisplay()
+{
+    m_DxfGraphicsScene.RemoveGrips();
+    if (m_SelectedEntity.entityIndex < 0) return;
+
+    const auto& layers = m_DxfData->GetLayers();
+    auto it = layers.find(m_SelectedEntity.strLayer.toStdString());
+    if (it == layers.end()) return;
+    if (m_SelectedEntity.entityIndex < 0 ||
+        m_SelectedEntity.entityIndex >= static_cast<int>(it->second.entities.size()))
+        return;
+
+    const auto& entity = it->second.entities[m_SelectedEntity.entityIndex];
+    QRectF bounds = std::visit([](const auto& e) { return e.boundingBox(1.0); }, entity);
+    if (bounds.isValid())
+        m_DxfGraphicsScene.ShowGrips(bounds);
+}
+
+
 void CDxfManager::SynLayerModelToDxfData()
 {
     int rowCount = m_DxfLayerTableviewModel.rowCount();
@@ -115,28 +134,35 @@ void CDxfManager::SynLayerModelToDxfData()
     }
 }
 
-
-void CDxfManager::OnTreeViewEntitySelected(const QString& strLayer, int entityIndex)
+void CDxfManager::SelectEntity(const QString& strLayer, int entityIndex)
 {
+    // 更新选中信息
     m_SelectedEntity.strLayer = strLayer;
     m_SelectedEntity.entityIndex = entityIndex;
     m_SelectedEntity.type = EntityType::None;
 
-    if (entityIndex >= 0)
+    const auto& layers = m_DxfData->GetLayers();
+    auto it = layers.find(strLayer.toStdString());
+    if (it != layers.end() && entityIndex >= 0 && entityIndex < static_cast<int>(it->second.entities.size()))
     {
-        // 从DxfData中根据图层名+索引找到对应的实体
-        const auto& layers = m_DxfData->GetLayers();
-        auto it = layers.find(strLayer.toStdString());
-        if (it != layers.end() && entityIndex < (int)it->second.entities.size())
-        {
-            m_SelectedEntity.entity = it->second.entities[entityIndex];
-            m_SelectedEntity.type = GetEntityType(m_SelectedEntity.entity);
-        }
+        m_SelectedEntity.entity = it->second.entities[entityIndex];
+        m_SelectedEntity.type = GetEntityType(m_SelectedEntity.entity);
     }
-    // 发出信号通知关注者
+
+    // 更新选中框
+    UpdateSelectionDisplay();
+
+    // 通知其他关注者
     emit signalSelectedEntityChanged(m_SelectedEntity);
-    
 }
+
+void CDxfManager::DeselectEntity()
+{
+    m_SelectedEntity = stuSelectedEntity();
+    m_DxfGraphicsScene.RemoveGrips();
+    emit signalSelectedEntityChanged(m_SelectedEntity);
+}
+
 
 
 void CDxfManager::handlePointAttributeChanged(const EntityPoint& point)
@@ -253,25 +279,10 @@ void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
 
 void CDxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
 {
-    // 更新 Manager 中的选中信息
-    m_SelectedEntity.strLayer = strLayer;
-    m_SelectedEntity.entityIndex = entityIndex;
-    m_SelectedEntity.type = EntityType::None;
-
-    const auto& layers = m_DxfData->GetLayers();
-    auto it = layers.find(strLayer.toStdString());
-    if (it != layers.end() && entityIndex >= 0 && entityIndex < static_cast<int>(it->second.entities.size()))
-    {
-        m_SelectedEntity.entity = it->second.entities[entityIndex];
-        m_SelectedEntity.type = GetEntityType(m_SelectedEntity.entity);
-    }
-
-    // 通知其他关注者
-    emit signalSelectedEntityChanged(m_SelectedEntity);
+    SelectEntity(strLayer, entityIndex);
 }
 
 void CDxfManager::handleEntityDeselected()
 {
-    m_SelectedEntity = stuSelectedEntity();
-    emit signalSelectedEntityChanged(m_SelectedEntity);
+    DeselectEntity();
 }

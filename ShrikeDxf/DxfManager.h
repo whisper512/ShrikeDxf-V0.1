@@ -53,7 +53,7 @@ public:
 private:
 	// 连接内部信号
 	void ConnectSignals();
-
+	void UpdateSelectionDisplay();
 private:
 	// mainwindow指针
 	QWidget* m_pMainWnd;
@@ -81,7 +81,10 @@ private:
 public:
 	// 同步图层模型数据到dxf数据结构
 	void SynLayerModelToDxfData();
-
+	// 选中指定图元
+	void SelectEntity(const QString& strLayer, int entityIndex);
+	// 取消选中
+	void DeselectEntity();
 
 
 signals:
@@ -102,9 +105,7 @@ signals:
 	void signalMouseStatusChanged(enumMouseStateInView mouseState);
 
  public slots:
-	 // treeview选中图元发生变化
-	 void OnTreeViewEntitySelected(const QString& strLayer, int entityIndex);
-
+	 
 	 // 图元属性发生变化
 	 void handlePointAttributeChanged(const EntityPoint& point);
      void handleLineAttributeChanged(const EntityLine& line);

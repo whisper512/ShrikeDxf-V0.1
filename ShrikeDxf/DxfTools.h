@@ -61,8 +61,6 @@ private:
     void HitTest(QPointF scenePos);
     // 清除选中
     void ClearSelection();
-    // 计算图元边界
-    QRectF CalcEntityBounds(const QString& strLayer, int entityIndex);
 
 private:
 

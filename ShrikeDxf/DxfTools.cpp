@@ -927,9 +927,6 @@ void CDxfTools::HitTest(QPointF scenePos)
         m_bEntitySelected = true;
         m_strSelectedLayer = hitLayer;
         m_nSelectedIndex = hitIndex;
-        QRectF bounds = CalcEntityBounds(hitLayer, hitIndex);
-        if (bounds.isValid())
-            m_pScene->ShowGrips(bounds);
         emit signalEntitySelected(hitLayer, hitIndex);
     }
     else
@@ -942,31 +939,9 @@ void CDxfTools::ClearSelection()
 {
     if (m_bEntitySelected)
     {
-        if (m_pScene)
-            m_pScene->RemoveGrips();
-
         m_bEntitySelected = false;
         m_strSelectedLayer.clear();
         m_nSelectedIndex = -1;
         emit signalEntityDeselected();
     }
-}
-
-
-QRectF CDxfTools::CalcEntityBounds(const QString& strLayer, int entityIndex)
-{
-    if (!m_pData) return QRectF();
-
-    const auto& layers = m_pData->GetLayers();
-    auto it = layers.find(strLayer.toStdString());
-    if (it == layers.end() || entityIndex < 0 || entityIndex >= static_cast<int>(it->second.entities.size()))
-        return QRectF();
-
-    const auto& entity = it->second.entities[entityIndex];
-    double s = 1.0 / (m_pScene ? m_pScene->GetScale() : 1.0);
-
-    return std::visit([s](const auto& e) 
-    {
-        return e.boundingBox(s);
-    }, entity);
 }
