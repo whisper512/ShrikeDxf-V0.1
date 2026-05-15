@@ -65,9 +65,7 @@ private:
     QRectF CalcEntityBounds(const QString& strLayer, int entityIndex);
 
 private:
-    // 辅助方法
-    QRectF CalcVertsBounds(const std::vector<PolylineVertex2D>& verts, double s);
-    QRectF CalcVertsBounds(const std::vector<PolylineVertex3D>& verts, double s);
+
 
 
 private:

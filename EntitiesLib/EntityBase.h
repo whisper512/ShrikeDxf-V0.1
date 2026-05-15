@@ -3,6 +3,7 @@
 #define ENTITIES_H
 
 #include <QPointF>
+#include <QRect>
 #include <QtMath> 
 #include <QLineF>
 #include <string>

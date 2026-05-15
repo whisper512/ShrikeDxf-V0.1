@@ -892,207 +892,28 @@ void CDxfTools::FinishMText(QPointF scenePos)
 
 void CDxfTools::HitTest(QPointF scenePos)
 {
-    // 清除之前选中
     ClearSelection();
-
     if (!m_pData || !m_pScene) return;
-
     const auto& layers = m_pData->GetLayers();
-
-    // 用像素转场景坐标算容差
     double threshold = 15.0 / m_pScene->GetScale();
-    if (threshold < 0.5) threshold = 0.5;   // 最小 0.5 场景单位
-
+    if (threshold < 0.5) threshold = 0.5;
     QString hitLayer;
     int hitIndex = -1;
     double minDist = threshold;
-
-    // 遍历所有可见图层（后画的在上层用 reverse）
+    double px = scenePos.x(), py = scenePos.y();
     for (auto it = layers.rbegin(); it != layers.rend(); ++it)
     {
         if (!it->second.isVisible) continue;
-
         const auto& entities = it->second.entities;
         for (int i = static_cast<int>(entities.size()) - 1; i >= 0; --i)
         {
             const auto& entity = entities[i];
-            EntityType type = GetEntityType(entity);
-            double dist = -1.0;
-
-            switch (type)
-            {
-            case EntityType::Point:
-            {
-                const auto& pt = std::get<EntityPoint>(entity);
-                dist = QLineF(scenePos, QPointF(pt.point.x(), pt.point.y())).length();
-                break;
-            }
-            case EntityType::Line:
-            {
-                const auto& line = std::get<EntityLine>(entity);
-                dist = pointToSegmentDist(scenePos,
-                    QPointF(line.startPoint.x(), line.startPoint.y()),
-                    QPointF(line.endPoint.x(), line.endPoint.y()));
-                break;
-            }
-            case EntityType::Circle:
-            {
-                const auto& circle = std::get<EntityCircle>(entity);
-                double d = QLineF(scenePos, QPointF(circle.center.x(), circle.center.y())).length();
-                dist = std::abs(d - circle.radius);
-                break;
-            }
-            case EntityType::Arc:
-            {
-                const auto& arc = std::get<EntityArc>(entity);
-                double d = QLineF(scenePos, QPointF(arc.center.x(), arc.center.y())).length();
-                dist = std::abs(d - arc.radius);
-                break;
-            }
-            case EntityType::Ellipse:
-            {
-                const auto& ellipse = std::get<EntityEllipse>(entity);
-                // 用椭圆方程近似计算点到椭圆边的距离
-                double dx = scenePos.x() - ellipse.center.x();
-                double dy = scenePos.y() - ellipse.center.y();
-                double majorLen = std::sqrt(
-                    ellipse.majorAxisEndpoint.x() * ellipse.majorAxisEndpoint.x() +
-                    ellipse.majorAxisEndpoint.y() * ellipse.majorAxisEndpoint.y());
-                if (majorLen < 1e-10) continue;
-                double minorLen = majorLen * ellipse.ratio;
-                double angleRad = std::atan2(ellipse.majorAxisEndpoint.y(),
-                    ellipse.majorAxisEndpoint.x());
-                // 旋转到局部坐标系
-                double cosA = std::cos(-angleRad), sinA = std::sin(-angleRad);
-                double lx = dx * cosA - dy * sinA;
-                double ly = dx * sinA + dy * cosA;
-                // 椭圆方程: lx^2/a^2 + ly^2/b^2 = 1
-                double val = (lx * lx) / (majorLen * majorLen) + (ly * ly) / (minorLen * minorLen);
-                if (val < 1e-6) {
-                    dist = 0;
-                }
-                else {
-                    double sqrtVal = std::sqrt(val);
-                    dist = std::abs(sqrtVal - 1.0) * std::min(majorLen, minorLen);
-                }
-                break;
-            }
-            case EntityType::LWPolyline:
-            {
-                const auto& poly = std::get<EntityLWPolyline>(entity);
-                const auto& verts = poly.vecVertices;
-                if (verts.empty()) continue;
-                double minSegDist = std::numeric_limits<double>::max();
-                int n = static_cast<int>(verts.size());
-                for (int j = 0; j < n; ++j)
-                {
-                    int next = (j + 1) % n;
-                    if (!poly.isClosed() && next == 0) break;
-                    double d = pointToSegmentDist(scenePos,
-                        QPointF(verts[j].point.x(), verts[j].point.y()),
-                        QPointF(verts[next].point.x(), verts[next].point.y()));
-                    minSegDist = std::min(minSegDist, d);
-                }
-                dist = minSegDist;
-                break;
-            }
-            case EntityType::Polyline:
-            {
-                const auto& poly = std::get<EntityPolyline>(entity);
-                const auto& verts = poly.vertices;
-                if (verts.empty()) continue;
-                double minSegDist = std::numeric_limits<double>::max();
-                int n = static_cast<int>(verts.size());
-                for (int j = 0; j < n; ++j)
-                {
-                    int next = (j + 1) % n;
-                    if (!poly.isClosed() && next == 0) break;
-                    double d = pointToSegmentDist(scenePos,
-                        QPointF(verts[j].point.x(), verts[j].point.y()),
-                        QPointF(verts[next].point.x(), verts[next].point.y()));
-                    minSegDist = std::min(minSegDist, d);
-                }
-                dist = minSegDist;
-                break;
-            }
-            case EntityType::Spline:
-            {
-                const auto& spline = std::get<EntitySpline>(entity);
-                double minPtDist = std::numeric_limits<double>::max();
-                // 用控制点做近似检测(足够精确)
-                for (const auto& cp : spline.controlPoints)
-                {
-                    double d = QLineF(scenePos, QPointF(cp.x(), cp.y())).length();
-                    minPtDist = std::min(minPtDist, d);
-                }
-                // 也检查拟合点(如果有)
-                for (const auto& fp : spline.fitPoints)
-                {
-                    double d = QLineF(scenePos, QPointF(fp.x(), fp.y())).length();
-                    minPtDist = std::min(minPtDist, d);
-                }
-                dist = minPtDist;
-                break;
-            }
-            case EntityType::Text:
-            {
-                const auto& text = std::get<EntityText>(entity);
-                // 文本近似包围盒检测
-                double h = text.height;
-                double w = h * 2.0;  // 估算宽度
-                QPointF pt(text.insertPoint.x(), text.insertPoint.y());
-                QRectF textRect(pt.x() - w * 0.1, pt.y() - h * 0.5, w, h);
-                // 旋转处理
-                if (std::abs(text.rotation) > 1e-6)
-                {
-                    QPointF center = textRect.center();
-                    QPointF local = scenePos - center;
-                    double rad = -text.rotation;
-                    double cosR = std::cos(rad), sinR = std::sin(rad);
-                    QPointF rotated(local.x() * cosR - local.y() * sinR,
-                        local.x() * sinR + local.y() * cosR);
-                    rotated += center;
-                    dist = pointToRectDist(rotated, textRect);
-                }
-                else
-                {
-                    dist = pointToRectDist(scenePos, textRect);
-                }
-                if (dist < threshold * 2) dist *= 0.5;  // 文本更易选中
-                break;
-            }
-            case EntityType::MText:
-            {
-                const auto& mtext = std::get<EntityMText>(entity);
-                double h = mtext.height;
-                double w = std::sqrt(mtext.xAxisDir.x() * mtext.xAxisDir.x() +
-                    mtext.xAxisDir.y() * mtext.xAxisDir.y());
-                if (w < 1.0) w = h * 10.0;
-                QPointF pt(mtext.insertPoint.x(), mtext.insertPoint.y());
-                QRectF mtextRect(pt.x(), pt.y() - h * 0.5, w, h);
-                double angRad = std::atan2(mtext.xAxisDir.y(), mtext.xAxisDir.x());
-                if (std::abs(angRad) > 1e-6)
-                {
-                    QPointF center = mtextRect.center();
-                    QPointF local = scenePos - center;
-                    double cosR = std::cos(-angRad), sinR = std::sin(-angRad);
-                    QPointF rotated(local.x() * cosR - local.y() * sinR,
-                        local.x() * sinR + local.y() * cosR);
-                    rotated += center;
-                    dist = pointToRectDist(rotated, mtextRect);
-                }
-                else
-                {
-                    dist = pointToRectDist(scenePos, mtextRect);
-                }
-                if (dist < threshold * 2) dist *= 0.5;
-                break;
-            }
-            default:
-                
+            // Hatch 跳过
+            if (GetEntityType(entity) == EntityType::Hatch)
                 continue;
-            }
-
+            double dist = std::visit([px, py](const auto& e) {
+                return e.distanceTo(px, py);
+                }, entity);
             if (dist >= 0 && dist < minDist)
             {
                 minDist = dist;
@@ -1101,7 +922,6 @@ void CDxfTools::HitTest(QPointF scenePos)
             }
         }
     }
-
     if (hitIndex >= 0)
     {
         m_bEntitySelected = true;
@@ -1109,9 +929,7 @@ void CDxfTools::HitTest(QPointF scenePos)
         m_nSelectedIndex = hitIndex;
         QRectF bounds = CalcEntityBounds(hitLayer, hitIndex);
         if (bounds.isValid())
-        {
             m_pScene->ShowGrips(bounds);
-        }
         emit signalEntitySelected(hitLayer, hitIndex);
     }
     else
@@ -1135,207 +953,20 @@ void CDxfTools::ClearSelection()
 }
 
 
-template<typename T>
-static QRectF CalcVertsBoundsT(const std::vector<T>& verts, double s)
-{
-    if (verts.empty()) return QRectF();
-    double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
-    for (const auto& v : verts) {
-        minX = std::min(minX, v.point.x());
-        minY = std::min(minY, v.point.y());
-        maxX = std::max(maxX, v.point.x());
-        maxY = std::max(maxY, v.point.y());
-    }
-    return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
-}
-
-QRectF CDxfTools::CalcVertsBounds(const std::vector<PolylineVertex2D>& verts, double s)
-{
-    return CalcVertsBoundsT(verts, s);
-}
-
-QRectF CDxfTools::CalcVertsBounds(const std::vector<PolylineVertex3D>& verts, double s)
-{
-    return CalcVertsBoundsT(verts, s);
-}
-
 QRectF CDxfTools::CalcEntityBounds(const QString& strLayer, int entityIndex)
 {
     if (!m_pData) return QRectF();
 
     const auto& layers = m_pData->GetLayers();
     auto it = layers.find(strLayer.toStdString());
-    if (it == layers.end() || entityIndex < 0 ||
-        entityIndex >= static_cast<int>(it->second.entities.size()))
+    if (it == layers.end() || entityIndex < 0 || entityIndex >= static_cast<int>(it->second.entities.size()))
         return QRectF();
 
     const auto& entity = it->second.entities[entityIndex];
-    EntityType type = GetEntityType(entity);
+    double s = 3.0 / (m_pScene ? m_pScene->GetScale() : 1.0);
 
-    const double s = 5.0 / (m_pScene ? m_pScene->GetScale() : 1.0);
-
-    switch (type)
+    return std::visit([s](const auto& e) 
     {
-    case EntityType::Point:
-    {
-        const auto& pt = std::get<EntityPoint>(entity);
-        return QRectF(pt.point.x() - s, pt.point.y() - s, s * 2, s * 2);
-    }
-    case EntityType::Line:
-    {
-        const auto& line = std::get<EntityLine>(entity);
-        qreal x1 = line.startPoint.x(), y1 = line.startPoint.y();
-        qreal x2 = line.endPoint.x(), y2 = line.endPoint.y();
-        return QRectF(std::min(x1, x2), std::min(y1, y2),
-            std::abs(x2 - x1), std::abs(y2 - y1)).adjusted(-s, -s, s, s);
-    }
-    case EntityType::Circle:
-    {
-        const auto& circle = std::get<EntityCircle>(entity);
-        return QRectF(circle.center.x() - circle.radius - s,
-            circle.center.y() - circle.radius - s,
-            circle.radius * 2 + s * 2,
-            circle.radius * 2 + s * 2);
-    }
-    case EntityType::Arc:
-    {
-        const auto& arc = std::get<EntityArc>(entity);
-        return QRectF(arc.center.x() - arc.radius - s,
-            arc.center.y() - arc.radius - s,
-            arc.radius * 2 + s * 2,
-            arc.radius * 2 + s * 2);
-    }
-    case EntityType::Ellipse:
-    {
-        const auto& ellipse = std::get<EntityEllipse>(entity);
-        double majorLen = std::sqrt(
-            ellipse.majorAxisEndpoint.x() * ellipse.majorAxisEndpoint.x() +
-            ellipse.majorAxisEndpoint.y() * ellipse.majorAxisEndpoint.y());
-        if (majorLen < 1e-10) return QRectF();
-        double minorLen = majorLen * ellipse.ratio;
-        double angleRad = std::atan2(ellipse.majorAxisEndpoint.y(),
-            ellipse.majorAxisEndpoint.x());
-        double cosA = std::cos(angleRad), sinA = std::sin(angleRad);
-        double cx = ellipse.center.x(), cy = ellipse.center.y();
-        // 采样 64 个点求精确包围盒
-        double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
-        double startP = ellipse.startParam;
-        double endP = ellipse.endParam;
-        int numSamples = 64;
-        for (int i = 0; i <= numSamples; ++i)
-        {
-            double theta = startP + (endP - startP) * i / numSamples;
-            // 局部坐标 (长轴方向为 X)
-            double lx = majorLen * std::cos(theta);
-            double ly = minorLen * std::sin(theta);
-            // 旋转到世界坐标
-            double wx = cx + lx * cosA - ly * sinA;
-            double wy = cy + lx * sinA + ly * cosA;
-            minX = std::min(minX, wx);
-            maxX = std::max(maxX, wx);
-            minY = std::min(minY, wy);
-            maxY = std::max(maxY, wy);
-        }
-        return QRectF(minX - s, minY - s,
-            maxX - minX + s * 2, maxY - minY + s * 2);
-    }
-    case EntityType::LWPolyline:
-    {
-        const auto& poly = std::get<EntityLWPolyline>(entity);
-        return CalcVertsBounds(poly.vecVertices, s);
-    }
-    case EntityType::Polyline:
-    {
-        const auto& poly = std::get<EntityPolyline>(entity);
-        return CalcVertsBounds(poly.vertices, s);
-    }
-    case EntityType::Spline:
-    {
-        const auto& spline = std::get<EntitySpline>(entity);
-        double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
-        auto update = [&](double x, double y) {
-            minX = std::min(minX, x); minY = std::min(minY, y);
-            maxX = std::max(maxX, x); maxY = std::max(maxY, y);
-            };
-        for (const auto& pt : spline.controlPoints)
-            update(pt.x(), pt.y());
-        for (const auto& pt : spline.fitPoints)
-            update(pt.x(), pt.y());
-        if (minX > maxX) return QRectF();
-        return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
-    }
-    case EntityType::Text:
-    {
-        const auto& text = std::get<EntityText>(entity);
-        // ★ 和 HitTest 完全一致
-        double h = text.height;
-        double w = h * 2.0;
-        QPointF pt(text.insertPoint.x(), text.insertPoint.y());
-        QRectF textRect(pt.x() - w * 0.1, pt.y() - h * 0.5, w, h);
-        // 考虑旋转（和 HitTest 一致）
-        if (std::abs(text.rotation) > 1e-6)
-        {
-            double cosR = std::cos(text.rotation), sinR = std::sin(text.rotation);
-            QPointF center = textRect.center();
-            QPointF corners[4] = {
-                QPointF(textRect.left(), textRect.top()),
-                QPointF(textRect.right(), textRect.top()),
-                QPointF(textRect.right(), textRect.bottom()),
-                QPointF(textRect.left(), textRect.bottom())
-            };
-            double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
-            for (int i = 0; i < 4; ++i)
-            {
-                double dx = corners[i].x() - center.x();
-                double dy = corners[i].y() - center.y();
-                double rx = center.x() + dx * cosR - dy * sinR;
-                double ry = center.y() + dx * sinR + dy * cosR;
-                minX = std::min(minX, rx); maxX = std::max(maxX, rx);
-                minY = std::min(minY, ry); maxY = std::max(maxY, ry);
-            }
-            return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
-        }
-        return QRectF(textRect.left() - s, textRect.top() - s,
-            textRect.width() + s * 2, textRect.height() + s * 2);
-    }
-    case EntityType::MText:
-    {
-        const auto& mtext = std::get<EntityMText>(entity);
-        // ★ 和 HitTest 完全一致
-        double h = mtext.height;
-        double w = std::sqrt(mtext.xAxisDir.x() * mtext.xAxisDir.x() +
-            mtext.xAxisDir.y() * mtext.xAxisDir.y());
-        if (w < 1.0) w = h * 10.0;
-        QPointF pt(mtext.insertPoint.x(), mtext.insertPoint.y());
-        QRectF mtextRect(pt.x(), pt.y() - h * 0.5, w, h);
-        // 考虑旋转（和 HitTest 一致）
-        double angRad = std::atan2(mtext.xAxisDir.y(), mtext.xAxisDir.x());
-        if (std::abs(angRad) > 1e-6)
-        {
-            double cosR = std::cos(angRad), sinR = std::sin(angRad);
-            QPointF center = mtextRect.center();
-            QPointF corners[4] = {
-                QPointF(mtextRect.left(), mtextRect.top()),
-                QPointF(mtextRect.right(), mtextRect.top()),
-                QPointF(mtextRect.right(), mtextRect.bottom()),
-                QPointF(mtextRect.left(), mtextRect.bottom())
-            };
-            double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
-            for (int i = 0; i < 4; ++i)
-            {
-                double dx = corners[i].x() - center.x();
-                double dy = corners[i].y() - center.y();
-                double rx = center.x() + dx * cosR - dy * sinR;
-                double ry = center.y() + dx * sinR + dy * cosR;
-                minX = std::min(minX, rx); maxX = std::max(maxX, rx);
-                minY = std::min(minY, ry); maxY = std::max(maxY, ry);
-            }
-            return QRectF(minX - s, minY - s, maxX - minX + s * 2, maxY - minY + s * 2);
-        }
-        return QRectF(mtextRect.left() - s, mtextRect.top() - s,
-            mtextRect.width() + s * 2, mtextRect.height() + s * 2);
-    }
-    default:
-        return QRectF();
-    }
+        return e.boundingBox(s);
+    }, entity);
 }

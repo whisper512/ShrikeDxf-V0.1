@@ -17,4 +17,34 @@ struct EntitySpline
     std::vector<double>      weights;              //权重值
     std::vector<Vertex3D>    controlPoints;        //控制点
     std::vector<Vertex3D>    fitPoints;            //拟合点
+
+    // 计算边界
+    QRectF boundingBox(double padding = 0.0) const 
+    {
+        double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;
+        auto update = [&](double x, double y) 
+            {
+            minX = std::min(minX, x); minY = std::min(minY, y);
+            maxX = std::max(maxX, x); maxY = std::max(maxY, y);
+            };
+        for (const auto& pt : controlPoints) update(pt.x(), pt.y());
+        for (const auto& pt : fitPoints) update(pt.x(), pt.y());
+        if (minX > maxX) return QRectF();
+        return QRectF(minX - padding, minY - padding, maxX - minX + padding * 2, maxY - minY + padding * 2);
+    }
+
+    // 计算到指定点距离
+    double distanceTo(double px, double py) const 
+    {
+        double minDist = 1e100;
+        for (const auto& cp : controlPoints) {
+            double dx = px - cp.x(), dy = py - cp.y();
+            minDist = std::min(minDist, std::sqrt(dx * dx + dy * dy));
+        }
+        for (const auto& fp : fitPoints) {
+            double dx = px - fp.x(), dy = py - fp.y();
+            minDist = std::min(minDist, std::sqrt(dx * dx + dy * dy));
+        }
+        return minDist;
+    }
 };

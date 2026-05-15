@@ -59,4 +59,18 @@ struct EntityHatch
     // 边界路径
     int                  loopCount = 0;  // (code 91)
     std::vector<HatchLoop> loops;        // 所有边界环
+
+    // 计算边界
+    QRectF boundingBox(double padding = 0.0) const
+    {
+        // 块引用没有固定大小,返回一个点
+        return QRectF(0, 0, 0, 0);
+    }
+
+    // 计算到指定点距离
+    double distanceTo(double px, double py) const 
+    {   
+        return 0.0;
+    }
+
 };

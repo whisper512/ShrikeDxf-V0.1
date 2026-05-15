@@ -10,10 +10,26 @@ struct EntityArc
     double     startAngle = 0.0;  // 弧度
     double     endAngle = 0.0;    // 弧度
     bool       isCCW = true;
+
+    // 计算边界
+    QRectF boundingBox(double padding = 0.0) const 
+    {
+        double r = radius + padding;
+        return QRectF(center.x() - r, center.y() - r, r * 2, r * 2);
+    }
+
+    // 计算到指定点距离
+    double distanceTo(double px, double py) const 
+    {
+        double dx = px - center.x(), dy = py - center.y();
+        double d = std::sqrt(dx * dx + dy * dy);
+        return std::abs(d - radius);
+    }
+
 };
 
 
-// 三点计算圆心、半径、起止角度
+// 三点计算圆心,半径,起止角度
 static bool ThreePointsToArc(QPointF p1, QPointF p2, QPointF p3,
     QPointF& center, qreal& radius,
     qreal& startAngle, qreal& endAngle)
