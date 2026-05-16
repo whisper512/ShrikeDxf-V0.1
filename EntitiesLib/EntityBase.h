@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef ENTITIES_H
-#define ENTITIES_H
 
 #include <QPointF>
 #include <QRect>
@@ -104,6 +102,3 @@ enum class EntityType : int
     Solid = 11,
     Hatch = 12,
 };
-
-
-#endif
