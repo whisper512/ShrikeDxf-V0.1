@@ -20,7 +20,7 @@ struct EntitySolid
         return QRectF(minX - padding, minY - padding, maxX - minX + padding * 2, maxY - minY + padding * 2);
     }
 
-    // 计算到指定点距离
+    
     double distanceTo(double px, double py) const {
         // 用包围盒近似
         double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;

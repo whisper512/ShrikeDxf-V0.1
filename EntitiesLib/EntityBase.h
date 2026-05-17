@@ -94,3 +94,4 @@ struct EntityProp
     double      thickness = 0.0;
     Vertex3D    extrusionDir;
 };
+

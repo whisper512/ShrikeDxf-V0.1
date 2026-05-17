@@ -19,7 +19,6 @@ struct EntityMText
     int     textDir = 1;
     int     lineSpaceStyle = 1;
 
-    // 计算边界
     QRectF boundingBox(double padding = 0.0) const
     {
         QFont font(QString::fromStdString(style));
@@ -55,6 +54,7 @@ struct EntityMText
             right - left + padding * 2,
             bottom - top + padding * 2);
     }
+
     double distanceTo(double px, double py) const {
         QFont font(QString::fromStdString(style));
         if (height < 1.0) font.setPixelSize(1);

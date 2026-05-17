@@ -11,7 +11,6 @@ struct EntityArc
     double     endAngle = 0.0;    // 弧度
     bool       isCCW = true;
 
-    // 计算边界
     QRectF boundingBox(double padding = 0.0) const
     {
         double r = radius + padding;

@@ -40,7 +40,7 @@ struct EntityText
             right - left + padding * 2, bottom - top + padding * 2);
     }
 
-    // 计算到指定点距离
+    
     double distanceTo(double px, double py) const 
     {
         QFont font(QString::fromStdString(style));

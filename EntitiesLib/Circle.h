@@ -8,7 +8,6 @@ struct EntityCircle
     Vertex3D   center;
     double     radius = 0.0;
 
-    // 计算边界
     QRectF boundingBox(double padding = 0.0) const
     {
         std::vector<QPointF> pts = {

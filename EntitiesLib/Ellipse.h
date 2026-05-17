@@ -11,7 +11,6 @@ struct EntityEllipse
     double     startParam = 0.0;  // 弧度
     double     endParam = 0.0;    // 弧度
 
-    // 计算边界
     QRectF boundingBox(double padding = 0.0) const
     {
         double majorLen = std::sqrt(majorAxisEndpoint.x() * majorAxisEndpoint.x() +
