@@ -35,6 +35,23 @@
 #define STR_SPLINE_LOWERCASE "spline"
 #define STR_HATCH_LOWERCASE "hatch"
 
+enum class EntityType : int
+{
+    None = -1,
+    Point = 0,
+    Line = 1,
+    Circle = 2,
+    Arc = 3,
+    Ellipse = 4,
+    LWPolyline = 5,
+    Polyline = 6,
+    Spline = 7,
+    Text = 8,
+    MText = 9,
+    Insert = 10,
+    Solid = 11,
+    Hatch = 12,
+};
 
 struct Vertex3D
 {
@@ -52,18 +69,12 @@ struct Vertex3D
 
     QPointF toQPointF() const { return QPointF(m_x, m_y); }
 
-    bool operator==(const Vertex3D& o) const {
-        return m_x == o.m_x && m_y == o.m_y && m_z == o.m_z;
-    }
-
+    bool operator==(const Vertex3D& o) const { return m_x == o.m_x && m_y == o.m_y && m_z == o.m_z; }
     bool operator!=(const Vertex3D& o) const { return !(*this == o); }
+    Vertex3D& operator=(const QPointF& pt) { m_x = pt.x(); m_y = pt.y(); return *this; }
 
-    Vertex3D& operator=(const QPointF& pt) {
-        m_x = pt.x();
-        m_y = pt.y();
-        return *this;
-    }
-
+    QPointF toQPointF() const { return QPointF(m_x, m_y); }
+    bool equals(const Vertex3D& o, double eps = 1e-12) const { return std::abs(m_x - o.m_x) < eps && std::abs(m_y - o.m_y) < eps && std::abs(m_z - o.m_z) < eps; }
 
 private:
     double m_x = 0.0, m_y = 0.0, m_z = 0.0;
@@ -80,25 +91,6 @@ struct EntityProp
     bool        visible = true;
     int         transparency = 0;
     bool        haveExtrusion = false;
-    Vertex3D    extrusionDir;
     double      thickness = 0.0;
-};
-
-
-enum class EntityType : int
-{
-    None = -1,
-    Point = 0,
-    Line = 1,
-    Circle = 2,
-    Arc = 3,
-    Ellipse = 4,
-    LWPolyline = 5,
-    Polyline = 6,
-    Spline = 7,
-    Text = 8,
-    MText = 9,
-    Insert = 10,
-    Solid = 11,
-    Hatch = 12,
+    Vertex3D    extrusionDir;
 };
