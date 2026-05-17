@@ -67,8 +67,6 @@ struct Vertex3D
     void setY(double v) { m_y = v; }
     void setZ(double v) { m_z = v; }
 
-    QPointF toQPointF() const { return QPointF(m_x, m_y); }
-
     bool operator==(const Vertex3D& o) const { return m_x == o.m_x && m_y == o.m_y && m_z == o.m_z; }
     bool operator!=(const Vertex3D& o) const { return !(*this == o); }
     Vertex3D& operator=(const QPointF& pt) { m_x = pt.x(); m_y = pt.y(); return *this; }
