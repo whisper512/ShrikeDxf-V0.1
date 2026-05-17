@@ -10,6 +10,8 @@
 #include <cmath>
 #include <memory>
 
+#include "EntityMath.h"
+
 //图元字符
 #define STR_POINT "POINT"
 #define STR_LINE "LINE"

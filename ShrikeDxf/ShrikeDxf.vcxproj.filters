@@ -130,6 +130,9 @@
     <ClInclude Include="Tools.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
+    <ClInclude Include="EntityMath.h">
+      <Filter>EntitiesLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">

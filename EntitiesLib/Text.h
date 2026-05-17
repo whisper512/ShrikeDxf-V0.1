@@ -65,10 +65,7 @@ struct EntityText
         double dBottom = std::abs(py - bottom);
         if (px >= left && px <= right) return std::min(dTop, dBottom);
         if (py >= top && py <= bottom) return std::min(dLeft, dRight);
-        return std::sqrt(std::min({ dLeft * dLeft + dTop * dTop,
-                                   dLeft * dLeft + dBottom * dBottom,
-                                   dRight * dRight + dTop * dTop,
-                                   dRight * dRight + dBottom * dBottom }));
+        return EntUtil::rectDistanceToPoint(px, py, left, top, right, bottom);
     }
 
 };

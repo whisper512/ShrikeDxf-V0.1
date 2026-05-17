@@ -90,6 +90,6 @@ struct EntityMText
         else if (px > right) dx = px - right;
         if (py < top) dy = top - py;
         else if (py > bottom) dy = py - bottom;
-        return std::sqrt(dx * dx + dy * dy);
+        return EntUtil::rectDistanceToPoint(px, py, left, top, right, bottom);
     }
 };
