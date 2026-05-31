@@ -250,7 +250,7 @@ void CDxfReader::addArc(const DRW_Arc& data)
     ent.radius = data.radious;
     ent.startAngle = data.staangle;   // libdxfrw 弧度
     ent.endAngle = data.endangle;     // libdxfrw 弧度
-    ent.isCCW = true;             // DXF 默认逆时针
+    ent.isCCW = data.isccw == 1 ? true : false;
     StoreEntity(ent, data.layer);
 }
 

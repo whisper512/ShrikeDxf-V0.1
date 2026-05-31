@@ -344,7 +344,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
             arc.radius = radius;
             arc.startAngle = startAngle;
             arc.endAngle = endAngle;
-            arc.isCCW = true;   // 默认逆时针
+            arc.isCCW = true; //实体弧中恒定为逆时针
             m_pData->AddEntity(layerName, arc);
             m_pScene->ClearPreview();
             m_pScene->DxfDraw(m_pData->GetLayers());
@@ -375,8 +375,6 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
             qreal radius, startAngle, endAngle;
             if (ThreePointsToArc(m_ptStart, m_ptMid, scenePos, center, radius, startAngle, endAngle))
             {
-                // 确定方向:检查中间点是否在从起点到终点的逆时针路径上
-                bool isCCW = IsArcCCW(m_ptStart, m_ptMid, scenePos, center);
                 EntityArc arc;
                 arc.prop.layer = layerName;
                 arc.prop.color = 256;
@@ -385,7 +383,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
                 arc.radius = radius;
                 arc.startAngle = startAngle;
                 arc.endAngle = endAngle;
-                arc.isCCW = isCCW;
+                arc.isCCW = 1;
                 m_pData->AddEntity(layerName, arc);
             }
             m_pScene->ClearPreview();
