@@ -173,6 +173,7 @@
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\EntitiesLib\Arc.cpp" />
     <ClCompile Include="ArcAttritubeWidget.cpp" />
     <ClCompile Include="CircleAttributeWidget.cpp" />
     <ClCompile Include="CreateEntityWidget.cpp" />

@@ -42,6 +42,12 @@
     <Filter Include="EntitiesLib">
       <UniqueIdentifier>{725a9d6d-f176-4d0e-8f65-0e69c5eda564}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EntitiesLib\Header">
+      <UniqueIdentifier>{d0ee8589-b49b-4c1b-b1c4-efc4efb20d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntitiesLib\Source">
+      <UniqueIdentifier>{ea1af7ed-bdb7-4fd7-9fdc-b108cf0bc27c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc">
@@ -79,59 +85,59 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntitiesLib\EntityBase.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Point.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Line.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Circle.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Arc.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Ellipse.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\LWPolyline.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Polyline.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Spline.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Text.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\MText.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Insert.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Soild.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Hatch.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\EntitiesLib\Entity.h">
-      <Filter>EntitiesLib</Filter>
-    </ClInclude>
     <ClInclude Include="DxfWriter.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Tools.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Arc.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Circle.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Ellipse.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Entity.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\EntityBase.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
     <ClInclude Include="EntityMath.h">
-      <Filter>EntitiesLib</Filter>
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Hatch.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Insert.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Line.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\LWPolyline.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\MText.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Point.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Polyline.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Soild.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Spline.h">
+      <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\Text.h">
+      <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="DxfTools.cpp">
       <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Arc.cpp">
+      <Filter>EntitiesLib\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
