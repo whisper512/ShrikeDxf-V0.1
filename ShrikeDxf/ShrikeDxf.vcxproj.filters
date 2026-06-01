@@ -210,7 +210,7 @@
     <QtMoc Include="MTextAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
-    <QtMoc Include="DxfTools.h">
+    <QtMoc Include="DxfDrawController.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
   </ItemGroup>
@@ -311,7 +311,7 @@
     <ClCompile Include="DxfWriter.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
-    <ClCompile Include="DxfTools.cpp">
+    <ClCompile Include="DxfDrawController.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="..\EntitiesLib\Arc.cpp">

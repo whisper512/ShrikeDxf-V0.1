@@ -10,7 +10,7 @@
 #include "DxfEditor.h"
 #include "DxfStruct.h"
 #include "DxfWriter.h"
-#include "DxfTools.h"
+#include "DxfDrawController.h"
 
 //dxf管理类
 class CDxfManager : public QObject
@@ -72,7 +72,7 @@ private:
 	// dxf编辑类
 	CDxfEditor m_DxfEditor;
 	// dxf工具类
-	std::unique_ptr<CDxfTools> m_DxfTools;
+	std::unique_ptr<CDxfDrawController> m_DxfTools;
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	// 当前工作图层
@@ -135,4 +135,6 @@ signals:
 	 void handleEntitySelected(const QString& strLayer, int entityIndex);
 	 // 取消选中图元
 	 void handleEntityDeselected();
+	 // 结束绘制预览
+	 void handleEndDrawingPreview();
 };

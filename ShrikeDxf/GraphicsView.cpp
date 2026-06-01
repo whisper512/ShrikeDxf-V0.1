@@ -148,6 +148,11 @@ void CGraphicsView::InitGraphicsViewAction()
     connect(m_pActionFilpX, &QAction::toggled, this, &CGraphicsView::handleFilpAlongX);
     connect(m_pActionFilpY, &QAction::toggled, this, &CGraphicsView::handleFilpAlongY);
     connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
+
+    m_pActionEndDrawing = new QAction(QStringLiteral("End Drawing"), this);
+    m_pGraphicsPreviewMenu->addAction(m_pActionEndDrawing);
+
+    connect(m_pActionEndDrawing, &QAction::triggered, this, [this]() { emit signalEndDrawingPreview();});
 }
 
 
@@ -227,15 +232,17 @@ void CGraphicsView::handlePasteEntity()
 
 void CGraphicsView::handleMouseStatusChanged(enumMouseStateInView mouseState)
 {
-    if (mouseState == enumMouseStateInView::enumMouseState_Polyline || mouseState == enumMouseStateInView::enumMouseState_SplineFitPoint
-        || mouseState == enumMouseStateInView::enumMouseState_SplineControlPoint)
-    {
-        disconnect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
-    }
-    else
-    {
-        connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
-    }
+    //if (mouseState == enumMouseStateInView::enumMouseState_Polyline || mouseState == enumMouseStateInView::enumMouseState_SplineFitPoint
+    //    || mouseState == enumMouseStateInView::enumMouseState_SplineControlPoint)
+    //{
+    //    disconnect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
+    //}
+    //else
+    //{
+    //    connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
+    //}
+    m_bDrawingPreview = (mouseState != enumMouseStateInView::enumMouseState_None);
+
 }
 
 

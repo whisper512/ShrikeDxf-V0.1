@@ -1,19 +1,19 @@
-﻿#include "DxfTools.h"
+﻿#include "DxfDrawController.h"
 #include "DxfManager.h"
 
 
-CDxfTools::CDxfTools(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
+CDxfDrawController::CDxfDrawController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
     : QObject(parent)
     , m_pData(pData)
     , m_pScene(pScene)
 {
 }
 
-CDxfTools::~CDxfTools()
+CDxfDrawController::~CDxfDrawController()
 {
 }
 
-const QString& CDxfTools::GetCurrentLayer() const
+const QString& CDxfDrawController::GetCurrentLayer() const
 {
     auto* pMgr = qobject_cast<CDxfManager*>(parent());
     if (pMgr)
@@ -24,10 +24,12 @@ const QString& CDxfTools::GetCurrentLayer() const
     return s_defaultLayer;
 }
 
-void CDxfTools::SetMouseStatus(enumMouseStateInView mouseState)
+void CDxfDrawController::SetMouseStatus(enumMouseStateInView mouseState)
 {
     if (mouseState != enumMouseStateInView::enumMouseState_None)
+    {
         ClearSelection();
+    }
 
     if (m_pScene)
     {
@@ -38,9 +40,12 @@ void CDxfTools::SetMouseStatus(enumMouseStateInView mouseState)
     m_vecPolyPoints.clear();
     m_vecSplinePoints.clear();
 
+    bool isDrawing = (mouseState != enumMouseStateInView::enumMouseState_None);
+    emit signalDrawingModeChanged(isDrawing);
+
 }
 
-void CDxfTools::OnMouseMove(QPointF scenePos)
+void CDxfDrawController::OnMouseMove(QPointF scenePos)
 {
     if (!m_pScene) return;
 
@@ -201,7 +206,7 @@ void CDxfTools::OnMouseMove(QPointF scenePos)
     }
 }
 
-void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
+void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
 {
     // 如果在拖拽手柄中,忽略
     if (m_nDragGripIndex >= 0)
@@ -524,7 +529,7 @@ void CDxfTools::OnGraphicsViewLeftClick(QPointF scenePos)
 }
 
 
-void CDxfTools::OnGraphicsViewRightClick(QPointF scenePos)
+void CDxfDrawController::OnGraphicsViewRightClick(QPointF scenePos)
 {
     if (!m_pData || !m_pScene) return;
     switch (m_eCurrentTool)
@@ -564,30 +569,30 @@ void CDxfTools::OnGraphicsViewRightClick(QPointF scenePos)
     }
 }
 
-void CDxfTools::OnGraphicsViewLeftPress(QPointF scenePos)
+void CDxfDrawController::OnGraphicsViewLeftPress(QPointF scenePos)
 {
  
 }
-void CDxfTools::OnGraphicsViewLeftRelease(QPointF scenePos)
+void CDxfDrawController::OnGraphicsViewLeftRelease(QPointF scenePos)
 {
     
 }
 
-void CDxfTools::OnGripDragStarted(int gripIndex)
+void CDxfDrawController::OnGripDragStarted(int gripIndex)
 {
 }
 
-void CDxfTools::OnGripDragged(int gripIndex, QPointF newPos)
+void CDxfDrawController::OnGripDragged(int gripIndex, QPointF newPos)
 {
 }
 
-void CDxfTools::OnGripDragFinished(int gripIndex, QPointF finalPos)
+void CDxfDrawController::OnGripDragFinished(int gripIndex, QPointF finalPos)
 {
 }
 
 
 
-void CDxfTools::FinishPolyline()
+void CDxfDrawController::FinishPolyline()
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_Polyline)
@@ -626,7 +631,7 @@ void CDxfTools::FinishPolyline()
     m_step = 0;
 }
 
-void CDxfTools::CancelPolyline()
+void CDxfDrawController::CancelPolyline()
 {
     if (m_pScene)
         m_pScene->ClearPreview();
@@ -634,7 +639,7 @@ void CDxfTools::CancelPolyline()
     m_step = 0;
 }
 
-void CDxfTools::FinishEllipse(QPointF scenePos)
+void CDxfDrawController::FinishEllipse(QPointF scenePos)
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_EllipseCenterRadius)
@@ -666,7 +671,7 @@ void CDxfTools::FinishEllipse(QPointF scenePos)
     m_step = 0;
 }
 
-void CDxfTools::FinishRectangle(QPointF scenePos)
+void CDxfDrawController::FinishRectangle(QPointF scenePos)
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_Rectangle)
@@ -703,7 +708,7 @@ void CDxfTools::FinishRectangle(QPointF scenePos)
 }
 
 
-void CDxfTools::FinishSplineFit()
+void CDxfDrawController::FinishSplineFit()
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_SplineFitPoint)
@@ -762,7 +767,7 @@ void CDxfTools::FinishSplineFit()
     m_step = 0;
 }
 
-void CDxfTools::FinishSplineControl()
+void CDxfDrawController::FinishSplineControl()
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_SplineControlPoint)
@@ -813,7 +818,7 @@ void CDxfTools::FinishSplineControl()
     m_step = 0;
 }
 
-void CDxfTools::CancelSpline()
+void CDxfDrawController::CancelSpline()
 {
     if (m_pScene)
         m_pScene->ClearPreview();
@@ -821,7 +826,7 @@ void CDxfTools::CancelSpline()
     m_step = 0;
 }
 
-void CDxfTools::FinishText(QPointF scenePos)
+void CDxfDrawController::FinishText(QPointF scenePos)
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_Text)
@@ -852,7 +857,7 @@ void CDxfTools::FinishText(QPointF scenePos)
     m_step = 0;
 }
 
-void CDxfTools::FinishMText(QPointF scenePos)
+void CDxfDrawController::FinishMText(QPointF scenePos)
 {
     if (!m_pData || !m_pScene) return;
     if (m_eCurrentTool != enumMouseStateInView::enumMouseState_MText)
@@ -888,7 +893,7 @@ void CDxfTools::FinishMText(QPointF scenePos)
 }
 
 
-void CDxfTools::HitTest(QPointF scenePos)
+void CDxfDrawController::HitTest(QPointF scenePos)
 {
     ClearSelection();
     if (!m_pData || !m_pScene) return;
@@ -933,7 +938,7 @@ void CDxfTools::HitTest(QPointF scenePos)
     }
 }
 
-void CDxfTools::ClearSelection()
+void CDxfDrawController::ClearSelection()
 {
     if (m_bEntitySelected)
     {

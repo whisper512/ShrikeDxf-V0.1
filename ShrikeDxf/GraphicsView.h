@@ -25,7 +25,9 @@ public:
 private:
 	// 右键菜单
 	QMenu* m_pGraphicsViewMenu;
+	// 图元操作
 	QMenu* m_pGraphicsOperateMenu;
+	// 预览图元操作
 	QMenu* m_pGraphicsPreviewMenu;
 
 	// view的操作
@@ -102,7 +104,7 @@ signals:
 	void signalGraphicsViewLeftCLick(QPointF pos);
 	// 鼠标右键点击
 	void signalGraphicsViewRightClick(QPointF pos);
-	// preview信号
+	// 结束预览preview信号
 	void signalEndDrawingPreview();
 
 public slots:
@@ -121,6 +123,7 @@ public slots:
 	void handlePasteEntity();
 	// 在绘制预览新图元
 	void handleMouseStatusChanged(enumMouseStateInView mouseState);
+
 
 
 

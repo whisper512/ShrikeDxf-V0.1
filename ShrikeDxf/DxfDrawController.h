@@ -6,13 +6,13 @@
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
 
-class CDxfTools : public QObject
+class CDxfDrawController : public QObject
 {
     Q_OBJECT
 
 public:
-    CDxfTools(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
-    ~CDxfTools();
+    CDxfDrawController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
+    ~CDxfDrawController();
 
     const QString& GetCurrentLayer() const;
     bool IsEntitySelected() const { return m_bEntitySelected; }
@@ -91,8 +91,12 @@ private:
 
 
 signals:
+    // 通知图元选中
     void signalEntitySelected(const QString& strLayer, int entityIndex);
+    // 通知图元取消选中
     void signalEntityDeselected();
+    // 绘制图元的状态
+    void signalDrawingModeChanged(bool active);
 
 
 };

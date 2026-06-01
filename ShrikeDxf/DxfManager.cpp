@@ -13,7 +13,7 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     m_DxfData = std::make_unique<CDxfData>();
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
     m_DxfEditor.m_DxfData = GetDxfData();
-    m_DxfTools = std::make_unique<CDxfTools>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_DxfTools = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
 
     ConnectSignals();
 }
@@ -88,8 +88,8 @@ bool CDxfManager::CloseDxfFile()
 void CDxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_DxfTools.get(), &CDxfTools::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
-        connect(m_DxfTools.get(), &CDxfTools::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
+        connect(m_DxfTools.get(), &CDxfDrawController::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
+        connect(m_DxfTools.get(), &CDxfDrawController::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
         });
 }
 
@@ -285,4 +285,12 @@ void CDxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
 void CDxfManager::handleEntityDeselected()
 {
     DeselectEntity();
+}
+
+void CDxfManager::handleEndDrawingPreview()
+{
+    if (m_DxfTools)
+    {
+        m_DxfTools->SetMouseStatus(enumMouseStateInView::enumMouseState_None);
+    }
 }
