@@ -13,7 +13,7 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     m_DxfData = std::make_unique<CDxfData>();
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
     m_DxfEditor.m_DxfData = GetDxfData();
-    m_DxfTools = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_DxfDrawController = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
 
     ConnectSignals();
 }
@@ -88,8 +88,8 @@ bool CDxfManager::CloseDxfFile()
 void CDxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_DxfTools.get(), &CDxfDrawController::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
-        connect(m_DxfTools.get(), &CDxfDrawController::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
+        connect(m_DxfDrawController.get(), &CDxfDrawController::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
+        connect(m_DxfDrawController.get(), &CDxfDrawController::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
         });
 }
 
@@ -238,26 +238,26 @@ void CDxfManager::handleLayerAttributeChanged()
 
 void CDxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
 {
-    if (m_DxfTools)
+    if (m_DxfDrawController)
     {
-        m_DxfTools->SetMouseStatus(mouseState);
+        m_DxfDrawController->SetMouseStatus(mouseState);
     }
     emit signalMouseStatusChanged(mouseState);
 }
 
 void CDxfManager::handleMousePos(QPointF pos)
 {
-    if (m_DxfTools)
+    if (m_DxfDrawController)
     {
-        m_DxfTools->OnMouseMove(pos);
+        m_DxfDrawController->OnMouseMove(pos);
     }
 }
 
 void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
 {
-    if (m_DxfTools)
+    if (m_DxfDrawController)
     {
-        m_DxfTools->OnGraphicsViewLeftClick(pos);
+        m_DxfDrawController->OnGraphicsViewLeftClick(pos);
     }
     
     // 更新tree的model刷新treeview
@@ -267,9 +267,9 @@ void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
 
 void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
 {
-    if (m_DxfTools)
+    if (m_DxfDrawController)
     {
-        m_DxfTools->OnGraphicsViewRightClick(pos);
+        m_DxfDrawController->OnGraphicsViewRightClick(pos);
     }
 
     // 更新tree的model刷新treeview
@@ -289,8 +289,8 @@ void CDxfManager::handleEntityDeselected()
 
 void CDxfManager::handleEndDrawingPreview()
 {
-    if (m_DxfTools)
+    if (m_DxfDrawController)
     {
-        m_DxfTools->SetMouseStatus(enumMouseStateInView::enumMouseState_None);
+        m_DxfDrawController->SetMouseStatus(enumMouseStateInView::enumMouseState_None);
     }
 }

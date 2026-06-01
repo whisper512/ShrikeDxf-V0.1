@@ -71,8 +71,8 @@ private:
 	CDxfGraphicsScene m_DxfGraphicsScene;
 	// dxf编辑类
 	CDxfEditor m_DxfEditor;
-	// dxf工具类
-	std::unique_ptr<CDxfDrawController> m_DxfTools;
+	// dxf绘制控制和view选中
+	std::unique_ptr<CDxfDrawController> m_DxfDrawController;
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	// 当前工作图层
