@@ -174,6 +174,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\EntitiesLib\Arc.cpp" />
+    <ClCompile Include="..\EntitiesLib\Circle.cpp" />
+    <ClCompile Include="..\EntitiesLib\Ellipse.cpp" />
+    <ClCompile Include="..\EntitiesLib\Hatch.cpp" />
+    <ClCompile Include="..\EntitiesLib\Insert.cpp" />
+    <ClCompile Include="..\EntitiesLib\Line.cpp" />
+    <ClCompile Include="..\EntitiesLib\LWPolyline.cpp" />
+    <ClCompile Include="..\EntitiesLib\MText.cpp" />
+    <ClCompile Include="..\EntitiesLib\Point.cpp" />
+    <ClCompile Include="..\EntitiesLib\Polyline.cpp" />
+    <ClCompile Include="..\EntitiesLib\Soild.cpp" />
+    <ClCompile Include="..\EntitiesLib\Spline.cpp" />
+    <ClCompile Include="..\EntitiesLib\Text.cpp" />
     <ClCompile Include="ArcAttritubeWidget.cpp" />
     <ClCompile Include="CircleAttributeWidget.cpp" />
     <ClCompile Include="CreateEntityWidget.cpp" />

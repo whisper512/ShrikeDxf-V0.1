@@ -61,15 +61,7 @@ struct EntityHatch
     std::vector<HatchLoop> loops;        // 所有边界环
 
 
-    QRectF boundingBox(double padding = 0.0) const
-    {
-        // 块引用没有固定大小,返回一个点
-        return QRectF(0, 0, 0, 0);
-    }
-
-    double distanceTo(double px, double py) const 
-    {   
-        return 0.0;
-    }
+    QRectF boundingBox(double padding = 0.0) const;
+    double distanceTo(double px, double py) const;
 
 };

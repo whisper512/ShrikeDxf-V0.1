@@ -12,14 +12,6 @@ struct EntityInsert
     int     colCount = 1, rowCount = 1;
     double  colSpacing = 0.0, rowSpacing = 0.0;
 
-    QRectF boundingBox(double padding = 0.0) const
-    {
-        std::vector<QPointF> pts = { QPointF(insertPoint.x(), insertPoint.y()) };
-        return EntUtil::boundingBoxFromPoints(pts, padding);
-    }
-
-    double distanceTo(double px, double py) const {
-        double dx = px - insertPoint.x(), dy = py - insertPoint.y();
-        return std::sqrt(dx * dx + dy * dy);
-    }
+    QRectF boundingBox(double padding = 0.0) const;
+    double distanceTo(double px, double py) const;
 };

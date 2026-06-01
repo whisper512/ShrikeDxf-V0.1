@@ -22,7 +22,9 @@ private:
     CanonicalArc canonicalArc() const;  // 获取规范化的弧
 
 public:
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 点到弧的距离
     double distanceTo(double px, double py) const;
 };
 

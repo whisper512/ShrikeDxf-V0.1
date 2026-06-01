@@ -317,6 +317,42 @@
     <ClCompile Include="..\EntitiesLib\Arc.cpp">
       <Filter>EntitiesLib\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Circle.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Ellipse.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Hatch.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Insert.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Line.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\LWPolyline.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\MText.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Point.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Polyline.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Soild.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Spline.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EntitiesLib\Text.cpp">
+      <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="PointAttribute.ui">

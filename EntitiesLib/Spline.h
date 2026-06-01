@@ -19,25 +19,6 @@ struct EntitySpline
     std::vector<Vertex3D>    fitPoints;            //拟合点
 
     
-    QRectF boundingBox(double padding = 0.0) const
-    {
-        std::vector<QPointF> pts;
-        for (const auto& pt : controlPoints) pts.emplace_back(pt.x(), pt.y());
-        for (const auto& pt : fitPoints) pts.emplace_back(pt.x(), pt.y());
-        return EntUtil::boundingBoxFromPoints(pts, padding);
-    }
-
-    double distanceTo(double px, double py) const
-    {
-        double minDist = 1e100;
-        for (const auto& cp : controlPoints) {
-            double dx = px - cp.x(), dy = py - cp.y();
-            minDist = std::min(minDist, std::sqrt(dx * dx + dy * dy));
-        }
-        for (const auto& fp : fitPoints) {
-            double dx = px - fp.x(), dy = py - fp.y();
-            minDist = std::min(minDist, std::sqrt(dx * dx + dy * dy));
-        }
-        return minDist;
-    }
+    QRectF boundingBox(double padding = 0.0) const;
+    double distanceTo(double px, double py) const;
 };
