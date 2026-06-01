@@ -139,6 +139,9 @@
     <ClInclude Include="..\EntitiesLib\Text.h">
       <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
+    <ClInclude Include="DxfEditController.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ShrikeDxf.h">
@@ -352,6 +355,9 @@
     </ClCompile>
     <ClCompile Include="..\EntitiesLib\Text.cpp">
       <Filter>EntitiesLib\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfEditController.cpp">
+      <Filter>Source Files\Dxf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

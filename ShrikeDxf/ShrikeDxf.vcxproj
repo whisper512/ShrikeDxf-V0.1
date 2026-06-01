@@ -142,6 +142,7 @@
     <QtMoc Include="CreateEntityWidget.h" />
     <ClInclude Include="DxfData.h" />
     <QtMoc Include="DxfEditor.h" />
+    <ClInclude Include="DxfEditController.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
     <QtMoc Include="DxfManager.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="CircleAttributeWidget.cpp" />
     <ClCompile Include="CreateEntityWidget.cpp" />
     <ClCompile Include="DxfData.cpp" />
+    <ClCompile Include="DxfEditController.cpp" />
     <ClCompile Include="DxfEditor.cpp" />
     <ClCompile Include="DxfReader.cpp" />
     <ClCompile Include="DxfDrawController.cpp" />
