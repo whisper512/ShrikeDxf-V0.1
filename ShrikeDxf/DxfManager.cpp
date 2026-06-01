@@ -13,7 +13,9 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     m_DxfData = std::make_unique<CDxfData>();
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
     m_DxfEditor.m_DxfData = GetDxfData();
+    m_DxfEditController = std::make_unique<CDxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     m_DxfDrawController = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_DxfDrawController->SetEditController(m_DxfEditController.get()); 
 
     ConnectSignals();
 }
@@ -88,8 +90,10 @@ bool CDxfManager::CloseDxfFile()
 void CDxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_DxfDrawController.get(), &CDxfDrawController::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
-        connect(m_DxfDrawController.get(), &CDxfDrawController::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
+        connect(m_DxfEditController.get(), &CDxfEditController::signalEntitySelected,
+            this, &CDxfManager::handleEntitySelected);
+        connect(m_DxfEditController.get(), &CDxfEditController::signalEntityDeselected,
+            this, &CDxfManager::handleEntityDeselected);
         });
 }
 

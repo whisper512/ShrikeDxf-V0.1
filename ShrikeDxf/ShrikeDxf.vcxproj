@@ -142,7 +142,7 @@
     <QtMoc Include="CreateEntityWidget.h" />
     <ClInclude Include="DxfData.h" />
     <QtMoc Include="DxfEditor.h" />
-    <ClInclude Include="DxfEditController.h" />
+    <QtMoc Include="DxfEditController.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
     <QtMoc Include="DxfManager.h" />

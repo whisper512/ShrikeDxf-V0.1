@@ -6,6 +6,8 @@
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
 
+class CDxfEditController;
+
 class CDxfDrawController : public QObject
 {
     Q_OBJECT
@@ -15,10 +17,8 @@ public:
     ~CDxfDrawController();
 
     const QString& GetCurrentLayer() const;
-    bool IsEntitySelected() const { return m_bEntitySelected; }
-    const QString& GetSelectedLayer() const { return m_strSelectedLayer; }
-    int GetSelectedIndex() const { return m_nSelectedIndex; }
-
+    // 设置编辑控制类
+    void SetEditController(CDxfEditController* pEdit) { m_pEditController = pEdit; }
     // 设置当前工具
     void SetMouseStatus(enumMouseStateInView mouseState);
     // 鼠标移动
@@ -39,6 +39,7 @@ public:
     void OnGripDragFinished(int gripIndex, QPointF finalPos);
 
 private:
+    CDxfEditController* m_pEditController = nullptr;
     // 完成/闭合多段线
     void FinishPolyline();
     // 取消当前多段线
@@ -57,10 +58,6 @@ private:
     void FinishText(QPointF scenePos);
     // 完成多行文本
     void FinishMText(QPointF scenePos);
-    // 选中判断
-    void HitTest(QPointF scenePos);
-    // 清除选中
-    void ClearSelection();
 
 private:
 
@@ -80,21 +77,11 @@ private:
     CDxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
 
-    // 是否选中图元
-    bool m_bEntitySelected = false;
-    // 选中图元图层
-    QString m_strSelectedLayer;
-    // 选中图元索引
-    int m_nSelectedIndex = -1;
     // 选中图元手柄索引
     int m_nDragGripIndex = -1;
 
 
 signals:
-    // 通知图元选中
-    void signalEntitySelected(const QString& strLayer, int entityIndex);
-    // 通知图元取消选中
-    void signalEntityDeselected();
     // 绘制图元的状态
     void signalDrawingModeChanged(bool active);
 

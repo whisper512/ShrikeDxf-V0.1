@@ -11,6 +11,7 @@
 #include "DxfStruct.h"
 #include "DxfWriter.h"
 #include "DxfDrawController.h"
+#include "DxfEditController.h"
 
 //dxf管理类
 class CDxfManager : public QObject
@@ -26,6 +27,7 @@ public:
 	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
     CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	CDxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
+	CDxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
 
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
@@ -73,6 +75,8 @@ private:
 	CDxfEditor m_DxfEditor;
 	// dxf绘制控制和view选中
 	std::unique_ptr<CDxfDrawController> m_DxfDrawController;
+	// dxf编辑控制
+	std::unique_ptr<CDxfEditController> m_DxfEditController;
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	// 当前工作图层
