@@ -22,7 +22,12 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_pActionFilpY(nullptr),
     m_pActionResetView(nullptr),
     m_pActionDrag(nullptr),
+    m_pActionDeleteEntity(nullptr),
+    m_pActionCopyEntity(nullptr),
     m_pActionPasteEntity(nullptr),
+    m_pActionCutEntity(nullptr),
+    m_pActionXFile(nullptr),
+    m_pActionYFile(nullptr),
     m_pActionEndDrawing(nullptr),
     m_pRulerH(nullptr),
     m_pRulerV(nullptr),
@@ -33,6 +38,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_bDrag(false),
     m_bCopyingEntity(false),
     m_bDrawingPreview(false),
+    m_bSelectingEntity(false),
     m_tranformInitial(1, 0, 0, -1, 0, 0),
     m_rectInitialScene(0, 0, 0, 0),
     m_pointLastPos(0, 0),
@@ -94,19 +100,24 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
 {
     m_pointRightClickPos = pos;
 
-
-    if (m_bCopyingEntity)
-    {
-        m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
-    }
-    else if (m_bDrawingPreview)
+    //正在绘制预览图元
+    if (m_bDrawingPreview)
     {
         m_pGraphicsPreviewMenu->popup(mapToGlobal(pos));
     }
-    else
+    else if (m_bCopyingEntity) // 正在复制图元
+    {
+        m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
+    }
+    else if (m_bSelectingEntity) // 正在选中图元
+    {
+        
+    }
+    else  //单纯点击view
     {
         m_pGraphicsViewMenu->popup(mapToGlobal(pos));
     }
+    
 }
 
 

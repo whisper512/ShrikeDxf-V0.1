@@ -22,7 +22,7 @@ private:
 	QWidget* m_pParent;
 
 	//menu
-	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuTool, * m_pMenuSetting, * m_pMenuView;
+	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuSetting, * m_pMenuView;
 	//文件action
 	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose, * m_pActionNew, * m_pActionSaveAs;
 	//外观action

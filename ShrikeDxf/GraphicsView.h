@@ -35,7 +35,12 @@ private:
 	QAction* m_pActionResetView;
 	QAction* m_pActionDrag;
 	// 针对view中图元的操作
+    QAction* m_pActionDeleteEntity;
+	QAction* m_pActionCopyEntity;
 	QAction* m_pActionPasteEntity;
+	QAction* m_pActionCutEntity;
+	QAction* m_pActionXFile;
+    QAction* m_pActionYFile;
 	// 针对view中预览图元的操作
 	QAction* m_pActionEndDrawing;
 
@@ -56,12 +61,12 @@ private:
 	bool m_bDrag;
 
 	// 右键鼠标显示的针对图元的操作 
-	// 开启复制图元中
-	bool m_bCopyingEntity;
-
 	// 右键正在绘制预览的操作
 	bool m_bDrawingPreview;
-
+	// 开启复制图元中
+	bool m_bCopyingEntity;
+	// 右键正在选中图元
+	bool m_bSelectingEntity;
 
 	// 初始transform
 	QTransform m_tranformInitial;

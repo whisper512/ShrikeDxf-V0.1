@@ -10,7 +10,6 @@ CMenuManger::CMenuManger(QWidget* parent) :
 	QWidget(parent),
 	m_pMenuFile(nullptr),
 	m_pMenuHelp(nullptr),
-	m_pMenuTool(nullptr),
 	m_pMenuSetting(nullptr),
 	m_pMenuView(nullptr),
 	m_pActionOpen(nullptr),
@@ -25,8 +24,6 @@ CMenuManger::~CMenuManger()
 {
 	delete m_pMenuFile;
 	delete m_pMenuHelp;
-	delete m_pMenuTool;
-	delete m_pMenuSetting;
 	delete m_pMenuView;
 	delete m_pActionOpen;
 	delete m_pActionSave;
@@ -45,9 +42,7 @@ void CMenuManger::InitMenuBar()
 void CMenuManger::InitMenu()
 {
 	m_pMenuFile = new QMenu("File", this);
-	m_pMenuTool = new QMenu("Tool", this);
 	m_pMenuSetting = new QMenu("Setting", this);
-	m_pMenuHelp = new QMenu("Help", this);
 	m_pMenuView = new QMenu("View", this);
 }
 
@@ -101,10 +96,8 @@ void CMenuManger::AddToBar()
 		if(pShrikeDxf)
 		{
 			pShrikeDxf->menuBar()->addMenu(m_pMenuFile);
-            pShrikeDxf->menuBar()->addMenu(m_pMenuTool);
 			pShrikeDxf->menuBar()->addMenu(m_pMenuSetting);
 			pShrikeDxf->menuBar()->addMenu(m_pMenuView);
-			pShrikeDxf->menuBar()->addMenu(m_pMenuHelp);
 		}
 	}
 }
