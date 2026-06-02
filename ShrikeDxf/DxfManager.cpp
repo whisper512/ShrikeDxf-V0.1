@@ -1,5 +1,7 @@
 ﻿#include "DxfManager.h"
 #include "CommonDataManager.h"
+#include "DxfInteractionDispatcher.h"
+#include "DxfSelectionController.h"
 #include <QMessageBox>
 #include <QTimer>
 
@@ -10,12 +12,20 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     , m_DxfReader(nullptr)
     , m_DxfData(nullptr)
 {
+    // 数据
     m_DxfData = std::make_unique<CDxfData>();
+    // 读取器
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
-    m_DxfEditor.m_DxfData = GetDxfData();
+    // 选择控制
+    m_pSelectionController = std::make_unique<CSelectionController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    // 编辑控制器
     m_DxfEditController = std::make_unique<CDxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    // 新建图元绘制控制器
     m_DxfDrawController = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
-    m_DxfDrawController->SetEditController(m_DxfEditController.get()); 
+    // 交互控制
+    m_pInteractionDispatcher = std::make_unique<CDxfInteractionDispatcher>(this);
+    // 设置交互控制持有的控制器
+    m_pInteractionDispatcher->SetControllers(m_DxfDrawController.get(), m_DxfEditController.get(), m_pSelectionController.get());
 
     ConnectSignals();
 }
@@ -52,8 +62,6 @@ bool CDxfManager::LoadDxfFile(const QString& strPath)
     // 更新当前图层
     m_strCurrentLayer = m_DxfData->GetFirstLayerName();
     emit signalCurrentLayerChanged(m_strCurrentLayer);
-
-    
     return true;
 }
 
@@ -90,10 +98,8 @@ bool CDxfManager::CloseDxfFile()
 void CDxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_DxfEditController.get(), &CDxfEditController::signalEntitySelected,
-            this, &CDxfManager::handleEntitySelected);
-        connect(m_DxfEditController.get(), &CDxfEditController::signalEntityDeselected,
-            this, &CDxfManager::handleEntityDeselected);
+        connect(m_pSelectionController.get(), &CSelectionController::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
+        connect(m_pSelectionController.get(), &CSelectionController::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
         });
 }
 
@@ -242,26 +248,28 @@ void CDxfManager::handleLayerAttributeChanged()
 
 void CDxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
 {
-    if (m_DxfDrawController)
+    if (m_pInteractionDispatcher)
     {
-        m_DxfDrawController->SetMouseStatus(mouseState);
+        m_pInteractionDispatcher->SetMouseStatus(mouseState);
     }
+    // 发送给graphicsview控制右键小菜单
     emit signalMouseStatusChanged(mouseState);
 }
 
 void CDxfManager::handleMousePos(QPointF pos)
 {
-    if (m_DxfDrawController)
+    if (m_pInteractionDispatcher)
     {
-        m_DxfDrawController->OnMouseMove(pos);
+        // 交互调度类
+        m_pInteractionDispatcher->OnMouseMove(pos);
     }
 }
 
 void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
 {
-    if (m_DxfDrawController)
+    if (m_pInteractionDispatcher)
     {
-        m_DxfDrawController->OnGraphicsViewLeftClick(pos);
+        m_pInteractionDispatcher->OnLeftClick(pos);
     }
     
     // 更新tree的model刷新treeview
@@ -271,9 +279,9 @@ void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
 
 void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
 {
-    if (m_DxfDrawController)
+    if (m_pInteractionDispatcher)
     {
-        m_DxfDrawController->OnGraphicsViewRightClick(pos);
+        m_pInteractionDispatcher->OnRightClick(pos);
     }
 
     // 更新tree的model刷新treeview
@@ -293,8 +301,6 @@ void CDxfManager::handleEntityDeselected()
 
 void CDxfManager::handleEndDrawingPreview()
 {
-    if (m_DxfDrawController)
-    {
-        m_DxfDrawController->SetMouseStatus(enumMouseStateInView::enumMouseState_None);
-    }
+    if (m_pInteractionDispatcher)
+        m_pInteractionDispatcher->SetMouseStatus(enumMouseStateInView::enumMouseState_None);
 }

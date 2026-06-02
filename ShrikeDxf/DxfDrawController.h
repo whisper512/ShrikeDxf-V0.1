@@ -6,7 +6,6 @@
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
 
-class CDxfEditController;
 
 class CDxfDrawController : public QObject
 {
@@ -16,9 +15,8 @@ public:
     CDxfDrawController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
     ~CDxfDrawController();
 
+    // 获取当前图层
     const QString& GetCurrentLayer() const;
-    // 设置编辑控制类
-    void SetEditController(CDxfEditController* pEdit) { m_pEditController = pEdit; }
     // 设置当前工具
     void SetMouseStatus(enumMouseStateInView mouseState);
     // 鼠标移动
@@ -27,19 +25,8 @@ public:
     void OnGraphicsViewLeftClick(QPointF scenePos);
     // 鼠标右键点击
     void OnGraphicsViewRightClick(QPointF scenePos);
-    // 鼠标左键按下(用于拖拽)
-    void OnGraphicsViewLeftPress(QPointF scenePos);
-    // 鼠标左键释放(用于拖拽)
-    void OnGraphicsViewLeftRelease(QPointF scenePos);
-    // 开始拖拽手柄
-    void OnGripDragStarted(int gripIndex);
-    // 拖拽手柄
-    void OnGripDragged(int gripIndex, QPointF newPos);
-    // 拖拽手柄结束
-    void OnGripDragFinished(int gripIndex, QPointF finalPos);
 
 private:
-    CDxfEditController* m_pEditController = nullptr;
     // 完成/闭合多段线
     void FinishPolyline();
     // 取消当前多段线
@@ -61,11 +48,9 @@ private:
 
 private:
 
-
-
 private:
     // 鼠标状态
-    enumMouseStateInView m_eCurrentTool = enumMouseStateInView::enumMouseState_None;
+    enumMouseStateInView m_eCurrentState = enumMouseStateInView::enumMouseState_None;
     // 绘图的步骤
     int m_step = 0;
 
@@ -76,14 +61,5 @@ private:
 
     CDxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
-
-    // 选中图元手柄索引
-    int m_nDragGripIndex = -1;
-
-
 signals:
-    // 绘制图元的状态
-    void signalDrawingModeChanged(bool active);
-
-
 };

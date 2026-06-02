@@ -216,6 +216,12 @@
     <QtMoc Include="DxfEditController.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
+    <QtMoc Include="DxfInteractionDispatcher.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="DxfSelectionController.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DxfManager.cpp">
@@ -357,6 +363,12 @@
       <Filter>EntitiesLib\Source</Filter>
     </ClCompile>
     <ClCompile Include="DxfEditController.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfInteractionDispatcher.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="DxfSelectionController.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
   </ItemGroup>

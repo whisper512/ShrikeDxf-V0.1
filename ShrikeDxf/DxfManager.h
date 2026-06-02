@@ -13,6 +13,9 @@
 #include "DxfDrawController.h"
 #include "DxfEditController.h"
 
+class CDxfInteractionDispatcher;
+class CSelectionController;
+
 //dxf管理类
 class CDxfManager : public QObject
 {
@@ -28,6 +31,7 @@ public:
     CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	CDxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
 	CDxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
+	CSelectionController* GetSelectionController() const { return m_pSelectionController.get(); }
 
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
@@ -77,6 +81,10 @@ private:
 	std::unique_ptr<CDxfDrawController> m_DxfDrawController;
 	// dxf编辑控制
 	std::unique_ptr<CDxfEditController> m_DxfEditController;
+	// 交互控制调度
+	std::unique_ptr<CDxfInteractionDispatcher> m_pInteractionDispatcher;
+	// 选中控制
+	std::unique_ptr<CSelectionController> m_pSelectionController;
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	// 当前工作图层

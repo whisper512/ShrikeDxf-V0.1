@@ -143,6 +143,7 @@
     <ClInclude Include="DxfData.h" />
     <QtMoc Include="DxfEditor.h" />
     <QtMoc Include="DxfEditController.h" />
+    <QtMoc Include="DxfInteractionDispatcher.h" />
     <ClInclude Include="DxfLayerTableviewModel.h" />
     <QtMoc Include="LayerTableView.h" />
     <QtMoc Include="DxfManager.h" />
@@ -165,6 +166,7 @@
     <QtMoc Include="PolylineAttritubeWidget.h" />
     <QtMoc Include="SplineAttributeWidget.h" />
     <ClInclude Include="EntityMath.h" />
+    <QtMoc Include="DxfSelectionController.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="TopMenu.h" />
     <ClInclude Include="Primitive.h" />
@@ -193,6 +195,7 @@
     <ClCompile Include="DxfData.cpp" />
     <ClCompile Include="DxfEditController.cpp" />
     <ClCompile Include="DxfEditor.cpp" />
+    <ClCompile Include="DxfInteractionDispatcher.cpp" />
     <ClCompile Include="DxfReader.cpp" />
     <ClCompile Include="DxfDrawController.cpp" />
     <ClCompile Include="DxfWriter.cpp" />
@@ -213,6 +216,7 @@
     <ClCompile Include="LWPolylineAttributeWidget.cpp" />
     <ClCompile Include="PolylineAttritubeWidget.cpp" />
     <ClCompile Include="Ruler.cpp" />
+    <ClCompile Include="DxfSelectionController.cpp" />
     <ClCompile Include="SplineAttributeWidget.cpp" />
     <ClCompile Include="TextAttritubeWidget.cpp" />
     <ClCompile Include="TopMenu.cpp" />
