@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_CreateEntityWidget.h"
-#include "Tools.h"
+#include "Manager/Tools.h"
 
 class CCreateEntityWidget : public QWidget
 {

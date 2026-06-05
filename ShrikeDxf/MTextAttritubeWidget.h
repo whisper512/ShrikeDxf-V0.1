@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "ui_MTextAttritubeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CMTextAttritubeWidget : public QWidget
 {

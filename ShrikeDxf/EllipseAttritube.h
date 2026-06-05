@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "ui_EllipseAttritubeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CEllipseAttritubeWidget : public QWidget
 {

@@ -2,7 +2,7 @@
 #include <QObject>
 #include <QTableView>
 
-#include "DxfLayerTableviewModel.h"
+#include "Manager/DxfLayerTableviewModel.h"
 
 class CLayerTableViewManger : public QObject
 {

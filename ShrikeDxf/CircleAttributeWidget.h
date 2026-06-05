@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_CircleAttributeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CCircleAttributeWidget : public QWidget
 {

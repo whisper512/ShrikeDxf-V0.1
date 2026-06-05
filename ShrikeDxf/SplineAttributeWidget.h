@@ -3,7 +3,7 @@
 #include <QTimer>
 
 #include "ui_SplineAttributeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CSplineAttributeWidget : public QWidget
 {

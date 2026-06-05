@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <QObject>
 #include <QTreeView>
-#include "DxfTreeviewModel.h"
+#include "Manager/DxfTreeviewModel.h"
 
 class CTreeViewManger : public QObject
 {

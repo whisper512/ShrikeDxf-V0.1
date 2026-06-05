@@ -2,7 +2,7 @@
 
 #include <QWidget>
 #include "ui_LineAttribute.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CLineAttributeWidget : public QWidget
 {

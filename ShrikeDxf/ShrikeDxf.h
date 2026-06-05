@@ -14,8 +14,8 @@
 #include "MoveBtnsWidget.h"
 #include "CreateEntityWidget.h"
 
-#include "CommonDataManager.h"
-#include "DxfManager.h"
+#include "Manager/CommonDataManager.h"
+#include "Manager/DxfManager.h"
 
 class ShrikeDxf : public QMainWindow
 {

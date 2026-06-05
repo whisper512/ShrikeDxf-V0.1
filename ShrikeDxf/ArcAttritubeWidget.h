@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_ArcAttritubeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CArcAttritubeWidget : public QWidget
 {

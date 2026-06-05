@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "ui_PointAttribute.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CPointAttributeWidget : public QWidget
 {

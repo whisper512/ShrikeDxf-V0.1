@@ -3,7 +3,7 @@
 #include <QWidget>
 
 #include "ui_LWPolylineAttributeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CLWPolylineAttributeWidget : public QWidget
 {

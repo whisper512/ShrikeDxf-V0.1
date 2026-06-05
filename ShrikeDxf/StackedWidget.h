@@ -15,7 +15,7 @@
 #include "SplineAttributeWidget.h"
 #include "HatchAttributeWidget.h"
 
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CStackedWidgetManger : public QObject
 {

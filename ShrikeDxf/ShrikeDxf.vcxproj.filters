@@ -58,38 +58,11 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Primitive.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonDataManager.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="TopMenu.h">
       <Filter>Header Files\WeightView</Filter>
     </ClInclude>
     <ClInclude Include="StyleSheet.h">
       <Filter>Header Files\WeightView</Filter>
-    </ClInclude>
-    <ClInclude Include="DxfStruct.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="DxfLayerTableviewModel.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="DxfData.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="DxfReader.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="DxfWriter.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools.h">
-      <Filter>Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="..\EntitiesLib\Arc.h">
       <Filter>EntitiesLib\Header</Filter>
@@ -139,22 +112,37 @@
     <ClInclude Include="..\EntitiesLib\Text.h">
       <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Manager\DxfData.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\DxfLayerTableviewModel.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\DxfReader.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\DxfStruct.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\DxfWriter.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\EntityMath.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\Primitive.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\Tools.h">
+      <Filter>Header Files\Dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CommonDataManager.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ShrikeDxf.h">
-      <Filter>Header Files\Common</Filter>
-    </QtMoc>
-    <QtMoc Include="DxfManager.h">
-      <Filter>Header Files\Dxf</Filter>
-    </QtMoc>
     <QtMoc Include="TreeView.h">
       <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="DxfTreeviewModel.h">
-      <Filter>Header Files\Dxf</Filter>
-    </QtMoc>
-    <QtMoc Include="DxfGraphicsScene.h">
-      <Filter>Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="GraphicsView.h">
       <Filter>Header Files\WeightView</Filter>
@@ -201,35 +189,41 @@
     <QtMoc Include="HatchAttributeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
-    <QtMoc Include="DxfEditor.h">
-      <Filter>Header Files\Dxf</Filter>
-    </QtMoc>
     <QtMoc Include="PolylineAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="MTextAttritubeWidget.h">
       <Filter>Header Files\WeightView</Filter>
     </QtMoc>
-    <QtMoc Include="DxfDrawController.h">
+    <QtMoc Include="Manager\DxfDrawController.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
-    <QtMoc Include="DxfEditController.h">
+    <QtMoc Include="Manager\DxfEditController.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
-    <QtMoc Include="DxfInteractionDispatcher.h">
+    <QtMoc Include="Manager\DxfEditor.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
-    <QtMoc Include="DxfSelectionController.h">
+    <QtMoc Include="Manager\DxfGraphicsScene.h">
       <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="Manager\DxfInteractionDispatcher.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="Manager\DxfManager.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="Manager\DxfSelectionController.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="Manager\DxfTreeviewModel.h">
+      <Filter>Header Files\Dxf</Filter>
+    </QtMoc>
+    <QtMoc Include="ShrikeDxf.h">
+      <Filter>Header Files\Common</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DxfManager.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonDataManager.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="ShrikeDxf.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
@@ -242,29 +236,17 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="DxfStruct.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
     <ClCompile Include="TreeView.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
-    <ClCompile Include="DxfTreeviewModel.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsView.cpp">
       <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfGraphicsScene.cpp">
-      <Filter>Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="StackedWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="LayerTableView.cpp">
       <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfLayerTableviewModel.cpp">
-      <Filter>Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="LineAttribute.cpp">
       <Filter>Source Files\WeightView</Filter>
@@ -290,15 +272,6 @@
     <ClCompile Include="CreateEntityWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
-    <ClCompile Include="DxfData.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfEditor.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfReader.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
     <ClCompile Include="EllipseAttritube.cpp">
       <Filter>Source Files\WeightView</Filter>
     </ClCompile>
@@ -316,12 +289,6 @@
     </ClCompile>
     <ClCompile Include="HatchAttributeWidget.cpp">
       <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfWriter.cpp">
-      <Filter>Source Files\Dxf</Filter>
-    </ClCompile>
-    <ClCompile Include="DxfDrawController.cpp">
-      <Filter>Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="..\EntitiesLib\Arc.cpp">
       <Filter>EntitiesLib\Source</Filter>
@@ -362,14 +329,47 @@
     <ClCompile Include="..\EntitiesLib\Text.cpp">
       <Filter>EntitiesLib\Source</Filter>
     </ClCompile>
-    <ClCompile Include="DxfEditController.cpp">
+    <ClCompile Include="Manager\DxfWriter.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
-    <ClCompile Include="DxfInteractionDispatcher.cpp">
+    <ClCompile Include="Manager\DxfTreeviewModel.cpp">
       <Filter>Source Files\Dxf</Filter>
     </ClCompile>
-    <ClCompile Include="DxfSelectionController.cpp">
+    <ClCompile Include="Manager\DxfStruct.cpp">
       <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfSelectionController.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfReader.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfManager.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfLayerTableviewModel.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfInteractionDispatcher.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfGraphicsScene.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfEditor.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfEditController.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfDrawController.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\DxfData.cpp">
+      <Filter>Source Files\Dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CommonDataManager.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "ui_HatchAttributeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CHatchAttributeWidget : public QWidget
 {

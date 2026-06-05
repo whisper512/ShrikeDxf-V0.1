@@ -7,9 +7,9 @@
 #include <QScrollBar>
 #include <QLabel>
 
-#include "Tools.h"
-#include "DxfGraphicsScene.h"
-#include "DxfStruct.h"
+#include "Manager/Tools.h"
+#include "Manager/DxfGraphicsScene.h"
+#include "Manager/DxfStruct.h"
 #include "Ruler.h"
 
 class CGraphicsView : public QGraphicsView

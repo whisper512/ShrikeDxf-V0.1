@@ -2,7 +2,7 @@
 #include <QWidget>
 
 #include "ui_PloylineAttributeWidget.h"
-#include "DxfStruct.h"
+#include "Manager/DxfStruct.h"
 
 class CPolylineAttributeWidget : public QWidget
 {
