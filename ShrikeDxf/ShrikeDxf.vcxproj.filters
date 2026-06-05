@@ -58,12 +58,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TopMenu.h">
-      <Filter>Header Files\WeightView</Filter>
-    </ClInclude>
-    <ClInclude Include="StyleSheet.h">
-      <Filter>Header Files\WeightView</Filter>
-    </ClInclude>
     <ClInclude Include="..\EntitiesLib\Arc.h">
       <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
@@ -139,62 +133,14 @@
     <ClInclude Include="Manager\CommonDataManager.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Widget\StyleSheet.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
+    <ClInclude Include="Widget\TopMenu.h">
+      <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="TreeView.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="GraphicsView.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="LayerTableView.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="StackedWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="LineAttribute.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="PointAttribute.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="CircleAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="ArcAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="LWPolylineAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="MoveBtnsWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="Ruler.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="CreateEntityWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="EllipseAttritube.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="TextAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="SplineAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="HatchAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="PolylineAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
-    <QtMoc Include="MTextAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
-    </QtMoc>
     <QtMoc Include="Manager\DxfDrawController.h">
       <Filter>Header Files\Dxf</Filter>
     </QtMoc>
@@ -222,73 +168,67 @@
     <QtMoc Include="ShrikeDxf.h">
       <Filter>Header Files\Common</Filter>
     </QtMoc>
+    <QtMoc Include="Widget\ArcAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\CircleAttributeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\CreateEntityWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\EllipseAttritube.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\GraphicsView.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\HatchAttributeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\LayerTableView.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\LineAttribute.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\LWPolylineAttributeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\MoveBtnsWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\MTextAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\PointAttribute.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\PolylineAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\Ruler.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\SplineAttributeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\StackedWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\TextAttritubeWidget.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
+    <QtMoc Include="Widget\TreeView.h">
+      <Filter>Header Files\WeightView</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShrikeDxf.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="TopMenu.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="StyleSheet.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="TreeView.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsView.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="StackedWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="LayerTableView.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="LineAttribute.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="PointAttribute.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="ArcAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="LWPolylineAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveBtnsWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="Ruler.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="CreateEntityWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="EllipseAttritube.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="TextAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="MTextAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="PolylineAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="SplineAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
-    </ClCompile>
-    <ClCompile Include="HatchAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="..\EntitiesLib\Arc.cpp">
       <Filter>EntitiesLib\Source</Filter>
@@ -371,45 +311,105 @@
     <ClCompile Include="Manager\CommonDataManager.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Widget\ArcAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\CircleAttributeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\CreateEntityWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\EllipseAttritube.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\GraphicsView.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\HatchAttributeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\LayerTableView.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\LineAttribute.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\LWPolylineAttributeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\MoveBtnsWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\MTextAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\PointAttribute.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\PolylineAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\Ruler.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\SplineAttributeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\StackedWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\StyleSheet.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\TextAttritubeWidget.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\TopMenu.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\TreeView.cpp">
+      <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="PointAttribute.ui">
+    <QtUic Include="Widget\ArcAttritubeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="LineAttribute.ui">
+    <QtUic Include="Widget\CircleAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="CircleAttributeWidget.ui">
+    <QtUic Include="Widget\CreateEntityWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="ArcAttritubeWidget.ui">
+    <QtUic Include="Widget\EllipseAttritubeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="LWPolylineAttributeWidget.ui">
+    <QtUic Include="Widget\HatchAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MoveBtnsWidget.ui">
+    <QtUic Include="Widget\LineAttribute.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="CreateEntityWidget.ui">
+    <QtUic Include="Widget\LWPolylineAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="EllipseAttritubeWidget.ui">
+    <QtUic Include="Widget\MoveBtnsWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="TextAttritubeWidget.ui">
+    <QtUic Include="Widget\MTextAttritubeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="MTextAttritubeWidget.ui">
+    <QtUic Include="Widget\PloylineAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="PloylineAttributeWidget.ui">
+    <QtUic Include="Widget\PointAttribute.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="SplineAttributeWidget.ui">
+    <QtUic Include="Widget\SplineAttributeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="HatchAttributeWidget.ui">
+    <QtUic Include="Widget\TextAttritubeWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
