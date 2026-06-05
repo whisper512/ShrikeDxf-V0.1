@@ -6,13 +6,13 @@
 #include <QFileSystemModel>
 #include <QTimer.h>
 
-#include "TopMenu.h"
-#include "TreeView.h"
-#include "GraphicsView.h"
-#include "StackedWidget.h"
-#include "LayerTableView.h"
-#include "MoveBtnsWidget.h"
-#include "CreateEntityWidget.h"
+#include "Widget/TopMenu.h"
+#include "Widget/TreeView.h"
+#include "Widget/GraphicsView.h"
+#include "Widget/StackedWidget.h"
+#include "Widget/LayerTableView.h"
+#include "Widget/MoveBtnsWidget.h"
+#include "Widget/CreateEntityWidget.h"
 
 #include "Manager/CommonDataManager.h"
 #include "Manager/DxfManager.h"

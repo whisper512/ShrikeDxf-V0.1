@@ -5,7 +5,7 @@
 #include <QPalette>
 #include <QString.h>
 
-#include "StyleSheet.h"
+#include "../Widget/StyleSheet.h"
 
 //管理通用数据
 
