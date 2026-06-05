@@ -5,8 +5,6 @@
 #include <QMessageBox>
 #include <QTimer>
 
-
-
 CDxfManager::CDxfManager(QWidget* pMainWnd) 
     : m_pMainWnd(pMainWnd)
     , m_DxfReader(nullptr)
@@ -26,6 +24,9 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     m_pInteractionDispatcher = std::make_unique<CDxfInteractionDispatcher>(this);
     // 设置交互控制持有的控制器
     m_pInteractionDispatcher->SetControllers(m_DxfDrawController.get(), m_DxfEditController.get(), m_pSelectionController.get());
+    // 编辑类
+    m_DxfEditor = std::make_unique<CDxfEditor>(m_DxfData.get());
+
 
     ConnectSignals();
 }
@@ -177,66 +178,66 @@ void CDxfManager::DeselectEntity()
 
 void CDxfManager::handlePointAttributeChanged(const EntityPoint& point)
 {
-    m_DxfEditor.editPoint(&m_SelectedEntity, point);
+    m_DxfEditor->editPoint(&m_SelectedEntity, point);
     RefreshScene();
 }
 
 void CDxfManager::handleLineAttributeChanged(const EntityLine& line)
 {
-    m_DxfEditor.editLine(&m_SelectedEntity, line);
+    m_DxfEditor->editLine(&m_SelectedEntity, line);
     RefreshScene();
 }
 
 void CDxfManager::handleCircleAttributeChanged(const EntityCircle& circle)
 {
-    m_DxfEditor.editCircle(&m_SelectedEntity, circle);
+    m_DxfEditor->editCircle(&m_SelectedEntity, circle);
     RefreshScene();
 }
 
 void CDxfManager::handleArcAttributeChanged(const EntityArc& arc)
 {
-    m_DxfEditor.editArc(&m_SelectedEntity, arc);
+    m_DxfEditor->editArc(&m_SelectedEntity, arc);
     RefreshScene();
 }
 
 void CDxfManager::handleEllipseAttributeChanged(const EntityEllipse& ellipse)
 {
-    m_DxfEditor.editEllipse(&m_SelectedEntity, ellipse);
+    m_DxfEditor->editEllipse(&m_SelectedEntity, ellipse);
     RefreshScene();
 }
 
 void CDxfManager::handleSplineAttributeChanged(const EntitySpline& spline)
 {
-    m_DxfEditor.editSpline(&m_SelectedEntity, spline);
+    m_DxfEditor->editSpline(&m_SelectedEntity, spline);
     RefreshScene();
 }
 
 void CDxfManager::handlePolylineAttributeChanged(const EntityPolyline& polyline)
 {
-    m_DxfEditor.editPolyline(&m_SelectedEntity, polyline);
+    m_DxfEditor->editPolyline(&m_SelectedEntity, polyline);
     RefreshScene();
 }
 
 void CDxfManager::handleLwpolylineAttributeChanged(const EntityLWPolyline& lwpolyline)
 {
-    m_DxfEditor.editLwpolyline(&m_SelectedEntity, lwpolyline);
+    m_DxfEditor->editLwpolyline(&m_SelectedEntity, lwpolyline);
     RefreshScene();
 }
 void CDxfManager::handleTextAttributeChanged(const EntityText& text)
 {
-    m_DxfEditor.editText(&m_SelectedEntity, text);
+    m_DxfEditor->editText(&m_SelectedEntity, text);
     RefreshScene();
 }
 
 void CDxfManager::handleMTextAttributeChanged(const EntityMText& mtext)
 {
-    m_DxfEditor.editMText(&m_SelectedEntity, mtext);
+    m_DxfEditor->editMText(&m_SelectedEntity, mtext);
     RefreshScene();
 }
 
 void CDxfManager::handleHatchAttributeChanged(const EntityHatch& hatch)
 {
-    m_DxfEditor.editHatch(&m_SelectedEntity, hatch);
+    m_DxfEditor->editHatch(&m_SelectedEntity, hatch);
     RefreshScene();
 }
 

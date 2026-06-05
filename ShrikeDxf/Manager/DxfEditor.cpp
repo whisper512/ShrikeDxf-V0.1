@@ -1,8 +1,9 @@
 ﻿#include "DxfEditor.h"
 
-CDxfEditor::CDxfEditor() 
-	: m_DxfData(nullptr)
+CDxfEditor::CDxfEditor(CDxfData* dxfData)
+    : m_DxfData(dxfData)
 {
+    
 }
 
 CDxfEditor::~CDxfEditor()

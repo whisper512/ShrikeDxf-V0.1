@@ -7,12 +7,11 @@ class CDxfEditor : public QObject
 {
     Q_OBJECT
 public:
-	CDxfEditor();
+    explicit CDxfEditor(CDxfData* dxfData);
     ~CDxfEditor();
 
+
 public:
-    // dxf数据类
-    CDxfData* m_DxfData;
 
     void editPoint(stuSelectedEntity* selectedEntity, EntityPoint point);
     void editLine(stuSelectedEntity* selectedEntity, EntityLine line);
@@ -27,7 +26,8 @@ public:
     void editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch);
 
 private:
-    
+    // dxf数据类
+    CDxfData* m_DxfData;
 public slots:
     
 

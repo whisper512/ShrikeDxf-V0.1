@@ -199,8 +199,6 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			{
 				connect(m_pCreateEntityWidget,&CCreateEntityWidget::signalMouseStatus,m_pDxfDataManger, &CDxfManager::handleOnMouseStatusChanged);
 			}
-			
-
 		});
 }
 

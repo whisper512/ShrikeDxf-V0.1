@@ -76,7 +76,7 @@ private:
 	// graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 	// dxf编辑类
-	CDxfEditor m_DxfEditor;
+	std::unique_ptr<CDxfEditor> m_DxfEditor;
 	// dxf绘制控制和view选中
 	std::unique_ptr<CDxfDrawController> m_DxfDrawController;
 	// dxf编辑控制
