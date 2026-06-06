@@ -3,6 +3,7 @@
 #include "GraphicsView.h"
 #include "StyleSheet.h"
 #include "ShrikeDxf.h"
+#include "../Manager/DxfManager.h" 
 
 CGraphicsView::CGraphicsView()
 {
@@ -12,7 +13,7 @@ CGraphicsView::~CGraphicsView()
 {
 }
 
-CGraphicsView::CGraphicsView(QWidget* pMainwnd):
+CGraphicsView::CGraphicsView(QWidget* pMainwnd , CDxfManager* pDxfManager):
     m_pMainWnd(pMainwnd),
     m_pGraphicsViewMenu(nullptr),
     m_pGraphicsOperateMenu(nullptr),
@@ -43,7 +44,8 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd):
     m_rectInitialScene(0, 0, 0, 0),
     m_pointLastPos(0, 0),
     m_rectLastScene(0, 0, 0, 0),
-    m_pointRightClickPos(0, 0)
+    m_pointRightClickPos(0, 0),
+    m_pDxfManager(pDxfManager)
 {
     //添加graphicsview到layout
     ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
@@ -100,24 +102,35 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
 {
     m_pointRightClickPos = pos;
 
-    //正在绘制预览图元
-    if (m_bDrawingPreview)
+    m_pointRightClickPos = pos;
+    enumMouseStateInView state = m_pDxfManager->GetCurrentInteractionState();
+
+    if (state >= enumMouseStateInView::enumMouseState_Point &&
+        state <= enumMouseStateInView::enumMouseState_MText)
     {
+        // 正在绘制 → 显示“结束绘制”
         m_pGraphicsPreviewMenu->popup(mapToGlobal(pos));
     }
-    else if (m_bCopyingEntity) // 正在复制图元
+    else if (state >= enumMouseStateInView::enumMouseState_Move)
     {
+        // 编辑状态（拉伸/移动等） → 可显示编辑相关选项（或暂时复用 operate 菜单）
         m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
     }
-    else if (m_bSelectingEntity) // 正在选中图元
+    else if (state == enumMouseStateInView::enumMouseState_None)
     {
-        
+        // 判断是否有选中图元
+        const auto& selEnt = m_pDxfManager->GetSelectedEntity();
+        if (selEnt.entityIndex >= 0)
+        {
+            // 有选中 → 显示图元操作菜单
+            m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
+        }
+        else
+        {
+            // 无选中 → 显示视图操作菜单
+            m_pGraphicsViewMenu->popup(mapToGlobal(pos));
+        }
     }
-    else  //单纯点击view
-    {
-        m_pGraphicsViewMenu->popup(mapToGlobal(pos));
-    }
-    
 }
 
 
@@ -153,6 +166,29 @@ void CGraphicsView::InitGraphicsViewAction()
     m_pGraphicsPreviewMenu->addAction(m_pActionEndDrawing);
 
     connect(m_pActionEndDrawing, &QAction::triggered, this, [this]() { emit signalEndDrawingPreview();});
+
+    m_pActionDeleteEntity = new QAction(QStringLiteral("Delete"), this);
+    m_pActionCopyEntity = new QAction(QStringLiteral("Copy"), this);
+    m_pActionCutEntity = new QAction(QStringLiteral("Cut"), this);
+    m_pActionPasteEntity = new QAction(QStringLiteral("Paste"), this);
+
+    m_pGraphicsOperateMenu->addAction(m_pActionDeleteEntity);
+    m_pGraphicsOperateMenu->addAction(m_pActionCopyEntity);
+    m_pGraphicsOperateMenu->addAction(m_pActionCutEntity);
+    m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
+
+    connect(m_pActionDeleteEntity, &QAction::triggered, this, [this]() {
+        emit signalDeleteEntity();   // 新增信号，通知 DxfManager 删除选中图元
+        });
+    connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {
+        emit signalCopyEntity();
+        });
+    connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {
+        emit signalCutEntity();
+        });
+    connect(m_pActionPasteEntity, &QAction::triggered, this, [this]() {
+        emit signalPaste(mapToScene(m_pointRightClickPos));
+        });
 }
 
 

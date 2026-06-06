@@ -32,4 +32,8 @@ private:
     CDxfDrawController* m_pDrawCtrl = nullptr;
     CDxfEditController* m_pEditCtrl = nullptr;
     CSelectionController* m_pSelectionCtrl = nullptr;
+
+private:
+    bool IsDrawState(enumMouseStateInView state) const;
+    bool IsEditState(enumMouseStateInView state) const;
 };

@@ -12,6 +12,8 @@
 #include "Manager/DxfStruct.h"
 #include "Ruler.h"
 
+class CDxfManager;
+
 class CGraphicsView : public QGraphicsView
 {
 	Q_OBJECT
@@ -19,10 +21,10 @@ class CGraphicsView : public QGraphicsView
 public:
 	CGraphicsView();
 	~CGraphicsView();
-
-	explicit CGraphicsView(QWidget* pMainwnd);
+	explicit CGraphicsView(QWidget* pMainWnd, CDxfManager* pDxfManager = nullptr);
 
 private:
+	CDxfManager* m_pDxfManager;
 	// 右键菜单
 	QMenu* m_pGraphicsViewMenu;
 	// 图元操作
@@ -106,6 +108,9 @@ signals:
 	void signalGraphicsViewRightClick(QPointF pos);
 	// 结束预览preview信号
 	void signalEndDrawingPreview();
+	void signalDeleteEntity();
+	void signalCopyEntity();
+	void signalCutEntity();
 
 public slots:
 	// 类外交互

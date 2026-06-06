@@ -18,8 +18,8 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 {	
     ui.setupUi(this);
 	setWindowIcon(QIcon(":/ShrikeDxf/res/Main.png"));
-	InitWindowComponents();
 	InitDataManagers();
+	InitWindowComponents();
 	InitLabels();
 	ConnectSignalsAndSlots();
 }
@@ -88,7 +88,7 @@ void ShrikeDxf::InitAndCreateTreeView()
 
 void ShrikeDxf::InitAndCreateGraphicsView()
 {
-	m_pGraphicsView = new CGraphicsView(this);
+	m_pGraphicsView = new CGraphicsView(this, m_pDxfDataManger);
 }
 
 void ShrikeDxf::InitAndCreateStackedWidget()
@@ -189,6 +189,10 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 			if (this && m_pGraphicsView)
 			{
 				connect(m_pGraphicsView, &CGraphicsView::signalMousePosString, this, &ShrikeDxf::handleMousePos);
+				//connect(m_pGraphicsView, &CGraphicsView::signalDeleteEntity, this, &CDxfManager::DeleteSelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalCopyEntity, this, &CDxfManager::CopySelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalCutEntity, this, &CDxfManager::CutSelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalPaste, this, &CDxfManager::PasteEntityAt);
 			}
 			if (this && m_pDxfDataManger)
 			{

@@ -36,6 +36,12 @@ CDxfManager::~CDxfManager()
     
 }
 
+const enumMouseStateInView CDxfManager::GetCurrentInteractionState()
+{
+    return m_pInteractionDispatcher->GetCurrentState();
+}
+
+
 bool CDxfManager::LoadDxfFile(const QString& strPath)
 {
     // 确保 Reader持有Data指针

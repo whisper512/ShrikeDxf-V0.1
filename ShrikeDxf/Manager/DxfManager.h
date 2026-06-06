@@ -35,6 +35,9 @@ public:
 
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
+	// 获取交互鼠标状态
+	const enumMouseStateInView GetCurrentInteractionState();
+
 	// 刷新scene重并重置graphicsview
 	void RefreshSceneResetview(){
 		m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
