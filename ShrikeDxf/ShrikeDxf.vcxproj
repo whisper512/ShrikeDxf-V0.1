@@ -125,6 +125,7 @@
     <ClInclude Include="..\EntitiesLib\Ellipse.h" />
     <ClInclude Include="..\EntitiesLib\Entity.h" />
     <ClInclude Include="..\EntitiesLib\EntityBase.h" />
+    <ClInclude Include="..\EntitiesLib\EntityMath.h" />
     <ClInclude Include="..\EntitiesLib\Hatch.h" />
     <ClInclude Include="..\EntitiesLib\Insert.h" />
     <ClInclude Include="..\EntitiesLib\Line.h" />
@@ -135,7 +136,6 @@
     <ClInclude Include="..\EntitiesLib\Soild.h" />
     <ClInclude Include="..\EntitiesLib\Spline.h" />
     <ClInclude Include="..\EntitiesLib\Text.h" />
-    <ClInclude Include="EntityMath.h" />
     <ClInclude Include="Manager\CommonDataManager.h" />
     <ClInclude Include="Manager\DxfData.h" />
     <ClInclude Include="Widget\StyleSheet.h" />

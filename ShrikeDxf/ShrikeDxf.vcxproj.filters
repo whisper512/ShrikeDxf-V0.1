@@ -73,9 +73,6 @@
     <ClInclude Include="..\EntitiesLib\EntityBase.h">
       <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
-    <ClInclude Include="EntityMath.h">
-      <Filter>EntitiesLib\Header</Filter>
-    </ClInclude>
     <ClInclude Include="..\EntitiesLib\Hatch.h">
       <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
@@ -138,6 +135,9 @@
     </ClInclude>
     <ClInclude Include="Widget\TopMenu.h">
       <Filter>Header Files\WeightView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EntitiesLib\EntityMath.h">
+      <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
