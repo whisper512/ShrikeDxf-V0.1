@@ -1,8 +1,9 @@
-﻿#include "DxfSelectionController.h"
+﻿#include <cmath>
+
+#include "DxfSelectionController.h"
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
 #include "DxfStruct.h"
-#include <cmath>
 
 CSelectionController::CSelectionController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
     : QObject(parent), m_pData(pData), m_pScene(pScene)

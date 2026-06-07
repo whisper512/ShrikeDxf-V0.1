@@ -45,10 +45,8 @@ public:
     void InitAndCreateMoveBtnsWidget();
     //初始化新建图元界面
     void InitAndCreateCreateEntityWidget();
-
     //初始化位置显示label
     void InitLabels();
-
     //链接信号和槽
     void ConnectSignalsAndSlots();
 

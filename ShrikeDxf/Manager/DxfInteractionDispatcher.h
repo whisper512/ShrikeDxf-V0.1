@@ -7,25 +7,24 @@ class CDxfDrawController;
 class CDxfEditController;
 class CSelectionController;
 
-// 交互控制类
+// graphicsView交互控制类
 class CDxfInteractionDispatcher : public QObject
 {
     Q_OBJECT
 public:
     explicit CDxfInteractionDispatcher(QObject* parent = nullptr);
+    ~CDxfInteractionDispatcher();
 
+    // 持有其他数据类
     void SetControllers(CDxfDrawController* drawCtrl, CDxfEditController* editCtrl ,CSelectionController* selCtrl);
-    void SetSelectionController(CSelectionController* pSelCtrl) { m_pSelectionCtrl = pSelCtrl; }
-
-    // 设置当前工具
+    // 设置当前工具,修改鼠标状态
     void SetMouseStatus(enumMouseStateInView state);
-
-    // 鼠标事件转发
+    // 发会鼠标状态
+    enumMouseStateInView GetCurrentState() const { return m_eState; }
+    // 鼠标事件
     void OnMouseMove(QPointF scenePos);
     void OnLeftClick(QPointF scenePos);
     void OnRightClick(QPointF scenePos);
-
-    enumMouseStateInView GetCurrentState() const { return m_eState; }
 
 private:
     enumMouseStateInView m_eState = enumMouseStateInView::enumMouseState_None;

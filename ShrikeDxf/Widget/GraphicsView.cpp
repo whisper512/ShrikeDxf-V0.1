@@ -101,19 +101,19 @@ void CGraphicsView::InitRuler()
 void CGraphicsView::ShowMenu(const QPoint& pos)
 {
     m_pointRightClickPos = pos;
-
     m_pointRightClickPos = pos;
+    // 获取交互控制的状态
     enumMouseStateInView state = m_pDxfManager->GetCurrentInteractionState();
 
     if (state >= enumMouseStateInView::enumMouseState_Point &&
         state <= enumMouseStateInView::enumMouseState_MText)
     {
-        // 正在绘制 → 显示“结束绘制”
+        // 正在绘制,显示“结束绘制”
         m_pGraphicsPreviewMenu->popup(mapToGlobal(pos));
     }
     else if (state >= enumMouseStateInView::enumMouseState_Move)
     {
-        // 编辑状态（拉伸/移动等） → 可显示编辑相关选项（或暂时复用 operate 菜单）
+        // 编辑状态(拉伸/移动等)
         m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
     }
     else if (state == enumMouseStateInView::enumMouseState_None)
@@ -122,12 +122,12 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
         const auto& selEnt = m_pDxfManager->GetSelectedEntity();
         if (selEnt.entityIndex >= 0)
         {
-            // 有选中 → 显示图元操作菜单
+            // 有选中显示图元操作菜单
             m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
         }
         else
         {
-            // 无选中 → 显示视图操作菜单
+            // 无选中显示视图操作菜单
             m_pGraphicsViewMenu->popup(mapToGlobal(pos));
         }
     }
@@ -178,17 +178,12 @@ void CGraphicsView::InitGraphicsViewAction()
     m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
 
     connect(m_pActionDeleteEntity, &QAction::triggered, this, [this]() {
-        emit signalDeleteEntity();   // 新增信号，通知 DxfManager 删除选中图元
-        });
-    connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {
-        emit signalCopyEntity();
-        });
-    connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {
-        emit signalCutEntity();
-        });
-    connect(m_pActionPasteEntity, &QAction::triggered, this, [this]() {
-        emit signalPaste(mapToScene(m_pointRightClickPos));
-        });
+        if (m_pDxfManager) {
+            m_pDxfManager->DeleteSelectedEntity();
+        } });
+    connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {emit signalCopyEntity(); });
+    connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {  emit signalCutEntity(); });
+    connect(m_pActionPasteEntity, &QAction::triggered, this, [this]() { emit signalPaste(mapToScene(m_pointRightClickPos)); });
 }
 
 

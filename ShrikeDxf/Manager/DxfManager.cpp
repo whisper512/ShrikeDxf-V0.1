@@ -102,6 +102,27 @@ bool CDxfManager::CloseDxfFile()
     return false;
 }
 
+void CDxfManager::DeleteSelectedEntity()
+{
+    if (m_SelectedEntity.entityIndex < 0) return;
+    if (m_SelectedEntity.strLayer.isEmpty()) return;
+
+    auto* pLayer = m_DxfData->GetLayer(m_SelectedEntity.strLayer.toStdString());
+    if (!pLayer) return;
+    if (m_SelectedEntity.entityIndex >= static_cast<int>(pLayer->entities.size())) return;
+
+    // 删除图元
+    pLayer->entities.erase(pLayer->entities.begin() + m_SelectedEntity.entityIndex);
+
+    // 取消选中
+    DeselectEntity();
+
+    // 刷新所有视图（场景、树等）
+    RefreshScene();
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    emit signalRefreshTreeview(&m_DxfTreeviewModel);
+}
+
 void CDxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {

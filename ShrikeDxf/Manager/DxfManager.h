@@ -59,6 +59,10 @@ public:
 	bool NewDxfFile();
 	bool CloseDxfFile();
 
+public:
+	void DeleteSelectedEntity();
+
+
 private:
 	// 连接内部信号
 	void ConnectSignals();
@@ -136,7 +140,6 @@ signals:
 
 	 // 图层属性发生变化
 	 void handleLayerAttributeChanged();
-
 	 // 新建图元
 	 void handleOnMouseStatusChanged(enumMouseStateInView mouseState);
 	 // 鼠标移动
@@ -145,11 +148,11 @@ signals:
 	 void handleMouseLeftButtonClicked(QPointF pos);
 	 // 鼠标右键点击
      void handleMouseRightButtonClicked(QPointF pos);
-
 	 // 选中图元
 	 void handleEntitySelected(const QString& strLayer, int entityIndex);
 	 // 取消选中图元
 	 void handleEntityDeselected();
 	 // 结束绘制预览
 	 void handleEndDrawingPreview();
+
 };

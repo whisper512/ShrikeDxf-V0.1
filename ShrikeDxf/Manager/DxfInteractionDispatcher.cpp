@@ -9,6 +9,11 @@ CDxfInteractionDispatcher::CDxfInteractionDispatcher(QObject* parent)
 {
 }
 
+CDxfInteractionDispatcher::~CDxfInteractionDispatcher()
+{
+    
+}
+
 void CDxfInteractionDispatcher::SetControllers(CDxfDrawController* drawCtrl, CDxfEditController* editCtrl, CSelectionController* selCtrl)
 {
     m_pDrawCtrl = drawCtrl;
@@ -65,13 +70,13 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
 
     if (m_eState == enumMouseStateInView::enumMouseState_None)
     {
-        // 光标模式下左键交给选择控制器
+        // 光标模式下左键交给选择控制器看有没有命中图元
         if (m_pSelectionCtrl)
             m_pSelectionCtrl->HitTest(scenePos);
     }
     else
     {
-        // 绘制模式交给绘制控制器
+        // 绘制模式交给绘制控制器开始绘制
         m_pDrawCtrl->OnGraphicsViewLeftClick(scenePos);
     }
 }
@@ -92,6 +97,7 @@ bool CDxfInteractionDispatcher::IsDrawState(enumMouseStateInView state) const
 
 bool CDxfInteractionDispatcher::IsEditState(enumMouseStateInView state) const
 {
-    return state >= enumMouseStateInView::enumMouseState_Move;  // 或更精细的判断
+    // 或更精细的判断
+    return state >= enumMouseStateInView::enumMouseState_Move;  
 }
 

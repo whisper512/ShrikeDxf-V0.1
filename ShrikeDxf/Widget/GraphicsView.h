@@ -47,7 +47,7 @@ private:
     QAction* m_pActionYFile;
 	// 针对view中预览图元的操作
 	QAction* m_pActionEndDrawing;
-
+	// 尺子
 	CRulerH* m_pRulerH;
 	CRulerV* m_pRulerV;
 
@@ -108,8 +108,11 @@ signals:
 	void signalGraphicsViewRightClick(QPointF pos);
 	// 结束预览preview信号
 	void signalEndDrawingPreview();
+	// 删除图元
 	void signalDeleteEntity();
+	// 复制图元
 	void signalCopyEntity();
+    // 剪切图元
 	void signalCutEntity();
 
 public slots:
@@ -128,7 +131,6 @@ public slots:
 	void handlePasteEntity();
 	// 在绘制预览新图元
 	void handleMouseStatusChanged(enumMouseStateInView mouseState);
-
 
 
 
