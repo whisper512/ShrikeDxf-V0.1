@@ -21,4 +21,15 @@ struct EntitySpline
     
     QRectF boundingBox(double padding = 0.0) const;
     double distanceTo(double px, double py) const;
+    void translate(double dx, double dy) {
+        for (auto& p : controlPoints) {
+            p.setX(p.x() + dx);
+            p.setY(p.y() + dy);
+        }
+        for (auto& p : fitPoints) {
+            p.setX(p.x() + dx);
+            p.setY(p.y() + dy);
+        }
+    }
+
 };

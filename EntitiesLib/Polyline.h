@@ -31,5 +31,11 @@ struct EntityPolyline
 
     QRectF boundingBox(double padding = 0.0) const;
     double distanceTo(double px, double py) const;
+    void translate(double dx, double dy) {
+        for (auto& v : vecVertices) {
+            v.point.setX(v.point.x() + dx);
+            v.point.setY(v.point.y() + dy);
+        }
+    }
 
 };

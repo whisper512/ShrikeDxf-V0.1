@@ -118,16 +118,21 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
     }
     else if (state == enumMouseStateInView::enumMouseState_None)
     {
-        // 判断是否有选中图元
-        const auto& selEnt = m_pDxfManager->GetSelectedEntity();
-        if (selEnt.entityIndex >= 0)
+        bool hasSelection = (m_pDxfManager->GetSelectedEntity().entityIndex >= 0);
+        bool hasClipboard = m_pDxfManager->HasClipboard();
+
+        if (hasSelection || hasClipboard)
         {
-            // 有选中显示图元操作菜单
+            // 根据状态启用 / 禁用菜单项
+            m_pActionDeleteEntity->setEnabled(hasSelection);
+            m_pActionCopyEntity->setEnabled(hasSelection);
+            m_pActionCutEntity->setEnabled(hasSelection);
+            m_pActionPasteEntity->setEnabled(hasClipboard);
+
             m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
         }
         else
         {
-            // 无选中显示视图操作菜单
             m_pGraphicsViewMenu->popup(mapToGlobal(pos));
         }
     }
@@ -177,13 +182,29 @@ void CGraphicsView::InitGraphicsViewAction()
     m_pGraphicsOperateMenu->addAction(m_pActionCutEntity);
     m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
 
-    connect(m_pActionDeleteEntity, &QAction::triggered, this, [this]() {
-        if (m_pDxfManager) {
-            m_pDxfManager->DeleteSelectedEntity();
-        } });
-    connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {emit signalCopyEntity(); });
-    connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {  emit signalCutEntity(); });
-    connect(m_pActionPasteEntity, &QAction::triggered, this, [this]() { emit signalPaste(mapToScene(m_pointRightClickPos)); });
+        // 删除
+        connect(m_pActionDeleteEntity, &QAction::triggered, this, [this]() {
+            if (m_pDxfManager)
+                m_pDxfManager->DeleteSelectedEntity();
+            });
+
+        // 复制
+        connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {
+            if (m_pDxfManager)
+                m_pDxfManager->CopySelectedEntity();
+            });
+
+        // 剪切
+        connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {
+            if (m_pDxfManager)
+                m_pDxfManager->CutSelectedEntity();
+            });
+
+        // 粘贴（场景坐标已在右键时记录为 m_pointRightClickPos）
+        connect(m_pActionPasteEntity, &QAction::triggered, this, [this]() {
+            if (m_pDxfManager)
+                m_pDxfManager->PasteEntity(mapToScene(m_pointRightClickPos));
+            });
 }
 
 
@@ -254,12 +275,6 @@ void CGraphicsView::handleLockZoom(bool bChecked)
     m_bLockZoom = bChecked;
 }
 
-void CGraphicsView::handlePasteEntity()
-{
-    //重置
-    m_bCopyingEntity = false;
-    emit signalPaste(mapToScene(m_pointRightClickPos));
-}
 
 void CGraphicsView::handleMouseStatusChanged(enumMouseStateInView mouseState)
 {

@@ -123,6 +123,67 @@ void CDxfManager::DeleteSelectedEntity()
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
+void CDxfManager::CopySelectedEntity()
+{
+    if (m_SelectedEntity.entityIndex < 0 || m_SelectedEntity.strLayer.isEmpty())
+        return;
+
+    const auto& layers = m_DxfData->GetLayers();
+    auto it = layers.find(m_SelectedEntity.strLayer.toStdString());
+    if (it == layers.end() ||
+        m_SelectedEntity.entityIndex >= static_cast<int>(it->second.entities.size()))
+        return;
+
+    const auto& srcEntity = it->second.entities[m_SelectedEntity.entityIndex];
+
+    // 拷贝到剪贴板
+    m_clipboard.clear();
+    m_clipboard.push_back(srcEntity);      // variant 直接复制，深拷贝
+
+    // 计算该实体的包围盒中心，作为粘贴偏移基准
+    QRectF bbox = std::visit([](const auto& e) { return e.boundingBox(1.0); }, srcEntity);
+    if (bbox.isValid())
+        m_clipboardOrigin = bbox.center();
+    else
+        m_clipboardOrigin = QPointF(0, 0);
+}
+
+void CDxfManager::CutSelectedEntity()
+{
+    CopySelectedEntity();      // 先复制到剪贴板
+    DeleteSelectedEntity();    // 再删除
+}
+
+void CDxfManager::PasteEntity(QPointF position)
+{
+    if (m_clipboard.empty())
+        return;
+
+    // 计算平移量
+    QPointF offset = position - m_clipboardOrigin;
+
+    // 获取当前工作图层，并确保存在
+    std::string layerName = m_strCurrentLayer.toStdString();
+    stuLayer& layer = m_DxfData->EnsureLayer(layerName);
+
+    // 平移并添加实体
+    for (const auto& entity : m_clipboard)
+    {
+        variantDxfEntity newEntity = entity;   // 拷贝
+        // 对每种类型执行平移
+        std::visit([offset](auto& e) {
+            e.translate(offset.x(), offset.y());
+            }, newEntity);
+        layer.entities.push_back(std::move(newEntity));
+    }
+
+    // 刷新视图和树
+    RefreshScene();
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    emit signalRefreshTreeview(&m_DxfTreeviewModel);
+}
+
+
 void CDxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {

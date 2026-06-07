@@ -68,6 +68,7 @@ struct Vertex3D
     void setX(double v) { m_x = v; }
     void setY(double v) { m_y = v; }
     void setZ(double v) { m_z = v; }
+    bool isNull () const { return m_x == 0.0 && m_y == 0.0 && m_z == 0.0; }
 
     bool operator==(const Vertex3D& o) const { return m_x == o.m_x && m_y == o.m_y && m_z == o.m_z; }
     bool operator!=(const Vertex3D& o) const { return !(*this == o); }

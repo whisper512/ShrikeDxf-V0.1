@@ -13,5 +13,11 @@ struct EntityLine
     double angle() const;
     double distanceTo(double px, double py) const;
     QRectF boundingBox(double padding) const;
+    void translate(double dx, double dy) {
+        startPoint.setX(startPoint.x() + dx);
+        startPoint.setY(startPoint.y() + dy);
+        endPoint.setX(endPoint.x() + dx);
+        endPoint.setY(endPoint.y() + dy);
+    }
 };
 

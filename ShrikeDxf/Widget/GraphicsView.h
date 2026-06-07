@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include <QObject>
 #include <QGraphicsView>
 #include <QGraphicsItem>
@@ -128,7 +127,6 @@ public slots:
 	void ShowMenu(const QPoint& pos);
 	void handleLockZoom(bool bChecked);
 	// operate动作
-	void handlePasteEntity();
 	// 在绘制预览新图元
 	void handleMouseStatusChanged(enumMouseStateInView mouseState);
 

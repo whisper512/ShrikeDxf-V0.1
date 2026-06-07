@@ -60,8 +60,14 @@ public:
 	bool CloseDxfFile();
 
 public:
+	// 删除图元
 	void DeleteSelectedEntity();
-
+	// 复制当前选中图元到剪贴板
+	void CopySelectedEntity();
+	// 剪切当前选中图元（复制并删除）
+	void CutSelectedEntity();
+	// 粘贴剪贴板中的图元到指定场景坐标
+	void PasteEntity(QPointF position);
 
 private:
 	// 连接内部信号
@@ -97,6 +103,11 @@ private:
 	// 当前工作图层
     QString m_strCurrentLayer;
 	
+	// 剪贴板
+	std::vector<variantDxfEntity> m_clipboard;
+	QPointF m_clipboardOrigin;   // 复制时内容的中心点
+
+
 public:
 	// 同步图层模型数据到dxf数据结构
 	void SynLayerModelToDxfData();
@@ -104,6 +115,8 @@ public:
 	void SelectEntity(const QString& strLayer, int entityIndex);
 	// 取消选中
 	void DeselectEntity();
+	// 剪贴板是否有数据
+	bool HasClipboard() const { return !m_clipboard.empty(); }
 
 
 signals:

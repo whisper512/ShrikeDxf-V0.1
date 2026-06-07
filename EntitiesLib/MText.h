@@ -21,4 +21,10 @@ struct EntityMText
 
     QRectF boundingBox(double padding = 0.0) const;
     double distanceTo(double px, double py) const;
+    void translate(double dx, double dy) {
+        insertPoint.setX(insertPoint.x() + dx);
+        insertPoint.setY(insertPoint.y() + dy);
+        // xAxisDir 是方向向量，不随位移变化
+    }
+
 };
