@@ -176,6 +176,8 @@ void CDxfManager::PasteEntity(QPointF position)
             }, newEntity);
         layer.entities.push_back(std::move(newEntity));
     }
+    // 剪切板内容移除
+    m_clipboard.clear();
 
     // 刷新视图和树
     RefreshScene();

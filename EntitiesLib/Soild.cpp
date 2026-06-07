@@ -32,3 +32,10 @@ double EntitySolid::distanceTo(double px, double py) const {
                                dRight * dRight + dTop * dTop, dRight * dRight + dBottom * dBottom }));
 }
 
+void EntitySolid::translate(double dx, double dy)
+{
+    for (int i = 0; i < 4; ++i) {
+        corner[i].setX(corner[i].x() + dx);
+        corner[i].setY(corner[i].y() + dy);
+    }
+}

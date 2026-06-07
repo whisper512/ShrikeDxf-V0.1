@@ -11,3 +11,9 @@ double EntityInsert::distanceTo(double px, double py) const
     double dx = px - insertPoint.x(), dy = py - insertPoint.y();
     return std::sqrt(dx * dx + dy * dy);
 }
+
+void EntityInsert::translate(double dx, double dy) 
+{
+    insertPoint.setX(insertPoint.x() + dx);
+    insertPoint.setY(insertPoint.y() + dy);
+}

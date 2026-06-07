@@ -22,13 +22,6 @@ struct EntityText
     // 计算边界(场景坐标Y-down)
     QRectF boundingBox(double padding = 0.0) const;
     double distanceTo(double px, double py) const;
-    void translate(double dx, double dy) {
-        insertPoint.setX(insertPoint.x() + dx);
-        insertPoint.setY(insertPoint.y() + dy);
-        if (!alignPoint.isNull()) {   // 如果定义了对齐点
-            alignPoint.setX(alignPoint.x() + dx);
-            alignPoint.setY(alignPoint.y() + dy);
-        }
-    }
+    void translate(double dx, double dy);
 
 };

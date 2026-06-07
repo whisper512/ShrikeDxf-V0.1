@@ -35,3 +35,9 @@ double EntityEllipse::distanceTo(double px, double py) const {
     if (val < 1e-6) return 0.0;
     return std::abs(std::sqrt(val) - 1.0) * std::min(majorLen, minorLen);
 }
+
+void EntityEllipse::translate(double dx, double dy) 
+{
+    center.setX(center.x() + dx);
+    center.setY(center.y() + dy);
+}

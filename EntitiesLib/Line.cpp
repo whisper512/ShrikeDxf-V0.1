@@ -28,3 +28,11 @@ QRectF EntityLine::boundingBox(double padding) const {
     };
     return EntUtil::boundingBoxFromPoints(pts, padding);
 }
+
+void EntityLine::translate(double dx, double dy) 
+{
+    startPoint.setX(startPoint.x() + dx);
+    startPoint.setY(startPoint.y() + dy);
+    endPoint.setX(endPoint.x() + dx);
+    endPoint.setY(endPoint.y() + dy);
+}

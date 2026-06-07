@@ -11,9 +11,6 @@ struct EntityPoint
 
     QRectF boundingBox(double padding = 0.0) const;
     double distanceTo(double px, double py) const;
-    void translate(double dx, double dy) {
-        point.setX(point.x() + dx);
-        point.setY(point.y() + dy);
-    }
+    void translate(double dx, double dy);
 };
 

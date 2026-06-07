@@ -48,3 +48,13 @@ double EntityText::distanceTo(double px, double py) const
     if (py >= top && py <= bottom) return std::min(dLeft, dRight);
     return EntUtil::rectDistanceToPoint(px, py, left, top, right, bottom);
 }
+
+void EntityText::translate(double dx, double dy) 
+{
+    insertPoint.setX(insertPoint.x() + dx);
+    insertPoint.setY(insertPoint.y() + dy);
+    if (!alignPoint.isNull()) {   // 如果定义了对齐点
+        alignPoint.setX(alignPoint.x() + dx);
+        alignPoint.setY(alignPoint.y() + dy);
+    }
+}

@@ -24,3 +24,11 @@ double EntityPolyline::distanceTo(double px, double py) const {
     }
     return minDist;
 }
+
+void  EntityPolyline::translate(double dx, double dy) 
+{
+    for (auto& v : vecVertices) {
+        v.point.setX(v.point.x() + dx);
+        v.point.setY(v.point.y() + dy);
+    }
+}

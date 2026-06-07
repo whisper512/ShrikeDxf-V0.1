@@ -15,3 +15,9 @@ double EntityCircle::distanceTo(double px, double py) const
     double d = std::sqrt(dx * dx + dy * dy);
     return std::abs(d - radius);
 }
+
+void EntityCircle::translate(double dx, double dy) 
+{
+    center.setX(center.x() + dx);
+    center.setY(center.y() + dy);
+}

@@ -3,7 +3,7 @@
 #include <QtMath>
 
 // 私有规范弧
-EntityArc::CanonicalArc EntityArc::canonicalArc() const
+CanonicalArc EntityArc::canonicalArc() const
 {
     CanonicalArc ca;
     if (endAngle > startAngle) {
@@ -80,6 +80,13 @@ double EntityArc::distanceTo(double px, double py) const
     double d1 = std::sqrt((px - sx) * (px - sx) + (py - sy) * (py - sy));
     double d2 = std::sqrt((px - ex) * (px - ex) + (py - ey) * (py - ey));
     return std::min(d1, d2);
+}
+
+// 平移
+void EntityArc::translate(double dx, double dy) 
+{
+    center.setX(center.x() + dx);
+    center.setY(center.y() + dy);
 }
 
 // 三点定弧

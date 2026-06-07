@@ -21,3 +21,15 @@ double EntitySpline::distanceTo(double px, double py) const
     }
     return minDist;
 }
+
+void EntitySpline::translate(double dx, double dy) 
+{
+    for (auto& p : controlPoints) {
+        p.setX(p.x() + dx);
+        p.setY(p.y() + dy);
+    }
+    for (auto& p : fitPoints) {
+        p.setX(p.x() + dx);
+        p.setY(p.y() + dy);
+    }
+}
