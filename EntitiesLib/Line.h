@@ -17,5 +17,13 @@ struct EntityLine
     double distanceTo(double px, double py) const;
     // 平移
     void translate(double dx, double dy);
+    // X镜像
+    void mirrorX();
+    // Y镜像
+    void mirrorY();
+    // 旋转(弧度) 
+    void rotate(double angle, const QPointF& center);
+
+
 };
 

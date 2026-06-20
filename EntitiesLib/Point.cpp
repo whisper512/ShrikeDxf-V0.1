@@ -16,3 +16,13 @@ void EntityPoint::translate(double dx, double dy)
     point.setX(point.x() + dx);
     point.setY(point.y() + dy);
 }
+
+void EntityPoint::mirrorX()
+{
+    point.setY(-point.y());
+}
+
+void EntityPoint::mirrorY()
+{
+    point.setX(-point.x());
+}

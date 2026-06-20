@@ -24,6 +24,11 @@ public:
     double distanceTo(double px, double py) const;
     // 平移
     void translate(double dx, double dy);
+    // X镜像
+    void mirrorX();
+    // Y镜像
+    void mirrorY();
+
 
 private:
     // 将弧统一化为"逆时针从startAngle到endAngle的规范形式（s < e 且 sweep < 2π）

@@ -89,6 +89,14 @@ void EntityArc::translate(double dx, double dy)
     center.setY(center.y() + dy);
 }
 
+void EntityArc::mirrorX()
+{
+}
+
+void EntityArc::mirrorY()
+{
+}
+
 // 三点定弧
 bool ThreePointsToArc(QPointF p1, QPointF p2, QPointF p3,
     QPointF& center, qreal& radius,

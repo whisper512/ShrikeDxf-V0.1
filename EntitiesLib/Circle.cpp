@@ -21,3 +21,14 @@ void EntityCircle::translate(double dx, double dy)
     center.setX(center.x() + dx);
     center.setY(center.y() + dy);
 }
+
+void EntityCircle::mirrorX()
+{
+    center.setY(-center.y());
+
+}
+
+void EntityCircle::mirrorY()
+{
+    center.setX(-center.x());
+}

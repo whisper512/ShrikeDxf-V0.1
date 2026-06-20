@@ -1,4 +1,6 @@
-﻿#include "Ellipse.h"
+﻿#include <cmath>
+
+#include "Ellipse.h"
 
 QRectF EntityEllipse::boundingBox(double padding) const
 {
@@ -41,4 +43,70 @@ void EntityEllipse::translate(double dx, double dy)
 {
     center.setX(center.x() + dx);
     center.setY(center.y() + dy);
+}
+
+
+static void normalizeAngles(double& start, double& end)
+{
+    const double twoPi = 2.0 * M_PI;
+    // 将 start, end 映射到 [0, twoPi) 区间
+    start = std::fmod(start, twoPi);
+    if (start < 0) start += twoPi;
+    end = std::fmod(end, twoPi);
+    if (end < 0) end += twoPi;
+    // 保证 end > start (逆时针)
+    if (end <= start)
+        end += twoPi;
+}
+
+
+void EntityEllipse::mirrorX()
+{
+    center.setY(-center.y());
+    majorAxisEndpoint.setY(-majorAxisEndpoint.y());
+
+    // 参数变换：t' = -t
+    double newStart = -endParam;
+    double newEnd = -startParam;
+    startParam = newStart;
+    endParam = newEnd;
+    normalizeAngles(startParam, endParam);
+}
+
+
+void EntityEllipse::mirrorY()
+{
+    center.setX(-center.x());
+    majorAxisEndpoint.setX(-majorAxisEndpoint.x());
+
+    // 参数变换：t' = π - t
+    double newStart = M_PI - endParam;
+    double newEnd = M_PI - startParam;
+    startParam = newStart;
+    endParam = newEnd;
+    normalizeAngles(startParam, endParam);
+}
+
+
+void EntityEllipse::rotate(double angle, const QPointF& rotCenter)
+{
+    const double cosA = std::cos(angle);
+    const double sinA = std::sin(angle);
+
+    // 旋转中心点
+    double dx = center.x() - rotCenter.x();
+    double dy = center.y() - rotCenter.y();
+    center.setX(rotCenter.x() + dx * cosA - dy * sinA);
+    center.setY(rotCenter.y() + dx * sinA + dy * cosA);
+
+    // 旋转主轴向量(相对中心的偏移)
+    double mx = majorAxisEndpoint.x();
+    double my = majorAxisEndpoint.y();
+    majorAxisEndpoint.setX(mx * cosA - my * sinA);
+    majorAxisEndpoint.setY(mx * sinA + my * cosA);
+
+    // 参数角同步旋转(跟随刚体旋转)
+    startParam += angle;
+    endParam += angle;
+    normalizeAngles(startParam, endParam);
 }
