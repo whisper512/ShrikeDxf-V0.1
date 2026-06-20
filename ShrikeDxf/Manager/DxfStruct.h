@@ -8,9 +8,137 @@
 #include <vector>
 #include <map>
 #include <variant>
-
-//#include "Entity.h"
 #include "../EntitiesLib/Entity.h"
+
+// 图层信息
+struct stuLayer
+{
+    QString name;
+    QColor  color = Qt::white;
+    QString lineType = "BYLAYER";
+    int     lineWeight = -1;
+    bool    isVisible = true;
+    bool    isLocked = false;
+
+    // 该图层所有图元
+    std::vector<variantDxfEntity> entities;
+    // 获取该图层某种类型的图元数量
+    int GetEntityCount(EntityType type) const {
+        int count = 0;
+        for (auto& ent : entities) {
+            if (GetEntityType(ent) == type)
+                count++;
+        }
+        return count;
+    }
+};
+
+// 块定义
+struct stuBlock
+{
+    QString     name;           // 块名
+    Vertex3D    basePoint;      // 基点
+    int         flags = 0;      // 块标志
+
+    // 块内的所有图元
+    std::vector<variantDxfEntity> entities;
+};
+
+// 选中的图元
+struct stuSelectedEntity
+{
+    EntityType  type = EntityType::None;
+    QString     strLayer;               //所在图层
+    int         entityIndex = -1;       //所在图层中的索引
+    variantDxfEntity entity;            //图元本身
+
+    stuSelectedEntity() = default;
+};
+
+// 预览图元(用于绘制时的临时预览)
+struct stuPreviewEntity
+{
+    enum enumType
+    {
+        None = -1,
+        Point,
+        Line,
+        CenterRadiusCircle,
+        DiameterCircle,
+        CenterEndpointArc,
+        ThreePointsArc,
+        Polyline,
+    };
+
+    enumType type = None;
+    QString  strLayer;
+};
+
+// 文档整体结构
+struct DxfDocument
+{
+    // 头部变量
+    QString     version;            // DXF 版本
+    double      insUnits = 1.0;     // 单位 (1=毫米)
+    Vertex3D    extMin, extMax;     // 图形范围
+    double      ltscale = 1.0;      // 线型比例
+
+    std::map<std::string, stuLayer> layers;     // 按图层存储数据
+    std::map<std::string, stuBlock> blocks;     // 块定义
+
+    // 选中/预览状态
+    stuSelectedEntity  selectedEntity;
+    stuPreviewEntity   previewEntity;
+
+    // 编辑参数
+    double moveStep = 1.0;
+    double rotateStepRad = 0.0174533;   // 1度
+
+    // 获取所有图元
+    int GetTotalEntityCount() const {
+        int count = 0;
+        for (auto& [name, layer] : layers) {
+            count += (int)layer.entities.size();
+        }
+        return count;
+    }
+
+    // 清空所有数据
+    void Clear() {
+        version.clear();
+        insUnits = 1.0;
+        extMin = Vertex3D();
+        extMax = Vertex3D();
+        ltscale = 1.0;
+        layers.clear();
+        blocks.clear();
+        selectedEntity = stuSelectedEntity();
+        previewEntity = stuPreviewEntity();
+    }
+};
+
+
+// 按类型过滤图元
+inline std::vector<variantDxfEntity> FilterEntitiesByType(
+    const std::vector<variantDxfEntity>& entities, EntityType type)
+{
+    std::vector<variantDxfEntity> result;
+    for (auto& ent : entities) {
+        if (GetEntityType(ent) == type)
+            result.push_back(ent);
+    }
+    return result;
+}
+
+// 按图层过滤图元
+inline std::vector<variantDxfEntity> FilterEntitiesByLayer(
+    const std::map<std::string, stuLayer>& layers, const std::string& layerName)
+{
+    auto it = layers.find(layerName);
+    if (it != layers.end())
+        return it->second.entities;
+    return {};
+}
 
 // DXF 颜色索引映射
 class DxfColorMap
@@ -97,139 +225,5 @@ public:
         return closestIndex;
     }
 };
-
-// 图层信息
-struct stuLayer
-{
-    QString name;
-    QColor  color = Qt::white;
-    QString lineType = "BYLAYER";
-    int     lineWeight = -1;
-    bool    isVisible = true;
-    bool    isLocked = false;
-
-    // 该图层所有图元
-    std::vector<variantDxfEntity> entities;
-
-    // 获取该图层某种类型的图元数量
-    int GetEntityCount(EntityType type) const {
-        int count = 0;
-        for (auto& ent : entities) {
-            if (GetEntityType(ent) == type)
-                count++;
-        }
-        return count;
-    }
-};
-
-// 块定义
-struct stuBlock
-{
-    QString     name;           // 块名
-    Vertex3D    basePoint;      // 基点
-    int         flags = 0;      // 块标志
-
-    // 块内的所有图元
-    std::vector<variantDxfEntity> entities;
-};
-
-// 选中的图元
-struct stuSelectedEntity
-{
-    EntityType  type = EntityType::None;
-    QString     strLayer;               //所在图层
-    int         entityIndex = -1;       //所在图层中的索引
-    variantDxfEntity entity;            //图元本身
-
-    stuSelectedEntity() = default;
-};
-
-// 预览图元(用于绘制时的临时预览)
-struct stuPreviewEntity
-{
-    enum enumType
-    {
-        None = -1,
-        Point,
-        Line,
-        CenterRadiusCircle,
-        DiameterCircle,
-        CenterEndpointArc,
-        ThreePointsArc,
-        Polyline,
-    };
-
-    enumType type = None;
-    QString  strLayer;
-};
-
-// 文档整体结构
-struct DxfDocument
-{
-    // 头部变量
-    QString     version;            // DXF 版本
-    double      insUnits = 1.0;     // 单位 (1=毫米)
-    Vertex3D    extMin, extMax;     // 图形范围
-    double      ltscale = 1.0;      // 线型比例
-
-    
-    std::map<std::string, stuLayer> layers;     // 图层
-    std::map<std::string, stuBlock> blocks;     // 块定义
-
-    // 选中/预览状态
-    stuSelectedEntity  selectedEntity;
-    stuPreviewEntity   previewEntity;
-
-    // 编辑参数
-    double moveStep = 1.0;
-    double rotateStepRad = 0.0174533;   // 1度
-
-    // 获取所有图元
-    int GetTotalEntityCount() const {
-        int count = 0;
-        for (auto& [name, layer] : layers) {
-            count += (int)layer.entities.size();
-        }
-        return count;
-    }
-
-    // 清空所有数据
-    void Clear() {
-        version.clear();
-        insUnits = 1.0;
-        extMin = Vertex3D();
-        extMax = Vertex3D();
-        ltscale = 1.0;
-        layers.clear();
-        blocks.clear();
-        selectedEntity = stuSelectedEntity();
-        previewEntity = stuPreviewEntity();
-    }
-};
-
-
-// 便捷工具函数
-
-// 按类型过滤图元
-inline std::vector<variantDxfEntity> FilterEntitiesByType(
-    const std::vector<variantDxfEntity>& entities, EntityType type)
-{
-    std::vector<variantDxfEntity> result;
-    for (auto& ent : entities) {
-        if (GetEntityType(ent) == type)
-            result.push_back(ent);
-    }
-    return result;
-}
-
-// 按图层过滤图元
-inline std::vector<variantDxfEntity> FilterEntitiesByLayer(
-    const std::map<std::string, stuLayer>& layers, const std::string& layerName)
-{
-    auto it = layers.find(layerName);
-    if (it != layers.end())
-        return it->second.entities;
-    return {};
-}
 
 #endif // DXFSTRUCT_H

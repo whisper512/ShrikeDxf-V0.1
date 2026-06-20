@@ -256,33 +256,6 @@ std::vector<variantDxfEntity> CDxfData::GetEntities(const std::string& layerName
     return {};
 }
 
-// =========================================================================
-// 选中
-// =========================================================================
-
-void CDxfData::SetSelectedEntity(const stuSelectedEntity& sel)
-{
-}
-
-void CDxfData::ClearSelection()
-{
-}
-
-stuSelectedEntity& CDxfData::GetSelectedEntity()
-{
-    return m_document.selectedEntity;
-}
-
-const stuSelectedEntity& CDxfData::GetSelectedEntity() const
-{
-    return m_document.selectedEntity;
-}
-
-// =========================================================================
-// 预览
-// =========================================================================
-
-
 stuPreviewEntity& CDxfData::GetPreviewEntity()
 {
     return m_document.previewEntity;
@@ -291,34 +264,4 @@ stuPreviewEntity& CDxfData::GetPreviewEntity()
 const stuPreviewEntity& CDxfData::GetPreviewEntity() const
 {
     return m_document.previewEntity;
-}
-
-// =========================================================================
-// 编辑参数
-// =========================================================================
-
-void CDxfData::SetMoveStep(double step)
-{
-}
-
-double CDxfData::GetMoveStep() const
-{
-    return m_document.moveStep;
-}
-
-void CDxfData::SetRotateStepRad(double rad)
-{
-}
-
-double CDxfData::GetRotateStepRad() const
-{
-    return m_document.rotateStepRad;
-}
-
-// =========================================================================
-// 清空
-// =========================================================================
-
-void CDxfData::Clear()
-{
 }
