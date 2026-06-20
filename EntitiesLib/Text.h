@@ -19,9 +19,11 @@ struct EntityText
     int     alignH = 0;
     int     alignV = 0;
 
-    // 计算边界(场景坐标Y-down)
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 点到文字的距离
     double distanceTo(double px, double py) const;
+    // 平移
     void translate(double dx, double dy);
 
 };

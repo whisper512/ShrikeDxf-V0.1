@@ -27,7 +27,8 @@ public:
 
 private:
     // 将弧统一化为"逆时针从startAngle到endAngle的规范形式（s < e 且 sweep < 2π）
-    CanonicalArc canonicalArc() const;  // 获取规范化的弧
+    // 获取规范化的弧
+    CanonicalArc canonicalArc() const;
 
 };
 

@@ -21,12 +21,13 @@ struct EntityLWPolyline
 
     // 是否闭合
     bool isClosed() const { return (flags & 1) != 0; }
-
     // 顶点数量
     int  numVertices() const { return static_cast<int>(vecVertices.size()); }
-
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 计算点到多段线的距离
     double distanceTo(double px, double py) const;
+    // 平移
     void translate(double dx, double dy);
 
 };

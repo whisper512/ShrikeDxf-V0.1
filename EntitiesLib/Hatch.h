@@ -60,10 +60,11 @@ struct EntityHatch
     int                  loopCount = 0;  // (code 91)
     std::vector<HatchLoop> loops;        // 所有边界环
 
-
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 点到填充区域的最小距离
     double distanceTo(double px, double py) const;
-    // 在 Hatch.h 中，为所有 HatchEdge 类型添加平移（自由函数或成员，这里用自由函数）
+    // 平移
     inline void translate(HatchEdgeLine& e, double dx, double dy) {
         e.start.setX(e.start.x() + dx); e.start.setY(e.start.y() + dy);
         e.end.setX(e.end.x() + dx);     e.end.setY(e.end.y() + dy);
@@ -83,7 +84,7 @@ struct EntityHatch
         for (auto& p : e.fitPoints) { p.setX(p.x() + dx); p.setY(p.y() + dy); }
     }
 
-    // EntityHatch 自身的平移
+    // EntityHatch自身的平移
     void translate(double dx, double dy) {
         for (auto& loop : loops) {
             if (loop.isPolyline) {

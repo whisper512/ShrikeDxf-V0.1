@@ -6,9 +6,11 @@ struct EntitySolid
 {
     EntityProp prop;
     Vertex3D   corner[4];
-
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 点到hatch的距离
     double distanceTo(double px, double py) const;
+    // 平移
     void translate(double dx, double dy);
 
 };

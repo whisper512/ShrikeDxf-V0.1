@@ -19,8 +19,11 @@ struct EntityMText
     int     textDir = 1;
     int     lineSpaceStyle = 1;
 
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 距离
     double distanceTo(double px, double py) const;
+    // 平移
     void translate(double dx, double dy);
 
 };

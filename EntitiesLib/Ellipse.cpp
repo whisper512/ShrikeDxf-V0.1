@@ -20,8 +20,9 @@ QRectF EntityEllipse::boundingBox(double padding) const
     return EntUtil::boundingBoxFromPoints(pts, padding);
 }
 
-double EntityEllipse::distanceTo(double px, double py) const {
-    // 椭圆距离保持原有近似算法
+double EntityEllipse::distanceTo(double px, double py) const 
+{
+
     double majorLen = std::sqrt(
         majorAxisEndpoint.x() * majorAxisEndpoint.x() +
         majorAxisEndpoint.y() * majorAxisEndpoint.y());

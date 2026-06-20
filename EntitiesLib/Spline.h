@@ -18,9 +18,11 @@ struct EntitySpline
     std::vector<Vertex3D>    controlPoints;        //控制点
     std::vector<Vertex3D>    fitPoints;            //拟合点
 
-    
+    // 包围子
     QRectF boundingBox(double padding = 0.0) const;
+    // 点到曲线距离
     double distanceTo(double px, double py) const;
+    // 平移
     void translate(double dx, double dy);
 
 };

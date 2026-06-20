@@ -28,9 +28,11 @@ struct EntityPolyline
 
     // 是否闭合
     bool isClosed() const { return (flags & 1) != 0; }
-
+    // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 点到多段线距离
     double distanceTo(double px, double py) const;
+    // 平移
     void translate(double dx, double dy);
 
 };
