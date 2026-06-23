@@ -18,6 +18,8 @@ struct EntityArc
     bool       isCCW = true;      // 注意在实体弧中 isCCW 恒为 1（仅 hatch 边界用）
 
 public:
+    // 中心
+    QPointF centerPoint() const { return QPointF(center.x(), center.y()); }
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到弧的距离
@@ -28,6 +30,9 @@ public:
     void mirrorX();
     // Y镜像
     void mirrorY();
+    // 旋转
+    void rotate(double angle, const QPointF& center);
+
 
 
 private:

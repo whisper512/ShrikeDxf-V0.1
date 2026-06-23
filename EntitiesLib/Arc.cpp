@@ -89,13 +89,44 @@ void EntityArc::translate(double dx, double dy)
     center.setY(center.y() + dy);
 }
 
+
 void EntityArc::mirrorX()
 {
+    center.setY(-center.y());
+    startAngle = -startAngle;
+    endAngle = -endAngle;
+    isCCW = !isCCW;          // 镜像翻转弧线绕向
 }
+
 
 void EntityArc::mirrorY()
 {
+    center.setX(-center.x());
+    startAngle = M_PI - startAngle;
+    endAngle = M_PI - endAngle;
+    isCCW = !isCCW;          // 镜像翻转弧线绕向
 }
+
+
+void EntityArc::rotate(double angle, const QPointF& centerPt)
+{
+    const double cosA = std::cos(angle);
+    const double sinA = std::sin(angle);
+    const double cx = centerPt.x();
+    const double cy = centerPt.y();
+
+    // 旋转圆心
+    double dx = center.x() - cx;
+    double dy = center.y() - cy;
+    center.setX(cx + dx * cosA - dy * sinA);
+    center.setY(cy + dx * sinA + dy * cosA);
+
+    // 旋转起止角
+    startAngle += angle;
+    endAngle += angle;
+    // isCCW 不变（纯旋转不改变方向）
+}
+
 
 // 三点定弧
 bool ThreePointsToArc(QPointF p1, QPointF p2, QPointF p3,
