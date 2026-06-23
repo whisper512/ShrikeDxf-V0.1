@@ -33,3 +33,38 @@ void EntityLWPolyline::translate(double dx, double dy)
         v.point.setY(v.point.y() + dy);
     }
 }
+
+void EntityLWPolyline::mirrorX()
+{
+    for (auto& v : vecVertices) {
+        v.point.setY(-v.point.y());
+        v.bulge = -v.bulge;          // 圆弧方向反转
+    }
+}
+
+void EntityLWPolyline::mirrorY()
+{
+    for (auto& v : vecVertices) {
+        v.point.setX(-v.point.x());
+        v.bulge = -v.bulge;          // 圆弧方向反转
+    }
+}
+
+
+void EntityLWPolyline::rotate(double angle, const QPointF& center)
+{
+    const double cosA = std::cos(angle);
+    const double sinA = std::sin(angle);
+    const double cx = center.x();
+    const double cy = center.y();
+
+    for (auto& v : vecVertices) {
+        // 平移到原点
+        double dx = v.point.x() - cx;
+        double dy = v.point.y() - cy;
+        // 旋转 + 平移回去
+        v.point.setX(cx + dx * cosA - dy * sinA);
+        v.point.setY(cy + dx * sinA + dy * cosA);
+        // bulge 保持不变（纯旋转不改变弧的方向）
+    }
+}

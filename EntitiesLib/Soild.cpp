@@ -39,3 +39,33 @@ void EntitySolid::translate(double dx, double dy)
         corner[i].setY(corner[i].y() + dy);
     }
 }
+
+
+void EntitySolid::mirrorX()
+{
+    for (int i = 0; i < 4; ++i) {
+        corner[i].setY(-corner[i].y());
+    }
+}
+
+void EntitySolid::mirrorY()
+{
+    for (int i = 0; i < 4; ++i) {
+        corner[i].setX(-corner[i].x());
+    }
+}
+
+void EntitySolid::rotate(double angle, const QPointF& center)
+{
+    const double cosA = std::cos(angle);
+    const double sinA = std::sin(angle);
+    const double cx = center.x();
+    const double cy = center.y();
+
+    for (int i = 0; i < 4; ++i) {
+        double dx = corner[i].x() - cx;
+        double dy = corner[i].y() - cy;
+        corner[i].setX(cx + dx * cosA - dy * sinA);
+        corner[i].setY(cy + dx * sinA + dy * cosA);
+    }
+}

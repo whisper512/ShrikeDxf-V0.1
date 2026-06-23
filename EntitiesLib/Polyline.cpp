@@ -1,4 +1,4 @@
-#include "Polyline.h"
+﻿#include "Polyline.h"
 
 QRectF EntityPolyline::boundingBox(double padding) const
 {
@@ -30,5 +30,41 @@ void  EntityPolyline::translate(double dx, double dy)
     for (auto& v : vecVertices) {
         v.point.setX(v.point.x() + dx);
         v.point.setY(v.point.y() + dy);
+    }
+}
+
+
+void EntityPolyline::mirrorX()
+{
+    for (auto& v : vecVertices) {
+        v.point.setY(-v.point.y());
+        v.bulge = -v.bulge;        // 弧方向反转
+        v.tangentDir = -v.tangentDir;   // 切线角取反
+    }
+}
+
+void EntityPolyline::mirrorY()
+{
+    for (auto& v : vecVertices) {
+        v.point.setX(-v.point.x());
+        v.bulge = -v.bulge;        // 弧方向反转
+        v.tangentDir = M_PI - v.tangentDir;  // 关于Y轴镜像
+    }
+}
+
+void EntityPolyline::rotate(double angle, const QPointF& center)
+{
+    const double cosA = std::cos(angle);
+    const double sinA = std::sin(angle);
+    const double cx = center.x();
+    const double cy = center.y();
+
+    for (auto& v : vecVertices) {
+        double dx = v.point.x() - cx;
+        double dy = v.point.y() - cy;
+        v.point.setX(cx + dx * cosA - dy * sinA);
+        v.point.setY(cy + dx * sinA + dy * cosA);
+        // bulge 不变（纯旋转不改变弧方向）
+        v.tangentDir += angle;          // 切线方向随旋转累加
     }
 }

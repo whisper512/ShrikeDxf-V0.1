@@ -58,3 +58,49 @@ void EntityText::translate(double dx, double dy)
         alignPoint.setY(alignPoint.y() + dy);
     }
 }
+
+
+void EntityText::mirrorX()
+{
+    insertPoint.setY(-insertPoint.y());
+    if (!alignPoint.isNull())
+        alignPoint.setY(-alignPoint.y());
+
+    rotation = -rotation;       // 文字倾角取反
+    obliqueAngle = -obliqueAngle;   // 斜体方向反转
+}
+
+void EntityText::mirrorY()
+{
+    insertPoint.setX(-insertPoint.x());
+    if (!alignPoint.isNull())
+        alignPoint.setX(-alignPoint.x());
+
+    rotation = M_PI - rotation; // 文字倾角关于 Y 镜像
+    obliqueAngle = -obliqueAngle;   // 斜体方向反转
+}
+
+void EntityText::rotate(double angle, const QPointF& center)
+{
+    const double cosA = std::cos(angle);
+    const double sinA = std::sin(angle);
+    const double cx = center.x();
+    const double cy = center.y();
+
+    // 旋转插入点
+    double dx = insertPoint.x() - cx;
+    double dy = insertPoint.y() - cy;
+    insertPoint.setX(cx + dx * cosA - dy * sinA);
+    insertPoint.setY(cy + dx * sinA + dy * cosA);
+
+    // 旋转对齐点（如果存在）
+    if (!alignPoint.isNull()) {
+        dx = alignPoint.x() - cx;
+        dy = alignPoint.y() - cy;
+        alignPoint.setX(cx + dx * cosA - dy * sinA);
+        alignPoint.setY(cy + dx * sinA + dy * cosA);
+    }
+
+    rotation += angle;
+    // obliqueAngle 不变：纯旋转不改变文字自身斜体方向
+}
