@@ -60,6 +60,8 @@ struct EntityHatch
     int                  loopCount = 0;  // (code 91)
     std::vector<HatchLoop> loops;        // 所有边界环
 
+    // 中心
+    QPointF centerPoint() const;
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到填充区域的最小距离

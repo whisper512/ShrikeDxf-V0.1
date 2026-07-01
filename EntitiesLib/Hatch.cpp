@@ -1,5 +1,77 @@
 ﻿#include "Hatch.h"
 
+QPointF EntityHatch::centerPoint() const
+{
+    if (loops.empty())
+        return QPointF(0, 0);
+
+    double minX = 0, minY = 0, maxX = 0, maxY = 0;
+    bool first = true;
+
+    // 辅助：更新包围盒
+    auto updateBB = [&](double x, double y) {
+        if (first) {
+            minX = maxX = x;
+            minY = maxY = y;
+            first = false;
+        }
+        else {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+        }
+        };
+
+    for (const auto& loop : loops)
+    {
+        if (loop.isPolyline)
+        {
+            for (const auto& p : loop.polylinePath)
+                updateBB(p.x(), p.y());
+        }
+        else
+        {
+            for (const auto& edge : loop.edges)
+            {
+                std::visit([&](const auto& e) {
+                    using T = std::decay_t<decltype(e)>;
+
+                    if constexpr (std::is_same_v<T, HatchEdgeLine>)
+                    {
+                        updateBB(e.start.x(), e.start.y());
+                        updateBB(e.end.x(), e.end.y());
+                    }
+                    else if constexpr (std::is_same_v<T, HatchEdgeArc>)
+                    {
+                        // 用圆心 ± 半径近似包围盒
+                        updateBB(e.center.x() - e.radius, e.center.y() - e.radius);
+                        updateBB(e.center.x() + e.radius, e.center.y() + e.radius);
+                    }
+                    else if constexpr (std::is_same_v<T, HatchEdgeEllipse>)
+                    {
+                        updateBB(e.center.x(), e.center.y());
+                        updateBB(e.majorAxisEndpoint.x(), e.majorAxisEndpoint.y());
+                    }
+                    else if constexpr (std::is_same_v<T, HatchEdgeSpline>)
+                    {
+                        for (const auto& p : e.controlPoints)
+                            updateBB(p.x(), p.y());
+                        for (const auto& p : e.fitPoints)
+                            updateBB(p.x(), p.y());
+                    }
+                    }, edge);
+            }
+        }
+    }
+
+    if (!first)
+        return QPointF((minX + maxX) / 2.0, (minY + maxY) / 2.0);
+
+    return QPointF(0, 0);
+}
+
+
 QRectF EntityHatch::boundingBox(double padding) const
 {
     // 块引用没有固定大小,返回一个点

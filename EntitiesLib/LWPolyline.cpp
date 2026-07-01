@@ -10,6 +10,29 @@ QRectF EntityLWPolyline::boundingBox(double padding ) const
     return EntUtil::boundingBoxFromPoints(pts, padding);
 }
 
+QPointF EntityLWPolyline::centerPoint() const
+{
+    if (vecVertices.empty())
+        return QPointF(0, 0);
+
+    double minX = vecVertices[0].point.x();
+    double minY = vecVertices[0].point.y();
+    double maxX = minX, maxY = minY;
+
+    for (const auto& v : vecVertices)
+    {
+        double x = v.point.x();
+        double y = v.point.y();
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+    }
+
+    return QPointF((minX + maxX) / 2.0, (minY + maxY) / 2.0);
+}
+
+
 double EntityLWPolyline::distanceTo(double px, double py) const {
     if (vecVertices.empty()) return -1;
     double minDist = 1e100;

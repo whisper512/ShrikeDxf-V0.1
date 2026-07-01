@@ -1,5 +1,12 @@
 ﻿#include "Spline.h"
 
+QPointF EntitySpline::centerPoint() const
+{
+    QRectF bb = boundingBox();
+    return bb.center();
+}
+
+
 QRectF EntitySpline::boundingBox(double padding ) const
 {
     std::vector<QPointF> pts;

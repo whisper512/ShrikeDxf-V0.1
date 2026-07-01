@@ -9,6 +9,8 @@ struct EntityPoint
     Vertex3D   point;
     double     angle = 0.0;
 
+    // 中心
+    QPointF centerPoint() const { return QPointF(point.x(), point.y()); }
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到点距离

@@ -1,5 +1,11 @@
 ﻿#include "Insert.h"
 
+QPointF EntityInsert::centerPoint() const
+{
+    return QPointF(insertPoint.x(), insertPoint.y());
+}
+
+
 QRectF EntityInsert::boundingBox(double padding) const
 {
     std::vector<QPointF> pts = { QPointF(insertPoint.x(), insertPoint.y()) };

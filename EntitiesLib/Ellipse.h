@@ -11,6 +11,8 @@ struct EntityEllipse
     double     startParam = 0.0;  // 弧度
     double     endParam = 0.0;    // 弧度
 
+    // 中心
+    QPointF centerPoint() { return QPointF(center.x(), center.y()); }
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到椭圆的距离

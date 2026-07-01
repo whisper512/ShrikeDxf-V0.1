@@ -1,5 +1,12 @@
 ﻿#include "Text.h"
 
+QPointF EntityText::centerPoint() const
+{
+    QRectF bb = boundingBox();
+    return bb.center();
+}
+
+
 // 计算边界(场景坐标Y-down)
 QRectF EntityText::boundingBox(double padding ) const
 {

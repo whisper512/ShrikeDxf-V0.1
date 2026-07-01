@@ -7,6 +7,8 @@ struct EntityLine
     EntityProp prop;
     Vertex3D   startPoint, endPoint;
 
+    // 中心
+    QPointF center() { return QPointF((startPoint.x() + endPoint.x()) / 2.0, (startPoint.y() + endPoint.y()) / 2.0); }
     // 计算长度
     double length() const;
     // 计算角度

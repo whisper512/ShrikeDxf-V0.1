@@ -19,6 +19,8 @@ struct EntityText
     int     alignH = 0;
     int     alignV = 0;
 
+    // 中心点
+    QPointF centerPoint() const;
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到文字的距离

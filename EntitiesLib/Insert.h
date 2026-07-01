@@ -12,6 +12,8 @@ struct EntityInsert
     int     colCount = 1, rowCount = 1;
     double  colSpacing = 0.0, rowSpacing = 0.0;
 
+    // 中心
+    QPointF centerPoint() const;
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到Insert距离

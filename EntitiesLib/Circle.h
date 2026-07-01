@@ -8,6 +8,8 @@ struct EntityCircle
     Vertex3D   center;
     double     radius = 0.0;
 
+    // 中心
+    QPointF centerPoint() { return QPointF(center.x(), center.y()); }
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到圆的距离

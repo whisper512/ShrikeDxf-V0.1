@@ -19,6 +19,8 @@ struct EntityMText
     int     textDir = 1;
     int     lineSpaceStyle = 1;
 
+    // 中心点
+    QPointF centerPoint() const;
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 距离

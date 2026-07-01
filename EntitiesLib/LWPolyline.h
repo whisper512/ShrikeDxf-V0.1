@@ -25,6 +25,8 @@ struct EntityLWPolyline
     int  numVertices() const { return static_cast<int>(vecVertices.size()); }
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
+    // 中心点
+    QPointF centerPoint() const;
     // 计算点到多段线的距离
     double distanceTo(double px, double py) const;
     // 平移

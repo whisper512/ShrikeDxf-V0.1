@@ -1,5 +1,11 @@
 ﻿#include "Soild.h"
 
+QPointF EntitySolid::centerPoint() const
+{
+    QRectF bb = boundingBox();
+    return bb.center();
+}
+
 QRectF EntitySolid::boundingBox(double padding ) const
 {
     double minX = 1e100, minY = 1e100, maxX = -1e100, maxY = -1e100;

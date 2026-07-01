@@ -19,7 +19,7 @@ struct EntityArc
 
 public:
     // 中心
-    QPointF centerPoint() const { return QPointF(center.x(), center.y()); }
+    QPointF centerPoint() { return QPointF(center.x(), center.y()); }
     // 包围盒
     QRectF boundingBox(double padding = 0.0) const;
     // 点到弧的距离
