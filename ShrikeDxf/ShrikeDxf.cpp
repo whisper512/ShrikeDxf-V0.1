@@ -160,6 +160,9 @@ void ShrikeDxf::ConnectSignalsAndSlots()
 				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, m_pDxfDataManger, &CDxfManager::handleMousePos);
 				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftCLick, m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonClicked);
 				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewRightClick, m_pDxfDataManger, &CDxfManager::handleMouseRightButtonClicked);
+				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftPressed,m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonPressed);
+				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftReleased,m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonReleased);
+
 				connect(m_pDxfDataManger, &CDxfManager::signalMouseStatusChanged, m_pGraphicsView, &CGraphicsView::handleMouseStatusChanged);
 				connect(m_pGraphicsView, &CGraphicsView::signalEndDrawingPreview, m_pDxfDataManger, &CDxfManager::handleEndDrawingPreview);
 			}

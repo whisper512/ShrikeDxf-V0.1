@@ -52,16 +52,23 @@ void CDxfInteractionDispatcher::SetMouseStatus(enumMouseStateInView state)
 
 void CDxfInteractionDispatcher::OnMouseMove(QPointF scenePos)
 {
+    // 拉伸模式优先
+    //if (m_pEditCtrl && m_pEditCtrl->IsStretching())
+    //{
+    //    m_pEditCtrl->UpdateStretch(scenePos);
+    //    return;
+    //}
+
     if (m_eState == enumMouseStateInView::enumMouseState_None)
     {
-
+        // 可以在这里加 hover 夹点高亮
     }
     else
     {
-        // 绘制模式交给绘制控制器
         m_pDrawCtrl->OnMouseMove(scenePos);
     }
 }
+
 
 void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
 {
@@ -88,6 +95,33 @@ void CDxfInteractionDispatcher::OnRightClick(QPointF scenePos)
 
     // 如果以后编辑模式需要右键菜单，可在此扩展
 }
+
+void CDxfInteractionDispatcher::OnLeftPress(QPointF scenePos)
+{
+    //// 仅在光标模式（非工具模式）且编辑控制器存在时检测夹点
+    //if (m_eState != enumMouseStateInView::enumMouseState_None)
+    //    return;
+    //if (!m_pEditCtrl)
+    //    return;
+
+    //StretchGrip grip = m_pEditCtrl->HitTestGrip(scenePos);
+    //if (grip != StretchGrip::None)
+    //{
+    //    m_pEditCtrl->StartStretch(grip);
+    //}
+}
+
+void CDxfInteractionDispatcher::OnLeftRelease(QPointF scenePos)
+{
+    //Q_UNUSED(scenePos);
+
+    //if (m_pEditCtrl && m_pEditCtrl->IsStretching())
+    //{
+    //    m_pEditCtrl->EndStretch();
+    //}
+}
+
+
 
 bool CDxfInteractionDispatcher::IsDrawState(enumMouseStateInView state) const
 {

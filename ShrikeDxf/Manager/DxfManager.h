@@ -161,6 +161,11 @@ signals:
 	 void handleMouseLeftButtonClicked(QPointF pos);
 	 // 鼠标右键点击
      void handleMouseRightButtonClicked(QPointF pos);
+	 // 左键按下
+	 void handleMouseLeftButtonPressed(QPointF pos);
+	 // 左键释放
+	 void handleMouseLeftButtonReleased(QPointF pos);
+
 	 // 选中图元
 	 void handleEntitySelected(const QString& strLayer, int entityIndex);
 	 // 取消选中图元

@@ -380,6 +380,23 @@ void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
+void CDxfManager::handleMouseLeftButtonPressed(QPointF pos)
+{
+    if (m_pInteractionDispatcher)
+    {
+        m_pInteractionDispatcher->OnLeftPress(pos);
+    }
+}
+
+void CDxfManager::handleMouseLeftButtonReleased(QPointF pos)
+{
+    if (m_pInteractionDispatcher)
+    {
+        m_pInteractionDispatcher->OnLeftRelease(pos);
+    }
+}
+
+
 void CDxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
 {
     SelectEntity(strLayer, entityIndex);

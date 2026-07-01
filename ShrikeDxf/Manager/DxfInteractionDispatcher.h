@@ -25,11 +25,18 @@ public:
     void OnMouseMove(QPointF scenePos);
     void OnLeftClick(QPointF scenePos);
     void OnRightClick(QPointF scenePos);
+    void OnLeftPress(QPointF scenePos);
+    void OnLeftRelease(QPointF scenePos);
+
 
 private:
+    // 当前鼠标状态
     enumMouseStateInView m_eState = enumMouseStateInView::enumMouseState_None;
+    // 绘制控制器
     CDxfDrawController* m_pDrawCtrl = nullptr;
+    // 编辑控制器
     CDxfEditController* m_pEditCtrl = nullptr;
+    // 选择控制器
     CSelectionController* m_pSelectionCtrl = nullptr;
 
 private:

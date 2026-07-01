@@ -29,3 +29,16 @@ enum class enumMouseStateInView
     enumMouseState_Scale,     // 缩放
 };
 
+// 夹点枚举（boundingBox 四角 + 四边中点）
+enum class StretchGripInView
+{
+    None,
+    TopLeft,
+    TopCenter,
+    TopRight,
+    MiddleLeft,
+    MiddleRight,
+    BottomLeft,
+    BottomCenter,
+    BottomRight
+};

@@ -105,6 +105,10 @@ signals:
 	void signalGraphicsViewLeftCLick(QPointF pos);
 	// 鼠标右键点击
 	void signalGraphicsViewRightClick(QPointF pos);
+	// 左键按下（用于拉伸开始）
+	void signalGraphicsViewLeftPressed(QPointF pos);
+	// 左键释放（用于拉伸结束）
+	void signalGraphicsViewLeftReleased(QPointF pos);
 	// 结束预览preview信号
 	void signalEndDrawingPreview();
 	// 删除图元
