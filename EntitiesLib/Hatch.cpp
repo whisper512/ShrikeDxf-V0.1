@@ -74,9 +74,61 @@ QPointF EntityHatch::centerPoint() const
 
 QRectF EntityHatch::boundingBox(double padding) const
 {
-    // 块引用没有固定大小,返回一个点
-    return QRectF(0, 0, 0, 0);
+    if (loops.empty())
+        return QRectF(0, 0, 0, 0);
+
+    double minX = 0, minY = 0, maxX = 0, maxY = 0;
+    bool first = true;
+
+    auto updateBB = [&](double x, double y) {
+        if (first) {
+            minX = maxX = x;
+            minY = maxY = y;
+            first = false;
+        }
+        else {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+        }
+        };
+
+    for (const auto& loop : loops) {
+        if (loop.isPolyline) {
+            for (const auto& p : loop.polylinePath)
+                updateBB(p.x(), p.y());
+        }
+        else {
+            for (const auto& edge : loop.edges) {
+                std::visit([&](const auto& e) {
+                    using T = std::decay_t<decltype(e)>;
+                    if constexpr (std::is_same_v<T, HatchEdgeLine>) {
+                        updateBB(e.start.x(), e.start.y());
+                        updateBB(e.end.x(), e.end.y());
+                    }
+                    else if constexpr (std::is_same_v<T, HatchEdgeArc>) {
+                        updateBB(e.center.x() - e.radius, e.center.y() - e.radius);
+                        updateBB(e.center.x() + e.radius, e.center.y() + e.radius);
+                    }
+                    else if constexpr (std::is_same_v<T, HatchEdgeEllipse>) {
+                        updateBB(e.center.x(), e.center.y());
+                        updateBB(e.majorAxisEndpoint.x(), e.majorAxisEndpoint.y());
+                    }
+                    else if constexpr (std::is_same_v<T, HatchEdgeSpline>) {
+                        for (const auto& p : e.controlPoints) updateBB(p.x(), p.y());
+                        for (const auto& p : e.fitPoints)     updateBB(p.x(), p.y());
+                    }
+                    }, edge);
+            }
+        }
+    }
+
+    if (first) return QRectF(0, 0, 0, 0);
+    return QRectF(minX - padding, minY - padding,
+        maxX - minX + 2 * padding, maxY - minY + 2 * padding);
 }
+
 
 double EntityHatch::distanceTo(double px, double py) const
 {
@@ -265,3 +317,87 @@ void EntityHatch::rotate(double ang, const QPointF& center)
     // 图案填充角度
     angle += ang;
 }
+
+// ─── 边级别拉伸辅助 ────────────────────────────────
+void EntityHatch::stretchEdge(HatchEdgeLine& e, const QPointF& anchor, double scale)
+{
+    e.start.setX(anchor.x() + (e.start.x() - anchor.x()) * scale);
+    e.start.setY(anchor.y() + (e.start.y() - anchor.y()) * scale);
+    e.end.setX(anchor.x() + (e.end.x() - anchor.x()) * scale);
+    e.end.setY(anchor.y() + (e.end.y() - anchor.y()) * scale);
+}
+
+void EntityHatch::stretchEdge(HatchEdgeArc& e, const QPointF& anchor, double scale)
+{
+    e.center.setX(anchor.x() + (e.center.x() - anchor.x()) * scale);
+    e.center.setY(anchor.y() + (e.center.y() - anchor.y()) * scale);
+    e.radius *= scale;
+}
+
+void EntityHatch::stretchEdge(HatchEdgeEllipse& e, const QPointF& anchor, double scale)
+{
+    e.center.setX(anchor.x() + (e.center.x() - anchor.x()) * scale);
+    e.center.setY(anchor.y() + (e.center.y() - anchor.y()) * scale);
+    e.majorAxisEndpoint.setX(e.majorAxisEndpoint.x() * scale);   // 向量，直接乘
+    e.majorAxisEndpoint.setY(e.majorAxisEndpoint.y() * scale);
+}
+
+void EntityHatch::stretchEdge(HatchEdgeSpline& e, const QPointF& anchor, double scale)
+{
+    for (auto& p : e.controlPoints) {
+        p.setX(anchor.x() + (p.x() - anchor.x()) * scale);
+        p.setY(anchor.y() + (p.y() - anchor.y()) * scale);
+    }
+    for (auto& p : e.fitPoints) {
+        p.setX(anchor.x() + (p.x() - anchor.x()) * scale);
+        p.setY(anchor.y() + (p.y() - anchor.y()) * scale);
+    }
+}
+
+// ─── 主 stretch ────────────────────────────────────
+void EntityHatch::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double scale = newDiag / oldDiag;
+
+    for (auto& loop : loops) {
+        if (loop.isPolyline) {
+            for (auto& p : loop.polylinePath) {
+                p.setX(anchor.x() + (p.x() - anchor.x()) * scale);
+                p.setY(anchor.y() + (p.y() - anchor.y()) * scale);
+            }
+        }
+        else {
+            for (auto& edge : loop.edges) {
+                std::visit([&](auto& e) { stretchEdge(e, anchor, scale); }, edge);
+            }
+        }
+    }
+}
+

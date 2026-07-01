@@ -75,3 +75,40 @@ void EntitySolid::rotate(double angle, const QPointF& center)
         corner[i].setY(cy + dx * sinA + dy * cosA);
     }
 }
+
+void EntitySolid::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double s = newDiag / oldDiag;
+
+    for (int i = 0; i < 4; ++i) {
+        corner[i].setX(anchor.x() + (corner[i].x() - anchor.x()) * s);
+        corner[i].setY(anchor.y() + (corner[i].y() - anchor.y()) * s);
+    }
+}

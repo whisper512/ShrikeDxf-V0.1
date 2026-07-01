@@ -91,3 +91,40 @@ void EntityLWPolyline::rotate(double angle, const QPointF& center)
         // bulge 保持不变（纯旋转不改变弧的方向）
     }
 }
+
+void EntityLWPolyline::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double s = newDiag / oldDiag;
+
+    for (auto& v : vecVertices) {
+        v.point.setX(anchor.x() + (v.point.x() - anchor.x()) * s);
+        v.point.setY(anchor.y() + (v.point.y() - anchor.y()) * s);
+    }
+}

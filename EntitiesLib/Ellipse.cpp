@@ -110,3 +110,45 @@ void EntityEllipse::rotate(double angle, const QPointF& rotCenter)
     endParam += angle;
     normalizeAngles(startParam, endParam);
 }
+
+void EntityEllipse::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double scale = newDiag / oldDiag;
+
+    // 中心等比偏移
+    center.setX(anchor.x() + (center.x() - anchor.x()) * scale);
+    center.setY(anchor.y() + (center.y() - anchor.y()) * scale);
+
+    // 主轴向量等比缩放（向量，直接乘）
+    majorAxisEndpoint.setX(majorAxisEndpoint.x() * scale);
+    majorAxisEndpoint.setY(majorAxisEndpoint.y() * scale);
+
+    // ratio 不变——均匀缩放保持形状
+}

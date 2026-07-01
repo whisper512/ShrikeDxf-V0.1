@@ -111,3 +111,47 @@ void EntityText::rotate(double angle, const QPointF& center)
     rotation += angle;
     // obliqueAngle 不变：纯旋转不改变文字自身斜体方向
 }
+
+void EntityText::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double s = newDiag / oldDiag;
+
+    insertPoint.setX(anchor.x() + (insertPoint.x() - anchor.x()) * s);
+    insertPoint.setY(anchor.y() + (insertPoint.y() - anchor.y()) * s);
+
+    if (!alignPoint.isNull()) {
+        alignPoint.setX(anchor.x() + (alignPoint.x() - anchor.x()) * s);
+        alignPoint.setY(anchor.y() + (alignPoint.y() - anchor.y()) * s);
+    }
+
+    height *= s;
+    // rotation / widthFactor / obliqueAngle / textGen / alignH / alignV 不变
+}
+

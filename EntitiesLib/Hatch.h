@@ -79,5 +79,12 @@ struct EntityHatch
     void mirrorY();
     // 旋转
     void rotate(double angle, const QPointF& center);
+    // 拉伸 — 四角均匀缩放
+    void stretch(StretchGrip grip, const QPointF& newPos);
+    // 辅助:单条边拉伸
+    static void stretchEdge(HatchEdgeLine& e, const QPointF& anchor, double scale);
+    static void stretchEdge(HatchEdgeArc& e, const QPointF& anchor, double scale);
+    static void stretchEdge(HatchEdgeEllipse& e, const QPointF& anchor, double scale);
+    static void stretchEdge(HatchEdgeSpline& e, const QPointF& anchor, double scale);
 
 };

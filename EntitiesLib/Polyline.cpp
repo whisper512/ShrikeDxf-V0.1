@@ -90,3 +90,49 @@ void EntityPolyline::rotate(double angle, const QPointF& center)
         v.tangentDir += angle;          // 切线方向随旋转累加
     }
 }
+
+void EntityPolyline::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double s = newDiag / oldDiag;
+
+    for (auto& v : vecVertices) {
+        v.point.setX(anchor.x() + (v.point.x() - anchor.x()) * s);
+        v.point.setY(anchor.y() + (v.point.y() - anchor.y()) * s);
+
+        // 宽度等比缩放
+        v.startWidth *= s;
+        v.endWidth *= s;
+    }
+
+    // 默认宽度也等比缩放
+    defStartWidth *= s;
+    defEndWidth *= s;
+    // bulge / tangentDir / flags 不变
+}

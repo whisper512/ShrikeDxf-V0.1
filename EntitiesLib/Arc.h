@@ -32,6 +32,8 @@ public:
     void mirrorY();
     // 旋转
     void rotate(double angle, const QPointF& center);
+    // 拉伸包围框(四角缩放 / 圆心平移)
+    void stretch(StretchGrip grip, const QPointF& newPos);
 
 
 

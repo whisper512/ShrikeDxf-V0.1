@@ -99,3 +99,56 @@ void EntitySpline::rotate(double angle, const QPointF& center)
     rotateVec(tgStart);
     rotateVec(tgEnd);
 }
+
+void EntitySpline::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double s = newDiag / oldDiag;
+
+    // 缩放控制点
+    for (auto& p : controlPoints) {
+        p.setX(anchor.x() + (p.x() - anchor.x()) * s);
+        p.setY(anchor.y() + (p.y() - anchor.y()) * s);
+    }
+    // 缩合拟合点
+    for (auto& p : fitPoints) {
+        p.setX(anchor.x() + (p.x() - anchor.x()) * s);
+        p.setY(anchor.y() + (p.y() - anchor.y()) * s);
+    }
+
+    // 方向向量缩放
+    normalVec.setX(normalVec.x() * s);
+    normalVec.setY(normalVec.y() * s);
+    tgStart.setX(tgStart.x() * s);
+    tgStart.setY(tgStart.y() * s);
+    tgEnd.setX(tgEnd.x() * s);
+    tgEnd.setY(tgEnd.y() * s);
+
+    // knots / weights / degree / flags / tolerances 不变
+}

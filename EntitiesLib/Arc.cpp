@@ -127,6 +127,49 @@ void EntityArc::rotate(double angle, const QPointF& centerPt)
     // isCCW 不变（纯旋转不改变方向）
 }
 
+// 拉伸（仅四角均匀缩放）
+void EntityArc::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    if (grip == StretchGrip::None)
+        return;
+
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double scale = newDiag / oldDiag;
+
+    center.setX(anchor.x() + (center.x() - anchor.x()) * scale);
+    center.setY(anchor.y() + (center.y() - anchor.y()) * scale);
+
+    radius *= scale;
+}
+
+
+
 
 // 三点定弧
 bool ThreePointsToArc(QPointF p1, QPointF p2, QPointF p3,

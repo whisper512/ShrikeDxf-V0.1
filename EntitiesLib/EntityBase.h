@@ -55,6 +55,16 @@ enum class EntityType : int
     Hatch = 12,
 };
 
+// 拉伸控制点类型
+enum class StretchGrip 
+{
+    None = -1,
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight,
+};
+
 struct Vertex3D
 {
     Vertex3D() = default;

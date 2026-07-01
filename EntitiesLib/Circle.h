@@ -22,5 +22,7 @@ struct EntityCircle
     void mirrorY();
     // 旋转
     void rotate(double angle, const QPointF& center) {};
+    // 拉伸 — 四角均匀缩放
+    void stretch(StretchGrip grip, const QPointF& newPos);
     
 };

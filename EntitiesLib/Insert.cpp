@@ -59,3 +59,45 @@ void EntityInsert::rotate(double angle, const QPointF& center)
     rotation += angle;
     // 缩放和阵列间距不变
 }
+
+void EntityInsert::stretch(StretchGrip grip, const QPointF& newPos)
+{
+    QRectF bb = boundingBox();
+    QPointF anchor, oldCorner;
+
+    switch (grip) {
+    case StretchGrip::TopRight:
+        anchor = bb.bottomLeft();
+        oldCorner = bb.topRight();
+        break;
+    case StretchGrip::TopLeft:
+        anchor = bb.bottomRight();
+        oldCorner = bb.topLeft();
+        break;
+    case StretchGrip::BottomRight:
+        anchor = bb.topLeft();
+        oldCorner = bb.bottomRight();
+        break;
+    case StretchGrip::BottomLeft:
+        anchor = bb.topRight();
+        oldCorner = bb.bottomLeft();
+        break;
+    default: return;
+    }
+
+    double oldDiag = QLineF(anchor, oldCorner).length();
+    double newDiag = QLineF(anchor, newPos).length();
+    if (oldDiag < 1e-9) return;
+
+    double s = newDiag / oldDiag;
+
+    // 插入点相对锚点缩放
+    insertPoint.setX(anchor.x() + (insertPoint.x() - anchor.x()) * s);
+    insertPoint.setY(anchor.y() + (insertPoint.y() - anchor.y()) * s);
+
+    // 块均匀缩放
+    xScale *= s;
+    yScale *= s;
+    // rotation 不变，col/row 不变
+}
+
