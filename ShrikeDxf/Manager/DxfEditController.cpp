@@ -6,9 +6,6 @@
 #include <QLineF>
 #include <cmath>
 
-// ═══════════════════════════════════════════
-// 构造 / 析构
-// ═══════════════════════════════════════════
 
 CDxfEditController::CDxfEditController(CDxfData* pData, CDxfGraphicsScene* pScene,
     CSelectionController* pSelection, QObject* parent)
@@ -23,9 +20,6 @@ CDxfEditController::~CDxfEditController()
 {
 }
 
-// ═══════════════════════════════════════════
-// 选中状态同步
-// ═══════════════════════════════════════════
 
 void CDxfEditController::SetSelectedEntity(const QString& strLayer, int entityIndex)
 {
@@ -44,9 +38,6 @@ void CDxfEditController::ClearSelection()
     emit signalEntityDeselected();
 }
 
-// ═══════════════════════════════════════════
-// 夹点命中测试
-// ═══════════════════════════════════════════
 
 StretchGripInView CDxfEditController::HitTestGrip(QPointF scenePos) const
 {
@@ -77,9 +68,6 @@ StretchGripInView CDxfEditController::HitTestGrip(QPointF scenePos) const
     return GripFromPoint(scenePos, bb, kGripHitTol);
 }
 
-// ═══════════════════════════════════════════
-// 拉伸：开始
-// ═══════════════════════════════════════════
 
 void CDxfEditController::StartStretch(StretchGripInView grip)
 {
@@ -92,9 +80,6 @@ void CDxfEditController::StartStretch(StretchGripInView grip)
     m_eCurrentGrip = grip;
 }
 
-// ═══════════════════════════════════════════
-// 拉伸：更新
-// ═══════════════════════════════════════════
 
 void CDxfEditController::UpdateStretch(QPointF newPos)
 {
@@ -124,9 +109,6 @@ void CDxfEditController::UpdateStretch(QPointF newPos)
     RefreshSceneWithGrips();
 }
 
-// ═══════════════════════════════════════════
-// 拉伸：结束
-// ═══════════════════════════════════════════
 
 void CDxfEditController::EndStretch()
 {
@@ -139,9 +121,6 @@ void CDxfEditController::EndStretch()
     emit signalStretchFinished();
 }
 
-// ═══════════════════════════════════════════
-// 内部：刷新场景 + 夹点显示
-// ═══════════════════════════════════════════
 
 void CDxfEditController::RefreshSceneWithGrips()
 {
@@ -171,9 +150,6 @@ void CDxfEditController::RefreshSceneWithGrips()
         m_pScene->ShowGrips(bb);
 }
 
-// ═══════════════════════════════════════════
-// 内部静态：点 → 九宫格夹点
-// ═══════════════════════════════════════════
 
 StretchGripInView CDxfEditController::GripFromPoint(QPointF pt, const QRectF& bb, double tol)
 {
