@@ -5,6 +5,8 @@
 #include <QtMath>
 #include <algorithm>
 
+#include "../EntitiesLib/EntityBase.h"
+
 enum class enumMouseStateInView
 {
     enumMouseState_None = -1,
@@ -29,16 +31,18 @@ enum class enumMouseStateInView
     enumMouseState_Scale,     // 缩放
 };
 
-// 夹点枚举（boundingBox 四角 + 四边中点）
+// 夹点枚举（boundingBox四角）
 enum class StretchGripInView
 {
-    None,
+    None = -1,
     TopLeft,
-    TopCenter,
     TopRight,
-    MiddleLeft,
-    MiddleRight,
     BottomLeft,
-    BottomCenter,
-    BottomRight
+    BottomRight,
 };
+
+static_assert(static_cast<int>(StretchGripInView::None) == static_cast<int>(StretchGrip::None));
+static_assert(static_cast<int>(StretchGripInView::TopLeft) == static_cast<int>(StretchGrip::TopLeft));
+static_assert(static_cast<int>(StretchGripInView::TopRight) == static_cast<int>(StretchGrip::TopRight));
+static_assert(static_cast<int>(StretchGripInView::BottomLeft) == static_cast<int>(StretchGrip::BottomLeft));
+static_assert(static_cast<int>(StretchGripInView::BottomRight) == static_cast<int>(StretchGrip::BottomRight));

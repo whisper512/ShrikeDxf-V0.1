@@ -17,7 +17,7 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     // 选择控制
     m_pSelectionController = std::make_unique<CSelectionController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 编辑控制器
-    m_DxfEditController = std::make_unique<CDxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_DxfEditController = std::make_unique<CDxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, m_pSelectionController.get(), this);
     // 新建图元绘制控制器
     m_DxfDrawController = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 交互控制
@@ -250,6 +250,8 @@ void CDxfManager::SelectEntity(const QString& strLayer, int entityIndex)
         m_SelectedEntity.type = GetEntityType(m_SelectedEntity.entity);
     }
 
+    if (m_DxfEditController)
+        m_DxfEditController->SetSelectedEntity(strLayer, entityIndex);
     // 更新选中框
     UpdateSelectionDisplay();
 
@@ -261,6 +263,9 @@ void CDxfManager::DeselectEntity()
 {
     m_SelectedEntity = stuSelectedEntity();
     m_DxfGraphicsScene.RemoveGrips();
+
+    if (m_DxfEditController)
+        m_DxfEditController->ClearSelection();
     emit signalSelectedEntityChanged(m_SelectedEntity);
 }
 
