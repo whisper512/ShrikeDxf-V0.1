@@ -70,7 +70,6 @@ void CDxfInteractionDispatcher::OnMouseMove(QPointF scenePos)
 }
 
 
-
 void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
 {
     if (!m_pDrawCtrl)
@@ -78,16 +77,24 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
 
     if (m_eState == enumMouseStateInView::enumMouseState_None)
     {
-        // 光标模式下左键交给选择控制器看有没有命中图元
+        // 先检查是否命中了选中图元的夹点
+        if (m_pEditCtrl)
+        {
+            StretchGripInView grip = m_pEditCtrl->HitTestGrip(scenePos);
+            if (grip != StretchGripInView::None)
+                return;
+        }
+
+        // 没有命中夹点才进行选择
         if (m_pSelectionCtrl)
             m_pSelectionCtrl->HitTest(scenePos);
     }
     else
     {
-        // 绘制模式交给绘制控制器开始绘制
         m_pDrawCtrl->OnGraphicsViewLeftClick(scenePos);
     }
 }
+
 
 void CDxfInteractionDispatcher::OnRightClick(QPointF scenePos)
 {
