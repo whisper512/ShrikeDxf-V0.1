@@ -8,13 +8,14 @@
 class CDxfData;
 class CDxfGraphicsScene;
 class CSelectionController;
+class CDxfManager;
 
 class CDxfEditController : public QObject
 {
     Q_OBJECT
 public:
     explicit CDxfEditController(CDxfData* pData, CDxfGraphicsScene* pScene,
-        CSelectionController* pSelection, QObject* parent = nullptr);
+        CSelectionController* pSelection, CDxfManager* pManager, QObject* parent = nullptr);
     ~CDxfEditController();
 
     // ── 选中状态同步 ──
@@ -27,7 +28,7 @@ public:
     // ── 拉伸三阶段 ──
     void StartStretch(StretchGripInView grip);
     void UpdateStretch(QPointF newPos);
-    void EndStretch();
+    void EndStretch(QPointF finalPos);
 
     // ── 查询 ──
     bool              IsStretching()    const { return m_bStretching; }
@@ -50,6 +51,7 @@ private:
     CDxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
     CSelectionController* m_pSelection = nullptr;
+    CDxfManager* m_pManager = nullptr;
 
     QString        m_strSelectedLayer;
     int            m_iSelectedIndex = -1;

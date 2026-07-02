@@ -2,17 +2,20 @@
 #include "DxfSelectionController.h"
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
+#include "DxfManager.h"
 
 #include <QLineF>
+#include <qDebug>
 #include <cmath>
 
 
 CDxfEditController::CDxfEditController(CDxfData* pData, CDxfGraphicsScene* pScene,
-    CSelectionController* pSelection, QObject* parent)
+    CSelectionController* pSelection, CDxfManager* pManager, QObject* parent)
     : QObject(parent)
     , m_pData(pData)
     , m_pScene(pScene)
     , m_pSelection(pSelection)
+    , m_pManager(pManager)
 {
 }
 
@@ -30,9 +33,6 @@ void CDxfEditController::SetSelectedEntity(const QString& strLayer, int entityIn
 
 void CDxfEditController::ClearSelection()
 {
-    if (m_bStretching)
-        EndStretch();
-
     m_strSelectedLayer.clear();
     m_iSelectedIndex = -1;
     emit signalEntityDeselected();
@@ -111,16 +111,36 @@ void CDxfEditController::UpdateStretch(QPointF newPos)
 
 
 
-void CDxfEditController::EndStretch()
+void CDxfEditController::EndStretch(QPointF finalPos)
 {
     if (!m_bStretching)
         return;
 
+    // 执行拉伸：直接访问图层数据修改选中图元
+    if (m_pData && m_iSelectedIndex >= 0 && !m_strSelectedLayer.isEmpty())
+    {
+        auto& layers = m_pData->GetLayers();
+        auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+        if (itLayer != layers.end() &&
+            m_iSelectedIndex < static_cast<int>(itLayer->second.entities.size()))
+        {
+            auto& entity = itLayer->second.entities[m_iSelectedIndex];
+            std::visit([this, finalPos](auto& e) {
+                e.stretch(static_cast<StretchGrip>(m_eCurrentGrip), finalPos);
+                }, entity);
+        }
+    }
+
     m_bStretching = false;
     m_eCurrentGrip = StretchGripInView::None;
 
+    if (m_pManager)
+        m_pManager->RefreshScene();
+
+    RefreshSceneWithGrips();
     emit signalStretchFinished();
 }
+
 
 
 void CDxfEditController::RefreshSceneWithGrips()

@@ -55,7 +55,7 @@ void CDxfInteractionDispatcher::OnMouseMove(QPointF scenePos)
     // 拉伸模式优先
     if (m_pEditCtrl && m_pEditCtrl->IsStretching())
     {
-        m_pEditCtrl->UpdateStretch(scenePos);
+        //m_pEditCtrl->UpdateStretch(scenePos);
         return;
     }
 
@@ -126,7 +126,7 @@ void CDxfInteractionDispatcher::OnLeftRelease(QPointF scenePos)
 
     if (m_pEditCtrl && m_pEditCtrl->IsStretching())
     {
-        m_pEditCtrl->EndStretch();
+        m_pEditCtrl->EndStretch(scenePos);
     }
 }
 

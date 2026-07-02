@@ -30,6 +30,7 @@ public:
     void AddLayer(const stuLayer& layer);
     bool HasLayer(const std::string& name) const;
     const  std::map<std::string, stuLayer> GetLayers() const;
+    std::map<std::string, stuLayer>& GetLayers();
     stuLayer* GetLayer(const std::string& name);
     const stuLayer* GetLayer(const std::string& name) const;
     std::vector<std::string> GetAllLayerNames() const;

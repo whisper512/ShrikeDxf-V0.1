@@ -77,6 +77,11 @@ const std::map<std::string, stuLayer> CDxfData::GetLayers() const
     return m_document.layers;
 }
 
+std::map<std::string, stuLayer>& CDxfData::GetLayers()
+{
+    return m_document.layers;
+}
+
 stuLayer* CDxfData::GetLayer(const std::string& name)
 {
     auto it = m_document.layers.find(name);
