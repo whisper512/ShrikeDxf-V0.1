@@ -88,12 +88,12 @@ void CDxfEditController::UpdateStretch(QPointF newPos)
     if (m_iSelectedIndex < 0 || m_strSelectedLayer.isEmpty())
         return;
 
-    // 查层
-    auto itLayer = m_pData->GetLayers().find(m_strSelectedLayer.toStdString());
-    if (itLayer == m_pData->GetLayers().end())
+
+    const auto& layers = m_pData->GetLayers();
+    auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+    if (itLayer == layers.end())
         return;
 
-    // 查实体
     if (m_iSelectedIndex >= static_cast<int>(itLayer->second.entities.size()))
         return;
 
@@ -108,6 +108,7 @@ void CDxfEditController::UpdateStretch(QPointF newPos)
     // 实时刷新
     RefreshSceneWithGrips();
 }
+
 
 
 void CDxfEditController::EndStretch()
@@ -127,15 +128,17 @@ void CDxfEditController::RefreshSceneWithGrips()
     if (!m_pScene || !m_pData)
         return;
 
+    const auto& layers = m_pData->GetLayers();
+
     // 全量重绘
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(layers);
 
     // 叠加夹点
     if (m_iSelectedIndex < 0 || m_strSelectedLayer.isEmpty())
         return;
 
-    auto itLayer = m_pData->GetLayers().find(m_strSelectedLayer.toStdString());
-    if (itLayer == m_pData->GetLayers().end())
+    auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+    if (itLayer == layers.end())
         return;
 
     if (m_iSelectedIndex >= static_cast<int>(itLayer->second.entities.size()))
@@ -149,6 +152,7 @@ void CDxfEditController::RefreshSceneWithGrips()
     if (bb.isValid())
         m_pScene->ShowGrips(bb);
 }
+
 
 
 StretchGripInView CDxfEditController::GripFromPoint(QPointF pt, const QRectF& bb, double tol)
