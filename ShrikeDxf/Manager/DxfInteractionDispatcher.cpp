@@ -106,7 +106,7 @@ void CDxfInteractionDispatcher::OnRightClick(QPointF scenePos)
 
 void CDxfInteractionDispatcher::OnLeftPress(QPointF scenePos)
 {
-    // 仅在光标模式（非工具模式）且编辑控制器存在时检测夹点
+    // 仅在光标模式(非工具模式)且编辑控制器存在时检测夹点
     if (m_eState != enumMouseStateInView::enumMouseState_None)
         return;
     if (!m_pEditCtrl)
