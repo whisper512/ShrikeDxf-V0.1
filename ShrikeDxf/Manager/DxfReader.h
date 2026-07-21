@@ -16,10 +16,10 @@
 class CDxfReader : public DRW_Interface
 {
 public:
-    explicit CDxfReader(CDxfData* pData = nullptr);
+    explicit CDxfReader(DxfData* pData = nullptr);
     ~CDxfReader() override = default;
 
-    void SetDataTarget(CDxfData* pData);
+    void SetDataTarget(DxfData* pData);
     bool ReadFile(const QString& filePath);
 
 private:
@@ -87,7 +87,7 @@ private:
     // 图层存入DxfData
     void StoreLayer(const stuLayer& layer);
 
-    CDxfData* m_pData = nullptr;
+    DxfData* m_pData = nullptr;
     std::string m_currentBlock;                // 当前块名
     std::map<int, std::string> m_blockHandles; // handle块名
 };

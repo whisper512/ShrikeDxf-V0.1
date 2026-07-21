@@ -17,12 +17,12 @@
 
 #include "Manager/DxfStruct.h"
 
-class CStackedWidgetManger : public QObject
+class StackedWidgetManager : public QObject
 {
 	Q_OBJECT
 public:
-	CStackedWidgetManger(QWidget* pMainwnd);
-	~CStackedWidgetManger();
+	StackedWidgetManager(QWidget* pMainwnd);
+	~StackedWidgetManager();
 
 	void CreateStackedWidget();
 

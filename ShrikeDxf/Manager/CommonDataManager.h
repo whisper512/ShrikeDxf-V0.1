@@ -7,19 +7,18 @@
 
 #include "../Widget/StyleSheet.h"
 
-//管理通用数据
+//通用管理类
 
-
-class CCommonDataManager
+class CommonDataManager
 {
 public:
-	CCommonDataManager();
-	CCommonDataManager(QWidget* pMainWindow);
-	~CCommonDataManager();
+	CommonDataManager();
+	CommonDataManager(QWidget* pMainWindow);
+	~CommonDataManager();
 
 public:
-	QString m_strDxfPath;
-	QWidget* m_pMainWindow;
+	QString m_dxfPath;
+	QWidget* m_mainWindow;
 
 public:
 	//静态成员函数

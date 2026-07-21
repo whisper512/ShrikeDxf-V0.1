@@ -5,17 +5,17 @@
 #include <QRectF>
 #include "Tools.h"
 
-class CDxfData;
+class DxfData;
 class CDxfGraphicsScene;
 class CSelectionController;
-class CDxfManager;
+class DxfManager;
 
 class CDxfEditController : public QObject
 {
     Q_OBJECT
 public:
-    explicit CDxfEditController(CDxfData* pData, CDxfGraphicsScene* pScene,
-        CSelectionController* pSelection, CDxfManager* pManager, QObject* parent = nullptr);
+    explicit CDxfEditController(DxfData* pData, CDxfGraphicsScene* pScene,
+        CSelectionController* pSelection, DxfManager* pManager, QObject* parent = nullptr);
     ~CDxfEditController();
 
     // ── 选中状态同步 ──
@@ -48,10 +48,10 @@ private:
     // 内部：刷新场景 + 夹点
     void RefreshSceneWithGrips();
 
-    CDxfData* m_pData = nullptr;
+    DxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
     CSelectionController* m_pSelection = nullptr;
-    CDxfManager* m_pManager = nullptr;
+    DxfManager* m_pManager = nullptr;
 
     QString        m_strSelectedLayer;
     int            m_iSelectedIndex = -1;

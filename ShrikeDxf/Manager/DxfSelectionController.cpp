@@ -5,7 +5,7 @@
 #include "DxfGraphicsScene.h"
 #include "DxfStruct.h"
 
-CSelectionController::CSelectionController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
+CSelectionController::CSelectionController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
     : QObject(parent), m_pData(pData), m_pScene(pScene)
 {
 }
@@ -19,7 +19,7 @@ void CSelectionController::HitTest(QPointF scenePos)
     ClearSelection();
     if (!m_pData || !m_pScene) return;
 
-    const auto& layers = m_pData->GetLayers();
+    const auto& layers = m_pData->getLayers();
     double threshold = 15.0 / m_pScene->GetScale();
     if (threshold < 0.5) threshold = 0.5;
 

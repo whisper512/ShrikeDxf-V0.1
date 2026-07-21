@@ -5,13 +5,13 @@
 #include <QMessageBox>
 #include <QTimer>
 
-CDxfManager::CDxfManager(QWidget* pMainWnd) 
+DxfManager::DxfManager(QWidget* pMainWnd) 
     : m_pMainWnd(pMainWnd)
     , m_DxfReader(nullptr)
     , m_DxfData(nullptr)
 {
     // 数据
-    m_DxfData = std::make_unique<CDxfData>();
+    m_DxfData = std::make_unique<DxfData>();
     // 读取器
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
     // 选择控制
@@ -31,18 +31,18 @@ CDxfManager::CDxfManager(QWidget* pMainWnd)
     ConnectSignals();
 }
 
-CDxfManager::~CDxfManager()
+DxfManager::~DxfManager()
 {
     
 }
 
-const enumMouseStateInView CDxfManager::GetCurrentInteractionState()
+const enumMouseStateInView DxfManager::GetCurrentInteractionState()
 {
     return m_pInteractionDispatcher->GetCurrentState();
 }
 
 
-bool CDxfManager::LoadDxfFile(const QString& strPath)
+bool DxfManager::LoadDxfFile(const QString& strPath)
 {
     // 确保 Reader持有Data指针
     m_DxfReader->SetDataTarget(m_DxfData.get());
@@ -55,24 +55,24 @@ bool CDxfManager::LoadDxfFile(const QString& strPath)
     }
 
     // 更新treeview
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     emit signalRefreshTreeviewAfterRead();
     // 更新graphicsview
-    m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
+    m_DxfGraphicsScene.DxfDraw(m_DxfData->getLayers());
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
     // 更新图层tableview
-    m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfData->GetLayers());
+    m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfData->getLayers());
     emit signalRefreshLayerTable(&m_DxfLayerTableviewModel);
     // 更新文件路径
     emit signalFileName(strPath);
     // 更新当前图层
-    m_strCurrentLayer = m_DxfData->GetFirstLayerName();
+    m_strCurrentLayer = m_DxfData->getFirstLayerName();
     emit signalCurrentLayerChanged(m_strCurrentLayer);
     return true;
 }
 
-bool CDxfManager::SaveDxfFile(const QString& strPath)
+bool DxfManager::SaveDxfFile(const QString& strPath)
 {
     CDxfWriter writer(m_DxfData.get());
     bool ok = writer.SaveFile(strPath);
@@ -88,13 +88,13 @@ bool CDxfManager::SaveDxfFile(const QString& strPath)
     return true;
 }
 
-bool CDxfManager::NewDxfFile()
+bool DxfManager::NewDxfFile()
 {
 
     return true;
 }
 
-bool CDxfManager::CloseDxfFile()
+bool DxfManager::CloseDxfFile()
 {
     m_DxfTreeviewModel.clear();
     m_DxfGraphicsScene.clear();
@@ -102,12 +102,12 @@ bool CDxfManager::CloseDxfFile()
     return false;
 }
 
-void CDxfManager::DeleteSelectedEntity()
+void DxfManager::DeleteSelectedEntity()
 {
     if (m_SelectedEntity.entityIndex < 0) return;
     if (m_SelectedEntity.strLayer.isEmpty()) return;
 
-    auto* pLayer = m_DxfData->GetLayer(m_SelectedEntity.strLayer.toStdString());
+    auto* pLayer = m_DxfData->getLayer(m_SelectedEntity.strLayer.toStdString());
     if (!pLayer) return;
     if (m_SelectedEntity.entityIndex >= static_cast<int>(pLayer->entities.size())) return;
 
@@ -119,16 +119,16 @@ void CDxfManager::DeleteSelectedEntity()
 
     // 刷新所有视图（场景、树等）
     RefreshScene();
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
-void CDxfManager::CopySelectedEntity()
+void DxfManager::CopySelectedEntity()
 {
     if (m_SelectedEntity.entityIndex < 0 || m_SelectedEntity.strLayer.isEmpty())
         return;
 
-    const auto& layers = m_DxfData->GetLayers();
+    const auto& layers = m_DxfData->getLayers();
     auto it = layers.find(m_SelectedEntity.strLayer.toStdString());
     if (it == layers.end() ||
         m_SelectedEntity.entityIndex >= static_cast<int>(it->second.entities.size()))
@@ -148,13 +148,13 @@ void CDxfManager::CopySelectedEntity()
         m_clipboardOrigin = QPointF(0, 0);
 }
 
-void CDxfManager::CutSelectedEntity()
+void DxfManager::CutSelectedEntity()
 {
     CopySelectedEntity();      // 先复制到剪贴板
     DeleteSelectedEntity();    // 再删除
 }
 
-void CDxfManager::PasteEntity(QPointF position)
+void DxfManager::PasteEntity(QPointF position)
 {
     if (m_clipboard.empty())
         return;
@@ -164,7 +164,7 @@ void CDxfManager::PasteEntity(QPointF position)
 
     // 获取当前工作图层，并确保存在
     std::string layerName = m_strCurrentLayer.toStdString();
-    stuLayer& layer = m_DxfData->EnsureLayer(layerName);
+    stuLayer& layer = m_DxfData->ensureLayer(layerName);
 
     // 平移并添加实体
     for (const auto& entity : m_clipboard)
@@ -181,25 +181,25 @@ void CDxfManager::PasteEntity(QPointF position)
 
     // 刷新视图和树
     RefreshScene();
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
 
-void CDxfManager::ConnectSignals()
+void DxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_pSelectionController.get(), &CSelectionController::signalEntitySelected, this, &CDxfManager::handleEntitySelected);
-        connect(m_pSelectionController.get(), &CSelectionController::signalEntityDeselected, this, &CDxfManager::handleEntityDeselected);
+        connect(m_pSelectionController.get(), &CSelectionController::signalEntitySelected, this, &DxfManager::handleEntitySelected);
+        connect(m_pSelectionController.get(), &CSelectionController::signalEntityDeselected, this, &DxfManager::handleEntityDeselected);
         });
 }
 
-void CDxfManager::UpdateSelectionDisplay()
+void DxfManager::UpdateSelectionDisplay()
 {
     m_DxfGraphicsScene.RemoveGrips();
     if (m_SelectedEntity.entityIndex < 0) return;
 
-    const auto& layers = m_DxfData->GetLayers();
+    const auto& layers = m_DxfData->getLayers();
     auto it = layers.find(m_SelectedEntity.strLayer.toStdString());
     if (it == layers.end()) return;
     if (m_SelectedEntity.entityIndex < 0 ||
@@ -213,12 +213,12 @@ void CDxfManager::UpdateSelectionDisplay()
 }
 
 
-void CDxfManager::SynLayerModelToDxfData()
+void DxfManager::SynLayerModelToDxfData()
 {
     int rowCount = m_DxfLayerTableviewModel.rowCount();
     if (rowCount <= 0) return;
     // 获取 DxfData 中可修改的 layers
-    auto& layers = m_DxfData->GetDocument().layers;
+    auto& layers = m_DxfData->getDocument().layers;
     for (int row = 0; row < rowCount; ++row)
     {
         QStandardItem* pItemName = m_DxfLayerTableviewModel.item(row, 1);   // NAME 列
@@ -235,14 +235,14 @@ void CDxfManager::SynLayerModelToDxfData()
     }
 }
 
-void CDxfManager::SelectEntity(const QString& strLayer, int entityIndex)
+void DxfManager::SelectEntity(const QString& strLayer, int entityIndex)
 {
     // 更新选中信息
     m_SelectedEntity.strLayer = strLayer;
     m_SelectedEntity.entityIndex = entityIndex;
     m_SelectedEntity.type = EntityType::None;
 
-    const auto& layers = m_DxfData->GetLayers();
+    const auto& layers = m_DxfData->getLayers();
     auto it = layers.find(strLayer.toStdString());
     if (it != layers.end() && entityIndex >= 0 && entityIndex < static_cast<int>(it->second.entities.size()))
     {
@@ -259,7 +259,7 @@ void CDxfManager::SelectEntity(const QString& strLayer, int entityIndex)
     emit signalSelectedEntityChanged(m_SelectedEntity);
 }
 
-void CDxfManager::DeselectEntity()
+void DxfManager::DeselectEntity()
 {
     m_SelectedEntity = stuSelectedEntity();
     m_DxfGraphicsScene.RemoveGrips();
@@ -269,78 +269,78 @@ void CDxfManager::DeselectEntity()
 
 
 
-void CDxfManager::handlePointAttributeChanged(const EntityPoint& point)
+void DxfManager::handlePointAttributeChanged(const EntityPoint& point)
 {
     m_DxfEditor->editPoint(&m_SelectedEntity, point);
     RefreshScene();
 }
 
-void CDxfManager::handleLineAttributeChanged(const EntityLine& line)
+void DxfManager::handleLineAttributeChanged(const EntityLine& line)
 {
     m_DxfEditor->editLine(&m_SelectedEntity, line);
     RefreshScene();
 }
 
-void CDxfManager::handleCircleAttributeChanged(const EntityCircle& circle)
+void DxfManager::handleCircleAttributeChanged(const EntityCircle& circle)
 {
     m_DxfEditor->editCircle(&m_SelectedEntity, circle);
     RefreshScene();
 }
 
-void CDxfManager::handleArcAttributeChanged(const EntityArc& arc)
+void DxfManager::handleArcAttributeChanged(const EntityArc& arc)
 {
     m_DxfEditor->editArc(&m_SelectedEntity, arc);
     RefreshScene();
 }
 
-void CDxfManager::handleEllipseAttributeChanged(const EntityEllipse& ellipse)
+void DxfManager::handleEllipseAttributeChanged(const EntityEllipse& ellipse)
 {
     m_DxfEditor->editEllipse(&m_SelectedEntity, ellipse);
     RefreshScene();
 }
 
-void CDxfManager::handleSplineAttributeChanged(const EntitySpline& spline)
+void DxfManager::handleSplineAttributeChanged(const EntitySpline& spline)
 {
     m_DxfEditor->editSpline(&m_SelectedEntity, spline);
     RefreshScene();
 }
 
-void CDxfManager::handlePolylineAttributeChanged(const EntityPolyline& polyline)
+void DxfManager::handlePolylineAttributeChanged(const EntityPolyline& polyline)
 {
     m_DxfEditor->editPolyline(&m_SelectedEntity, polyline);
     RefreshScene();
 }
 
-void CDxfManager::handleLwpolylineAttributeChanged(const EntityLWPolyline& lwpolyline)
+void DxfManager::handleLwpolylineAttributeChanged(const EntityLWPolyline& lwpolyline)
 {
     m_DxfEditor->editLwpolyline(&m_SelectedEntity, lwpolyline);
     RefreshScene();
 }
-void CDxfManager::handleTextAttributeChanged(const EntityText& text)
+void DxfManager::handleTextAttributeChanged(const EntityText& text)
 {
     m_DxfEditor->editText(&m_SelectedEntity, text);
     RefreshScene();
 }
 
-void CDxfManager::handleMTextAttributeChanged(const EntityMText& mtext)
+void DxfManager::handleMTextAttributeChanged(const EntityMText& mtext)
 {
     m_DxfEditor->editMText(&m_SelectedEntity, mtext);
     RefreshScene();
 }
 
-void CDxfManager::handleHatchAttributeChanged(const EntityHatch& hatch)
+void DxfManager::handleHatchAttributeChanged(const EntityHatch& hatch)
 {
     m_DxfEditor->editHatch(&m_SelectedEntity, hatch);
     RefreshScene();
 }
 
-void CDxfManager::handleLayerAttributeChanged()
+void DxfManager::handleLayerAttributeChanged()
 {
     SynLayerModelToDxfData();
     RefreshScene();
 }
 
-void CDxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
+void DxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
 {
     if (m_pInteractionDispatcher)
     {
@@ -350,7 +350,7 @@ void CDxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
     emit signalMouseStatusChanged(mouseState);
 }
 
-void CDxfManager::handleMousePos(QPointF pos)
+void DxfManager::handleMousePos(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
@@ -359,7 +359,7 @@ void CDxfManager::handleMousePos(QPointF pos)
     }
 }
 
-void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
+void DxfManager::handleMouseLeftButtonClicked(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
@@ -367,11 +367,11 @@ void CDxfManager::handleMouseLeftButtonClicked(QPointF pos)
     }
     
     // 更新tree的model刷新treeview
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
-void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
+void DxfManager::handleMouseRightButtonClicked(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
@@ -379,11 +379,11 @@ void CDxfManager::handleMouseRightButtonClicked(QPointF pos)
     }
 
     // 更新tree的model刷新treeview
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->GetLayers());
+    m_DxfTreeviewModel.UpdateLayoutItemModel(m_DxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
-void CDxfManager::handleMouseLeftButtonPressed(QPointF pos)
+void DxfManager::handleMouseLeftButtonPressed(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
@@ -391,7 +391,7 @@ void CDxfManager::handleMouseLeftButtonPressed(QPointF pos)
     }
 }
 
-void CDxfManager::handleMouseLeftButtonReleased(QPointF pos)
+void DxfManager::handleMouseLeftButtonReleased(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
@@ -400,17 +400,17 @@ void CDxfManager::handleMouseLeftButtonReleased(QPointF pos)
 }
 
 
-void CDxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
+void DxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
 {
     SelectEntity(strLayer, entityIndex);
 }
 
-void CDxfManager::handleEntityDeselected()
+void DxfManager::handleEntityDeselected()
 {
     DeselectEntity();
 }
 
-void CDxfManager::handleEndDrawingPreview()
+void DxfManager::handleEndDrawingPreview()
 {
     if (m_pInteractionDispatcher)
         m_pInteractionDispatcher->SetMouseStatus(enumMouseStateInView::enumMouseState_None);

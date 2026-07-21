@@ -9,8 +9,8 @@
 #include <cmath>
 
 
-CDxfEditController::CDxfEditController(CDxfData* pData, CDxfGraphicsScene* pScene,
-    CSelectionController* pSelection, CDxfManager* pManager, QObject* parent)
+CDxfEditController::CDxfEditController(DxfData* pData, CDxfGraphicsScene* pScene,
+    CSelectionController* pSelection, DxfManager* pManager, QObject* parent)
     : QObject(parent)
     , m_pData(pData)
     , m_pScene(pScene)
@@ -46,7 +46,7 @@ StretchGripInView CDxfEditController::HitTestGrip(QPointF scenePos) const
         return StretchGripInView::None;
 
     // 查层
-    const auto& layers = m_pData->GetLayers();
+    const auto& layers = m_pData->getLayers();
     auto itLayer = layers.find(m_strSelectedLayer.toStdString());
     if (itLayer == layers.end())
         return StretchGripInView::None;
@@ -89,7 +89,7 @@ void CDxfEditController::UpdateStretch(QPointF newPos)
         return;
 
 
-    const auto& layers = m_pData->GetLayers();
+    const auto& layers = m_pData->getLayers();
     auto itLayer = layers.find(m_strSelectedLayer.toStdString());
     if (itLayer == layers.end())
         return;
@@ -119,7 +119,7 @@ void CDxfEditController::EndStretch(QPointF finalPos)
     // 执行拉伸：直接访问图层数据修改选中图元
     if (m_pData && m_iSelectedIndex >= 0 && !m_strSelectedLayer.isEmpty())
     {
-        auto& layers = m_pData->GetLayers();
+        auto& layers = m_pData->getLayers();
         auto itLayer = layers.find(m_strSelectedLayer.toStdString());
         if (itLayer != layers.end() &&
             m_iSelectedIndex < static_cast<int>(itLayer->second.entities.size()))
@@ -148,7 +148,7 @@ void CDxfEditController::RefreshSceneWithGrips()
     if (!m_pScene || !m_pData)
         return;
 
-    const auto& layers = m_pData->GetLayers();
+    const auto& layers = m_pData->getLayers();
 
     // 全量重绘
     m_pScene->DxfDraw(layers);

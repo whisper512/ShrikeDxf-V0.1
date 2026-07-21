@@ -1,7 +1,7 @@
 ﻿#include "CreateEntityWidget.h"
 #include "ShrikeDxf.h"
 
-CCreateEntityWidget::CCreateEntityWidget(QWidget* parent)
+CreateEntityWidget::CreateEntityWidget(QWidget* parent)
 	: QWidget(parent),
 	m_pMainWnd(parent),
 	m_eSlectedIndex(enumMouseStateInView::enumMouseState_None)
@@ -9,11 +9,11 @@ CCreateEntityWidget::CCreateEntityWidget(QWidget* parent)
 	ui.setupUi(this);
 }
 
-CCreateEntityWidget::~CCreateEntityWidget()
+CreateEntityWidget::~CreateEntityWidget()
 {
 }
 
-void CCreateEntityWidget::InitWidgetAndAddToLayout()
+void CreateEntityWidget::InitWidgetAndAddToLayout()
 {
 	if (m_pMainWnd)
 	{
@@ -27,7 +27,7 @@ void CCreateEntityWidget::InitWidgetAndAddToLayout()
 	RefreshBtn();
 }
 
-void CCreateEntityWidget::SetIconAndTip()
+void CreateEntityWidget::SetIconAndTip()
 {
 	ui.toolButton_Mouse->setIcon(QIcon(":/ShrikeDxf/res/Mouse.png"));
 	ui.toolButton_Point->setIcon(QIcon(":/ShrikeDxf/res/Point.png"));
@@ -60,29 +60,29 @@ void CCreateEntityWidget::SetIconAndTip()
     ui.toolButton_Mtext->setToolTip("Mtext");
 }
 
-void CCreateEntityWidget::ConnectBtnSignals()
+void CreateEntityWidget::ConnectBtnSignals()
 {
-	connect(ui.toolButton_Mouse, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Point, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Line, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Center_Radius_Circle,&QToolButton::clicked,this, &CCreateEntityWidget::OnToolBtnClicked);
-	connect(ui.toolButton_Center_Diameter_Circle, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Center_Endpoint_Arc, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_ThreePoint_Arc, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Polyline, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Ellipse, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Rectangle, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_SplineFitPoint, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_SplineControlPoint, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Text, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
-	connect(ui.toolButton_Mtext, &QToolButton::clicked, this, &CCreateEntityWidget::OnToolBtnClicked);
+	connect(ui.toolButton_Mouse, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Point, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Line, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Center_Radius_Circle,&QToolButton::clicked,this, &CreateEntityWidget::OnToolBtnClicked);
+	connect(ui.toolButton_Center_Diameter_Circle, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Center_Endpoint_Arc, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_ThreePoint_Arc, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Polyline, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Ellipse, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Rectangle, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_SplineFitPoint, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_SplineControlPoint, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+    connect(ui.toolButton_Text, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+	connect(ui.toolButton_Mtext, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
 }
 
-void CCreateEntityWidget::RefreshBtn()
+void CreateEntityWidget::RefreshBtn()
 {
 }
 
-void CCreateEntityWidget::AdjustBtn()
+void CreateEntityWidget::AdjustBtn()
 {
 	if (m_pMainWnd)
 	{
@@ -116,14 +116,14 @@ void CCreateEntityWidget::AdjustBtn()
 	}
 }
 
-void CCreateEntityWidget::resizeEvent(QResizeEvent* event)
+void CreateEntityWidget::resizeEvent(QResizeEvent* event)
 {
 	QWidget::resizeEvent(event);
 	AdjustBtn();
 }
 
 
-void CCreateEntityWidget::OnToolBtnClicked()
+void CreateEntityWidget::OnToolBtnClicked()
 {
 	QToolButton* pBtn = qobject_cast<QToolButton*>(sender());
 	if(!pBtn) return;

@@ -3,7 +3,7 @@
 #include <QPointF>
 #include <QString>
 
-class CDxfData;
+class DxfData;
 class CDxfGraphicsScene;
 
 // 选择控制器
@@ -11,7 +11,7 @@ class CSelectionController : public QObject
 {
     Q_OBJECT
 public:
-    explicit CSelectionController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
+    explicit CSelectionController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
     ~CSelectionController();
 
     // 是否已选中图元
@@ -31,7 +31,7 @@ signals:
     void signalEntityDeselected();
 
 private:
-    CDxfData* m_pData = nullptr;
+    DxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
     // 是否选中
     bool m_bEntitySelected = false;

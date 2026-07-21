@@ -17,15 +17,15 @@ class CDxfInteractionDispatcher;
 class CSelectionController;
 
 //dxf管理类
-class CDxfManager : public QObject
+class DxfManager : public QObject
 {
 	Q_OBJECT
 public:
-	CDxfManager(QWidget* pMainWnd);
-	~CDxfManager();
+	DxfManager(QWidget* pMainWnd);
+	~DxfManager();
 
 	// 暴露数据对象连接信号用
-	CDxfData* GetDxfData() const { return m_DxfData.get(); }
+	DxfData* GetDxfData() const { return m_DxfData.get(); }
 	CDxfReader* GetDxfReader() const { return m_DxfReader.get(); }
 	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
     CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
@@ -40,12 +40,12 @@ public:
 
 	// 刷新scene重并重置graphicsview
 	void RefreshSceneResetview(){
-		m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
+		m_DxfGraphicsScene.DxfDraw(m_DxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
 	}
 	// 刷新scene不重置graphicsview
 	void RefreshScene() {
-		m_DxfGraphicsScene.DxfDraw(m_DxfData->GetLayers());
+		m_DxfGraphicsScene.DxfDraw(m_DxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 	}
 
@@ -78,7 +78,7 @@ private:
 	QWidget* m_pMainWnd;
 	
 	// dxf数据类
-	std::unique_ptr<CDxfData> m_DxfData;
+	std::unique_ptr<DxfData> m_DxfData;
 	// dxf读取类
 	std::unique_ptr<CDxfReader> m_DxfReader;
 

@@ -4,12 +4,12 @@
 
 #include "Manager/DxfLayerTableviewModel.h"
 
-class CLayerTableViewManger : public QObject
+class LayerTableViewManager : public QObject
 {
 	Q_OBJECT
 public:
-	CLayerTableViewManger(QWidget* pMainwnd);
-	~CLayerTableViewManger();
+	LayerTableViewManager(QWidget* pMainwnd);
+	~LayerTableViewManager();
 
 	void CreateTableView();
 

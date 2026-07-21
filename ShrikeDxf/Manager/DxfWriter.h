@@ -14,7 +14,7 @@
 class CDxfWriter : public DRW_Interface
 {
 public:
-    explicit CDxfWriter(CDxfData* pData);
+    explicit CDxfWriter(DxfData* pData);
     ~CDxfWriter() override = default;
 
     bool SaveFile(const QString& strPath, DRW::Version ver = DRW::AC1021, bool bin = false);
@@ -93,6 +93,6 @@ private:
     void WriteSolid(const EntitySolid& solid);
     void WriteHatch(const EntityHatch& hatch);
 
-    CDxfData* m_pData = nullptr;
+    DxfData* m_pData = nullptr;
     dxfRW* m_pDxfRW = nullptr;
 };

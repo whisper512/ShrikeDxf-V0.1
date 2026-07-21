@@ -11,19 +11,19 @@
 #include "Manager/DxfStruct.h"
 #include "Ruler.h"
 
-class CDxfManager;
+class DxfManager;
 
-class CGraphicsView : public QGraphicsView
+class GraphicsView : public QGraphicsView
 {
 	Q_OBJECT
 
 public:
-	CGraphicsView();
-	~CGraphicsView();
-	explicit CGraphicsView(QWidget* pMainWnd, CDxfManager* pDxfManager = nullptr);
+	GraphicsView();
+	~GraphicsView();
+	explicit GraphicsView(QWidget* pMainWnd, DxfManager* pDxfManager = nullptr);
 
 private:
-	CDxfManager* m_pDxfManager;
+	DxfManager* m_pDxfManager;
 	// 右键菜单
 	QMenu* m_pGraphicsViewMenu;
 	// 图元操作

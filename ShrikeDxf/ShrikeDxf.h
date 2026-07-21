@@ -1,11 +1,11 @@
 ﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_ShrikeDxf.h"
 #include <QTreeView>
 #include <QFileSystemModel>
 #include <QTimer.h>
 
+#include "ui_ShrikeDxf.h"
 #include "Widget/TopMenu.h"
 #include "Widget/TreeView.h"
 #include "Widget/GraphicsView.h"
@@ -28,58 +28,58 @@ public:
 	QMenuBar* GetMenuBar() { return ui.menuBar; }
 
     //初始化界面组件
-    void InitWindowComponents();
+    void initWindowComponents();
     //初始化数据管理类
-    void InitDataManagers();
+    void initDataManagers();
     //初始化menu
-    void InitAndCreateMenuBar();
+    void initAndCreateMenuBar();
     //初始化treeview
-    void InitAndCreateTreeView();
+    void initAndCreateTreeView();
     //初始化graphicsView
-    void InitAndCreateGraphicsView();
+    void initAndCreateGraphicsView();
     //初始化stackedWidget
-    void InitAndCreateStackedWidget();
+    void initAndCreateStackedWidget();
     //初始化tableView
-    void InitAndCreateLayerTableView();
+    void initAndCreateLayerTableView();
     //初始化移动按钮
-    void InitAndCreateMoveBtnsWidget();
+    void initAndCreateMoveBtnsWidget();
     //初始化新建图元界面
-    void InitAndCreateCreateEntityWidget();
+    void initAndCreateCreateEntityWidget();
     //初始化位置显示label
-    void InitLabels();
+    void initLabels();
     //链接信号和槽
-    void ConnectSignalsAndSlots();
+    void connectSignalsAndSlots();
 
 public:
     Ui::ShrikeDxfClass ui;
 
     //菜单栏
-    CMenuManger* m_pMenuManger;
+    MenuManager* m_menuManger;
     //文件结构栏
-    CTreeViewManger* m_pTreeViewManger;
+    TreeViewManager* m_treeViewManger;
     //图形界面
-    CGraphicsView* m_pGraphicsView;
+    GraphicsView* m_graphicsView;
     //stackedWidget
-    CStackedWidgetManger* m_pStackedWidgetManger;
+    StackedWidgetManager* m_stackedWidgetManager;
     //tableview
-    CLayerTableViewManger* m_pLayerTableViewManger;
+    LayerTableViewManager* m_layerTableViewManager;
     //移动按钮
-    CMoveBtnsWidget* m_pMoveBtnsWidget;
+    MoveBtnsWidget* m_moveBtnsWidget;
     //新建图元界面
-    CCreateEntityWidget* m_pCreateEntityWidget;
+    CreateEntityWidget* m_createEntityWidget;
 
     //显示graphics的坐标
-    QLabel* m_pLabelPos;
+    QLabel* m_labelPos;
     //显示当前文档名称
-    QLabel* m_pLabelDocName;
+    QLabel* m_labelDocName;
     //显示当前工作图层
-    QLabel* m_pLabelLayer;
+    QLabel* m_labelLayer;
 
 
     //界面通用数据管理
-    CCommonDataManager* m_pDataManager;
+    CommonDataManager* m_pDataManager;
     //Dxf数据管理
-    CDxfManager* m_pDxfDataManger;
+    DxfManager* m_dxfDataManager;
 
 public slots:
     void handleMousePos(QString strPos);

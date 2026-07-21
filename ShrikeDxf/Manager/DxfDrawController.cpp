@@ -2,7 +2,7 @@
 #include "DxfManager.h"
 
 
-CDxfDrawController::CDxfDrawController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
+CDxfDrawController::CDxfDrawController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
     : QObject(parent)
     , m_pData(pData)
     , m_pScene(pScene)
@@ -15,7 +15,7 @@ CDxfDrawController::~CDxfDrawController()
 
 const QString& CDxfDrawController::GetCurrentLayer() const
 {
-    auto* pMgr = qobject_cast<CDxfManager*>(parent());
+    auto* pMgr = qobject_cast<DxfManager*>(parent());
     if (pMgr)
         return pMgr->GetCurrentLayer();
 
@@ -204,9 +204,9 @@ void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
         pt.prop.layer = layerName;
         pt.prop.color = 256;
         pt.point = scenePos;
-        m_pData->AddEntity(layerName, pt);
+        m_pData->addEntity(layerName, pt);
         m_pScene->ClearPreview();
-        m_pScene->DxfDraw(m_pData->GetLayers());
+        m_pScene->DxfDraw(m_pData->getLayers());
         break;
     }
     case enumMouseStateInView::enumMouseState_Line:                      // 画线
@@ -227,10 +227,10 @@ void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
             line.prop.visible = true;
             line.startPoint = m_ptStart;
             line.endPoint = scenePos;
-            m_pData->AddEntity(layerName, line);
+            m_pData->addEntity(layerName, line);
             // 清理预览,重绘场景
             m_pScene->ClearPreview();
-            m_pScene->DxfDraw(m_pData->GetLayers());
+            m_pScene->DxfDraw(m_pData->getLayers());
             m_step = 0;
         }
         break;
@@ -254,9 +254,9 @@ void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
             circle.prop.visible = true;
             circle.center = m_ptStart;
             circle.radius = radius;
-            m_pData->AddEntity(layerName, circle);
+            m_pData->addEntity(layerName, circle);
             m_pScene->ClearPreview();
-            m_pScene->DxfDraw(m_pData->GetLayers());
+            m_pScene->DxfDraw(m_pData->getLayers());
             m_step = 0;
         }
         break;
@@ -284,9 +284,9 @@ void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
             circle.prop.visible = true;
             circle.center = center;
             circle.radius = radius;
-            m_pData->AddEntity(layerName, circle);
+            m_pData->addEntity(layerName, circle);
             m_pScene->ClearPreview();
-            m_pScene->DxfDraw(m_pData->GetLayers());
+            m_pScene->DxfDraw(m_pData->getLayers());
             m_step = 0;
         }
         break;
@@ -326,9 +326,9 @@ void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
             arc.startAngle = startAngle;
             arc.endAngle = endAngle;
             arc.isCCW = true; //实体弧中恒定为逆时针
-            m_pData->AddEntity(layerName, arc);
+            m_pData->addEntity(layerName, arc);
             m_pScene->ClearPreview();
-            m_pScene->DxfDraw(m_pData->GetLayers());
+            m_pScene->DxfDraw(m_pData->getLayers());
             m_step = 0;
         }
         break;
@@ -365,10 +365,10 @@ void CDxfDrawController::OnGraphicsViewLeftClick(QPointF scenePos)
                 arc.startAngle = startAngle;
                 arc.endAngle = endAngle;
                 arc.isCCW = 1;
-                m_pData->AddEntity(layerName, arc);
+                m_pData->addEntity(layerName, arc);
             }
             m_pScene->ClearPreview();
-            m_pScene->DxfDraw(m_pData->GetLayers());
+            m_pScene->DxfDraw(m_pData->getLayers());
             m_step = 0;
         }
         break;
@@ -574,10 +574,10 @@ void CDxfDrawController::FinishPolyline()
         poly.vecVertices.push_back(vertex);
     }
 
-    m_pData->AddEntity(layerName, poly);
+    m_pData->addEntity(layerName, poly);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
 
     // 重置
     m_vecPolyPoints.clear();
@@ -617,10 +617,10 @@ void CDxfDrawController::FinishEllipse(QPointF scenePos)
     ellipse.startParam = 0.0;
     ellipse.endParam = 2.0 * M_PI;
 
-    m_pData->AddEntity(layerName, ellipse);
+    m_pData->addEntity(layerName, ellipse);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
     m_step = 0;
 }
 
@@ -653,10 +653,10 @@ void CDxfDrawController::FinishRectangle(QPointF scenePos)
     poly.vecVertices.push_back(v3);
     poly.vecVertices.push_back(v4);
 
-    m_pData->AddEntity(layerName, poly);
+    m_pData->addEntity(layerName, poly);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
     m_step = 0;
 }
 
@@ -711,10 +711,10 @@ void CDxfDrawController::FinishSplineFit()
             spline.knots[i] = static_cast<double>(i - k) / (n - k);
     }
 
-    m_pData->AddEntity(layerName, spline);
+    m_pData->addEntity(layerName, spline);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
 
     m_vecSplinePoints.clear();
     m_step = 0;
@@ -762,10 +762,10 @@ void CDxfDrawController::FinishSplineControl()
             spline.knots[i] = static_cast<double>(i - k) / (n - k);
     }
 
-    m_pData->AddEntity(layerName, spline);
+    m_pData->addEntity(layerName, spline);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
 
     m_vecSplinePoints.clear();
     m_step = 0;
@@ -803,10 +803,10 @@ void CDxfDrawController::FinishText(QPointF scenePos)
     text.alignH = 0;  // Left
     text.alignV = 0;  // Middle
 
-    m_pData->AddEntity(layerName, text);
+    m_pData->addEntity(layerName, text);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
     m_step = 0;
 }
 
@@ -838,9 +838,9 @@ void CDxfDrawController::FinishMText(QPointF scenePos)
     mtext.xAxisDir.setX(width);
     mtext.xAxisDir.setY(0);
 
-    m_pData->AddEntity(layerName, mtext);
+    m_pData->addEntity(layerName, mtext);
 
     m_pScene->ClearPreview();
-    m_pScene->DxfDraw(m_pData->GetLayers());
+    m_pScene->DxfDraw(m_pData->getLayers());
     m_step = 0;
 }

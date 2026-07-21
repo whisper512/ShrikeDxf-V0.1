@@ -4,7 +4,7 @@
 #include "ShrikeDxf.h"
 
 
-CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
+StackedWidgetManager::StackedWidgetManager(QWidget* pMainwnd) :
 	m_pMainwnd(pMainwnd),
 	m_pLayout(nullptr),
 	m_pStackedWidget(nullptr),
@@ -23,11 +23,11 @@ CStackedWidgetManger::CStackedWidgetManger(QWidget* pMainwnd) :
 	
 }
 
-CStackedWidgetManger::~CStackedWidgetManger()
+StackedWidgetManager::~StackedWidgetManager()
 {
 }
 
-void CStackedWidgetManger::CreateStackedWidget()
+void StackedWidgetManager::CreateStackedWidget()
 {
 	m_pStackedWidget = new QStackedWidget(m_pMainwnd);
 	if (m_pMainwnd)
@@ -47,7 +47,7 @@ void CStackedWidgetManger::CreateStackedWidget()
 	ConnectSignalAndSlot();
 }
 
-void CStackedWidgetManger::AddPages()
+void StackedWidgetManager::AddPages()
 {
 
 	m_pPointAttributeWidget = new CPointAttributeWidget(m_pStackedWidget);
@@ -117,72 +117,72 @@ void CStackedWidgetManger::AddPages()
     m_mapPages[10] = STR_HATCH_LOWERCASE;
 }
 
-void CStackedWidgetManger::ConnectSignalAndSlot()
+void StackedWidgetManager::ConnectSignalAndSlot()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
 			  // 点
 			if (m_pStackedWidget && m_pPointAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalPointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
-				connect(m_pPointAttributeWidget, &CPointAttributeWidget::signalPointAttributeChanged, this, &CStackedWidgetManger::signalPointChanged);
+				connect(this, &StackedWidgetManager::signalPointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
+				connect(m_pPointAttributeWidget, &CPointAttributeWidget::signalPointAttributeChanged, this, &StackedWidgetManager::signalPointChanged);
 			} // 线
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
-				connect(m_pLineAttributeWidget, &CLineAttributeWidget::signalLineAttributeChanged, this, &CStackedWidgetManger::signalLineChanged);
+				connect(this, &StackedWidgetManager::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
+				connect(m_pLineAttributeWidget, &CLineAttributeWidget::signalLineAttributeChanged, this, &StackedWidgetManager::signalLineChanged);
 			} // 圆
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
-				connect(m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, this, &CStackedWidgetManger::signalCircleChanged);
+				connect(this, &StackedWidgetManager::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
+				connect(m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, this, &StackedWidgetManager::signalCircleChanged);
 			} // 圆弧
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
-                connect(m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, this, &CStackedWidgetManger::signalArcChanged);
+				connect(this, &StackedWidgetManager::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
+                connect(m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, this, &StackedWidgetManager::signalArcChanged);
 			} // 轻量多段线
 			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
-				connect(m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &CStackedWidgetManger::signalLWPolylineChanged);
+				connect(this, &StackedWidgetManager::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
+				connect(m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &StackedWidgetManager::signalLWPolylineChanged);
 			} // 椭圆
 			if (m_pStackedWidget && m_pEllipseAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
-				connect(m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::signalEllipseAttributeChanged, this, &CStackedWidgetManger::signalEllipseChanged);
+				connect(this, &StackedWidgetManager::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
+				connect(m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::signalEllipseAttributeChanged, this, &StackedWidgetManager::signalEllipseChanged);
 			} // 文本
 			if (m_pStackedWidget && m_pTextAttributeWidget)
 			{
-				connect(this , &CStackedWidgetManger::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
-                connect(m_pTextAttributeWidget, &CTextAttritubeWidget::signalTextAttributeChanged, this, &CStackedWidgetManger::signalTextChanged);
+				connect(this , &StackedWidgetManager::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
+                connect(m_pTextAttributeWidget, &CTextAttritubeWidget::signalTextAttributeChanged, this, &StackedWidgetManager::signalTextChanged);
 			} // 多行文本
 			if (m_pStackedWidget && m_pMTextAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
-                connect(m_pMTextAttributeWidget, &CMTextAttritubeWidget::signalMTextAttributeChanged, this, &CStackedWidgetManger::signalMTextChanged);
+				connect(this, &StackedWidgetManager::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
+                connect(m_pMTextAttributeWidget, &CMTextAttritubeWidget::signalMTextAttributeChanged, this, &StackedWidgetManager::signalMTextChanged);
 			} // 多段线
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
-				connect(m_pPolylineAttributeWidget, &CPolylineAttributeWidget::signalPolylineAttributeChanged, this, &CStackedWidgetManger::signalPolylineChanged);
+				connect(this, &StackedWidgetManager::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
+				connect(m_pPolylineAttributeWidget, &CPolylineAttributeWidget::signalPolylineAttributeChanged, this, &StackedWidgetManager::signalPolylineChanged);
 
 			} // 样条曲线
 			if (m_pStackedWidget && m_pSplineAttributeWidget)
 			{
-                connect(this, &CStackedWidgetManger::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handleNoticeSplineAttribute);
-				connect(m_pSplineAttributeWidget, &CSplineAttributeWidget::signalSplineAttributeChanged, this, &CStackedWidgetManger::signalSplineChanged);
+                connect(this, &StackedWidgetManager::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handleNoticeSplineAttribute);
+				connect(m_pSplineAttributeWidget, &CSplineAttributeWidget::signalSplineAttributeChanged, this, &StackedWidgetManager::signalSplineChanged);
 			} // 填充
 			if (m_pStackedWidget && m_pHatchAttributeWidget)
 			{
-				connect(this, &CStackedWidgetManger::signalHatchAttribute, m_pHatchAttributeWidget, &CHatchAttributeWidget::handleNoticeHatchAtttribute);
-				connect(m_pHatchAttributeWidget, &CHatchAttributeWidget::signalHatchAtttributeChanged, this, &CStackedWidgetManger::signalHatchChanged);
+				connect(this, &StackedWidgetManager::signalHatchAttribute, m_pHatchAttributeWidget, &CHatchAttributeWidget::handleNoticeHatchAtttribute);
+				connect(m_pHatchAttributeWidget, &CHatchAttributeWidget::signalHatchAtttributeChanged, this, &StackedWidgetManager::signalHatchChanged);
 			}
 			
 	});
 }
 
-void CStackedWidgetManger::ChangeWidgets()
+void StackedWidgetManager::ChangeWidgets()
 {
 	int nIndex = -1;
 	switch (m_entityType)
@@ -231,7 +231,7 @@ void CStackedWidgetManger::ChangeWidgets()
 	}
 }
 
-void CStackedWidgetManger::handleRefreshStackedWidget(const stuSelectedEntity& SelectedEntity)
+void StackedWidgetManager::handleRefreshStackedWidget(const stuSelectedEntity& SelectedEntity)
 {
 	m_entityType = SelectedEntity.type;
 

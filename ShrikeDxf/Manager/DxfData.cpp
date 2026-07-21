@@ -1,88 +1,88 @@
 ﻿#include "DxfData.h"
 #include "DxfGraphicsScene.h"
 
-CDxfData::CDxfData()
+DxfData::DxfData()
 {
 }
 
-CDxfData::~CDxfData()
+DxfData::~DxfData()
 {
 }
 
-DxfDocument& CDxfData::GetDocument()
-{
-    return m_document;
-}
-
-const DxfDocument& CDxfData::GetDocument() const
+DxfDocument& DxfData::getDocument()
 {
     return m_document;
 }
 
+const DxfDocument& DxfData::getDocument() const
+{
+    return m_document;
+}
 
-void CDxfData::SetVersion(const QString& version)
+
+void DxfData::setVersion(const QString& version)
 {
 }
 
-void CDxfData::SetInsUnits(double units)
+void DxfData::setInsUnits(double units)
 {
 }
 
-void CDxfData::SetExtents(const Vertex3D& extMin, const Vertex3D& extMax)
+void DxfData::setExtents(const Vertex3D& extMin, const Vertex3D& extMax)
 {
 }
 
-void CDxfData::SetLtScale(double ltscale)
+void DxfData::setLtScale(double ltscale)
 {
 }
 
-const QString& CDxfData::GetVersion() const
+const QString& DxfData::getVersion() const
 {
     return m_document.version;
 }
 
-double CDxfData::GetInsUnits() const
+double DxfData::getInsUnits() const
 {
     return m_document.insUnits;
 }
 
-Vertex3D CDxfData::GetExtMin() const
+Vertex3D DxfData::getExtMin() const
 {
     return m_document.extMin;
 }
 
-Vertex3D CDxfData::GetExtMax() const
+Vertex3D DxfData::getExtMax() const
 {
     return m_document.extMax;
 }
 
-double CDxfData::GetLtScale() const
+double DxfData::getLtScale() const
 {
     return m_document.ltscale;
 }
 
 // Layer 图层管理
-void  CDxfData::AddLayer(const stuLayer& layer)
+void  DxfData::addLayer(const stuLayer& layer)
 {
     m_document.layers[layer.name.toStdString()] = layer;
 }
 
-bool CDxfData::HasLayer(const std::string& name) const
+bool DxfData::hasLayer(const std::string& name) const
 {
     return m_document.layers.find(name) != m_document.layers.end();
 }
 
-const std::map<std::string, stuLayer> CDxfData::GetLayers() const
+const std::map<std::string, stuLayer> DxfData::getLayers() const
 {
     return m_document.layers;
 }
 
-std::map<std::string, stuLayer>& CDxfData::GetLayers()
+std::map<std::string, stuLayer>& DxfData::getLayers()
 {
     return m_document.layers;
 }
 
-stuLayer* CDxfData::GetLayer(const std::string& name)
+stuLayer* DxfData::getLayer(const std::string& name)
 {
     auto it = m_document.layers.find(name);
     if (it != m_document.layers.end())
@@ -90,7 +90,7 @@ stuLayer* CDxfData::GetLayer(const std::string& name)
     return nullptr;
 }
 
-const stuLayer* CDxfData::GetLayer(const std::string& name) const
+const stuLayer* DxfData::getLayer(const std::string& name) const
 {
     auto it = m_document.layers.find(name);
     if (it != m_document.layers.end())
@@ -98,7 +98,7 @@ const stuLayer* CDxfData::GetLayer(const std::string& name) const
     return nullptr;
 }
 
-std::vector<std::string> CDxfData::GetAllLayerNames() const
+std::vector<std::string> DxfData::getAllLayerNames() const
 {
     std::vector<std::string> names;
     for (const auto& [name, _] : m_document.layers)
@@ -106,95 +106,95 @@ std::vector<std::string> CDxfData::GetAllLayerNames() const
     return names;
 }
 
-size_t CDxfData::GetLayerCount() const
+size_t DxfData::getLayerCount() const
 {
     return m_document.layers.size();
 }
 
-QString CDxfData::GetFirstLayerName() const
+QString DxfData::getFirstLayerName() const
 {
     if (m_document.layers.empty())
         return QString();
     return QString::fromStdString(m_document.layers.begin()->first);
 }
 
-stuLayer& CDxfData::EnsureLayer(const std::string& name)
+stuLayer& DxfData::ensureLayer(const std::string& name)
 {
     return m_document.layers[name];
 }
 
 // 图元添加
-void CDxfData::AddEntity(const std::string& layerName, const variantDxfEntity& entity)
+void DxfData::addEntity(const std::string& layerName, const variantDxfEntity& entity)
 {
-    auto& layer = EnsureLayer(layerName);
+    auto& layer = ensureLayer(layerName);
     layer.entities.push_back(entity);
 }
 
-void CDxfData::AddPoint(const std::string& layerName, const EntityPoint& ent)
+void DxfData::addPoint(const std::string& layerName, const EntityPoint& ent)
 {
 }
 
-void CDxfData::AddLine(const std::string& layerName, const EntityLine& ent)
+void DxfData::addLine(const std::string& layerName, const EntityLine& ent)
 {
 }
 
-void CDxfData::AddCircle(const std::string& layerName, const EntityCircle& ent)
+void DxfData::addCircle(const std::string& layerName, const EntityCircle& ent)
 {
 }
 
-void CDxfData::AddArc(const std::string& layerName, const EntityArc& ent)
+void DxfData::addArc(const std::string& layerName, const EntityArc& ent)
 {
 }
 
-void CDxfData::AddLWPolyline(const std::string& layerName, const EntityLWPolyline& ent)
+void DxfData::addLWPolyline(const std::string& layerName, const EntityLWPolyline& ent)
 {
 }
 
-void CDxfData::AddPolyline(const std::string& layerName, const EntityPolyline& ent)
+void DxfData::addPolyline(const std::string& layerName, const EntityPolyline& ent)
 {
 }
 
-void CDxfData::AddEllipse(const std::string& layerName, const EntityEllipse& ent)
+void DxfData::addEllipse(const std::string& layerName, const EntityEllipse& ent)
 {
 }
 
-void CDxfData::AddSpline(const std::string& layerName, const EntitySpline& ent)
+void DxfData::addSpline(const std::string& layerName, const EntitySpline& ent)
 {
 }
 
-void CDxfData::AddText(const std::string& layerName, const EntityText& ent)
+void DxfData::addText(const std::string& layerName, const EntityText& ent)
 {
 }
 
-void CDxfData::AddMText(const std::string& layerName, const EntityMText& ent)
+void DxfData::addMText(const std::string& layerName, const EntityMText& ent)
 {
 }
 
-void CDxfData::AddInsert(const std::string& layerName, const EntityInsert& ent)
+void DxfData::addInsert(const std::string& layerName, const EntityInsert& ent)
 {
 }
 
-void CDxfData::AddSolid(const std::string& layerName, const EntitySolid& ent)
+void DxfData::addSolid(const std::string& layerName, const EntitySolid& ent)
 {
 }
 
-void CDxfData::AddHatch(const std::string& layerName, const EntityHatch& ent)
+void DxfData::addHatch(const std::string& layerName, const EntityHatch& ent)
 {
 }
 
 
 // Block 块定义管理
-stuBlock& CDxfData::AddBlock(const std::string& name, const Vertex3D& basePoint)
+stuBlock& DxfData::addBlock(const std::string& name, const Vertex3D& basePoint)
 {
     return m_document.blocks[name];
 }
 
-bool CDxfData::HasBlock(const std::string& name) const
+bool DxfData::hasBlock(const std::string& name) const
 {
     return m_document.blocks.find(name) != m_document.blocks.end();
 }
 
-stuBlock* CDxfData::GetBlock(const std::string& name)
+stuBlock* DxfData::getBlock(const std::string& name)
 {
     auto it = m_document.blocks.find(name);
     if (it != m_document.blocks.end())
@@ -202,7 +202,7 @@ stuBlock* CDxfData::GetBlock(const std::string& name)
     return nullptr;
 }
 
-const stuBlock* CDxfData::GetBlock(const std::string& name) const
+const stuBlock* DxfData::getBlock(const std::string& name) const
 {
     auto it = m_document.blocks.find(name);
     if (it != m_document.blocks.end())
@@ -210,7 +210,7 @@ const stuBlock* CDxfData::GetBlock(const std::string& name) const
     return nullptr;
 }
 
-std::vector<std::string> CDxfData::GetAllBlockNames() const
+std::vector<std::string> DxfData::getAllBlockNames() const
 {
     std::vector<std::string> names;
     for (const auto& [name, _] : m_document.blocks)
@@ -218,37 +218,37 @@ std::vector<std::string> CDxfData::GetAllBlockNames() const
     return names;
 }
 
-size_t CDxfData::GetBlockCount() const
+size_t DxfData::getBlockCount() const
 {
     return m_document.blocks.size();
 }
 
-void CDxfData::AddEntityToBlock(const std::string& blockName, const variantDxfEntity& entity)
+void DxfData::addEntityToBlock(const std::string& blockName, const variantDxfEntity& entity)
 {
 }
 
 // 查询/遍历
-int CDxfData::GetTotalEntityCount() const
+int DxfData::getTotalEntityCount() const
 {
     return m_document.GetTotalEntityCount();
 }
 
-int CDxfData::GetEntityCount(EntityType type) const
+int DxfData::getEntityCount(EntityType type) const
 {
     return 0;
 }
 
-int CDxfData::GetEntityCount(const std::string& layerName, EntityType type) const
+int DxfData::getEntityCount(const std::string& layerName, EntityType type) const
 {
     return 0;
 }
 
-std::vector<variantDxfEntity> CDxfData::GetEntitiesByType(EntityType type) const
+std::vector<variantDxfEntity> DxfData::getEntitiesByType(EntityType type) const
 {
     return {};
 }
 
-std::vector<variantDxfEntity> CDxfData::GetEntitiesByLayer(const std::string& layerName) const
+std::vector<variantDxfEntity> DxfData::getEntitiesByLayer(const std::string& layerName) const
 {
     auto it = m_document.layers.find(layerName);
     if (it != m_document.layers.end())
@@ -256,17 +256,17 @@ std::vector<variantDxfEntity> CDxfData::GetEntitiesByLayer(const std::string& la
     return {};
 }
 
-std::vector<variantDxfEntity> CDxfData::GetEntities(const std::string& layerName, EntityType type) const
+std::vector<variantDxfEntity> DxfData::getEntities(const std::string& layerName, EntityType type) const
 {
     return {};
 }
 
-stuPreviewEntity& CDxfData::GetPreviewEntity()
+stuPreviewEntity& DxfData::getPreviewEntity()
 {
     return m_document.previewEntity;
 }
 
-const stuPreviewEntity& CDxfData::GetPreviewEntity() const
+const stuPreviewEntity& DxfData::getPreviewEntity() const
 {
     return m_document.previewEntity;
 }

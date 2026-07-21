@@ -7,7 +7,7 @@ class CDxfEditor : public QObject
 {
     Q_OBJECT
 public:
-    explicit CDxfEditor(CDxfData* dxfData);
+    explicit CDxfEditor(DxfData* dxfData);
     ~CDxfEditor();
 
 
@@ -27,7 +27,7 @@ public:
 
 private:
     // dxf数据类
-    CDxfData* m_DxfData;
+    DxfData* m_DxfData;
 public slots:
     
 

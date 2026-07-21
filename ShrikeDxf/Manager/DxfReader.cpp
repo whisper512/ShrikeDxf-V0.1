@@ -2,12 +2,12 @@
 #include <QFileInfo>
 #include "DxfReader.h"
 
-CDxfReader::CDxfReader(CDxfData* pData)
+CDxfReader::CDxfReader(DxfData* pData)
     : m_pData(pData)
 {
 }
 
-void CDxfReader::SetDataTarget(CDxfData* pData)
+void CDxfReader::SetDataTarget(DxfData* pData)
 {
     m_pData = pData;
 }
@@ -62,19 +62,19 @@ void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& 
 
     if (m_currentBlock.empty()) {
         // 存到图层
-        m_pData->EnsureLayer(layer);
-        m_pData->AddEntity(layer, entity);
+        m_pData->ensureLayer(layer);
+        m_pData->addEntity(layer, entity);
     }
     else {
         // 存入块定义
-        m_pData->AddEntityToBlock(m_currentBlock, entity);
+        m_pData->addEntityToBlock(m_currentBlock, entity);
     }
 }
 
 void CDxfReader::StoreLayer(const stuLayer& layer)
 {
     if (!m_pData) return;
-    m_pData->AddLayer(layer);
+    m_pData->addLayer(layer);
 }
 
 
@@ -84,12 +84,12 @@ void CDxfReader::addHeader(const DRW_Header* data)
     // $ACADVER
     auto itVer = data->vars.find("$ACADVER");
     if (itVer != data->vars.end() && itVer->second->type() == DRW_Variant::STRING) {
-        m_pData->SetVersion(QString::fromStdString(*itVer->second->content.s));
+        m_pData->setVersion(QString::fromStdString(*itVer->second->content.s));
     }
     // $INSUNITS
     auto itUnits = data->vars.find("$INSUNITS");
     if (itUnits != data->vars.end() && itUnits->second->type() == DRW_Variant::INTEGER) {
-        m_pData->SetInsUnits(static_cast<double>(itUnits->second->content.i));
+        m_pData->setInsUnits(static_cast<double>(itUnits->second->content.i));
     }
     // $EXTMIN / $EXTMAX — 需要取两个值后才调用 SetExtents
     Vertex3D extMin, extMax;
@@ -105,12 +105,12 @@ void CDxfReader::addHeader(const DRW_Header* data)
         if (c) { extMax = Vertex3D(c->x, c->y, c->z); hasExtMax = true; }
     }
     if (hasExtMin && hasExtMax) {
-        m_pData->SetExtents(extMin, extMax);
+        m_pData->setExtents(extMin, extMax);
     }
     // $LTSCALE
     auto itLtScale = data->vars.find("$LTSCALE");
     if (itLtScale != data->vars.end() && itLtScale->second->type() == DRW_Variant::DOUBLE) {
-        m_pData->SetLtScale(itLtScale->second->content.d);
+        m_pData->setLtScale(itLtScale->second->content.d);
     }
 }
 
@@ -166,7 +166,7 @@ void CDxfReader::addBlock(const DRW_Block& data)
 {
     if (!m_pData) return;
     // 注册块定义
-    m_pData->AddBlock(data.name, Vertex3D(
+    m_pData->addBlock(data.name, Vertex3D(
         data.basePoint.x, data.basePoint.y, data.basePoint.z));
     // 记录当前块名，后续图元会进入该块
     m_currentBlock = data.name;

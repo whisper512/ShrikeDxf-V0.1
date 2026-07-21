@@ -1,20 +1,20 @@
 ﻿#include "CommonDataManager.h"
 
 
-CCommonDataManager::CCommonDataManager():
-    m_strDxfPath(""),
-    m_pMainWindow(nullptr)
+CommonDataManager::CommonDataManager():
+    m_dxfPath(""),
+    m_mainWindow(nullptr)
 {
     
 }
 
-CCommonDataManager::CCommonDataManager(QWidget* pMainWindow):
-    m_strDxfPath(""),
-    m_pMainWindow(pMainWindow)
+CommonDataManager::CommonDataManager(QWidget* pMainWindow):
+    m_dxfPath(""),
+    m_mainWindow(pMainWindow)
 {
 }
 
-CCommonDataManager::~CCommonDataManager() 
+CommonDataManager::~CommonDataManager() 
 {
 
 }

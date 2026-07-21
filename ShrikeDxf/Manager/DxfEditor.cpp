@@ -1,6 +1,6 @@
 ﻿#include "DxfEditor.h"
 
-CDxfEditor::CDxfEditor(CDxfData* dxfData)
+CDxfEditor::CDxfEditor(DxfData* dxfData)
     : m_DxfData(dxfData)
 {
     
@@ -18,7 +18,7 @@ void CDxfEditor::editPoint(stuSelectedEntity* selectedEntity, EntityPoint point)
     if (selectedEntity->type != EntityType::Point)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -43,7 +43,7 @@ void CDxfEditor::editLine(stuSelectedEntity* selectedEntity, EntityLine line)
     if (selectedEntity->type != EntityType::Line)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -67,7 +67,7 @@ void CDxfEditor::editArc(stuSelectedEntity* selectedEntity, EntityArc arc)
     if (selectedEntity->type != EntityType::Arc)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -91,7 +91,7 @@ void CDxfEditor::editCircle(stuSelectedEntity* selectedEntity, EntityCircle circ
     if (selectedEntity->type != EntityType::Circle)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -115,7 +115,7 @@ void CDxfEditor::editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse el
     if (selectedEntity->type != EntityType::Ellipse)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -139,7 +139,7 @@ void CDxfEditor::editText(stuSelectedEntity* selectedEntity, EntityText text)
     if (selectedEntity->type != EntityType::Text)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -163,7 +163,7 @@ void CDxfEditor::editMText(stuSelectedEntity* selectedEntity, EntityMText mtext)
     if (selectedEntity->type != EntityType::MText)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -187,7 +187,7 @@ void CDxfEditor::editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline 
     if (selectedEntity->type != EntityType::Polyline)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -211,7 +211,7 @@ void CDxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyl
     if (selectedEntity->type != EntityType::LWPolyline)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -235,7 +235,7 @@ void CDxfEditor::editSpline(stuSelectedEntity* selectedEntity, EntitySpline spli
     if (selectedEntity->type != EntityType::Spline)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 
@@ -259,7 +259,7 @@ void CDxfEditor::editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch)
     if (selectedEntity->type != EntityType::Hatch)
         return;
 
-    stuLayer* pLayer = m_DxfData->GetLayer(selectedEntity->strLayer.toStdString());
+    stuLayer* pLayer = m_DxfData->getLayer(selectedEntity->strLayer.toStdString());
     if (!pLayer)
         return;
 

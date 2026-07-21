@@ -3,44 +3,44 @@
 
 ShrikeDxf::ShrikeDxf(QWidget *parent)
     : QMainWindow(parent),
-	m_pMenuManger(nullptr),
-	m_pTreeViewManger(nullptr),
-	m_pGraphicsView(nullptr),
-	m_pStackedWidgetManger(nullptr),
-    m_pLayerTableViewManger(nullptr),
-	m_pLabelPos(nullptr),
-	m_pLabelDocName(nullptr),
-	m_pLabelLayer(nullptr),
+	m_menuManger(nullptr),
+	m_treeViewManger(nullptr),
+	m_graphicsView(nullptr),
+	m_stackedWidgetManager(nullptr),
+    m_layerTableViewManager(nullptr),
+	m_labelPos(nullptr),
+	m_labelDocName(nullptr),
+	m_labelLayer(nullptr),
     m_pDataManager(nullptr),
-	m_pDxfDataManger(nullptr),
-	m_pMoveBtnsWidget(nullptr),
-	m_pCreateEntityWidget(nullptr)
+	m_dxfDataManager(nullptr),
+	m_moveBtnsWidget(nullptr),
+	m_createEntityWidget(nullptr)
 {	
     ui.setupUi(this);
 	setWindowIcon(QIcon(":/ShrikeDxf/res/Main.png"));
-	InitDataManagers();
-	InitWindowComponents();
-	InitLabels();
-	ConnectSignalsAndSlots();
+	initDataManagers();
+	initWindowComponents();
+	initLabels();
+	connectSignalsAndSlots();
 }
 
 ShrikeDxf::~ShrikeDxf()
 {
-	delete m_pMenuManger;
+	delete m_menuManger;
 }
 
-void ShrikeDxf::InitWindowComponents()
+void ShrikeDxf::initWindowComponents()
 {
 	//初始化组件需要在确定ui界面加载完毕后进行,在进入消息循环后定时器开启执行初始化
 	QTimer::singleShot(0, this, [this]()
 	{
-		InitAndCreateMenuBar();
-		InitAndCreateTreeView();
-		InitAndCreateGraphicsView();
-		InitAndCreateStackedWidget();
-		InitAndCreateMoveBtnsWidget();
-		InitAndCreateLayerTableView();
-		InitAndCreateCreateEntityWidget();
+		initAndCreateMenuBar();
+		initAndCreateTreeView();
+		initAndCreateGraphicsView();
+		initAndCreateStackedWidget();
+		initAndCreateMoveBtnsWidget();
+		initAndCreateLayerTableView();
+		initAndCreateCreateEntityWidget();
 
 		if (ui.verticalLayout_Layer)
 		{
@@ -58,153 +58,153 @@ void ShrikeDxf::InitWindowComponents()
 	});
 }
 
-void ShrikeDxf::InitDataManagers()
+void ShrikeDxf::initDataManagers()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
-		m_pDataManager = new CCommonDataManager(this);
-		m_pDxfDataManger = new CDxfManager(this);
+		m_pDataManager = new CommonDataManager(this);
+		m_dxfDataManager = new DxfManager(this);
 	});
 }
 
 
-void ShrikeDxf::InitAndCreateMenuBar()
+void ShrikeDxf::initAndCreateMenuBar()
 {
-	m_pMenuManger = new CMenuManger(this);
-	if (m_pMenuManger)
+	m_menuManger = new MenuManager(this);
+	if (m_menuManger)
 	{
-		m_pMenuManger->InitMenuBar();
+		m_menuManger->InitMenuBar();
 	}
 }
 
-void ShrikeDxf::InitAndCreateTreeView()
+void ShrikeDxf::initAndCreateTreeView()
 {
-	m_pTreeViewManger = new CTreeViewManger(this);
-	if (m_pTreeViewManger)
+	m_treeViewManger = new TreeViewManager(this);
+	if (m_treeViewManger)
 	{
-		m_pTreeViewManger->CreateTreeView();
+		m_treeViewManger->CreateTreeView();
 	}
 }
 
-void ShrikeDxf::InitAndCreateGraphicsView()
+void ShrikeDxf::initAndCreateGraphicsView()
 {
-	m_pGraphicsView = new CGraphicsView(this, m_pDxfDataManger);
+	m_graphicsView = new GraphicsView(this, m_dxfDataManager);
 }
 
-void ShrikeDxf::InitAndCreateStackedWidget()
+void ShrikeDxf::initAndCreateStackedWidget()
 {
-	m_pStackedWidgetManger = new CStackedWidgetManger(this);
-	if (m_pStackedWidgetManger)
+	m_stackedWidgetManager = new StackedWidgetManager(this);
+	if (m_stackedWidgetManager)
 	{
-        m_pStackedWidgetManger->CreateStackedWidget();
+        m_stackedWidgetManager->CreateStackedWidget();
 	}
 }
 
-void ShrikeDxf::InitAndCreateLayerTableView()
+void ShrikeDxf::initAndCreateLayerTableView()
 {
-	m_pLayerTableViewManger = new CLayerTableViewManger(this);
-	if (m_pLayerTableViewManger)
+	m_layerTableViewManager = new LayerTableViewManager(this);
+	if (m_layerTableViewManager)
 	{
-		m_pLayerTableViewManger->CreateTableView();
+		m_layerTableViewManager->CreateTableView();
 	}
 }
 
-void ShrikeDxf::InitAndCreateMoveBtnsWidget()
+void ShrikeDxf::initAndCreateMoveBtnsWidget()
 {
 }
 
-void ShrikeDxf::InitAndCreateCreateEntityWidget()
+void ShrikeDxf::initAndCreateCreateEntityWidget()
 {
-	m_pCreateEntityWidget =  new CCreateEntityWidget(this);
-	if (m_pCreateEntityWidget)
+	m_createEntityWidget =  new CreateEntityWidget(this);
+	if (m_createEntityWidget)
 	{
-        m_pCreateEntityWidget->InitWidgetAndAddToLayout();
+        m_createEntityWidget->InitWidgetAndAddToLayout();
 		ui.horizontalLayout_FileStructure->setStretch(9, 1);
 	}
 }
 
-void ShrikeDxf::InitLabels()
+void ShrikeDxf::initLabels()
 {
-	m_pLabelDocName = new QLabel(this);
-	m_pLabelDocName->setText("DocName:None");
-	m_pLabelDocName->setStyleSheet("QLabel {border: 5px solid transparent;; }");
-	statusBar()->addWidget(m_pLabelDocName);
+	m_labelDocName = new QLabel(this);
+	m_labelDocName->setText("DocName:None");
+	m_labelDocName->setStyleSheet("QLabel {border: 5px solid transparent;; }");
+	statusBar()->addWidget(m_labelDocName);
 
-	m_pLabelLayer = new QLabel(this);
-	m_pLabelLayer->setText("Layer:None");
-	m_pLabelLayer->setStyleSheet("QLabel {border: 5px solid transparent;; }");
-	statusBar()->addWidget(m_pLabelLayer);
+	m_labelLayer = new QLabel(this);
+	m_labelLayer->setText("Layer:None");
+	m_labelLayer->setStyleSheet("QLabel {border: 5px solid transparent;; }");
+	statusBar()->addWidget(m_labelLayer);
 
-	m_pLabelPos = new QLabel(this);
-	m_pLabelPos->setText("X:0.000 Y:0.000");
-	m_pLabelPos->setStyleSheet("QLabel {border: 5px solid transparent;; }");
-	statusBar()->addWidget(m_pLabelPos);
+	m_labelPos = new QLabel(this);
+	m_labelPos->setText("X:0.000 Y:0.000");
+	m_labelPos->setStyleSheet("QLabel {border: 5px solid transparent;; }");
+	statusBar()->addWidget(m_labelPos);
 
 }
 
 
-void ShrikeDxf::ConnectSignalsAndSlots()
+void ShrikeDxf::connectSignalsAndSlots()
 {
 	QTimer::singleShot(0, this, [this]()
 		{
-			if (m_pDxfDataManger && m_pTreeViewManger)
+			if (m_dxfDataManager && m_treeViewManger)
 			{
-				connect(m_pDxfDataManger, &CDxfManager::signalRefreshTreeview, m_pTreeViewManger, &CTreeViewManger::handleRefreshTree);
-				connect(m_pDxfDataManger, &CDxfManager::signalRefreshTreeviewAfterRead, m_pTreeViewManger, &CTreeViewManger::handleRefreshTreeviewAfterRead);
-				connect(m_pTreeViewManger, &CTreeViewManger::signalEntitySelected, m_pDxfDataManger, &CDxfManager::handleEntitySelected);
+				connect(m_dxfDataManager, &DxfManager::signalRefreshTreeview, m_treeViewManger, &TreeViewManager::handleRefreshTree);
+				connect(m_dxfDataManager, &DxfManager::signalRefreshTreeviewAfterRead, m_treeViewManger, &TreeViewManager::handleRefreshTreeviewAfterRead);
+				connect(m_treeViewManger, &TreeViewManager::signalEntitySelected, m_dxfDataManager, &DxfManager::handleEntitySelected);
 				
 			}
-			if (m_pDxfDataManger && m_pGraphicsView)
+			if (m_dxfDataManager && m_graphicsView)
 			{
-				connect(m_pDxfDataManger, &CDxfManager::signalRefreshGraphicsview, m_pGraphicsView, &CGraphicsView::handleRefreshGraphicsview);
-				connect(m_pGraphicsView, &CGraphicsView::signalMousePos, m_pDxfDataManger, &CDxfManager::handleMousePos);
-				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftCLick, m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonClicked);
-				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewRightClick, m_pDxfDataManger, &CDxfManager::handleMouseRightButtonClicked);
-				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftPressed,m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonPressed);
-				connect(m_pGraphicsView, &CGraphicsView::signalGraphicsViewLeftReleased,m_pDxfDataManger, &CDxfManager::handleMouseLeftButtonReleased);
+				connect(m_dxfDataManager, &DxfManager::signalRefreshGraphicsview, m_graphicsView, &GraphicsView::handleRefreshGraphicsview);
+				connect(m_graphicsView, &GraphicsView::signalMousePos, m_dxfDataManager, &DxfManager::handleMousePos);
+				connect(m_graphicsView, &GraphicsView::signalGraphicsViewLeftCLick, m_dxfDataManager, &DxfManager::handleMouseLeftButtonClicked);
+				connect(m_graphicsView, &GraphicsView::signalGraphicsViewRightClick, m_dxfDataManager, &DxfManager::handleMouseRightButtonClicked);
+				connect(m_graphicsView, &GraphicsView::signalGraphicsViewLeftPressed,m_dxfDataManager, &DxfManager::handleMouseLeftButtonPressed);
+				connect(m_graphicsView, &GraphicsView::signalGraphicsViewLeftReleased,m_dxfDataManager, &DxfManager::handleMouseLeftButtonReleased);
 
-				connect(m_pDxfDataManger, &CDxfManager::signalMouseStatusChanged, m_pGraphicsView, &CGraphicsView::handleMouseStatusChanged);
-				connect(m_pGraphicsView, &CGraphicsView::signalEndDrawingPreview, m_pDxfDataManger, &CDxfManager::handleEndDrawingPreview);
+				connect(m_dxfDataManager, &DxfManager::signalMouseStatusChanged, m_graphicsView, &GraphicsView::handleMouseStatusChanged);
+				connect(m_graphicsView, &GraphicsView::signalEndDrawingPreview, m_dxfDataManager, &DxfManager::handleEndDrawingPreview);
 			}
-			if (m_pDxfDataManger && m_pStackedWidgetManger)
+			if (m_dxfDataManager && m_stackedWidgetManager)
 			{
-				connect(m_pDxfDataManger, &CDxfManager::signalSelectedEntityChanged, m_pStackedWidgetManger, &CStackedWidgetManger::handleRefreshStackedWidget);
+				connect(m_dxfDataManager, &DxfManager::signalSelectedEntityChanged, m_stackedWidgetManager, &StackedWidgetManager::handleRefreshStackedWidget);
 			}
-			if (m_pDxfDataManger && m_pLayerTableViewManger)
+			if (m_dxfDataManager && m_layerTableViewManager)
 			{
-				connect(m_pDxfDataManger, &CDxfManager::signalRefreshLayerTable, m_pLayerTableViewManger, &CLayerTableViewManger::handleRefreshLayerTableview);
-				connect(m_pLayerTableViewManger, &CLayerTableViewManger::signalLayerModelChanged, m_pDxfDataManger, &CDxfManager::handleLayerAttributeChanged);
+				connect(m_dxfDataManager, &DxfManager::signalRefreshLayerTable, m_layerTableViewManager, &LayerTableViewManager::handleRefreshLayerTableview);
+				connect(m_layerTableViewManager, &LayerTableViewManager::signalLayerModelChanged, m_dxfDataManager, &DxfManager::handleLayerAttributeChanged);
 			}
-			if (m_pDxfDataManger && m_pStackedWidgetManger)
+			if (m_dxfDataManager && m_stackedWidgetManager)
 			{
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalPointChanged, m_pDxfDataManger, &CDxfManager::handlePointAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalLineChanged, m_pDxfDataManger, &CDxfManager::handleLineAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalCircleChanged, m_pDxfDataManger, &CDxfManager::handleCircleAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalArcChanged, m_pDxfDataManger, &CDxfManager::handleArcAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalEllipseChanged, m_pDxfDataManger, &CDxfManager::handleEllipseAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalTextChanged, m_pDxfDataManger, &CDxfManager::handleTextAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalMTextChanged, m_pDxfDataManger, &CDxfManager::handleMTextAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalLWPolylineChanged, m_pDxfDataManger, &CDxfManager::handleLwpolylineAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalPolylineChanged, m_pDxfDataManger, &CDxfManager::handlePolylineAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalHatchChanged, m_pDxfDataManger, &CDxfManager::handleHatchAttributeChanged);
-				connect(m_pStackedWidgetManger, &CStackedWidgetManger::signalSplineChanged, m_pDxfDataManger, &CDxfManager::handleSplineAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalPointChanged, m_dxfDataManager, &DxfManager::handlePointAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalLineChanged, m_dxfDataManager, &DxfManager::handleLineAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalCircleChanged, m_dxfDataManager, &DxfManager::handleCircleAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalArcChanged, m_dxfDataManager, &DxfManager::handleArcAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalEllipseChanged, m_dxfDataManager, &DxfManager::handleEllipseAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalTextChanged, m_dxfDataManager, &DxfManager::handleTextAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalMTextChanged, m_dxfDataManager, &DxfManager::handleMTextAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalLWPolylineChanged, m_dxfDataManager, &DxfManager::handleLwpolylineAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalPolylineChanged, m_dxfDataManager, &DxfManager::handlePolylineAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalHatchChanged, m_dxfDataManager, &DxfManager::handleHatchAttributeChanged);
+				connect(m_stackedWidgetManager, &StackedWidgetManager::signalSplineChanged, m_dxfDataManager, &DxfManager::handleSplineAttributeChanged);
 			}
-			if (this && m_pGraphicsView)
+			if (this && m_graphicsView)
 			{
-				connect(m_pGraphicsView, &CGraphicsView::signalMousePosString, this, &ShrikeDxf::handleMousePos);
+				connect(m_graphicsView, &GraphicsView::signalMousePosString, this, &ShrikeDxf::handleMousePos);
 				//connect(m_pGraphicsView, &CGraphicsView::signalDeleteEntity, this, &CDxfManager::DeleteSelectedEntity);
 				//connect(m_pGraphicsView, &CGraphicsView::signalCopyEntity, this, &CDxfManager::CopySelectedEntity);
 				//connect(m_pGraphicsView, &CGraphicsView::signalCutEntity, this, &CDxfManager::CutSelectedEntity);
 				//connect(m_pGraphicsView, &CGraphicsView::signalPaste, this, &CDxfManager::PasteEntityAt);
 			}
-			if (this && m_pDxfDataManger)
+			if (this && m_dxfDataManager)
 			{
-                connect(m_pDxfDataManger,&CDxfManager::signalFileName, this, &ShrikeDxf::handleShowDocName);
-				connect(m_pDxfDataManger, &CDxfManager::signalCurrentLayerChanged, this, &ShrikeDxf::handleShowLayerName);
+                connect(m_dxfDataManager,&DxfManager::signalFileName, this, &ShrikeDxf::handleShowDocName);
+				connect(m_dxfDataManager, &DxfManager::signalCurrentLayerChanged, this, &ShrikeDxf::handleShowLayerName);
 			}
-			if (m_pCreateEntityWidget && m_pDxfDataManger)
+			if (m_createEntityWidget && m_dxfDataManager)
 			{
-				connect(m_pCreateEntityWidget,&CCreateEntityWidget::signalMouseStatus,m_pDxfDataManger, &CDxfManager::handleOnMouseStatusChanged);
+				connect(m_createEntityWidget,&CreateEntityWidget::signalMouseStatus,m_dxfDataManager, &DxfManager::handleOnMouseStatusChanged);
 			}
 		});
 }
@@ -215,25 +215,25 @@ void ShrikeDxf::handleShowDocName(QString strDocName)
 	{
 		QFileInfo fileInfo(strDocName);
 		QString fileName = fileInfo.fileName();
-		if (m_pLabelDocName)
+		if (m_labelDocName)
 		{
-			m_pLabelDocName->setText("DocName:" + fileName);
+			m_labelDocName->setText("DocName:" + fileName);
 		}
 	}
 }
 
 void ShrikeDxf::handleShowLayerName(QString strLayerName)
 {
-	if (m_pLabelLayer)
+	if (m_labelLayer)
 	{
-		m_pLabelLayer->setText("Layer:" + strLayerName);
+		m_labelLayer->setText("Layer:" + strLayerName);
 	}
 }
 
 void ShrikeDxf::handleMousePos(QString strPos)
 {
-	if (m_pLabelPos)
+	if (m_labelPos)
 	{
-		m_pLabelPos->setText(strPos);
+		m_labelPos->setText(strPos);
 	}
 }

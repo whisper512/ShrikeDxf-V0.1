@@ -4,17 +4,17 @@
 #include "LayerTableView.h"
 #include "ShrikeDxf.h"
 
-CLayerTableViewManger::CLayerTableViewManger(QWidget* pMainwnd):
+LayerTableViewManager::LayerTableViewManager(QWidget* pMainwnd):
     m_pMainWnd(pMainwnd),
     m_pTableView(nullptr)
 {
 }
 
-CLayerTableViewManger::~CLayerTableViewManger()
+LayerTableViewManager::~LayerTableViewManager()
 {
 }
 
-void CLayerTableViewManger::CreateTableView()
+void LayerTableViewManager::CreateTableView()
 {
     m_pTableView = new QTableView(m_pMainWnd);
 	if (m_pMainWnd)
@@ -27,7 +27,7 @@ void CLayerTableViewManger::CreateTableView()
 	
 }
 
-void CLayerTableViewManger::InitTableView()
+void LayerTableViewManager::InitTableView()
 {
 	QStandardItemModel* pHeaderModel = new QStandardItemModel(0,3, m_pTableView);
 	pHeaderModel->setHorizontalHeaderLabels({"NO","NAME","COLOR"});
@@ -37,10 +37,10 @@ void CLayerTableViewManger::InitTableView()
 	m_pTableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 	m_pTableView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 
-	connect(m_pTableView, &QTableView::clicked, this, &CLayerTableViewManger::handleTableViewClicked);
+	connect(m_pTableView, &QTableView::clicked, this, &LayerTableViewManager::handleTableViewClicked);
 }
 
-void CLayerTableViewManger::handleTableViewClicked(const QModelIndex& index)
+void LayerTableViewManager::handleTableViewClicked(const QModelIndex& index)
 {
 	if (index.column() == 2)
 	{
@@ -62,7 +62,7 @@ void CLayerTableViewManger::handleTableViewClicked(const QModelIndex& index)
 }
 
 
-void CLayerTableViewManger::handleRefreshLayerTableview(CDxfLayerTableviewModel* pModel)
+void LayerTableViewManager::handleRefreshLayerTableview(CDxfLayerTableviewModel* pModel)
 {
 	if (pModel)
 	{

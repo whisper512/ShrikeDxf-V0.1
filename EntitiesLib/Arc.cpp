@@ -127,7 +127,7 @@ void EntityArc::rotate(double angle, const QPointF& centerPt)
     // isCCW 不变（纯旋转不改变方向）
 }
 
-// 拉伸（仅四角均匀缩放）
+// 拉伸(仅四角均匀缩放)
 void EntityArc::stretch(StretchGrip grip, const QPointF& newPos)
 {
     if (grip == StretchGrip::None)

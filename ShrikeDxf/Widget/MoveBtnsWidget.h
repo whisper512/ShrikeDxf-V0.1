@@ -3,13 +3,13 @@
 #include <QWidget>
 #include "ui_MoveBtnsWidget.h"
 
-class CMoveBtnsWidget : public QWidget
+class MoveBtnsWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	CMoveBtnsWidget(QWidget *parent = nullptr);
-	~CMoveBtnsWidget();
+	MoveBtnsWidget(QWidget *parent = nullptr);
+	~MoveBtnsWidget();
 
 	void InitWidgetAndAddToLayout();
 	

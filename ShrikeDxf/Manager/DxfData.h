@@ -5,85 +5,85 @@
  * @brief DXF 数据存储类
  */
 
-class CDxfData
+class DxfData
 {
 public:
-    CDxfData();
-    ~CDxfData();
+    DxfData();
+    ~DxfData();
 
     // 文档级访问
-    DxfDocument& GetDocument();
-    const DxfDocument& GetDocument() const;
+    DxfDocument& getDocument();
+    const DxfDocument& getDocument() const;
 
-    void SetVersion(const QString& version);
-    void SetInsUnits(double units);
-    void SetExtents(const Vertex3D& extMin, const Vertex3D& extMax);
-    void SetLtScale(double ltscale);
+    void setVersion(const QString& version);
+    void setInsUnits(double units);
+    void setExtents(const Vertex3D& extMin, const Vertex3D& extMax);
+    void setLtScale(double ltscale);
 
-    const QString& GetVersion() const;
-    double         GetInsUnits() const;
-    double         GetLtScale() const;
-    Vertex3D       GetExtMin() const;
-    Vertex3D       GetExtMax() const;
+    const QString& getVersion() const;
+    double         getInsUnits() const;
+    double         getLtScale() const;
+    Vertex3D       getExtMin() const;
+    Vertex3D       getExtMax() const;
 
     // Layer 图层管理
-    void AddLayer(const stuLayer& layer);
-    bool HasLayer(const std::string& name) const;
-    const  std::map<std::string, stuLayer> GetLayers() const;
-    std::map<std::string, stuLayer>& GetLayers();
-    stuLayer* GetLayer(const std::string& name);
-    const stuLayer* GetLayer(const std::string& name) const;
-    std::vector<std::string> GetAllLayerNames() const;
-    size_t GetLayerCount() const;
-    QString GetFirstLayerName() const;
+    void addLayer(const stuLayer& layer);
+    bool hasLayer(const std::string& name) const;
+    const  std::map<std::string, stuLayer> getLayers() const;
+    std::map<std::string, stuLayer>& getLayers();
+    stuLayer* getLayer(const std::string& name);
+    const stuLayer* getLayer(const std::string& name) const;
+    std::vector<std::string> getAllLayerNames() const;
+    size_t getLayerCount() const;
+    QString getFirstLayerName() const;
     // 确保图层存在
-    stuLayer& EnsureLayer(const std::string& name);
+    stuLayer& ensureLayer(const std::string& name);
 
     
     // 指定图层添加任意类型图元
-    void AddEntity(const std::string& layerName, const variantDxfEntity& entity);
-    void AddPoint(const std::string& layerName, const EntityPoint& ent);
-    void AddLine(const std::string& layerName, const EntityLine& ent);
-    void AddCircle(const std::string& layerName, const EntityCircle& ent);
-    void AddArc(const std::string& layerName, const EntityArc& ent);
-    void AddLWPolyline(const std::string& layerName, const EntityLWPolyline& ent);
-    void AddPolyline(const std::string& layerName, const EntityPolyline& ent);
-    void AddEllipse(const std::string& layerName, const EntityEllipse& ent);
-    void AddSpline(const std::string& layerName, const EntitySpline& ent);
-    void AddText(const std::string& layerName, const EntityText& ent);
-    void AddMText(const std::string& layerName, const EntityMText& ent);
-    void AddInsert(const std::string& layerName, const EntityInsert& ent);
-    void AddSolid(const std::string& layerName, const EntitySolid& ent);
-    void AddHatch(const std::string& layerName, const EntityHatch& ent);
+    void addEntity(const std::string& layerName, const variantDxfEntity& entity);
+    void addPoint(const std::string& layerName, const EntityPoint& ent);
+    void addLine(const std::string& layerName, const EntityLine& ent);
+    void addCircle(const std::string& layerName, const EntityCircle& ent);
+    void addArc(const std::string& layerName, const EntityArc& ent);
+    void addLWPolyline(const std::string& layerName, const EntityLWPolyline& ent);
+    void addPolyline(const std::string& layerName, const EntityPolyline& ent);
+    void addEllipse(const std::string& layerName, const EntityEllipse& ent);
+    void addSpline(const std::string& layerName, const EntitySpline& ent);
+    void addText(const std::string& layerName, const EntityText& ent);
+    void addMText(const std::string& layerName, const EntityMText& ent);
+    void addInsert(const std::string& layerName, const EntityInsert& ent);
+    void addSolid(const std::string& layerName, const EntitySolid& ent);
+    void addHatch(const std::string& layerName, const EntityHatch& ent);
 
     // Block 块定义管理
-    stuBlock& AddBlock(const std::string& name, const Vertex3D& basePoint = Vertex3D());
-    bool HasBlock(const std::string& name) const;
-    stuBlock* GetBlock(const std::string& name);
-    const stuBlock* GetBlock(const std::string& name) const;
-    std::vector<std::string> GetAllBlockNames() const;
-    size_t GetBlockCount() const;
+    stuBlock& addBlock(const std::string& name, const Vertex3D& basePoint = Vertex3D());
+    bool hasBlock(const std::string& name) const;
+    stuBlock* getBlock(const std::string& name);
+    const stuBlock* getBlock(const std::string& name) const;
+    std::vector<std::string> getAllBlockNames() const;
+    size_t getBlockCount() const;
     // 向块内添加图元
-    void AddEntityToBlock(const std::string& blockName, const variantDxfEntity& entity);
+    void addEntityToBlock(const std::string& blockName, const variantDxfEntity& entity);
 
 
     // 查询/遍历
-    int GetTotalEntityCount() const;
+    int getTotalEntityCount() const;
     // 按类型统计
-    int GetEntityCount(EntityType type) const;
+    int getEntityCount(EntityType type) const;
     // 按图层统计
-    int GetEntityCount(const std::string& layerName, EntityType type) const;
+    int getEntityCount(const std::string& layerName, EntityType type) const;
     // 按类型过滤
-    std::vector<variantDxfEntity> GetEntitiesByType(EntityType type) const;
+    std::vector<variantDxfEntity> getEntitiesByType(EntityType type) const;
     // 按图层过滤
-    std::vector<variantDxfEntity> GetEntitiesByLayer(const std::string& layerName) const;
+    std::vector<variantDxfEntity> getEntitiesByLayer(const std::string& layerName) const;
     // 按图层+类型过滤
-    std::vector<variantDxfEntity> GetEntities(const std::string& layerName, EntityType type) const;
+    std::vector<variantDxfEntity> getEntities(const std::string& layerName, EntityType type) const;
 
-    stuPreviewEntity& GetPreviewEntity();
-    const stuPreviewEntity& GetPreviewEntity() const;
+    stuPreviewEntity& getPreviewEntity();
+    const stuPreviewEntity& getPreviewEntity() const;
 
-    void Clear();
+    void clear();
 
 private:
     DxfDocument m_document;

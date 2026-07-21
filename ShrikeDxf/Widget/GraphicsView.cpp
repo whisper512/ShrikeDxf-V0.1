@@ -5,15 +5,15 @@
 #include "ShrikeDxf.h"
 #include "../Manager/DxfManager.h" 
 
-CGraphicsView::CGraphicsView()
+GraphicsView::GraphicsView()
 {
 }
 
-CGraphicsView::~CGraphicsView()
+GraphicsView::~GraphicsView()
 {
 }
 
-CGraphicsView::CGraphicsView(QWidget* pMainwnd , CDxfManager* pDxfManager):
+GraphicsView::GraphicsView(QWidget* pMainwnd , DxfManager* pDxfManager):
     m_pMainWnd(pMainwnd),
     m_pGraphicsViewMenu(nullptr),
     m_pGraphicsOperateMenu(nullptr),
@@ -71,7 +71,7 @@ CGraphicsView::CGraphicsView(QWidget* pMainwnd , CDxfManager* pDxfManager):
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void CGraphicsView::InitMenu(QWidget* pParent)
+void GraphicsView::InitMenu(QWidget* pParent)
 {
     m_pGraphicsViewMenu = new QMenu();
     m_pGraphicsOperateMenu = new QMenu();
@@ -79,10 +79,10 @@ void CGraphicsView::InitMenu(QWidget* pParent)
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     InitGraphicsViewAction();
-    connect(this, &QWidget::customContextMenuRequested, this, &CGraphicsView::ShowMenu);
+    connect(this, &QWidget::customContextMenuRequested, this, &GraphicsView::ShowMenu);
 }
 
-void CGraphicsView::InitRuler()
+void GraphicsView::InitRuler()
 {
     // 创建标尺
     m_pRulerH = new CRulerH(this);
@@ -98,7 +98,7 @@ void CGraphicsView::InitRuler()
     m_pRulerV->show();
 }
 
-void CGraphicsView::ShowMenu(const QPoint& pos)
+void GraphicsView::ShowMenu(const QPoint& pos)
 {
     m_pointRightClickPos = pos;
     m_pointRightClickPos = pos;
@@ -139,7 +139,7 @@ void CGraphicsView::ShowMenu(const QPoint& pos)
 }
 
 
-void CGraphicsView::InitGraphicsViewAction()
+void GraphicsView::InitGraphicsViewAction()
 {
     m_pActionDrag = new QAction("Drag", this);
     m_pActionDrag->setCheckable(true);
@@ -161,11 +161,11 @@ void CGraphicsView::InitGraphicsViewAction()
     m_pGraphicsViewMenu->addAction(m_pActionFilpY);
     m_pGraphicsViewMenu->addAction(m_pActionResetView);
 
-    connect(m_pActionDrag, &QAction::toggled, this, &CGraphicsView::handleDrag);
-    connect(m_pActionLockZoom, &QAction::toggled, this, &CGraphicsView::handleLockZoom);
-    connect(m_pActionFilpX, &QAction::toggled, this, &CGraphicsView::handleFilpAlongX);
-    connect(m_pActionFilpY, &QAction::toggled, this, &CGraphicsView::handleFilpAlongY);
-    connect(m_pActionResetView, &QAction::triggered, this, &CGraphicsView::handleResetView);
+    connect(m_pActionDrag, &QAction::toggled, this, &GraphicsView::handleDrag);
+    connect(m_pActionLockZoom, &QAction::toggled, this, &GraphicsView::handleLockZoom);
+    connect(m_pActionFilpX, &QAction::toggled, this, &GraphicsView::handleFilpAlongX);
+    connect(m_pActionFilpY, &QAction::toggled, this, &GraphicsView::handleFilpAlongY);
+    connect(m_pActionResetView, &QAction::triggered, this, &GraphicsView::handleResetView);
 
     m_pActionEndDrawing = new QAction(QStringLiteral("End Drawing"), this);
     m_pGraphicsPreviewMenu->addAction(m_pActionEndDrawing);
@@ -208,7 +208,7 @@ void CGraphicsView::InitGraphicsViewAction()
 }
 
 
-void CGraphicsView::InitScene()
+void GraphicsView::InitScene()
 {
     //在没有加载scene的情况下，初始化一个scene
     if (!scene())
@@ -221,7 +221,7 @@ void CGraphicsView::InitScene()
     UpdateRulers();
 }
 
-void CGraphicsView::FilpView()
+void GraphicsView::FilpView()
 {
     QTransform curTransform = transform();
     // 当前缩放比例,只取绝对值
@@ -252,38 +252,38 @@ void CGraphicsView::FilpView()
 }
 
 
-void CGraphicsView::handlelCopyintEntity()
+void GraphicsView::handlelCopyintEntity()
 {
     m_bCopyingEntity = true;
 }
 
-void CGraphicsView::handleFilpAlongX(bool bChecked)
+void GraphicsView::handleFilpAlongX(bool bChecked)
 {
     m_bFilpAlongX = bChecked;
     FilpView();
 }
 
-void CGraphicsView::handleFilpAlongY(bool bChecked)
+void GraphicsView::handleFilpAlongY(bool bChecked)
 {
     m_bFilpAlongY = bChecked;
     FilpView();
 }
 
 
-void CGraphicsView::handleLockZoom(bool bChecked)
+void GraphicsView::handleLockZoom(bool bChecked)
 {
     m_bLockZoom = bChecked;
 }
 
 
-void CGraphicsView::handleMouseStatusChanged(enumMouseStateInView mouseState)
+void GraphicsView::handleMouseStatusChanged(enumMouseStateInView mouseState)
 {
     m_bDrawingPreview = (mouseState != enumMouseStateInView::enumMouseState_None);
 }
 
 
 
-void CGraphicsView::wheelEvent(QWheelEvent* pEvent)
+void GraphicsView::wheelEvent(QWheelEvent* pEvent)
 {
     if (m_bLockZoom)
     {
@@ -312,7 +312,7 @@ void CGraphicsView::wheelEvent(QWheelEvent* pEvent)
     UpdateRulers();
 }
 
-void CGraphicsView::handleResetView()
+void GraphicsView::handleResetView()
 {
     setTransform(m_tranformInitial);
     if (scene())
@@ -323,13 +323,13 @@ void CGraphicsView::handleResetView()
 }
 
 
-void CGraphicsView::handleDrag(bool bChecked)
+void GraphicsView::handleDrag(bool bChecked)
 {
     m_bDrag = bChecked;
 }
 
 
-void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewTransform)
+void GraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewTransform)
 {
     if (pScene)
     {
@@ -364,7 +364,7 @@ void CGraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bR
     }
 }
 
-void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
+void GraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
 {
     QGraphicsView::mouseMoveEvent(pEvent);
     update();
@@ -397,7 +397,7 @@ void CGraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
     }
 }
 
-void CGraphicsView::mousePressEvent(QMouseEvent* pEvent)
+void GraphicsView::mousePressEvent(QMouseEvent* pEvent)
 {
     if (pEvent->button() == Qt::LeftButton && m_bDrag)
     {
@@ -419,7 +419,7 @@ void CGraphicsView::mousePressEvent(QMouseEvent* pEvent)
     QGraphicsView::mousePressEvent(pEvent);
 }
 
-void CGraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
+void GraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
 {
     if (pEvent->button() == Qt::LeftButton && m_bDrag)
     {
@@ -433,7 +433,7 @@ void CGraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
     QGraphicsView::mouseReleaseEvent(pEvent);
 }
 
-void CGraphicsView::UpdateRulers()
+void GraphicsView::UpdateRulers()
 {
     // 获取当前视图在场景中的矩形
     QRectF sceneRect;
@@ -468,7 +468,7 @@ void CGraphicsView::UpdateRulers()
 }
 
 
-void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
+void GraphicsView::resizeEvent(QResizeEvent* pEvent)
 {
     QGraphicsView::resizeEvent(pEvent);
 
@@ -491,7 +491,7 @@ void CGraphicsView::resizeEvent(QResizeEvent* pEvent)
     }
 }
 
-void CGraphicsView::drawForeground(QPainter* pPainter, const QRectF& rect)
+void GraphicsView::drawForeground(QPainter* pPainter, const QRectF& rect)
 {
     QGraphicsView::drawForeground(pPainter, rect);
     if (m_bShowPosCross)

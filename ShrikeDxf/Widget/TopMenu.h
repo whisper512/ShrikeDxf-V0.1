@@ -6,11 +6,11 @@
 #include <QMenu.h>
 #include <QWidget>
 
-class CMenuManger : public QWidget
+class MenuManager : public QWidget
 {
 	public:
-	explicit CMenuManger(QWidget* parent = nullptr);
-	~CMenuManger();
+	explicit MenuManager(QWidget* parent = nullptr);
+	~MenuManager();
 	
 	void InitMenuBar();
 	void InitMenu();

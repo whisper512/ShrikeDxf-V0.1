@@ -5,13 +5,13 @@
 #include "ui_CreateEntityWidget.h"
 #include "Manager/Tools.h"
 
-class CCreateEntityWidget : public QWidget
+class CreateEntityWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	CCreateEntityWidget(QWidget *parent = nullptr);
-	~CCreateEntityWidget();
+	CreateEntityWidget(QWidget *parent = nullptr);
+	~CreateEntityWidget();
 
 	void InitWidgetAndAddToLayout();
 	

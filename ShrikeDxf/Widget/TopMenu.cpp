@@ -6,7 +6,7 @@
 
 #include "ShrikeDxf.h"
 
-CMenuManger::CMenuManger(QWidget* parent) : 
+MenuManager::MenuManager(QWidget* parent) : 
 	QWidget(parent),
 	m_pMenuFile(nullptr),
 	m_pMenuHelp(nullptr),
@@ -20,7 +20,7 @@ CMenuManger::CMenuManger(QWidget* parent) :
 	m_pParent = this->parentWidget();
 }
 
-CMenuManger::~CMenuManger()
+MenuManager::~MenuManager()
 {
 	delete m_pMenuFile;
 	delete m_pMenuHelp;
@@ -31,7 +31,7 @@ CMenuManger::~CMenuManger()
 	delete m_pActionAbout;
 }
 
-void CMenuManger::InitMenuBar()
+void MenuManager::InitMenuBar()
 {
 	InitMenu();
 	InitAction();
@@ -39,14 +39,14 @@ void CMenuManger::InitMenuBar()
 	ConnectSolt();
 }
 
-void CMenuManger::InitMenu()
+void MenuManager::InitMenu()
 {
 	m_pMenuFile = new QMenu("File", this);
 	m_pMenuSetting = new QMenu("Setting", this);
 	m_pMenuView = new QMenu("View", this);
 }
 
-void CMenuManger::InitAction()
+void MenuManager::InitAction()
 {
 	if (m_pMenuFile)
 	{
@@ -88,7 +88,7 @@ void CMenuManger::InitAction()
 	}
 }
 
-void CMenuManger::AddToBar()
+void MenuManager::AddToBar()
 {
 	if (m_pParent)
 	{
@@ -102,31 +102,31 @@ void CMenuManger::AddToBar()
 	}
 }
 
-void CMenuManger::ConnectSolt()
+void MenuManager::ConnectSolt()
 {
 	if (m_pActionOpen)
 	{
-		connect(m_pActionOpen, &QAction::triggered,this, &CMenuManger::OnOpen);
+		connect(m_pActionOpen, &QAction::triggered,this, &MenuManager::OnOpen);
 	}
 	if (m_pActionSave)
 	{
-		connect(m_pActionSave, &QAction::triggered, this, &CMenuManger::OnSave);
+		connect(m_pActionSave, &QAction::triggered, this, &MenuManager::OnSave);
 	}
 	if (m_pActionClose)
 	{
-		connect(m_pActionClose, &QAction::triggered, this, &CMenuManger::OnClose);
+		connect(m_pActionClose, &QAction::triggered, this, &MenuManager::OnClose);
 	}
 	if (m_pActionSaveAs)
 	{
-        connect(m_pActionSaveAs, &QAction::triggered, this, &CMenuManger::OnSaveAs);
+        connect(m_pActionSaveAs, &QAction::triggered, this, &MenuManager::OnSaveAs);
 	}
 	if(m_pActionNew)
 	{
-        connect(m_pActionNew, &QAction::triggered, this, &CMenuManger::OnNew);
+        connect(m_pActionNew, &QAction::triggered, this, &MenuManager::OnNew);
 	}
 }
 
-void CMenuManger::OnOpen()
+void MenuManager::OnOpen()
 {
 	if (m_pParent)
 	{
@@ -139,41 +139,41 @@ void CMenuManger::OnOpen()
 		if (!filePath.isEmpty())
 		{
 			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-			pShrikeDxf->m_pDataManager->m_strDxfPath = filePath;
-			pShrikeDxf->m_pDxfDataManger->LoadDxfFile(filePath);
+			pShrikeDxf->m_pDataManager->m_dxfPath = filePath;
+			pShrikeDxf->m_dxfDataManager->LoadDxfFile(filePath);
 		}
 	}
 }
 
-void CMenuManger::OnSave()
+void MenuManager::OnSave()
 {
 	if (m_pParent)
 	{
 		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-		QString filePath = pShrikeDxf->m_pDataManager->m_strDxfPath;
-		pShrikeDxf->m_pDxfDataManger->SaveDxfFile(filePath);
+		QString filePath = pShrikeDxf->m_pDataManager->m_dxfPath;
+		pShrikeDxf->m_dxfDataManager->SaveDxfFile(filePath);
 	}
 }
 
-void CMenuManger::OnClose()
+void MenuManager::OnClose()
 {
 	if (m_pParent)
 	{
 		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-        pShrikeDxf->m_pDxfDataManger->CloseDxfFile();
+        pShrikeDxf->m_dxfDataManager->CloseDxfFile();
 	}
 }
 
-void CMenuManger::OnNew()
+void MenuManager::OnNew()
 {
 	if (m_pParent)
 	{
         ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-        pShrikeDxf->m_pDxfDataManger->NewDxfFile();
+        pShrikeDxf->m_dxfDataManager->NewDxfFile();
 	}
 }
 
-void CMenuManger::OnSaveAs()
+void MenuManager::OnSaveAs()
 {
 	if (m_pParent)
 	{
@@ -193,12 +193,12 @@ void CMenuManger::OnSaveAs()
 				filePath += ".dxf";
 			}
 
-			bool success = pShrikeDxf->m_pDxfDataManger->SaveDxfFile(filePath);
+			bool success = pShrikeDxf->m_dxfDataManager->SaveDxfFile(filePath);
 
 			// 如果保存成功，更新当前文件路径
 			if (success)
 			{
-				pShrikeDxf->m_pDataManager->m_strDxfPath = filePath;
+				pShrikeDxf->m_pDataManager->m_dxfPath = filePath;
 			}
 			else
 			{

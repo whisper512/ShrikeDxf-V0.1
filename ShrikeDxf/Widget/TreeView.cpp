@@ -4,7 +4,7 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-CTreeViewManger::CTreeViewManger(QWidget* pMainwnd) :
+TreeViewManager::TreeViewManager(QWidget* pMainwnd) :
 	m_pMainwnd(pMainwnd),
 	m_pContextMenu(nullptr),
 	m_pActionDelete(nullptr),
@@ -13,12 +13,12 @@ CTreeViewManger::CTreeViewManger(QWidget* pMainwnd) :
 {
 }
 
-CTreeViewManger::~CTreeViewManger()
+TreeViewManager::~TreeViewManager()
 {
 	delete m_pTreeView;
 }
 
-void CTreeViewManger::CreateTreeView()
+void TreeViewManager::CreateTreeView()
 {
 	m_pTreeView = new QTreeView(m_pMainwnd);
 	m_pTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -47,20 +47,20 @@ void CTreeViewManger::CreateTreeView()
 
 	//添加menu右键
 	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_pTreeView, &QTreeView::customContextMenuRequested, this, &CTreeViewManger::handleShowContextMenu);
+	connect(m_pTreeView, &QTreeView::customContextMenuRequested, this, &TreeViewManager::handleShowContextMenu);
 	//左键选择
-	connect(m_pTreeView, &QTreeView::clicked, this, &CTreeViewManger::handleOnItemClicked);
+	connect(m_pTreeView, &QTreeView::clicked, this, &TreeViewManager::handleOnItemClicked);
 }
 
 
-void CTreeViewManger::handleShowContextMenu(const QPoint& pos)
+void TreeViewManager::handleShowContextMenu(const QPoint& pos)
 {
 	//InitContextMenu();
 
 	//m_pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
 }
 
-void CTreeViewManger::InitContextMenu()
+void TreeViewManager::InitContextMenu()
 {
 	if (m_pTreeView)
 	{
@@ -68,14 +68,14 @@ void CTreeViewManger::InitContextMenu()
 
 		m_pActionCopy = new QAction("Copy", this);
 		m_pContextMenu->addAction(m_pActionCopy);
-		connect(m_pActionCopy, &QAction::triggered, this, &CTreeViewManger::CopyEntity);
+		connect(m_pActionCopy, &QAction::triggered, this, &TreeViewManager::CopyEntity);
 		m_pActionDelete = new QAction("Delete", this);
 		m_pContextMenu->addAction(m_pActionDelete);
-		connect(m_pActionDelete,&QAction::triggered, this, &CTreeViewManger::DeleteEntity);
+		connect(m_pActionDelete,&QAction::triggered, this, &TreeViewManager::DeleteEntity);
 	}
 }
 
-void CTreeViewManger::handleRefreshTreeviewAfterRead()
+void TreeViewManager::handleRefreshTreeviewAfterRead()
 {
 	if (!m_pTreeView || !m_pTreeView->model())
 	{
@@ -100,7 +100,7 @@ void CTreeViewManger::handleRefreshTreeviewAfterRead()
 	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();	
 }
 
-void CTreeViewManger::DeleteEntity()
+void TreeViewManager::DeleteEntity()
 {
 	QModelIndex index = m_pTreeView->currentIndex();
 	if (index.isValid())
@@ -122,18 +122,18 @@ void CTreeViewManger::DeleteEntity()
 	}
 }
 
-void CTreeViewManger::CopyEntity()
+void TreeViewManager::CopyEntity()
 {
 	emit signalCopyEntityData();
 }
 
 
-void CTreeViewManger::handleReturnEntityInfo(QString strInfo)
+void TreeViewManager::handleReturnEntityInfo(QString strInfo)
 {
     QMessageBox::information(m_pTreeView, "Entity Data", strInfo);
 }
 
-void CTreeViewManger::handleOnItemClicked(const QModelIndex& index)
+void TreeViewManager::handleOnItemClicked(const QModelIndex& index)
 {
 	if (!index.isValid()) return;
 
@@ -160,7 +160,7 @@ void CTreeViewManger::handleOnItemClicked(const QModelIndex& index)
 
 
 
-void CTreeViewManger::handleRefreshTree(CDxfTreeviewModel* pModel)
+void TreeViewManager::handleRefreshTree(CDxfTreeviewModel* pModel)
 {
 	//从映射类中取数据显示
 	if (pModel)

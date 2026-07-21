@@ -12,7 +12,7 @@ class CDxfDrawController : public QObject
     Q_OBJECT
 
 public:
-    CDxfDrawController(CDxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
+    CDxfDrawController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
     ~CDxfDrawController();
 
     // 获取当前图层
@@ -59,7 +59,7 @@ private:
     QVector<QPointF> m_vecPolyPoints;
     QVector<QPointF> m_vecSplinePoints;
 
-    CDxfData* m_pData = nullptr;
+    DxfData* m_pData = nullptr;
     CDxfGraphicsScene* m_pScene = nullptr;
 signals:
 };
