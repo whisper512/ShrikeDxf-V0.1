@@ -35,12 +35,12 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
 {
     if (!m_scene) return;
 
-    if (m_currentState == MouseStateInView::enumMouseState_Point)                    // 画点预览
+    if (m_currentState == MouseStateInView::Point)                    // 画点预览
     {
         m_scene->clearPreview();
         m_scene->addPreviewPoint(scenePos);
     }  
-    else if (m_currentState == MouseStateInView::enumMouseState_Line)                // 画线预览
+    else if (m_currentState == MouseStateInView::Line)                // 画线预览
     {
         if (m_step == 1)
         {
@@ -49,7 +49,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewLine(m_startPoint, scenePos);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_CircleCenterRadius)  // 圆心-半径画圆预览
+    else if (m_currentState == MouseStateInView::CircleCenterRadius)  // 圆心-半径画圆预览
     {
         if (m_step == 1)
         {
@@ -58,7 +58,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewCircle(m_startPoint, radius);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_CircleDiameter)      // 直径画圆预览
+    else if (m_currentState == MouseStateInView::CircleDiameter)      // 直径画圆预览
     {
         if (m_step == 1)
         {
@@ -69,7 +69,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewCircle(center, radius);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_ArcCenterEndpoint)    // 圆心-端点画弧预览
+    else if (m_currentState == MouseStateInView::ArcCenterEndpoint)    // 圆心-端点画弧预览
     {
         if (m_step == 1)
         {
@@ -89,7 +89,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewArc(m_startPoint, radius, startAngle, endAngle);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_ArcThreePoints)       // 三点画弧预览
+    else if (m_currentState == MouseStateInView::ArcThreePoints)       // 三点画弧预览
     {
         if (m_step == 1)
         {
@@ -115,7 +115,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             }
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_Polyline)              // 多段线预览
+    else if (m_currentState == MouseStateInView::Polyline)              // 多段线预览
     {
         if (m_step >= 1 && !m_polyPoints.isEmpty())
         {
@@ -123,7 +123,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewPolyline(m_polyPoints, scenePos);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_EllipseCenterRadius)   // 中心-半径画椭圆预览
+    else if (m_currentState == MouseStateInView::EllipseCenterRadius)   // 中心-半径画椭圆预览
     {
         if (m_step == 1)
         {
@@ -145,7 +145,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewEllipse(m_startPoint, m_midPoint, ratio);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_Rectangle)             // 矩形预览 
+    else if (m_currentState == MouseStateInView::Rectangle)             // 矩形预览 
     {
         if (m_step == 1)
         {
@@ -153,7 +153,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewRectangle(m_startPoint, scenePos);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_SplineFitPoint)        // 拟合点样条预览
+    else if (m_currentState == MouseStateInView::SplineFitPoint)        // 拟合点样条预览
     {
         if (m_step >= 1 && !m_splinePoints.isEmpty())
         {
@@ -161,7 +161,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewSplineFit(m_splinePoints, scenePos);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_SplineControlPoint)    // 控制点样条预览
+    else if (m_currentState == MouseStateInView::SplineControlPoint)    // 控制点样条预览
     {
         if (m_step >= 1 && !m_splinePoints.isEmpty())
         {
@@ -169,7 +169,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewSplineControl(m_splinePoints, scenePos);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_Text)                   // 文本预览
+    else if (m_currentState == MouseStateInView::Text)                   // 文本预览
     {
         if (m_step == 1)
         {
@@ -177,7 +177,7 @@ void dxfDrawController::onMouseMove(QPointF scenePos)
             m_scene->addPreviewTextRect(m_startPoint, scenePos);
         }
     }
-    else if (m_currentState == MouseStateInView::enumMouseState_MText)                  // 多行文本预览
+    else if (m_currentState == MouseStateInView::MText)                  // 多行文本预览
     {
         if (m_step == 1)
         {
@@ -194,9 +194,9 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
 
     switch (m_currentState)
     {
-    case MouseStateInView::enumMouseState_None:
+    case MouseStateInView::None:
         return;
-    case MouseStateInView::enumMouseState_Point:                    // 画点
+    case MouseStateInView::Point:                    // 画点
     {
         std::string layerName = getCurrentLayer().toStdString();
 
@@ -209,7 +209,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         m_scene->dxfDraw(m_data->getLayers());
         break;
     }
-    case MouseStateInView::enumMouseState_Line:                      // 画线
+    case MouseStateInView::Line:                      // 画线
     {
         if (m_step == 0)                                                 // 第一步:记录起点
         {
@@ -235,7 +235,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_CircleCenterRadius:       // 圆心-半径画圆
+    case MouseStateInView::CircleCenterRadius:       // 圆心-半径画圆
     {
         if (m_step == 0)                                                // 第一步:记录圆心
         {
@@ -261,7 +261,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_CircleDiameter:            // 直径画圆 
+    case MouseStateInView::CircleDiameter:            // 直径画圆 
     {
         if (m_step == 0)
         {
@@ -291,7 +291,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_ArcCenterEndpoint:        // 圆心+起点画弧
+    case MouseStateInView::ArcCenterEndpoint:        // 圆心+起点画弧
     {
         if (m_step == 0)
         {
@@ -333,7 +333,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_ArcThreePoints:           // 三点画弧
+    case MouseStateInView::ArcThreePoints:           // 三点画弧
     {
         if (m_step == 0)
         {   
@@ -373,7 +373,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_Polyline:                // 多段线
+    case MouseStateInView::Polyline:                // 多段线
     {
         if (m_step == 0)
         {
@@ -393,7 +393,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_EllipseCenterRadius:      // 圆心+半径画椭圆
+    case MouseStateInView::EllipseCenterRadius:      // 圆心+半径画椭圆
     {
         if (m_step == 0)                                                // 第一步:点击中心
         {
@@ -415,7 +415,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_Rectangle:                  // 矩形(两点对角)
+    case MouseStateInView::Rectangle:                  // 矩形(两点对角)
     {
         if (m_step == 0)                                                  // 第一步：点击第一个角点
         {
@@ -430,7 +430,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_SplineFitPoint:             // 拟合点样条
+    case MouseStateInView::SplineFitPoint:             // 拟合点样条
     {
         if (m_step == 0)
         {
@@ -449,7 +449,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_SplineControlPoint:           // 控制点样条
+    case MouseStateInView::SplineControlPoint:           // 控制点样条
     {
         if (m_step == 0)
         {
@@ -468,7 +468,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_Text:                         // 单行文本
+    case MouseStateInView::Text:                         // 单行文本
     {
         if (m_step == 0)                                                    // 第一步:点击插入点
         {
@@ -483,7 +483,7 @@ void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_MText:                        // 多行文本
+    case MouseStateInView::MText:                        // 多行文本
     {
         if (m_step == 0)                                                    // 第一步:点击插入点
         {
@@ -510,7 +510,7 @@ void dxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
     if (!m_data || !m_scene) return;
     switch (m_currentState)
     {
-    case MouseStateInView::enumMouseState_Polyline:                   // 右键:完成多段线
+    case MouseStateInView::Polyline:                   // 右键:完成多段线
     {
         if (m_step >= 1 && m_polyPoints.size() >= 2)
         {
@@ -523,7 +523,7 @@ void dxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
         }
         break;
     }
-    case MouseStateInView::enumMouseState_SplineFitPoint:
+    case MouseStateInView::SplineFitPoint:
     {
         if (m_step >= 1 && m_splinePoints.size() >= 2)
             finishSplineFit();
@@ -531,7 +531,7 @@ void dxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
             cancelSpline();
         break;
     }
-    case MouseStateInView::enumMouseState_SplineControlPoint:
+    case MouseStateInView::SplineControlPoint:
     {
         if (m_step >= 1 && m_splinePoints.size() >= 2)
             finishSplineControl();
@@ -548,7 +548,7 @@ void dxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
 void dxfDrawController::finishPolyline()
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_Polyline)
+    if (m_currentState != MouseStateInView::Polyline)
         return;
     if (m_polyPoints.size() < 2)
     {
@@ -595,7 +595,7 @@ void dxfDrawController::cancelPolyline()
 void dxfDrawController::finishEllipse(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_EllipseCenterRadius)
+    if (m_currentState != MouseStateInView::EllipseCenterRadius)
         return;
 
     std::string layerName = getCurrentLayer().toStdString();
@@ -627,7 +627,7 @@ void dxfDrawController::finishEllipse(QPointF scenePos)
 void dxfDrawController::finishRectangle(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_Rectangle)
+    if (m_currentState != MouseStateInView::Rectangle)
         return;
 
     std::string layerName = getCurrentLayer().toStdString();
@@ -664,7 +664,7 @@ void dxfDrawController::finishRectangle(QPointF scenePos)
 void dxfDrawController::finishSplineFit()
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_SplineFitPoint)
+    if (m_currentState != MouseStateInView::SplineFitPoint)
         return;
     if (m_splinePoints.size() < 2)
     {
@@ -723,7 +723,7 @@ void dxfDrawController::finishSplineFit()
 void dxfDrawController::finishSplineControl()
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_SplineControlPoint)
+    if (m_currentState != MouseStateInView::SplineControlPoint)
         return;
     if (m_splinePoints.size() < 2)
     {
@@ -782,7 +782,7 @@ void dxfDrawController::cancelSpline()
 void dxfDrawController::finishText(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_Text)
+    if (m_currentState != MouseStateInView::Text)
         return;
 
     std::string layerName = getCurrentLayer().toStdString();
@@ -813,7 +813,7 @@ void dxfDrawController::finishText(QPointF scenePos)
 void dxfDrawController::finishMText(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
-    if (m_currentState != MouseStateInView::enumMouseState_MText)
+    if (m_currentState != MouseStateInView::MText)
         return;
 
     std::string layerName = getCurrentLayer().toStdString();

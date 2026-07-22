@@ -50,7 +50,7 @@ private:
 
 private:
     // 鼠标状态
-    MouseStateInView m_currentState = MouseStateInView::enumMouseState_None;
+    MouseStateInView m_currentState = MouseStateInView::None;
     // 绘图的步骤
     int m_step = 0;
 

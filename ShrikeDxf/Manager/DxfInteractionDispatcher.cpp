@@ -59,7 +59,7 @@ void DxfInteractionDispatcher::onMouseMove(QPointF scenePos)
         return;
     }
 
-    if (m_state == MouseStateInView::enumMouseState_None)
+    if (m_state == MouseStateInView::None)
     {
         // 可以在这里加 hover 夹点高亮
     }
@@ -75,7 +75,7 @@ void DxfInteractionDispatcher::onLeftClick(QPointF scenePos)
     if (!m_drawCtrl)
         return;
 
-    if (m_state == MouseStateInView::enumMouseState_None)
+    if (m_state == MouseStateInView::None)
     {
         // 先检查是否命中了选中图元的夹点
         if (m_editCtrl)
@@ -107,7 +107,7 @@ void DxfInteractionDispatcher::onRightClick(QPointF scenePos)
 void DxfInteractionDispatcher::onLeftPress(QPointF scenePos)
 {
     // 仅在光标模式(非工具模式)且编辑控制器存在时检测夹点
-    if (m_state != MouseStateInView::enumMouseState_None)
+    if (m_state != MouseStateInView::None)
         return;
     if (!m_editCtrl)
         return;
@@ -135,13 +135,13 @@ void DxfInteractionDispatcher::onLeftRelease(QPointF scenePos)
 
 bool DxfInteractionDispatcher::isDrawState(MouseStateInView state) const
 {
-    return state >= MouseStateInView::enumMouseState_Point &&
-        state <= MouseStateInView::enumMouseState_MText;
+    return state >= MouseStateInView::Point &&
+        state <= MouseStateInView::MText;
 }
 
 bool DxfInteractionDispatcher::isEditState(MouseStateInView state) const
 {
     // 或更精细的判断
-    return state >= MouseStateInView::enumMouseState_Move;  
+    return state >= MouseStateInView::Move;  
 }
 

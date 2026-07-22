@@ -413,5 +413,5 @@ void DxfManager::handleEntityDeselected()
 void DxfManager::handleEndDrawingPreview()
 {
     if (m_interactionDispatcher)
-        m_interactionDispatcher->setMouseStatus(MouseStateInView::enumMouseState_None);
+        m_interactionDispatcher->setMouseStatus(MouseStateInView::None);
 }

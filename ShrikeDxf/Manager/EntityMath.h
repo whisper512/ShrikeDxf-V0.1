@@ -1,11 +1,11 @@
 ﻿#pragma once
+#include <QRectF>
 #include <cmath>
 #include <algorithm>
-#include <QRectF>
 
 namespace EntUtil {
 
-    /// 计算一点到线段的距离
+    // 计算一点到线段的距离
     inline double pointToSegmentDistSq(double px, double py,
         double ax, double ay,
         double bx, double by) {
@@ -29,7 +29,7 @@ namespace EntUtil {
         return std::sqrt(pointToSegmentDistSq(px, py, ax, ay, bx, by));
     }
 
-    /// 计算一点到轴对齐矩形的距离
+    // 计算一点到轴对齐矩形的距离
     inline double rectDistanceToPoint(double px, double py,
         double left, double top,
         double right, double bottom) {
@@ -48,7 +48,7 @@ namespace EntUtil {
         return 0.0; // inside
     }
 
-    /// 根据一组点计算带边距的包围盒
+    // 根据一组点计算带边距的包围盒
     inline QRectF boundingBoxFromPoints(const std::vector<QPointF>& pts, double padding) {
         if (pts.empty()) return QRectF();
         double xmin = pts[0].x(), xmax = xmin, ymin = pts[0].y(), ymax = ymin;

@@ -171,7 +171,6 @@
     <QtMoc Include="Manager\DxfTreeviewModel.h" />
     <ClInclude Include="Manager\DxfWriter.h" />
     <ClInclude Include="Manager\EntityMath.h" />
-    <ClInclude Include="Manager\Primitive.h" />
     <ClInclude Include="Manager\Tools.h" />
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>

@@ -9,29 +9,29 @@
 
 enum class MouseStateInView
 {
-    enumMouseState_None = -1,
+    None = -1,
     // ----- 绘制状态 -----
-    enumMouseState_Point,
-    enumMouseState_Line,
-    enumMouseState_CircleCenterRadius,
-    enumMouseState_CircleDiameter,
-    enumMouseState_ArcCenterEndpoint,
-    enumMouseState_ArcThreePoints,
-    enumMouseState_Polyline,
-    enumMouseState_EllipseCenterRadius,
-    enumMouseState_Rectangle,
-    enumMouseState_SplineFitPoint,
-    enumMouseState_SplineControlPoint,
-    enumMouseState_Text,
-    enumMouseState_MText,
+    Point,
+    Line,
+    CircleCenterRadius,
+    CircleDiameter,
+    ArcCenterEndpoint,
+    ArcThreePoints,
+    Polyline,
+    EllipseCenterRadius,
+    Rectangle,
+    SplineFitPoint,
+    SplineControlPoint,
+    Text,
+    MText,
     // ----- 编辑状态 -----
-    enumMouseState_Move,      // 移动选中图元
-    enumMouseState_Stretch,   // 拉伸
-    enumMouseState_Rotate,    // 旋转
-    enumMouseState_Scale,     // 缩放
+    Move,      // 移动选中图元
+    Stretch,   // 拉伸
+    Rotate,    // 旋转
+    Scale,     // 缩放
 };
 
-// 夹点枚举（boundingBox四角）
+// 夹点枚举(boundingBox四角)
 enum class StretchGripInView
 {
     None = -1,

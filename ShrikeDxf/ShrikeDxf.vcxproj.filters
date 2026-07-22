@@ -121,9 +121,6 @@
     <ClInclude Include="Manager\EntityMath.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>
-    <ClInclude Include="Manager\Primitive.h">
-      <Filter>Header Files\Dxf</Filter>
-    </ClInclude>
     <ClInclude Include="Manager\Tools.h">
       <Filter>Header Files\Dxf</Filter>
     </ClInclude>

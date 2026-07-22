@@ -105,18 +105,18 @@ void GraphicsView::ShowMenu(const QPoint& pos)
     // 获取交互控制的状态
     MouseStateInView state = m_pDxfManager->getCurrentInteractionState();
 
-    if (state >= MouseStateInView::enumMouseState_Point &&
-        state <= MouseStateInView::enumMouseState_MText)
+    if (state >= MouseStateInView::Point &&
+        state <= MouseStateInView::MText)
     {
         // 正在绘制,显示“结束绘制”
         m_pGraphicsPreviewMenu->popup(mapToGlobal(pos));
     }
-    else if (state >= MouseStateInView::enumMouseState_Move)
+    else if (state >= MouseStateInView::Move)
     {
         // 编辑状态(拉伸/移动等)
         m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
     }
-    else if (state == MouseStateInView::enumMouseState_None)
+    else if (state == MouseStateInView::None)
     {
         bool hasSelection = (m_pDxfManager->getSelectedEntity().entityIndex >= 0);
         bool hasClipboard = m_pDxfManager->hasClipboard();
@@ -278,7 +278,7 @@ void GraphicsView::handleLockZoom(bool bChecked)
 
 void GraphicsView::handleMouseStatusChanged(MouseStateInView mouseState)
 {
-    m_bDrawingPreview = (mouseState != MouseStateInView::enumMouseState_None);
+    m_bDrawingPreview = (mouseState != MouseStateInView::None);
 }
 
 

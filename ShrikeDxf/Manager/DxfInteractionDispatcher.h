@@ -31,7 +31,7 @@ public:
 
 private:
     // 当前鼠标状态
-    MouseStateInView m_state = MouseStateInView::enumMouseState_None;
+    MouseStateInView m_state = MouseStateInView::None;
     // 绘制控制器
     dxfDrawController* m_drawCtrl = nullptr;
     // 编辑控制器
