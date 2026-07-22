@@ -34,7 +34,7 @@ public:
 	SelectionController* getSelectionController() const { return m_selectionController.get(); }
 
 	// 获取选中图元
-	const stuSelectedEntity& getSelectedEntity() const { return m_selectedEntity; }
+	const SelectedEntity& getSelectedEntity() const { return m_selectedEntity; }
 	// 获取交互鼠标状态
 	const MouseStateInView getCurrentInteractionState();
 	// 获取当前工作图层
@@ -98,7 +98,7 @@ private:
 	// 选中控制
 	std::unique_ptr<SelectionController> m_selectionController;
 	// 选中图元
-	stuSelectedEntity m_selectedEntity;
+	SelectedEntity m_selectedEntity;
 	// 当前工作图层
     QString m_currentLayer;
 	
@@ -111,7 +111,7 @@ public:
 	// 同步图层模型数据到dxf数据结构
 	void synLayerModelToDxfData();
 	// 选中指定图元
-	void selectEntity(const QString& strLayer, int entityIndex);
+	void selectEntity(const QString& layer, int entityIndex);
 	// 取消选中
 	void deselectEntity();
 	// 剪贴板是否有数据
@@ -125,13 +125,13 @@ signals:
 	// 通知图层graphics刷新
 	void signalRefreshGraphicsview(DxfGraphicsScene* pScene, bool bResetViewRect);
 	// 选中图元发生变化
-	void signalSelectedEntityChanged(const stuSelectedEntity& entity);
+	void signalSelectedEntityChanged(const SelectedEntity& entity);
 	// 更新dxf文件路径
 	void signalFileName(const QString& filePath);
 	// 更新图层属性
 	void signalRefreshLayerTable(DxfLayerTableviewModel* pModel);
 	// 通知当前工作图层
-	void signalCurrentLayerChanged(const QString& strLayer);
+	void signalCurrentLayerChanged(const QString& layer);
 	//通知graphicsview新建图元
 	void signalMouseStatusChanged(MouseStateInView mouseState);
 
@@ -166,7 +166,7 @@ signals:
 	 void handleMouseLeftButtonReleased(QPointF pos);
 
 	 // 选中图元
-	 void handleEntitySelected(const QString& strLayer, int entityIndex);
+	 void handleEntitySelected(const QString& layer, int entityIndex);
 	 // 取消选中图元
 	 void handleEntityDeselected();
 	 // 结束绘制预览

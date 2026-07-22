@@ -11,7 +11,7 @@
 #include "../EntitiesLib/Entity.h"
 
 // 图层信息
-struct stuLayer
+struct Layer
 {
     QString name;
     QColor  color = Qt::white;
@@ -23,7 +23,7 @@ struct stuLayer
     // 该图层所有图元
     std::vector<variantDxfEntity> entities;
     // 获取该图层某种类型的图元数量
-    int GetEntityCount(EntityType type) const {
+    int getEntityCount(EntityType type) const {
         int count = 0;
         for (auto& ent : entities) {
             if (GetEntityType(ent) == type)
@@ -34,7 +34,7 @@ struct stuLayer
 };
 
 // 块定义
-struct stuBlock
+struct Block
 {
     QString     name;           // 块名
     Vertex3D    basePoint;      // 基点
@@ -45,18 +45,18 @@ struct stuBlock
 };
 
 // 选中的图元
-struct stuSelectedEntity
+struct SelectedEntity
 {
     EntityType  type = EntityType::None;
-    QString     strLayer;               //所在图层
+    QString     layer;               //所在图层
     int         entityIndex = -1;       //所在图层中的索引
     variantDxfEntity entity;            //图元本身
 
-    stuSelectedEntity() = default;
+    SelectedEntity() = default;
 };
 
 // 预览图元(用于绘制时的临时预览)
-struct stuPreviewEntity
+struct PreviewEntity
 {
     enum enumType
     {
@@ -71,7 +71,7 @@ struct stuPreviewEntity
     };
 
     enumType type = None;
-    QString  strLayer;
+    QString  layer;
 };
 
 // 文档整体结构
@@ -83,19 +83,19 @@ struct DxfDocument
     Vertex3D    extMin, extMax;     // 图形范围
     double      ltscale = 1.0;      // 线型比例
 
-    std::map<std::string, stuLayer> layers;     // 按图层存储数据
-    std::map<std::string, stuBlock> blocks;     // 块定义
+    std::map<std::string, Layer> layers;     // 按图层存储数据
+    std::map<std::string, Block> blocks;     // 块定义
 
     // 选中/预览状态
-    stuSelectedEntity  selectedEntity;
-    stuPreviewEntity   previewEntity;
+    SelectedEntity  selectedEntity;
+    PreviewEntity   previewEntity;
 
     // 编辑参数
     double moveStep = 1.0;
     double rotateStepRad = 0.0174533;   // 1度
 
     // 获取所有图元
-    int GetTotalEntityCount() const {
+    int getTotalEntityCount() const {
         int count = 0;
         for (auto& [name, layer] : layers) {
             count += (int)layer.entities.size();
@@ -104,7 +104,7 @@ struct DxfDocument
     }
 
     // 清空所有数据
-    void Clear() {
+    void clear() {
         version.clear();
         insUnits = 1.0;
         extMin = Vertex3D();
@@ -112,14 +112,14 @@ struct DxfDocument
         ltscale = 1.0;
         layers.clear();
         blocks.clear();
-        selectedEntity = stuSelectedEntity();
-        previewEntity = stuPreviewEntity();
+        selectedEntity = SelectedEntity();
+        previewEntity = PreviewEntity();
     }
 };
 
 
 // 按类型过滤图元
-inline std::vector<variantDxfEntity> FilterEntitiesByType(
+inline std::vector<variantDxfEntity> filterEntitiesByType(
     const std::vector<variantDxfEntity>& entities, EntityType type)
 {
     std::vector<variantDxfEntity> result;
@@ -131,8 +131,8 @@ inline std::vector<variantDxfEntity> FilterEntitiesByType(
 }
 
 // 按图层过滤图元
-inline std::vector<variantDxfEntity> FilterEntitiesByLayer(
-    const std::map<std::string, stuLayer>& layers, const std::string& layerName)
+inline std::vector<variantDxfEntity> filterEntitiesByLayer(
+    const std::map<std::string, Layer>& layers, const std::string& layerName)
 {
     auto it = layers.find(layerName);
     if (it != layers.end())

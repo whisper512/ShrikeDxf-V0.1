@@ -18,7 +18,7 @@ public:
 	~CDxfTreeviewModel();
 
 	// 更新model
-	void UpdateLayoutItemModel(const std::map<std::string, stuLayer>& mapDxf);
+	void UpdateLayoutItemModel(const std::map<std::string, Layer>& mapDxf);
 	void clearModel();
 
 private:

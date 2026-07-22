@@ -71,7 +71,7 @@ void DxfReader::storeEntity(const variantDxfEntity& entity, const std::string& l
     }
 }
 
-void DxfReader::storeLayer(const stuLayer& layer)
+void DxfReader::storeLayer(const Layer& layer)
 {
     if (!m_data) return;
     m_data->addLayer(layer);
@@ -121,7 +121,7 @@ void DxfReader::addLType(const DRW_LType& data)
 void DxfReader::addLayer(const DRW_Layer& data)
 {
     if (!m_data) return;
-    stuLayer layer;
+    Layer layer;
     // ACI 颜色转 QColor
     if (data.color24 >= 0) {
         // code 420: 24-bit RGB，格式 0x00RRGGBB

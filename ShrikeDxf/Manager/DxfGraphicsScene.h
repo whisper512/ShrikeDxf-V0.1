@@ -19,7 +19,7 @@ public:
 	~DxfGraphicsScene();
 
 	//获取数据并且绘制
-	void dxfDraw(const std::map<std::string, stuLayer>& mapDxf);
+	void dxfDraw(const std::map<std::string, Layer>& mapDxf);
 	
 	double getScale() { return m_scale; }
 	void clearScene();
@@ -51,7 +51,7 @@ public:
 
 
 private:
-	const std::map<std::string, stuLayer>* m_currentLayersEntitiesData = nullptr;
+	const std::map<std::string, Layer>* m_currentLayersEntitiesData = nullptr;
 
 	// 预览图元存储列表
 	QList<QGraphicsItem*> m_previewItems;
@@ -80,7 +80,7 @@ private:
 
 private:
 	// 计算场景边界
-	QRectF calculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf);
+	QRectF calculateSceneBounds(const std::map<std::string, Layer>& mapDxf);
 	// 获取entity颜色
 	QColor getEntityColor(const EntityProp& prop) const;
 	 // B样条基函数

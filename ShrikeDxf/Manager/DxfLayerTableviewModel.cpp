@@ -9,7 +9,7 @@ DxfLayerTableviewModel::~DxfLayerTableviewModel()
 {
 }
 
-void DxfLayerTableviewModel::updateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf)
+void DxfLayerTableviewModel::updateLayerTableViewModel(const std::map<std::string, Layer>& mapDxf)
 {
 	this->clear();
 	this->setHorizontalHeaderLabels({ "NO", "NAME", "COLOR" });
@@ -39,7 +39,7 @@ void DxfLayerTableviewModel::updateLayerTableViewModel(const std::map<std::strin
 	}
 }
 
-void DxfLayerTableviewModel::updateLayerChangedData(std::map<std::string, stuLayer>& mapDxf)
+void DxfLayerTableviewModel::updateLayerChangedData(std::map<std::string, Layer>& mapDxf)
 {
 	int rowCount = this->rowCount();
 

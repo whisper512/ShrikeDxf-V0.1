@@ -105,9 +105,9 @@ bool DxfManager::closeDxfFile()
 void DxfManager::deleteSelectedEntity()
 {
     if (m_selectedEntity.entityIndex < 0) return;
-    if (m_selectedEntity.strLayer.isEmpty()) return;
+    if (m_selectedEntity.layer.isEmpty()) return;
 
-    auto* pLayer = m_dxfData->getLayer(m_selectedEntity.strLayer.toStdString());
+    auto* pLayer = m_dxfData->getLayer(m_selectedEntity.layer.toStdString());
     if (!pLayer) return;
     if (m_selectedEntity.entityIndex >= static_cast<int>(pLayer->entities.size())) return;
 
@@ -125,11 +125,11 @@ void DxfManager::deleteSelectedEntity()
 
 void DxfManager::copySelectedEntity()
 {
-    if (m_selectedEntity.entityIndex < 0 || m_selectedEntity.strLayer.isEmpty())
+    if (m_selectedEntity.entityIndex < 0 || m_selectedEntity.layer.isEmpty())
         return;
 
     const auto& layers = m_dxfData->getLayers();
-    auto it = layers.find(m_selectedEntity.strLayer.toStdString());
+    auto it = layers.find(m_selectedEntity.layer.toStdString());
     if (it == layers.end() ||
         m_selectedEntity.entityIndex >= static_cast<int>(it->second.entities.size()))
         return;
@@ -164,7 +164,7 @@ void DxfManager::pasteEntity(QPointF position)
 
     // 获取当前工作图层，并确保存在
     std::string layerName = m_currentLayer.toStdString();
-    stuLayer& layer = m_dxfData->ensureLayer(layerName);
+    Layer& layer = m_dxfData->ensureLayer(layerName);
 
     // 平移并添加实体
     for (const auto& entity : m_clipboard)
@@ -200,7 +200,7 @@ void DxfManager::updateSelectionDisplay()
     if (m_selectedEntity.entityIndex < 0) return;
 
     const auto& layers = m_dxfData->getLayers();
-    auto it = layers.find(m_selectedEntity.strLayer.toStdString());
+    auto it = layers.find(m_selectedEntity.layer.toStdString());
     if (it == layers.end()) return;
     if (m_selectedEntity.entityIndex < 0 ||
         m_selectedEntity.entityIndex >= static_cast<int>(it->second.entities.size()))
@@ -235,15 +235,15 @@ void DxfManager::synLayerModelToDxfData()
     }
 }
 
-void DxfManager::selectEntity(const QString& strLayer, int entityIndex)
+void DxfManager::selectEntity(const QString& layer, int entityIndex)
 {
     // 更新选中信息
-    m_selectedEntity.strLayer = strLayer;
+    m_selectedEntity.layer = layer;
     m_selectedEntity.entityIndex = entityIndex;
     m_selectedEntity.type = EntityType::None;
 
     const auto& layers = m_dxfData->getLayers();
-    auto it = layers.find(strLayer.toStdString());
+    auto it = layers.find(layer.toStdString());
     if (it != layers.end() && entityIndex >= 0 && entityIndex < static_cast<int>(it->second.entities.size()))
     {
         m_selectedEntity.entity = it->second.entities[entityIndex];
@@ -251,7 +251,7 @@ void DxfManager::selectEntity(const QString& strLayer, int entityIndex)
     }
 
     if (m_dxfEditController)
-        m_dxfEditController->setSelectedEntity(strLayer, entityIndex);
+        m_dxfEditController->setSelectedEntity(layer, entityIndex);
     // 更新选中框
     updateSelectionDisplay();
 
@@ -261,7 +261,7 @@ void DxfManager::selectEntity(const QString& strLayer, int entityIndex)
 
 void DxfManager::deselectEntity()
 {
-    m_selectedEntity = stuSelectedEntity();
+    m_selectedEntity = SelectedEntity();
     m_DxfGraphicsScene.removeGrips();
 
     emit signalSelectedEntityChanged(m_selectedEntity);
@@ -400,9 +400,9 @@ void DxfManager::handleMouseLeftButtonReleased(QPointF pos)
 }
 
 
-void DxfManager::handleEntitySelected(const QString& strLayer, int entityIndex)
+void DxfManager::handleEntitySelected(const QString& layer, int entityIndex)
 {
-    selectEntity(strLayer, entityIndex);
+    selectEntity(layer, entityIndex);
 }
 
 void DxfManager::handleEntityDeselected()

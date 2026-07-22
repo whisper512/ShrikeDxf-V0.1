@@ -231,7 +231,7 @@ void StackedWidgetManager::ChangeWidgets()
 	}
 }
 
-void StackedWidgetManager::handleRefreshStackedWidget(const stuSelectedEntity& SelectedEntity)
+void StackedWidgetManager::handleRefreshStackedWidget(const SelectedEntity& SelectedEntity)
 {
 	m_entityType = SelectedEntity.type;
 

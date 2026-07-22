@@ -82,6 +82,6 @@ signals:
 
 public slots:
 
-	void handleRefreshStackedWidget(const stuSelectedEntity& entity);
+	void handleRefreshStackedWidget(const SelectedEntity& entity);
 
 };

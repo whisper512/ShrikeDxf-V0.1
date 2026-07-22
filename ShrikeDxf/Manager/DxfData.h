@@ -27,17 +27,17 @@ public:
     Vertex3D       getExtMax() const;
 
     // Layer 图层管理
-    void addLayer(const stuLayer& layer);
+    void addLayer(const Layer& layer);
     bool hasLayer(const std::string& name) const;
-    const  std::map<std::string, stuLayer> getLayers() const;
-    std::map<std::string, stuLayer>& getLayers();
-    stuLayer* getLayer(const std::string& name);
-    const stuLayer* getLayer(const std::string& name) const;
+    const  std::map<std::string, Layer> getLayers() const;
+    std::map<std::string, Layer>& getLayers();
+    Layer* getLayer(const std::string& name);
+    const Layer* getLayer(const std::string& name) const;
     std::vector<std::string> getAllLayerNames() const;
     size_t getLayerCount() const;
     QString getFirstLayerName() const;
     // 确保图层存在
-    stuLayer& ensureLayer(const std::string& name);
+    Layer& ensureLayer(const std::string& name);
 
     
     // 指定图层添加任意类型图元
@@ -57,10 +57,10 @@ public:
     void addHatch(const std::string& layerName, const EntityHatch& ent);
 
     // Block 块定义管理
-    stuBlock& addBlock(const std::string& name, const Vertex3D& basePoint = Vertex3D());
+    Block& addBlock(const std::string& name, const Vertex3D& basePoint = Vertex3D());
     bool hasBlock(const std::string& name) const;
-    stuBlock* getBlock(const std::string& name);
-    const stuBlock* getBlock(const std::string& name) const;
+    Block* getBlock(const std::string& name);
+    const Block* getBlock(const std::string& name) const;
     std::vector<std::string> getAllBlockNames() const;
     size_t getBlockCount() const;
     // 向块内添加图元
@@ -80,8 +80,8 @@ public:
     // 按图层+类型过滤
     std::vector<variantDxfEntity> getEntities(const std::string& layerName, EntityType type) const;
 
-    stuPreviewEntity& getPreviewEntity();
-    const stuPreviewEntity& getPreviewEntity() const;
+    PreviewEntity& getPreviewEntity();
+    const PreviewEntity& getPreviewEntity() const;
 
     void clear();
 

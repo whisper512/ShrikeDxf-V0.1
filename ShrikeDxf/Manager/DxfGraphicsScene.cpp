@@ -17,7 +17,7 @@ DxfGraphicsScene::~DxfGraphicsScene()
 
 }
 
-void DxfGraphicsScene::dxfDraw(const std::map<std::string, stuLayer>& mapDxf)
+void DxfGraphicsScene::dxfDraw(const std::map<std::string, Layer>& mapDxf)
 {
     m_currentLayersEntitiesData = &(mapDxf);
     clearScene();
@@ -867,7 +867,7 @@ void DxfGraphicsScene::drawMText(const EntityMText& mtext)
 }
 
 
-QRectF DxfGraphicsScene::calculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf)
+QRectF DxfGraphicsScene::calculateSceneBounds(const std::map<std::string, Layer>& mapDxf)
 {
     if (mapDxf.empty())
         return QRectF();

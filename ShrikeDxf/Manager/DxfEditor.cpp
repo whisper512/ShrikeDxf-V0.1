@@ -10,7 +10,7 @@ DxfEditor::~DxfEditor()
 {
 }
 
-void DxfEditor::editPoint(stuSelectedEntity* selectedEntity, EntityPoint point)
+void DxfEditor::editPoint(SelectedEntity* selectedEntity, EntityPoint point)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -18,7 +18,7 @@ void DxfEditor::editPoint(stuSelectedEntity* selectedEntity, EntityPoint point)
     if (selectedEntity->type != EntityType::Point)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -35,7 +35,7 @@ void DxfEditor::editPoint(stuSelectedEntity* selectedEntity, EntityPoint point)
     
 }
 
-void DxfEditor::editLine(stuSelectedEntity* selectedEntity, EntityLine line)
+void DxfEditor::editLine(SelectedEntity* selectedEntity, EntityLine line)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -43,7 +43,7 @@ void DxfEditor::editLine(stuSelectedEntity* selectedEntity, EntityLine line)
     if (selectedEntity->type != EntityType::Line)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -59,7 +59,7 @@ void DxfEditor::editLine(stuSelectedEntity* selectedEntity, EntityLine line)
     selectedEntity->entity = selectedLine;
 }
 
-void DxfEditor::editArc(stuSelectedEntity* selectedEntity, EntityArc arc)
+void DxfEditor::editArc(SelectedEntity* selectedEntity, EntityArc arc)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -67,7 +67,7 @@ void DxfEditor::editArc(stuSelectedEntity* selectedEntity, EntityArc arc)
     if (selectedEntity->type != EntityType::Arc)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -83,7 +83,7 @@ void DxfEditor::editArc(stuSelectedEntity* selectedEntity, EntityArc arc)
     selectedEntity->entity = selectedArc;
 }
 
-void DxfEditor::editCircle(stuSelectedEntity* selectedEntity, EntityCircle circle)
+void DxfEditor::editCircle(SelectedEntity* selectedEntity, EntityCircle circle)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -91,7 +91,7 @@ void DxfEditor::editCircle(stuSelectedEntity* selectedEntity, EntityCircle circl
     if (selectedEntity->type != EntityType::Circle)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -107,7 +107,7 @@ void DxfEditor::editCircle(stuSelectedEntity* selectedEntity, EntityCircle circl
     selectedEntity->entity = selectedCircle;
 }
 
-void DxfEditor::editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse ellipse)
+void DxfEditor::editEllipse(SelectedEntity* selectedEntity, EntityEllipse ellipse)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -115,7 +115,7 @@ void DxfEditor::editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse ell
     if (selectedEntity->type != EntityType::Ellipse)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -131,7 +131,7 @@ void DxfEditor::editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse ell
     selectedEntity->entity = selectedEllipse;
 }
 
-void DxfEditor::editText(stuSelectedEntity* selectedEntity, EntityText text)
+void DxfEditor::editText(SelectedEntity* selectedEntity, EntityText text)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -139,7 +139,7 @@ void DxfEditor::editText(stuSelectedEntity* selectedEntity, EntityText text)
     if (selectedEntity->type != EntityType::Text)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -155,7 +155,7 @@ void DxfEditor::editText(stuSelectedEntity* selectedEntity, EntityText text)
     selectedEntity->entity = selectedText;
 }
 
-void DxfEditor::editMText(stuSelectedEntity* selectedEntity, EntityMText mtext)
+void DxfEditor::editMText(SelectedEntity* selectedEntity, EntityMText mtext)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -163,7 +163,7 @@ void DxfEditor::editMText(stuSelectedEntity* selectedEntity, EntityMText mtext)
     if (selectedEntity->type != EntityType::MText)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -179,7 +179,7 @@ void DxfEditor::editMText(stuSelectedEntity* selectedEntity, EntityMText mtext)
     selectedEntity->entity = selectedMText;
 }
 
-void DxfEditor::editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline polyline)
+void DxfEditor::editPolyline(SelectedEntity* selectedEntity, EntityPolyline polyline)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -187,7 +187,7 @@ void DxfEditor::editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline p
     if (selectedEntity->type != EntityType::Polyline)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -203,7 +203,7 @@ void DxfEditor::editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline p
     selectedEntity->entity = selectedPolyline;
 }
 
-void DxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyline lwpolyline)
+void DxfEditor::editLwpolyline(SelectedEntity* selectedEntity, EntityLWPolyline lwpolyline)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -211,7 +211,7 @@ void DxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyli
     if (selectedEntity->type != EntityType::LWPolyline)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -227,7 +227,7 @@ void DxfEditor::editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyli
     selectedEntity->entity = selectedLWPolyline;
 }
 
-void DxfEditor::editSpline(stuSelectedEntity* selectedEntity, EntitySpline spline)
+void DxfEditor::editSpline(SelectedEntity* selectedEntity, EntitySpline spline)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -235,7 +235,7 @@ void DxfEditor::editSpline(stuSelectedEntity* selectedEntity, EntitySpline splin
     if (selectedEntity->type != EntityType::Spline)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 
@@ -251,7 +251,7 @@ void DxfEditor::editSpline(stuSelectedEntity* selectedEntity, EntitySpline splin
     selectedEntity->entity = selectedSpline;
 }
 
-void DxfEditor::editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch)
+void DxfEditor::editHatch(SelectedEntity* selectedEntity, EntityHatch hatch)
 {
     if (!selectedEntity || !m_dxfData)
         return;
@@ -259,7 +259,7 @@ void DxfEditor::editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch)
     if (selectedEntity->type != EntityType::Hatch)
         return;
 
-    stuLayer* pLayer = m_dxfData->getLayer(selectedEntity->strLayer.toStdString());
+    Layer* pLayer = m_dxfData->getLayer(selectedEntity->layer.toStdString());
     if (!pLayer)
         return;
 

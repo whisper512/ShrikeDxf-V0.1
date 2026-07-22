@@ -85,7 +85,7 @@ private:
     // 图元存入DxfData
     void storeEntity(const variantDxfEntity& entity, const std::string& layer);
     // 图层存入DxfData
-    void storeLayer(const stuLayer& layer);
+    void storeLayer(const Layer& layer);
 
     DxfData* m_data = nullptr;
     std::string m_currentBlock;                // 当前块名

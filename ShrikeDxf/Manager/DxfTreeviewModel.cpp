@@ -20,7 +20,7 @@ CDxfTreeviewModel::~CDxfTreeviewModel()
 {
 }
 
-void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLayer>& mapDxf)
+void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, Layer>& mapDxf)
 {
 
     clearModel();

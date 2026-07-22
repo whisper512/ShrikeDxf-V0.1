@@ -13,17 +13,17 @@ public:
 
 public:
 
-    void editPoint(stuSelectedEntity* selectedEntity, EntityPoint point);
-    void editLine(stuSelectedEntity* selectedEntity, EntityLine line);
-    void editArc(stuSelectedEntity* selectedEntity, EntityArc arc);
-    void editCircle(stuSelectedEntity* selectedEntity, EntityCircle circle);
-    void editEllipse(stuSelectedEntity* selectedEntity, EntityEllipse ellipse);
-    void editText(stuSelectedEntity* selectedEntity, EntityText text);
-    void editMText(stuSelectedEntity* selectedEntity, EntityMText mtext);
-    void editPolyline(stuSelectedEntity* selectedEntity, EntityPolyline polyline);
-    void editLwpolyline(stuSelectedEntity* selectedEntity, EntityLWPolyline lwpolyline);
-    void editSpline(stuSelectedEntity* selectedEntity, EntitySpline spline);
-    void editHatch(stuSelectedEntity* selectedEntity, EntityHatch hatch);
+    void editPoint(SelectedEntity* selectedEntity, EntityPoint point);
+    void editLine(SelectedEntity* selectedEntity, EntityLine line);
+    void editArc(SelectedEntity* selectedEntity, EntityArc arc);
+    void editCircle(SelectedEntity* selectedEntity, EntityCircle circle);
+    void editEllipse(SelectedEntity* selectedEntity, EntityEllipse ellipse);
+    void editText(SelectedEntity* selectedEntity, EntityText text);
+    void editMText(SelectedEntity* selectedEntity, EntityMText mtext);
+    void editPolyline(SelectedEntity* selectedEntity, EntityPolyline polyline);
+    void editLwpolyline(SelectedEntity* selectedEntity, EntityLWPolyline lwpolyline);
+    void editSpline(SelectedEntity* selectedEntity, EntitySpline spline);
+    void editHatch(SelectedEntity* selectedEntity, EntityHatch hatch);
 
 private:
     // dxf数据类

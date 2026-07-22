@@ -62,7 +62,7 @@ double DxfData::getLtScale() const
 }
 
 // Layer 图层管理
-void  DxfData::addLayer(const stuLayer& layer)
+void  DxfData::addLayer(const Layer& layer)
 {
     m_document.layers[layer.name.toStdString()] = layer;
 }
@@ -72,17 +72,17 @@ bool DxfData::hasLayer(const std::string& name) const
     return m_document.layers.find(name) != m_document.layers.end();
 }
 
-const std::map<std::string, stuLayer> DxfData::getLayers() const
+const std::map<std::string, Layer> DxfData::getLayers() const
 {
     return m_document.layers;
 }
 
-std::map<std::string, stuLayer>& DxfData::getLayers()
+std::map<std::string, Layer>& DxfData::getLayers()
 {
     return m_document.layers;
 }
 
-stuLayer* DxfData::getLayer(const std::string& name)
+Layer* DxfData::getLayer(const std::string& name)
 {
     auto it = m_document.layers.find(name);
     if (it != m_document.layers.end())
@@ -90,7 +90,7 @@ stuLayer* DxfData::getLayer(const std::string& name)
     return nullptr;
 }
 
-const stuLayer* DxfData::getLayer(const std::string& name) const
+const Layer* DxfData::getLayer(const std::string& name) const
 {
     auto it = m_document.layers.find(name);
     if (it != m_document.layers.end())
@@ -118,7 +118,7 @@ QString DxfData::getFirstLayerName() const
     return QString::fromStdString(m_document.layers.begin()->first);
 }
 
-stuLayer& DxfData::ensureLayer(const std::string& name)
+Layer& DxfData::ensureLayer(const std::string& name)
 {
     return m_document.layers[name];
 }
@@ -184,7 +184,7 @@ void DxfData::addHatch(const std::string& layerName, const EntityHatch& ent)
 
 
 // Block 块定义管理
-stuBlock& DxfData::addBlock(const std::string& name, const Vertex3D& basePoint)
+Block& DxfData::addBlock(const std::string& name, const Vertex3D& basePoint)
 {
     return m_document.blocks[name];
 }
@@ -194,7 +194,7 @@ bool DxfData::hasBlock(const std::string& name) const
     return m_document.blocks.find(name) != m_document.blocks.end();
 }
 
-stuBlock* DxfData::getBlock(const std::string& name)
+Block* DxfData::getBlock(const std::string& name)
 {
     auto it = m_document.blocks.find(name);
     if (it != m_document.blocks.end())
@@ -202,7 +202,7 @@ stuBlock* DxfData::getBlock(const std::string& name)
     return nullptr;
 }
 
-const stuBlock* DxfData::getBlock(const std::string& name) const
+const Block* DxfData::getBlock(const std::string& name) const
 {
     auto it = m_document.blocks.find(name);
     if (it != m_document.blocks.end())
@@ -230,7 +230,7 @@ void DxfData::addEntityToBlock(const std::string& blockName, const variantDxfEnt
 // 查询/遍历
 int DxfData::getTotalEntityCount() const
 {
-    return m_document.GetTotalEntityCount();
+    return m_document.getTotalEntityCount();
 }
 
 int DxfData::getEntityCount(EntityType type) const
@@ -261,12 +261,12 @@ std::vector<variantDxfEntity> DxfData::getEntities(const std::string& layerName,
     return {};
 }
 
-stuPreviewEntity& DxfData::getPreviewEntity()
+PreviewEntity& DxfData::getPreviewEntity()
 {
     return m_document.previewEntity;
 }
 
-const stuPreviewEntity& DxfData::getPreviewEntity() const
+const PreviewEntity& DxfData::getPreviewEntity() const
 {
     return m_document.previewEntity;
 }
