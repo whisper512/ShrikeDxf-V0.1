@@ -20,7 +20,7 @@ class GraphicsView : public QGraphicsView
 public:
 	GraphicsView();
 	~GraphicsView();
-	explicit GraphicsView(QWidget* pMainWnd, DxfManager* pDxfManager = nullptr);
+	explicit GraphicsView(QWidget* mainWnd, DxfManager* pDxfManager = nullptr);
 
 private:
 	DxfManager* m_pDxfManager;
@@ -40,7 +40,7 @@ private:
 	// 针对view中图元的操作
     QAction* m_pActionDeleteEntity;
 	QAction* m_pActionCopyEntity;
-	QAction* m_pActionPasteEntity;
+	QAction* m_pActionpasteEntity;
 	QAction* m_pActionCutEntity;
 	QAction* m_pActionXFile;
     QAction* m_pActionYFile;
@@ -90,7 +90,7 @@ private:
 	void UpdateRulers();
 
 public:
-	QWidget* m_pMainWnd;
+	QWidget* m_mainWnd;
 
 signals:
 	// 粘贴信号

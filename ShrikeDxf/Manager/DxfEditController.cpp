@@ -135,7 +135,7 @@ void DxfEditController::endStretch(QPointF finalPos)
     m_currentGrip = StretchGripInView::None;
 
     if (m_manager)
-        m_manager->RefreshScene();
+        m_manager->refreshScene();
 
     refreshSceneWithGrips();
     emit signalStretchFinished();

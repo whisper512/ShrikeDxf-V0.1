@@ -192,10 +192,10 @@ void ShrikeDxf::connectSignalsAndSlots()
 			if (this && m_graphicsView)
 			{
 				connect(m_graphicsView, &GraphicsView::signalMousePosString, this, &ShrikeDxf::handleMousePos);
-				//connect(m_pGraphicsView, &CGraphicsView::signalDeleteEntity, this, &CDxfManager::DeleteSelectedEntity);
-				//connect(m_pGraphicsView, &CGraphicsView::signalCopyEntity, this, &CDxfManager::CopySelectedEntity);
-				//connect(m_pGraphicsView, &CGraphicsView::signalCutEntity, this, &CDxfManager::CutSelectedEntity);
-				//connect(m_pGraphicsView, &CGraphicsView::signalPaste, this, &CDxfManager::PasteEntityAt);
+				//connect(m_pGraphicsView, &CGraphicsView::signalDeleteEntity, this, &CDxfManager::deleteSelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalCopyEntity, this, &CDxfManager::copySelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalCutEntity, this, &CDxfManager::cutSelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalPaste, this, &CDxfManager::pasteEntityAt);
 			}
 			if (this && m_dxfDataManager)
 			{

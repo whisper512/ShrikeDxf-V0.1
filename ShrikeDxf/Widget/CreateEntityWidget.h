@@ -18,7 +18,7 @@ public:
 
 private:
 	Ui::CCreateEntityWidgetClass ui;
-	QWidget* m_pMainWnd;
+	QWidget* m_mainWnd;
 	//当前选择的按钮
 	MouseStateInView m_eSlectedIndex;
 

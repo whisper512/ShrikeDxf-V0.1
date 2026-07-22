@@ -3,7 +3,7 @@
 
 MoveBtnsWidget::MoveBtnsWidget(QWidget *parent): 
 	QWidget(parent),
-	m_pMainWnd(parent),
+	m_mainWnd(parent),
 	m_dStepLength(1.0),
     m_dRotationAngle(1.0)
 {
@@ -29,9 +29,9 @@ MoveBtnsWidget::~MoveBtnsWidget()
 
 void MoveBtnsWidget::InitWidgetAndAddToLayout()
 {
-	if (m_pMainWnd)
+	if (m_mainWnd)
 	{
-		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
+		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
 		pWnd->ui.verticalLayout_Layer->addWidget(this);
 	}
 

@@ -17,7 +17,7 @@ const QString& dxfDrawController::getCurrentLayer() const
 {
     auto* pMgr = qobject_cast<DxfManager*>(parent());
     if (pMgr)
-        return pMgr->GetCurrentLayer();
+        return pMgr->getCurrentLayer();
 
     // 保底值
     static const QString s_defaultLayer = QStringLiteral("0");

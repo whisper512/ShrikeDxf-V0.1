@@ -29,7 +29,7 @@ public slots:
 
 private:
 	Ui::CMoveBtnsWidgetClass ui;
-	QWidget* m_pMainWnd;
+	QWidget* m_mainWnd;
 
 	double m_dStepLength;
     double m_dRotationAngle;

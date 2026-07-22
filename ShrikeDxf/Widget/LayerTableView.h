@@ -17,7 +17,7 @@ private:
 	void InitTableView();
 
 private:
-	QWidget* m_pMainWnd;
+	QWidget* m_mainWnd;
 	QTableView* m_pTableView;
 
 signals:

@@ -5,7 +5,7 @@
 #include "ShrikeDxf.h"
 
 LayerTableViewManager::LayerTableViewManager(QWidget* pMainwnd):
-    m_pMainWnd(pMainwnd),
+    m_mainWnd(pMainwnd),
     m_pTableView(nullptr)
 {
 }
@@ -16,10 +16,10 @@ LayerTableViewManager::~LayerTableViewManager()
 
 void LayerTableViewManager::CreateTableView()
 {
-    m_pTableView = new QTableView(m_pMainWnd);
-	if (m_pMainWnd)
+    m_pTableView = new QTableView(m_mainWnd);
+	if (m_mainWnd)
 	{
-		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
+		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
 		pWnd->ui.verticalLayout_Layer->addWidget(m_pTableView);
 		
 	}

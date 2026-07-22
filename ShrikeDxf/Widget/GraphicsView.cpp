@@ -14,7 +14,7 @@ GraphicsView::~GraphicsView()
 }
 
 GraphicsView::GraphicsView(QWidget* pMainwnd , DxfManager* pDxfManager):
-    m_pMainWnd(pMainwnd),
+    m_mainWnd(pMainwnd),
     m_pGraphicsViewMenu(nullptr),
     m_pGraphicsOperateMenu(nullptr),
     m_pGraphicsPreviewMenu(nullptr),
@@ -25,7 +25,7 @@ GraphicsView::GraphicsView(QWidget* pMainwnd , DxfManager* pDxfManager):
     m_pActionDrag(nullptr),
     m_pActionDeleteEntity(nullptr),
     m_pActionCopyEntity(nullptr),
-    m_pActionPasteEntity(nullptr),
+    m_pActionpasteEntity(nullptr),
     m_pActionCutEntity(nullptr),
     m_pActionXFile(nullptr),
     m_pActionYFile(nullptr),
@@ -48,7 +48,7 @@ GraphicsView::GraphicsView(QWidget* pMainwnd , DxfManager* pDxfManager):
     m_pDxfManager(pDxfManager)
 {
     //添加graphicsview到layout
-    ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
+    ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
     if (pWnd)
     {
         pWnd->ui.verticalLayout_Main->addWidget(this);
@@ -103,7 +103,7 @@ void GraphicsView::ShowMenu(const QPoint& pos)
     m_pointRightClickPos = pos;
     m_pointRightClickPos = pos;
     // 获取交互控制的状态
-    MouseStateInView state = m_pDxfManager->GetCurrentInteractionState();
+    MouseStateInView state = m_pDxfManager->getCurrentInteractionState();
 
     if (state >= MouseStateInView::enumMouseState_Point &&
         state <= MouseStateInView::enumMouseState_MText)
@@ -118,8 +118,8 @@ void GraphicsView::ShowMenu(const QPoint& pos)
     }
     else if (state == MouseStateInView::enumMouseState_None)
     {
-        bool hasSelection = (m_pDxfManager->GetSelectedEntity().entityIndex >= 0);
-        bool hasClipboard = m_pDxfManager->HasClipboard();
+        bool hasSelection = (m_pDxfManager->getSelectedEntity().entityIndex >= 0);
+        bool hasClipboard = m_pDxfManager->hasClipboard();
 
         if (hasSelection || hasClipboard)
         {
@@ -127,7 +127,7 @@ void GraphicsView::ShowMenu(const QPoint& pos)
             m_pActionDeleteEntity->setEnabled(hasSelection);
             m_pActionCopyEntity->setEnabled(hasSelection);
             m_pActionCutEntity->setEnabled(hasSelection);
-            m_pActionPasteEntity->setEnabled(hasClipboard);
+            m_pActionpasteEntity->setEnabled(hasClipboard);
 
             m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
         }
@@ -175,35 +175,35 @@ void GraphicsView::InitGraphicsViewAction()
     m_pActionDeleteEntity = new QAction(QStringLiteral("Delete"), this);
     m_pActionCopyEntity = new QAction(QStringLiteral("Copy"), this);
     m_pActionCutEntity = new QAction(QStringLiteral("Cut"), this);
-    m_pActionPasteEntity = new QAction(QStringLiteral("Paste"), this);
+    m_pActionpasteEntity = new QAction(QStringLiteral("Paste"), this);
 
     m_pGraphicsOperateMenu->addAction(m_pActionDeleteEntity);
     m_pGraphicsOperateMenu->addAction(m_pActionCopyEntity);
     m_pGraphicsOperateMenu->addAction(m_pActionCutEntity);
-    m_pGraphicsOperateMenu->addAction(m_pActionPasteEntity);
+    m_pGraphicsOperateMenu->addAction(m_pActionpasteEntity);
 
         // 删除
         connect(m_pActionDeleteEntity, &QAction::triggered, this, [this]() {
             if (m_pDxfManager)
-                m_pDxfManager->DeleteSelectedEntity();
+                m_pDxfManager->deleteSelectedEntity();
             });
 
         // 复制
         connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {
             if (m_pDxfManager)
-                m_pDxfManager->CopySelectedEntity();
+                m_pDxfManager->copySelectedEntity();
             });
 
         // 剪切
         connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {
             if (m_pDxfManager)
-                m_pDxfManager->CutSelectedEntity();
+                m_pDxfManager->cutSelectedEntity();
             });
 
         // 粘贴（场景坐标已在右键时记录为 m_pointRightClickPos）
-        connect(m_pActionPasteEntity, &QAction::triggered, this, [this]() {
+        connect(m_pActionpasteEntity, &QAction::triggered, this, [this]() {
             if (m_pDxfManager)
-                m_pDxfManager->PasteEntity(mapToScene(m_pointRightClickPos));
+                m_pDxfManager->pasteEntity(mapToScene(m_pointRightClickPos));
             });
 }
 

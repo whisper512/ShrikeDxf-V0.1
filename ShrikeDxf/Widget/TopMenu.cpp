@@ -140,7 +140,7 @@ void MenuManager::OnOpen()
 		{
 			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
 			pShrikeDxf->m_dataManager->m_dxfPath = filePath;
-			pShrikeDxf->m_dxfDataManager->LoadDxfFile(filePath);
+			pShrikeDxf->m_dxfDataManager->loadDxfFile(filePath);
 		}
 	}
 }
@@ -151,7 +151,7 @@ void MenuManager::OnSave()
 	{
 		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
 		QString filePath = pShrikeDxf->m_dataManager->m_dxfPath;
-		pShrikeDxf->m_dxfDataManager->SaveDxfFile(filePath);
+		pShrikeDxf->m_dxfDataManager->saveDxfFile(filePath);
 	}
 }
 
@@ -160,7 +160,7 @@ void MenuManager::OnClose()
 	if (m_pParent)
 	{
 		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-        pShrikeDxf->m_dxfDataManager->CloseDxfFile();
+        pShrikeDxf->m_dxfDataManager->closeDxfFile();
 	}
 }
 
@@ -169,7 +169,7 @@ void MenuManager::OnNew()
 	if (m_pParent)
 	{
         ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
-        pShrikeDxf->m_dxfDataManager->NewDxfFile();
+        pShrikeDxf->m_dxfDataManager->newDxfFile();
 	}
 }
 
@@ -193,7 +193,7 @@ void MenuManager::OnSaveAs()
 				filePath += ".dxf";
 			}
 
-			bool success = pShrikeDxf->m_dxfDataManager->SaveDxfFile(filePath);
+			bool success = pShrikeDxf->m_dxfDataManager->saveDxfFile(filePath);
 
 			// 如果保存成功，更新当前文件路径
 			if (success)

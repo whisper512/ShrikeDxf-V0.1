@@ -21,65 +21,65 @@ class DxfManager : public QObject
 {
 	Q_OBJECT
 public:
-	DxfManager(QWidget* pMainWnd);
+	DxfManager(QWidget* mainWnd);
 	~DxfManager();
 
 	// 暴露数据对象连接信号用
-	DxfData* GetDxfData() const { return m_DxfData.get(); }
-	CDxfReader* GetDxfReader() const { return m_DxfReader.get(); }
-	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
-    DxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
-	DxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
-	DxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
-	CSelectionController* GetSelectionController() const { return m_selectionController.get(); }
+	DxfData* getDxfData() const { return m_dxfData.get(); }
+	CDxfReader* getDxfReader() const { return m_dxfReader.get(); }
+	CDxfTreeviewModel* getTreeViewModel() { return &m_DxfTreeviewModel; }
+    DxfLayerTableviewModel* getLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
+	DxfGraphicsScene* getScene() { return &m_DxfGraphicsScene; }
+	DxfEditController* getEditController() const { return m_dxfEditController.get(); } 
+	CSelectionController* getSelectionController() const { return m_selectionController.get(); }
 
 	// 获取选中图元
-	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
+	const stuSelectedEntity& getSelectedEntity() const { return m_selectedEntity; }
 	// 获取交互鼠标状态
-	const MouseStateInView GetCurrentInteractionState();
+	const MouseStateInView getCurrentInteractionState();
 	// 获取当前工作图层
-	const QString& GetCurrentLayer() const { return m_strCurrentLayer; }
+	const QString& getCurrentLayer() const { return m_currentLayer; }
 
 	// 刷新scene重并重置graphicsview
-	void RefreshSceneResetview(){
-		m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
+	void refreshSceneResetview(){
+		m_DxfGraphicsScene.dxfDraw(m_dxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
 	}
 	// 刷新scene不重置graphicsview
-	void RefreshScene() {
-		m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
+	void refreshScene() {
+		m_DxfGraphicsScene.dxfDraw(m_dxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 	}
 
 
 public:
-	bool LoadDxfFile(const QString& strPath);
-	bool SaveDxfFile(const QString& strPath);
-	bool NewDxfFile();
-	bool CloseDxfFile();
+	bool loadDxfFile(const QString& strPath);
+	bool saveDxfFile(const QString& strPath);
+	bool newDxfFile();
+	bool closeDxfFile();
 
 public:
 	// 删除图元
-	void DeleteSelectedEntity();
+	void deleteSelectedEntity();
 	// 复制当前选中图元到剪贴板
-	void CopySelectedEntity();
+	void copySelectedEntity();
 	// 剪切当前选中图元（复制并删除）
-	void CutSelectedEntity();
+	void cutSelectedEntity();
 	// 粘贴剪贴板中的图元到指定场景坐标
-	void PasteEntity(QPointF position);
+	void pasteEntity(QPointF position);
 
 private:
 	// 连接内部信号
-	void ConnectSignals();
-	void UpdateSelectionDisplay();
+	void connectSignals();
+	void updateSelectionDisplay();
 private:
 	// mainwindow指针
-	QWidget* m_pMainWnd;
+	QWidget* m_mainWnd;
 	
 	// dxf数据类
-	std::unique_ptr<DxfData> m_DxfData;
+	std::unique_ptr<DxfData> m_dxfData;
 	// dxf读取类
-	std::unique_ptr<CDxfReader> m_DxfReader;
+	std::unique_ptr<CDxfReader> m_dxfReader;
 
 	// treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;
@@ -92,15 +92,15 @@ private:
 	// dxf绘制控制和view选中
 	std::unique_ptr<dxfDrawController> m_dxfDrawController;
 	// dxf编辑控制
-	std::unique_ptr<DxfEditController> m_DxfEditController;
+	std::unique_ptr<DxfEditController> m_dxfEditController;
 	// 交互控制调度
-	std::unique_ptr<DxfInteractionDispatcher> m_pInteractionDispatcher;
+	std::unique_ptr<DxfInteractionDispatcher> m_interactionDispatcher;
 	// 选中控制
 	std::unique_ptr<CSelectionController> m_selectionController;
 	// 选中图元
-	stuSelectedEntity m_SelectedEntity;
+	stuSelectedEntity m_selectedEntity;
 	// 当前工作图层
-    QString m_strCurrentLayer;
+    QString m_currentLayer;
 	
 	// 剪贴板
 	std::vector<variantDxfEntity> m_clipboard;
@@ -109,13 +109,13 @@ private:
 
 public:
 	// 同步图层模型数据到dxf数据结构
-	void SynLayerModelToDxfData();
+	void synLayerModelToDxfData();
 	// 选中指定图元
-	void SelectEntity(const QString& strLayer, int entityIndex);
+	void selectEntity(const QString& strLayer, int entityIndex);
 	// 取消选中
-	void DeselectEntity();
+	void deselectEntity();
 	// 剪贴板是否有数据
-	bool HasClipboard() const { return !m_clipboard.empty(); }
+	bool hasClipboard() const { return !m_clipboard.empty(); }
 
 
 signals:

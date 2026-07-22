@@ -3,7 +3,7 @@
 
 CreateEntityWidget::CreateEntityWidget(QWidget* parent)
 	: QWidget(parent),
-	m_pMainWnd(parent),
+	m_mainWnd(parent),
 	m_eSlectedIndex(MouseStateInView::enumMouseState_None)
 {
 	ui.setupUi(this);
@@ -15,9 +15,9 @@ CreateEntityWidget::~CreateEntityWidget()
 
 void CreateEntityWidget::InitWidgetAndAddToLayout()
 {
-	if (m_pMainWnd)
+	if (m_mainWnd)
 	{
-		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
+		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
 		pWnd->ui.verticalLayout_Newentity->addWidget(this);
 	}
 
@@ -84,9 +84,9 @@ void CreateEntityWidget::RefreshBtn()
 
 void CreateEntityWidget::AdjustBtn()
 {
-	if (m_pMainWnd)
+	if (m_mainWnd)
 	{
-		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainWnd);
+		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
 		int layoutWidth = pWnd->ui.verticalLayout_Newentity->contentsRect().width();
 		int CurWidth = layoutWidth;
 		int iconSize = CurWidth * 0.5;
