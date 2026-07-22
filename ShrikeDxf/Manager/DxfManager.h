@@ -26,7 +26,7 @@ public:
 
 	// 暴露数据对象连接信号用
 	DxfData* getDxfData() const { return m_dxfData.get(); }
-	CDxfReader* getDxfReader() const { return m_dxfReader.get(); }
+	DxfReader* getDxfReader() const { return m_dxfReader.get(); }
 	CDxfTreeviewModel* getTreeViewModel() { return &m_DxfTreeviewModel; }
     DxfLayerTableviewModel* getLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	DxfGraphicsScene* getScene() { return &m_DxfGraphicsScene; }
@@ -79,7 +79,7 @@ private:
 	// dxf数据类
 	std::unique_ptr<DxfData> m_dxfData;
 	// dxf读取类
-	std::unique_ptr<CDxfReader> m_dxfReader;
+	std::unique_ptr<DxfReader> m_dxfReader;
 
 	// treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;

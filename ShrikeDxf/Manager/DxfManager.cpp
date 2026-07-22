@@ -13,7 +13,7 @@ DxfManager::DxfManager(QWidget* mainWnd)
     // 数据
     m_dxfData = std::make_unique<DxfData>();
     // 读取器
-    m_dxfReader = std::make_unique<CDxfReader>(m_dxfData.get());
+    m_dxfReader = std::make_unique<DxfReader>(m_dxfData.get());
     // 选择控制
     m_selectionController = std::make_unique<CSelectionController>(m_dxfData.get(), &m_DxfGraphicsScene, this);
     // 编辑控制器
@@ -45,9 +45,9 @@ const MouseStateInView DxfManager::getCurrentInteractionState()
 bool DxfManager::loadDxfFile(const QString& strPath)
 {
     // 确保 Reader持有Data指针
-    m_dxfReader->SetDataTarget(m_dxfData.get());
+    m_dxfReader->setDataTarget(m_dxfData.get());
     // 执行读取
-    bool ok = m_dxfReader->ReadFile(strPath);
+    bool ok = m_dxfReader->readFile(strPath);
     if (!ok) {
         QMessageBox::warning(m_mainWnd, QStringLiteral("打开失败"),
             QStringLiteral("无法打开或解析文件:\n%1").arg(strPath));

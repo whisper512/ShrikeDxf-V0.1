@@ -2,26 +2,26 @@
 #include <QFileInfo>
 #include "DxfReader.h"
 
-CDxfReader::CDxfReader(DxfData* pData)
+DxfReader::DxfReader(DxfData* pData)
     : m_data(pData)
 {
 }
 
-void CDxfReader::SetDataTarget(DxfData* pData)
+void DxfReader::setDataTarget(DxfData* pData)
 {
     m_data = pData;
 }
 
-bool CDxfReader::ReadFile(const QString& filePath)
+bool DxfReader::readFile(const QString& filePath)
 {
     if (!m_data) {
-        std::cerr << "[CDxfReader] No data target set!" << std::endl;
+        std::cerr << "[DxfReader] No data target set!" << std::endl;
         return false;
     }
     // 使用 dxfRW 进行解析
     dxfRW dxf(filePath.toStdString().c_str());
     if (!dxf.read(this, false)) { 
-        std::cerr << "[CDxfReader] Failed to open/parse: "
+        std::cerr << "[DxfReader] Failed to open/parse: "
             << filePath.toStdString() << std::endl;
         return false;
     }
@@ -31,7 +31,7 @@ bool CDxfReader::ReadFile(const QString& filePath)
     return true;
 }
 
-void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
+void DxfReader::fillEntityProp(const DRW_Entity& src, EntityProp& dst)
 {
     dst.layer = src.layer;
     dst.lineType = src.lineType;
@@ -56,7 +56,7 @@ void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
     }
 }
 
-void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& layer)
+void DxfReader::storeEntity(const variantDxfEntity& entity, const std::string& layer)
 {
     if (!m_data) return;
 
@@ -71,14 +71,14 @@ void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& 
     }
 }
 
-void CDxfReader::StoreLayer(const stuLayer& layer)
+void DxfReader::storeLayer(const stuLayer& layer)
 {
     if (!m_data) return;
     m_data->addLayer(layer);
 }
 
 
-void CDxfReader::addHeader(const DRW_Header* data)
+void DxfReader::addHeader(const DRW_Header* data)
 {
     if (!m_data || !data) return;
     // $ACADVER
@@ -114,11 +114,11 @@ void CDxfReader::addHeader(const DRW_Header* data)
     }
 }
 
-void CDxfReader::addLType(const DRW_LType& data)
+void DxfReader::addLType(const DRW_LType& data)
 {
 }
 
-void CDxfReader::addLayer(const DRW_Layer& data)
+void DxfReader::addLayer(const DRW_Layer& data)
 {
     if (!m_data) return;
     stuLayer layer;
@@ -141,28 +141,28 @@ void CDxfReader::addLayer(const DRW_Layer& data)
     layer.lineWeight = DRW_LW_Conv::lineWidth2dxfInt(data.lWeight);
     layer.isVisible = (data.color >= 0);    // code 62 负值 = 图层关闭
     layer.isLocked = (data.flags & 0x04) != 0;
-    StoreLayer(layer);
+    storeLayer(layer);
 }
 
-void CDxfReader::addDimStyle(const DRW_Dimstyle& data)
+void DxfReader::addDimStyle(const DRW_Dimstyle& data)
 {
     // 标注风格
 }
-void CDxfReader::addVport(const DRW_Vport& data) 
+void DxfReader::addVport(const DRW_Vport& data) 
 {
     // 视口配置
 }
-void CDxfReader::addTextStyle(const DRW_Textstyle& data) 
+void DxfReader::addTextStyle(const DRW_Textstyle& data) 
 {
     // 文字样式
 }
-void CDxfReader::addAppId(const DRW_AppId& data) 
+void DxfReader::addAppId(const DRW_AppId& data) 
 {
     // 应用程序ID
 }
 
 
-void CDxfReader::addBlock(const DRW_Block& data)
+void DxfReader::addBlock(const DRW_Block& data)
 {
     if (!m_data) return;
     // 注册块定义
@@ -172,7 +172,7 @@ void CDxfReader::addBlock(const DRW_Block& data)
     m_currentBlock = data.name;
 }
 
-void CDxfReader::setBlock(const int handle)
+void DxfReader::setBlock(const int handle)
 {
     //// 在 DWG 中可能使用 handle 切换当前块
     //auto it = m_blockHandles.find(handle);
@@ -181,84 +181,84 @@ void CDxfReader::setBlock(const int handle)
     //}
 }
 
-void CDxfReader::endBlock()
+void DxfReader::endBlock()
 {
     // 离开当前块
     m_currentBlock.clear();
 }
 
 
-void CDxfReader::addPoint(const DRW_Point& data)
+void DxfReader::addPoint(const DRW_Point& data)
 {
     if (!m_data) return;
     EntityPoint ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.point = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addLine(const DRW_Line& data)
+void DxfReader::addLine(const DRW_Line& data)
 {
     if (!m_data) return;
     EntityLine ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.startPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.endPoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addRay(const DRW_Ray& /*data*/)
+void DxfReader::addRay(const DRW_Ray& /*data*/)
 {
     // 射线
 }
 
-void CDxfReader::addXline(const DRW_Xline& /*data*/)
+void DxfReader::addXline(const DRW_Xline& /*data*/)
 {
     // 构造线
 }
 
-void CDxfReader::addCircle(const DRW_Circle& data)
+void DxfReader::addCircle(const DRW_Circle& data)
 {
     if (!m_data) return;
     EntityCircle ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.radius = data.radious;
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addEllipse(const DRW_Ellipse& data)
+void DxfReader::addEllipse(const DRW_Ellipse& data)
 {
     if (!m_data) return;
     EntityEllipse ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     // secPoint 是长轴端点(相对于中心的向量或绝对坐标)
     ent.majorAxisEndpoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
     ent.ratio = data.ratio;
     ent.startParam = data.staparam;
     ent.endParam = data.endparam;
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addArc(const DRW_Arc& data)
+void DxfReader::addArc(const DRW_Arc& data)
 {
     if (!m_data) return;
     EntityArc ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.radius = data.radious;
     ent.startAngle = data.staangle;   // libdxfrw 弧度
     ent.endAngle = data.endangle;     // libdxfrw 弧度
     ent.isCCW = data.isccw == 1 ? true : false;
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addMText(const DRW_MText& data)
+void DxfReader::addMText(const DRW_MText& data)
 {
     if (!m_data) return;
     EntityMText ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.xAxisDir = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
     ent.text = data.text;
@@ -269,14 +269,14 @@ void CDxfReader::addMText(const DRW_MText& data)
     ent.lineSpacing = data.interlin;
     ent.attachPoint = static_cast<int>(data.alignV); // Attach 枚举 1-9
     // textDir / lineSpaceStyle — libdxfrw 没有暴露保持默认值
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addText(const DRW_Text& data)
+void DxfReader::addText(const DRW_Text& data)
 {
     if (!m_data) return;
     EntityText ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.alignPoint = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
     ent.text = data.text;
@@ -288,47 +288,47 @@ void CDxfReader::addText(const DRW_Text& data)
     ent.textGen = data.textgen;
     ent.alignH = data.alignH;
     ent.alignV = data.alignV;
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addDimAlign(const DRW_DimAligned* /*data*/) 
+void DxfReader::addDimAlign(const DRW_DimAligned* /*data*/) 
 {
     // 对齐标注
 }
-void CDxfReader::addDimLinear(const DRW_DimLinear* /*data*/) 
+void DxfReader::addDimLinear(const DRW_DimLinear* /*data*/) 
 {
     // 线性标注
 }
-void CDxfReader::addDimRadial(const DRW_DimRadial* /*data*/) 
+void DxfReader::addDimRadial(const DRW_DimRadial* /*data*/) 
 {
     // 半径标注
 }
-void CDxfReader::addDimDiametric(const DRW_DimDiametric* /*data*/) 
+void DxfReader::addDimDiametric(const DRW_DimDiametric* /*data*/) 
 {
     // 直径标注
 }
-void CDxfReader::addDimAngular(const DRW_DimAngular* /*data*/) 
+void DxfReader::addDimAngular(const DRW_DimAngular* /*data*/) 
 {
     // 角度标注
 }
-void CDxfReader::addDimAngular3P(const DRW_DimAngular3p* /*data*/) 
+void DxfReader::addDimAngular3P(const DRW_DimAngular3p* /*data*/) 
 {
     // 三点角度标注
 }
-void CDxfReader::addDimOrdinate(const DRW_DimOrdinate* /*data*/) 
+void DxfReader::addDimOrdinate(const DRW_DimOrdinate* /*data*/) 
 {
     // 坐标标注
 }
-void CDxfReader::addLeader(const DRW_Leader* /*data*/) 
+void DxfReader::addLeader(const DRW_Leader* /*data*/) 
 {
     // 指引线
 }
 
-void CDxfReader::addHatch(const DRW_Hatch* data)
+void DxfReader::addHatch(const DRW_Hatch* data)
 {
     if (!m_data || !data) return;
     EntityHatch ent;
-    FillEntityProp(*data, ent.prop);
+    fillEntityProp(*data, ent.prop);
     ent.patternName = data->name;
     ent.solidFill = (data->solid != 0);       // DRW_Hatch::solid (code 70)
     ent.associative = data->associative;      // code 71
@@ -410,36 +410,36 @@ void CDxfReader::addHatch(const DRW_Hatch* data)
         ent.loops.push_back(hl);
     }
     ent.loopCount = static_cast<int>(ent.loops.size());
-    StoreEntity(ent, data->layer);
+    storeEntity(ent, data->layer);
 }
 
-void CDxfReader::addViewport(const DRW_Viewport& /*data*/) 
+void DxfReader::addViewport(const DRW_Viewport& /*data*/) 
 {
     // 视图窗口
 }
-void CDxfReader::addImage(const DRW_Image* /*data*/) 
+void DxfReader::addImage(const DRW_Image* /*data*/) 
 {
     // 图片
 }
-void CDxfReader::linkImage(const DRW_ImageDef* /*data*/) 
+void DxfReader::linkImage(const DRW_ImageDef* /*data*/) 
 {
     // 图片定义
 }
-void CDxfReader::addComment(const char* /*comment*/) 
+void DxfReader::addComment(const char* /*comment*/) 
 {
     // 注释
 }
-void CDxfReader::addPlotSettings(const DRW_PlotSettings* /*data*/) 
+void DxfReader::addPlotSettings(const DRW_PlotSettings* /*data*/) 
 {
     // 打印设置
 }
 
 
-void CDxfReader::addLWPolyline(const DRW_LWPolyline& data)
+void DxfReader::addLWPolyline(const DRW_LWPolyline& data)
 {
     if (!m_data) return;
     EntityLWPolyline ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.flags = data.flags;
     ent.constantWidth = data.width;     // DRW_LWPolyline::width (code 43)
     ent.elevation = data.elevation;     // code 38
@@ -452,14 +452,14 @@ void CDxfReader::addLWPolyline(const DRW_LWPolyline& data)
         pv.endWidth = vptr->endwidth;     // endwidth
         ent.vecVertices.push_back(pv);
     }
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addPolyline(const DRW_Polyline& data)
+void DxfReader::addPolyline(const DRW_Polyline& data)
 {
     if (!m_data) return;
     EntityPolyline ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.flags = data.flags;
     ent.defStartWidth = data.defstawidth;    // defstawidth
     ent.defEndWidth = data.defendwidth;
@@ -486,14 +486,14 @@ void CDxfReader::addPolyline(const DRW_Polyline& data)
         pv.vertexFlags = vptr->flags;            
         ent.vecVertices.push_back(pv);
     }
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addSpline(const DRW_Spline* data)
+void DxfReader::addSpline(const DRW_Spline* data)
 {
     if (!m_data || !data) return;
     EntitySpline ent;
-    FillEntityProp(*data, ent.prop);
+    fillEntityProp(*data, ent.prop);
     ent.flags = data->flags;
     ent.degree = data->degree;
     ent.knotTolerance = data->tolknot;       
@@ -515,20 +515,20 @@ void CDxfReader::addSpline(const DRW_Spline* data)
         if (fp)
             ent.fitPoints.emplace_back(fp->x, fp->y, fp->z);
     }
-    StoreEntity(ent, data->layer);
+    storeEntity(ent, data->layer);
 }
 
-void CDxfReader::addKnot(const DRW_Entity& /*data*/)
+void DxfReader::addKnot(const DRW_Entity& /*data*/)
 {
     // 样条节点值已经在 addSpline 中通过 data->knots 获取
     // 这个回调用于逐节点添加，视 libdxfrw 版本而定
 }
 
-void CDxfReader::addInsert(const DRW_Insert& data)
+void DxfReader::addInsert(const DRW_Insert& data)
 {
     if (!m_data) return;
     EntityInsert ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.blockName = data.name;
     ent.xScale = data.xscale;
@@ -539,41 +539,41 @@ void CDxfReader::addInsert(const DRW_Insert& data)
     ent.rowCount = data.rowcount;
     ent.colSpacing = data.colspace;
     ent.rowSpacing = data.rowspace;
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
-void CDxfReader::addTrace(const DRW_Trace& /*data*/)
+void DxfReader::addTrace(const DRW_Trace& /*data*/)
 {
 
 }
 
-void CDxfReader::add3dFace(const DRW_3Dface& /*data*/)
+void DxfReader::add3dFace(const DRW_3Dface& /*data*/)
 {
     // 转换为 Solid 或自定义处理
 }
 
-void CDxfReader::addSolid(const DRW_Solid& data)
+void DxfReader::addSolid(const DRW_Solid& data)
 {
     if (!m_data) return;
     EntitySolid ent;
-    FillEntityProp(data, ent.prop);
+    fillEntityProp(data, ent.prop);
     ent.corner[0] = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
     ent.corner[1] = Vertex3D(data.secPoint.x, data.secPoint.y, data.secPoint.z);
     ent.corner[2] = Vertex3D(data.thirdPoint.x, data.thirdPoint.y, data.thirdPoint.z);
     ent.corner[3] = Vertex3D(data.fourPoint.x, data.fourPoint.y, data.fourPoint.z);
-    StoreEntity(ent, data.layer);
+    storeEntity(ent, data.layer);
 }
 
 
 
-void CDxfReader::writeHeader(DRW_Header& /*data*/) {}
-void CDxfReader::writeBlocks() {}
-void CDxfReader::writeBlockRecords() {}
-void CDxfReader::writeEntities() {}
-void CDxfReader::writeLTypes() {}
-void CDxfReader::writeLayers() {}
-void CDxfReader::writeTextstyles() {}
-void CDxfReader::writeVports() {}
-void CDxfReader::writeDimstyles() {}
-void CDxfReader::writeObjects() {}
-void CDxfReader::writeAppId() {}
+void DxfReader::writeHeader(DRW_Header& /*data*/) {}
+void DxfReader::writeBlocks() {}
+void DxfReader::writeBlockRecords() {}
+void DxfReader::writeEntities() {}
+void DxfReader::writeLTypes() {}
+void DxfReader::writeLayers() {}
+void DxfReader::writeTextstyles() {}
+void DxfReader::writeVports() {}
+void DxfReader::writeDimstyles() {}
+void DxfReader::writeObjects() {}
+void DxfReader::writeAppId() {}

@@ -13,14 +13,14 @@
 #include "libdxfrw.h"
 
 // dxf文件的映射类，继承DRW_Interface来读取dxf文件
-class CDxfReader : public DRW_Interface
+class DxfReader : public DRW_Interface
 {
 public:
-    explicit CDxfReader(DxfData* pData = nullptr);
-    ~CDxfReader() override = default;
+    explicit DxfReader(DxfData* pData = nullptr);
+    ~DxfReader() override = default;
 
-    void SetDataTarget(DxfData* pData);
-    bool ReadFile(const QString& filePath);
+    void setDataTarget(DxfData* pData);
+    bool readFile(const QString& filePath);
 
 private:
     // DRW_Interface回调
@@ -80,12 +80,12 @@ private:
     void addSolid(const DRW_Solid& data) override;
 
     // 从 DRW_Entity 公共字段填充 EntityProp
-    void FillEntityProp(const DRW_Entity& src, EntityProp& dst);
+    void fillEntityProp(const DRW_Entity& src, EntityProp& dst);
 
     // 图元存入DxfData
-    void StoreEntity(const variantDxfEntity& entity, const std::string& layer);
+    void storeEntity(const variantDxfEntity& entity, const std::string& layer);
     // 图层存入DxfData
-    void StoreLayer(const stuLayer& layer);
+    void storeLayer(const stuLayer& layer);
 
     DxfData* m_data = nullptr;
     std::string m_currentBlock;                // 当前块名
