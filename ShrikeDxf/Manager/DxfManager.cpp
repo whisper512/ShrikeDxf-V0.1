@@ -15,7 +15,7 @@ DxfManager::DxfManager(QWidget* mainWnd)
     // 读取器
     m_dxfReader = std::make_unique<DxfReader>(m_dxfData.get());
     // 选择控制
-    m_selectionController = std::make_unique<CSelectionController>(m_dxfData.get(), &m_DxfGraphicsScene, this);
+    m_selectionController = std::make_unique<SelectionController>(m_dxfData.get(), &m_DxfGraphicsScene, this);
     // 编辑控制器
     m_dxfEditController = std::make_unique<DxfEditController>(m_dxfData.get(), &m_DxfGraphicsScene, m_selectionController.get(), this, this);
     // 新建图元绘制控制器
@@ -189,8 +189,8 @@ void DxfManager::pasteEntity(QPointF position)
 void DxfManager::connectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_selectionController.get(), &CSelectionController::signalEntitySelected, this, &DxfManager::handleEntitySelected);
-        connect(m_selectionController.get(), &CSelectionController::signalEntityDeselected, this, &DxfManager::handleEntityDeselected);
+        connect(m_selectionController.get(), &SelectionController::signalEntitySelected, this, &DxfManager::handleEntitySelected);
+        connect(m_selectionController.get(), &SelectionController::signalEntityDeselected, this, &DxfManager::handleEntityDeselected);
         });
 }
 

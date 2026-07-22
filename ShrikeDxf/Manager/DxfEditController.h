@@ -7,7 +7,7 @@
 
 class DxfData;
 class DxfGraphicsScene;
-class CSelectionController;
+class SelectionController;
 class DxfManager;
 
 class DxfEditController : public QObject
@@ -15,7 +15,7 @@ class DxfEditController : public QObject
     Q_OBJECT
 public:
     explicit DxfEditController(DxfData* data, DxfGraphicsScene* scene,
-        CSelectionController* selection, DxfManager* manager, QObject* parent = nullptr);
+        SelectionController* selection, DxfManager* manager, QObject* parent = nullptr);
     ~DxfEditController();
 
     // ── 选中状态同步 ──
@@ -50,7 +50,7 @@ private:
 
     DxfData* m_data = nullptr;
     DxfGraphicsScene* m_scene = nullptr;
-    CSelectionController* m_selection = nullptr;
+    SelectionController* m_selection = nullptr;
     DxfManager* m_manager = nullptr;
 
     QString        m_selectedLayer;

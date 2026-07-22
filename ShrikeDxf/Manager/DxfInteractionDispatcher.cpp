@@ -14,7 +14,7 @@ DxfInteractionDispatcher::~DxfInteractionDispatcher()
     
 }
 
-void DxfInteractionDispatcher::setControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl, CSelectionController* selCtrl)
+void DxfInteractionDispatcher::setControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl, SelectionController* selCtrl)
 {
     m_drawCtrl = drawCtrl;
     m_editCtrl = editCtrl;
@@ -87,7 +87,7 @@ void DxfInteractionDispatcher::onLeftClick(QPointF scenePos)
 
         // 没有命中夹点才进行选择
         if (m_selectionCtrl)
-            m_selectionCtrl->HitTest(scenePos);
+            m_selectionCtrl->hitTest(scenePos);
     }
     else
     {

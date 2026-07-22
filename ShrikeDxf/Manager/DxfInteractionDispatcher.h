@@ -5,7 +5,7 @@
 
 class dxfDrawController;
 class DxfEditController;
-class CSelectionController;
+class SelectionController;
 
 // graphicsView交互控制类
 class DxfInteractionDispatcher : public QObject
@@ -16,7 +16,7 @@ public:
     ~DxfInteractionDispatcher();
 
     // 持有其他数据类
-    void setControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl ,CSelectionController* selCtrl);
+    void setControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl ,SelectionController* selCtrl);
     // 设置当前工具,修改鼠标状态
     void setMouseStatus(MouseStateInView state);
     // 发会鼠标状态
@@ -37,7 +37,7 @@ private:
     // 编辑控制器
     DxfEditController* m_editCtrl = nullptr;
     // 选择控制器
-    CSelectionController* m_selectionCtrl = nullptr;
+    SelectionController* m_selectionCtrl = nullptr;
 
 private:
     bool isDrawState(MouseStateInView state) const;

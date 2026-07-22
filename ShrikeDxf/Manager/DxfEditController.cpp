@@ -10,7 +10,7 @@
 
 
 DxfEditController::DxfEditController(DxfData* data, DxfGraphicsScene* scene,
-    CSelectionController* selection, DxfManager* manager, QObject* parent)
+    SelectionController* selection, DxfManager* manager, QObject* parent)
     : QObject(parent)
     , m_data(data)
     , m_scene(scene)
