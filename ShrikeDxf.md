@@ -59,3 +59,30 @@
 - [x] 整理文件结构，都子啊一个目录下
 - [x] 拆分总管理类
 - [ ] 修改命名，舍弃匈牙利命名,修改完成除了widget的其他管理类
+
+# 技术备忘录
+DXF / libdxfrw
+      │
+      ▼
+EntitySpline / EntityArc / EntityLWPolyline
+      │
+      ├─ 原始曲线计算：OCCT
+      │    ├─ 样条求值、包围盒
+      │    ├─ 最近点 / 捕捉
+      │    ├─ 曲线相交、裁剪
+      │    └─ 将曲线按容差离散为折线
+      │
+      └─ 区域计算：Clipper2
+           ├─ Union / Difference / Intersect
+           ├─ Offset
+           ├─ Hatch 边界清理
+           └─ 生成填充三角形
+		   
+		   
+原始曲线（Spline / Arc / Ellipse）
+   ↓ 按几何容差自适应离散
+Polyline 点列
+   ↓ Clipper2
+布尔、Offset、清理自交
+   ↓
+结果轮廓（新的 Polyline / Hatch 边界）
