@@ -2,64 +2,64 @@
 #include <QObject>
 #include <QPointF>
 #include <QVector>
+
 #include "Tools.h"
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
 
-
-class CDxfDrawController : public QObject
+class DxfDrawController : public QObject
 {
     Q_OBJECT
 
 public:
-    CDxfDrawController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
-    ~CDxfDrawController();
+    DxfDrawController(DxfData* data, CDxfGraphicsScene* scene, QObject* parent = nullptr);
+    ~DxfDrawController();
 
     // 获取当前图层
-    const QString& GetCurrentLayer() const;
+    const QString& getCurrentLayer() const;
     // 设置当前工具
-    void SetMouseStatus(enumMouseStateInView mouseState);
+    void setMouseStatus(MouseStateInView mouseState);
     // 鼠标移动
-    void OnMouseMove(QPointF scenePos);
+    void onMouseMove(QPointF scenePos);
     // 鼠标左键点击
-    void OnGraphicsViewLeftClick(QPointF scenePos);
+    void onGraphicsViewLeftClick(QPointF scenePos);
     // 鼠标右键点击
-    void OnGraphicsViewRightClick(QPointF scenePos);
+    void onGraphicsViewRightClick(QPointF scenePos);
 
 private:
     // 完成/闭合多段线
-    void FinishPolyline();
+    void finishPolyline();
     // 取消当前多段线
-    void CancelPolyline();
+    void cancelPolyline();
     // 完成矩形
-    void FinishRectangle(QPointF scenePos);
+    void finishRectangle(QPointF scenePos);
     // 完成椭圆
-    void FinishEllipse(QPointF scenePos);
+    void finishEllipse(QPointF scenePos);
     // 完成样条曲线(拟合点)
-    void FinishSplineFit();
+    void finishSplineFit();
     // 完成样条曲线(控制点)
-    void FinishSplineControl();
+    void finishSplineControl();
     // 取消当前样条
-    void CancelSpline();
+    void cancelSpline();
     // 完成文本
-    void FinishText(QPointF scenePos);
+    void finishText(QPointF scenePos);
     // 完成多行文本
-    void FinishMText(QPointF scenePos);
+    void finishMText(QPointF scenePos);
 
 private:
 
 private:
     // 鼠标状态
-    enumMouseStateInView m_eCurrentState = enumMouseStateInView::enumMouseState_None;
+    MouseStateInView m_currentState = MouseStateInView::enumMouseState_None;
     // 绘图的步骤
     int m_step = 0;
 
-    QPointF m_ptStart;
-    QPointF m_ptMid;
-    QVector<QPointF> m_vecPolyPoints;
-    QVector<QPointF> m_vecSplinePoints;
+    QPointF m_startPoint;
+    QPointF m_midPoint;
+    QVector<QPointF> m_polyPoints;
+    QVector<QPointF> m_splinePoints;
 
-    DxfData* m_pData = nullptr;
-    CDxfGraphicsScene* m_pScene = nullptr;
+    DxfData* m_data = nullptr;
+    CDxfGraphicsScene* m_scene = nullptr;
 signals:
 };

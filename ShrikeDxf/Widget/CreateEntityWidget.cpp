@@ -4,7 +4,7 @@
 CreateEntityWidget::CreateEntityWidget(QWidget* parent)
 	: QWidget(parent),
 	m_pMainWnd(parent),
-	m_eSlectedIndex(enumMouseStateInView::enumMouseState_None)
+	m_eSlectedIndex(MouseStateInView::enumMouseState_None)
 {
 	ui.setupUi(this);
 }
@@ -130,59 +130,59 @@ void CreateEntityWidget::OnToolBtnClicked()
 
 	if (pBtn == ui.toolButton_Mouse)
 	{
-		m_eSlectedIndex = enumMouseStateInView::enumMouseState_None;
+		m_eSlectedIndex = MouseStateInView::enumMouseState_None;
 	}
 	else if (pBtn == ui.toolButton_Point)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Point;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_Point;
 	}
 	else if (pBtn == ui.toolButton_Line)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Line;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_Line;
 	}
 	else if(pBtn == ui.toolButton_Center_Radius_Circle)
 	{
-		m_eSlectedIndex = enumMouseStateInView::enumMouseState_CircleCenterRadius;
+		m_eSlectedIndex = MouseStateInView::enumMouseState_CircleCenterRadius;
 	}
 	else if (pBtn == ui.toolButton_Center_Diameter_Circle)
 	{
-		m_eSlectedIndex = enumMouseStateInView::enumMouseState_CircleDiameter;
+		m_eSlectedIndex = MouseStateInView::enumMouseState_CircleDiameter;
 	}
 	else if (pBtn == ui.toolButton_Center_Endpoint_Arc)
 	{
-		m_eSlectedIndex = enumMouseStateInView::enumMouseState_ArcCenterEndpoint;
+		m_eSlectedIndex = MouseStateInView::enumMouseState_ArcCenterEndpoint;
 	}
 	else if (pBtn == ui.toolButton_ThreePoint_Arc)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_ArcThreePoints;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_ArcThreePoints;
 	}
 	else if (pBtn == ui.toolButton_Polyline)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Polyline;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_Polyline;
 	}
 	else if (pBtn == ui.toolButton_Ellipse)
 	{
-		m_eSlectedIndex = enumMouseStateInView::enumMouseState_EllipseCenterRadius;
+		m_eSlectedIndex = MouseStateInView::enumMouseState_EllipseCenterRadius;
 	}
 	else if (pBtn == ui.toolButton_Rectangle)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Rectangle;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_Rectangle;
 	}
 	else if (pBtn == ui.toolButton_SplineFitPoint)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_SplineFitPoint;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_SplineFitPoint;
 	}
 	else if (pBtn == ui.toolButton_SplineControlPoint)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_SplineControlPoint;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_SplineControlPoint;
 	}
 	else if (pBtn == ui.toolButton_Text)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_Text;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_Text;
 	}
 	else if (pBtn == ui.toolButton_Mtext)
 	{
-        m_eSlectedIndex = enumMouseStateInView::enumMouseState_MText;
+        m_eSlectedIndex = MouseStateInView::enumMouseState_MText;
 	}
 
 	emit signalMouseStatus(m_eSlectedIndex);

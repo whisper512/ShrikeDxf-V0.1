@@ -3,7 +3,7 @@
 #include <QPointF>
 #include "Tools.h"
 
-class CDxfDrawController;
+class DxfDrawController;
 class CDxfEditController;
 class CSelectionController;
 
@@ -16,11 +16,11 @@ public:
     ~CDxfInteractionDispatcher();
 
     // 持有其他数据类
-    void SetControllers(CDxfDrawController* drawCtrl, CDxfEditController* editCtrl ,CSelectionController* selCtrl);
+    void SetControllers(DxfDrawController* drawCtrl, CDxfEditController* editCtrl ,CSelectionController* selCtrl);
     // 设置当前工具,修改鼠标状态
-    void SetMouseStatus(enumMouseStateInView state);
+    void SetMouseStatus(MouseStateInView state);
     // 发会鼠标状态
-    enumMouseStateInView GetCurrentState() const { return m_eState; }
+    MouseStateInView GetCurrentState() const { return m_eState; }
     // 鼠标事件
     void OnMouseMove(QPointF scenePos);
     void OnLeftClick(QPointF scenePos);
@@ -31,15 +31,15 @@ public:
 
 private:
     // 当前鼠标状态
-    enumMouseStateInView m_eState = enumMouseStateInView::enumMouseState_None;
+    MouseStateInView m_eState = MouseStateInView::enumMouseState_None;
     // 绘制控制器
-    CDxfDrawController* m_pDrawCtrl = nullptr;
+    DxfDrawController* m_pDrawCtrl = nullptr;
     // 编辑控制器
     CDxfEditController* m_pEditCtrl = nullptr;
     // 选择控制器
     CSelectionController* m_pSelectionCtrl = nullptr;
 
 private:
-    bool IsDrawState(enumMouseStateInView state) const;
-    bool IsEditState(enumMouseStateInView state) const;
+    bool IsDrawState(MouseStateInView state) const;
+    bool IsEditState(MouseStateInView state) const;
 };

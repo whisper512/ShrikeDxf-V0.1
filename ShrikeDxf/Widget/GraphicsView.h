@@ -132,7 +132,7 @@ public slots:
 	void handleLockZoom(bool bChecked);
 	// operate动作
 	// 在绘制预览新图元
-	void handleMouseStatusChanged(enumMouseStateInView mouseState);
+	void handleMouseStatusChanged(MouseStateInView mouseState);
 
 
 

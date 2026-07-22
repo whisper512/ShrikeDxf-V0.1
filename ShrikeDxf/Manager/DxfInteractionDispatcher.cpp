@@ -14,14 +14,14 @@ CDxfInteractionDispatcher::~CDxfInteractionDispatcher()
     
 }
 
-void CDxfInteractionDispatcher::SetControllers(CDxfDrawController* drawCtrl, CDxfEditController* editCtrl, CSelectionController* selCtrl)
+void CDxfInteractionDispatcher::SetControllers(DxfDrawController* drawCtrl, CDxfEditController* editCtrl, CSelectionController* selCtrl)
 {
     m_pDrawCtrl = drawCtrl;
     m_pEditCtrl = editCtrl;
     m_pSelectionCtrl = selCtrl;
 }
 
-void CDxfInteractionDispatcher::SetMouseStatus(enumMouseStateInView state)
+void CDxfInteractionDispatcher::SetMouseStatus(MouseStateInView state)
 {
     if (m_eState != state)
     {
@@ -42,7 +42,7 @@ void CDxfInteractionDispatcher::SetMouseStatus(enumMouseStateInView state)
     // 进入状态时的初始化
     if (IsDrawState(state) && m_pDrawCtrl)
     {
-        m_pDrawCtrl->SetMouseStatus(state);
+        m_pDrawCtrl->setMouseStatus(state);
     }
     else if (IsEditState(state) && m_pEditCtrl)
     {
@@ -59,13 +59,13 @@ void CDxfInteractionDispatcher::OnMouseMove(QPointF scenePos)
         return;
     }
 
-    if (m_eState == enumMouseStateInView::enumMouseState_None)
+    if (m_eState == MouseStateInView::enumMouseState_None)
     {
         // 可以在这里加 hover 夹点高亮
     }
     else
     {
-        m_pDrawCtrl->OnMouseMove(scenePos);
+        m_pDrawCtrl->onMouseMove(scenePos);
     }
 }
 
@@ -75,7 +75,7 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
     if (!m_pDrawCtrl)
         return;
 
-    if (m_eState == enumMouseStateInView::enumMouseState_None)
+    if (m_eState == MouseStateInView::enumMouseState_None)
     {
         // 先检查是否命中了选中图元的夹点
         if (m_pEditCtrl)
@@ -91,7 +91,7 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
     }
     else
     {
-        m_pDrawCtrl->OnGraphicsViewLeftClick(scenePos);
+        m_pDrawCtrl->onGraphicsViewLeftClick(scenePos);
     }
 }
 
@@ -99,7 +99,7 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
 void CDxfInteractionDispatcher::OnRightClick(QPointF scenePos)
 {
     if (m_pDrawCtrl)
-        m_pDrawCtrl->OnGraphicsViewRightClick(scenePos);
+        m_pDrawCtrl->onGraphicsViewRightClick(scenePos);
 
     // 如果以后编辑模式需要右键菜单，可在此扩展
 }
@@ -107,7 +107,7 @@ void CDxfInteractionDispatcher::OnRightClick(QPointF scenePos)
 void CDxfInteractionDispatcher::OnLeftPress(QPointF scenePos)
 {
     // 仅在光标模式(非工具模式)且编辑控制器存在时检测夹点
-    if (m_eState != enumMouseStateInView::enumMouseState_None)
+    if (m_eState != MouseStateInView::enumMouseState_None)
         return;
     if (!m_pEditCtrl)
         return;
@@ -133,15 +133,15 @@ void CDxfInteractionDispatcher::OnLeftRelease(QPointF scenePos)
 
 
 
-bool CDxfInteractionDispatcher::IsDrawState(enumMouseStateInView state) const
+bool CDxfInteractionDispatcher::IsDrawState(MouseStateInView state) const
 {
-    return state >= enumMouseStateInView::enumMouseState_Point &&
-        state <= enumMouseStateInView::enumMouseState_MText;
+    return state >= MouseStateInView::enumMouseState_Point &&
+        state <= MouseStateInView::enumMouseState_MText;
 }
 
-bool CDxfInteractionDispatcher::IsEditState(enumMouseStateInView state) const
+bool CDxfInteractionDispatcher::IsEditState(MouseStateInView state) const
 {
     // 或更精细的判断
-    return state >= enumMouseStateInView::enumMouseState_Move;  
+    return state >= MouseStateInView::enumMouseState_Move;  
 }
 

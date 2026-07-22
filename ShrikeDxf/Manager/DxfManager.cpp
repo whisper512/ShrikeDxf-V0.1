@@ -19,7 +19,7 @@ DxfManager::DxfManager(QWidget* pMainWnd)
     // 编辑控制器
     m_DxfEditController = std::make_unique<CDxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, m_pSelectionController.get(), this, this);
     // 新建图元绘制控制器
-    m_DxfDrawController = std::make_unique<CDxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_DxfDrawController = std::make_unique<DxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 交互控制
     m_pInteractionDispatcher = std::make_unique<CDxfInteractionDispatcher>(this);
     // 设置交互控制持有的控制器
@@ -36,7 +36,7 @@ DxfManager::~DxfManager()
     
 }
 
-const enumMouseStateInView DxfManager::GetCurrentInteractionState()
+const MouseStateInView DxfManager::GetCurrentInteractionState()
 {
     return m_pInteractionDispatcher->GetCurrentState();
 }
@@ -340,7 +340,7 @@ void DxfManager::handleLayerAttributeChanged()
     RefreshScene();
 }
 
-void DxfManager::handleOnMouseStatusChanged(enumMouseStateInView mouseState)
+void DxfManager::handleOnMouseStatusChanged(MouseStateInView mouseState)
 {
     if (m_pInteractionDispatcher)
     {
@@ -413,5 +413,5 @@ void DxfManager::handleEntityDeselected()
 void DxfManager::handleEndDrawingPreview()
 {
     if (m_pInteractionDispatcher)
-        m_pInteractionDispatcher->SetMouseStatus(enumMouseStateInView::enumMouseState_None);
+        m_pInteractionDispatcher->SetMouseStatus(MouseStateInView::enumMouseState_None);
 }

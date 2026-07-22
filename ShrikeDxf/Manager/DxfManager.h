@@ -36,7 +36,7 @@ public:
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
 	// 获取交互鼠标状态
-	const enumMouseStateInView GetCurrentInteractionState();
+	const MouseStateInView GetCurrentInteractionState();
 
 	// 刷新scene重并重置graphicsview
 	void RefreshSceneResetview(){
@@ -91,7 +91,7 @@ private:
 	// dxf编辑类
 	std::unique_ptr<CDxfEditor> m_DxfEditor;
 	// dxf绘制控制和view选中
-	std::unique_ptr<CDxfDrawController> m_DxfDrawController;
+	std::unique_ptr<DxfDrawController> m_DxfDrawController;
 	// dxf编辑控制
 	std::unique_ptr<CDxfEditController> m_DxfEditController;
 	// 交互控制调度
@@ -134,7 +134,7 @@ signals:
 	// 通知当前工作图层
 	void signalCurrentLayerChanged(const QString& strLayer);
 	//通知graphicsview新建图元
-	void signalMouseStatusChanged(enumMouseStateInView mouseState);
+	void signalMouseStatusChanged(MouseStateInView mouseState);
 
  public slots:
 	 
@@ -154,7 +154,7 @@ signals:
 	 // 图层属性发生变化
 	 void handleLayerAttributeChanged();
 	 // 新建图元
-	 void handleOnMouseStatusChanged(enumMouseStateInView mouseState);
+	 void handleOnMouseStatusChanged(MouseStateInView mouseState);
 	 // 鼠标移动
 	 void handleMousePos(QPointF pos);
 	 // 鼠标左键点击

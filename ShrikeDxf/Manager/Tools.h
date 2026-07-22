@@ -7,7 +7,7 @@
 
 #include "../EntitiesLib/EntityBase.h"
 
-enum class enumMouseStateInView
+enum class MouseStateInView
 {
     enumMouseState_None = -1,
     // ----- 绘制状态 -----
