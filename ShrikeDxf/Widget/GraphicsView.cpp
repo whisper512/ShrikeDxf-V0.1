@@ -213,8 +213,8 @@ void GraphicsView::InitScene()
     //在没有加载scene的情况下，初始化一个scene
     if (!scene())
     {
-        CDxfGraphicsScene* pScene;
-        pScene = new CDxfGraphicsScene(this);
+        DxfGraphicsScene* pScene;
+        pScene = new DxfGraphicsScene(this);
         pScene->setSceneRect(500, 500,500, 500);
         setScene(pScene);
     }
@@ -329,7 +329,7 @@ void GraphicsView::handleDrag(bool bChecked)
 }
 
 
-void GraphicsView::handleRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewTransform)
+void GraphicsView::handleRefreshGraphicsview(DxfGraphicsScene* pScene, bool bResetViewTransform)
 {
     if (pScene)
     {

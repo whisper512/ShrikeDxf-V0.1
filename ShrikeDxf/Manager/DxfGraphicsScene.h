@@ -10,38 +10,38 @@
 
 
 
-class CDxfGraphicsScene : public QGraphicsScene
+class DxfGraphicsScene : public QGraphicsScene
 {
 	Q_OBJECT
 
 public:
-	explicit CDxfGraphicsScene(QObject *parent = nullptr);
-	~CDxfGraphicsScene();
+	explicit DxfGraphicsScene(QObject *parent = nullptr);
+	~DxfGraphicsScene();
 
 	//获取数据并且绘制
-	void DxfDraw(const std::map<std::string, stuLayer>& mapDxf);
+	void dxfDraw(const std::map<std::string, stuLayer>& mapDxf);
 	
-	double GetScale() { return m_scale; }
-	void ClearScene();
+	double getScale() { return m_scale; }
+	void clearScene();
 
-	void ClearPreview();
-	void AddPreviewPoint(QPointF pos);
-	void AddPreviewLine(QPointF p1, QPointF p2);
-	void AddPreviewCircle(QPointF center, qreal radius);
-	void AddPreviewArc(QPointF center, qreal radius, qreal startAngle, qreal endAngle);
-	void AddPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos);
-	void AddPreviewRectangle(QPointF p1, QPointF p2);
-	void AddPreviewEllipse(QPointF center, QPointF majorEnd, double ratio);
-	void AddPreviewSplineFit(const QVector<QPointF>& fitPoints, const QPointF& mousePos);
-	void AddPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos);
-	void AddPreviewTextRect(QPointF p1, QPointF p2);
+	void clearPreview();
+	void addPreviewPoint(QPointF pos);
+	void addPreviewLine(QPointF p1, QPointF p2);
+	void addPreviewCircle(QPointF center, qreal radius);
+	void addPreviewArc(QPointF center, qreal radius, qreal startAngle, qreal endAngle);
+	void addPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos);
+	void addPreviewRectangle(QPointF p1, QPointF p2);
+	void addPreviewEllipse(QPointF center, QPointF majorEnd, double ratio);
+	void addPreviewSplineFit(const QVector<QPointF>& fitPoints, const QPointF& mousePos);
+	void addPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos);
+	void addPreviewTextRect(QPointF p1, QPointF p2);
 
-	void ShowGrips(const QRectF& bounds);
-	void RemoveGrips();
-	bool HasGrips() const { return !m_gripItems.isEmpty(); }
-	int  GripAtPos(QPointF scenePos) const;   // 返回 -1 表示没点到, 0~7 表示手柄索引
-	void UpdateGripRect(const QRectF& bounds); // 拖拽中更新虚线框
-	QRectF GetGripBounds() const;
+	void showGrips(const QRectF& bounds);
+	void removeGrips();
+	bool hasGrips() const { return !m_gripItems.isEmpty(); }
+	int  gripAtPos(QPointF scenePos) const;   // 返回 -1 表示没点到, 0~7 表示手柄索引
+	void updateGripRect(const QRectF& bounds); // 拖拽中更新虚线框
+	QRectF getGripBounds() const;
 
 public:
 	//缩放比例
@@ -51,40 +51,40 @@ public:
 
 
 private:
-	const std::map<std::string, stuLayer>* m_pCurrentLayersEntitiesData = nullptr;
+	const std::map<std::string, stuLayer>* m_currentLayersEntitiesData = nullptr;
 
 	// 预览图元存储列表
 	QList<QGraphicsItem*> m_previewItems;
 
 	// 虚线框
-	QGraphicsRectItem* m_pBoundingBox = nullptr;
+	QGraphicsRectItem* m_boundingBox = nullptr;
 	// 8个手柄方块
 	QVector<QGraphicsRectItem*> m_gripItems;
 
 private:
 	// 绘制图元
-	void DrawPoint(const EntityPoint& point);
-    void DrawLine(const EntityLine& line);
-    void DrawCircle(const EntityCircle& circle);
-    void DrawArc(const EntityArc& arc);
-    void DrawPolyline(const EntityPolyline& polyline);
-	void DrawLWPolyline(const EntityLWPolyline& polyline);
-    void DrawSpline(const EntitySpline& spline);
-    void DrawText(const EntityText& text);
-    void DrawMText(const EntityMText& mtext);
-    void DrawEllipse(const EntityEllipse& ellipse);
-    void DrawSolid(const EntitySolid& solid);
-    void DrawHatch(const EntityHatch& hatch);
-	void DrawSceneBackground(QRectF& rect);
+	void drawPoint(const EntityPoint& point);
+    void drawLine(const EntityLine& line);
+    void drawCircle(const EntityCircle& circle);
+    void drawArc(const EntityArc& arc);
+    void drawPolyline(const EntityPolyline& polyline);
+	void drawLWPolyline(const EntityLWPolyline& polyline);
+    void drawSpline(const EntitySpline& spline);
+    void drawText(const EntityText& text);
+    void drawMText(const EntityMText& mtext);
+    void drawEllipse(const EntityEllipse& ellipse);
+    void drawSolid(const EntitySolid& solid);
+    void drawHatch(const EntityHatch& hatch);
+	void drawSceneBackground(QRectF& rect);
 
 
 private:
 	// 计算场景边界
-	QRectF CalculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf);
+	QRectF calculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf);
 	// 获取entity颜色
-	QColor GetEntityColor(const EntityProp& prop) const;
+	QColor getEntityColor(const EntityProp& prop) const;
 	 // B样条基函数
-	double BSplineBasis(int i, int k, double u, const std::vector<double>& knots);
+	double bSplineBasis(int i, int k, double u, const std::vector<double>& knots);
 	
 
 };

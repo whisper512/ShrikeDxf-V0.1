@@ -10,7 +10,7 @@
 #include "DxfEditor.h"
 #include "DxfStruct.h"
 #include "DxfWriter.h"
-#include "DxfDrawController.h"
+#include "dxfDrawController.h"
 #include "DxfEditController.h"
 
 class CDxfInteractionDispatcher;
@@ -29,7 +29,7 @@ public:
 	CDxfReader* GetDxfReader() const { return m_DxfReader.get(); }
 	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
     CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
-	CDxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
+	DxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
 	DxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
 	CSelectionController* GetSelectionController() const { return m_selectionController.get(); }
 
@@ -40,12 +40,12 @@ public:
 
 	// 刷新scene重并重置graphicsview
 	void RefreshSceneResetview(){
-		m_DxfGraphicsScene.DxfDraw(m_DxfData->getLayers());
+		m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, true);
 	}
 	// 刷新scene不重置graphicsview
 	void RefreshScene() {
-		m_DxfGraphicsScene.DxfDraw(m_DxfData->getLayers());
+		m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 	}
 
@@ -87,11 +87,11 @@ private:
 	// 图层tableview的model
 	CDxfLayerTableviewModel m_DxfLayerTableviewModel;
 	// graphicview的model
-	CDxfGraphicsScene m_DxfGraphicsScene;
+	DxfGraphicsScene m_DxfGraphicsScene;
 	// dxf编辑类
 	std::unique_ptr<DxfEditor> m_dxfEditor;
 	// dxf绘制控制和view选中
-	std::unique_ptr<DxfDrawController> m_DxfDrawController;
+	std::unique_ptr<dxfDrawController> m_dxfDrawController;
 	// dxf编辑控制
 	std::unique_ptr<DxfEditController> m_DxfEditController;
 	// 交互控制调度
@@ -124,7 +124,7 @@ signals:
 	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
 	void signalRefreshTreeviewAfterRead();
 	// 通知图层graphics刷新
-	void signalRefreshGraphicsview(CDxfGraphicsScene* pScene, bool bResetViewRect);
+	void signalRefreshGraphicsview(DxfGraphicsScene* pScene, bool bResetViewRect);
 	// 选中图元发生变化
 	void signalSelectedEntityChanged(const stuSelectedEntity& entity);
 	// 更新dxf文件路径

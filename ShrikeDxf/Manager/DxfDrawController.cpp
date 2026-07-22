@@ -1,19 +1,19 @@
-﻿#include "DxfDrawController.h"
+﻿#include "dxfDrawController.h"
 #include "DxfManager.h"
 
 
-DxfDrawController::DxfDrawController(DxfData* data, CDxfGraphicsScene* scene, QObject* parent)
+dxfDrawController::dxfDrawController(DxfData* data, DxfGraphicsScene* scene, QObject* parent)
     : QObject(parent)
     , m_data(data)
     , m_scene(scene)
 {
 }
 
-DxfDrawController::~DxfDrawController()
+dxfDrawController::~dxfDrawController()
 {
 }
 
-const QString& DxfDrawController::getCurrentLayer() const
+const QString& dxfDrawController::getCurrentLayer() const
 {
     auto* pMgr = qobject_cast<DxfManager*>(parent());
     if (pMgr)
@@ -24,29 +24,29 @@ const QString& DxfDrawController::getCurrentLayer() const
     return s_defaultLayer;
 }
 
-void DxfDrawController::setMouseStatus(MouseStateInView mouseState)
+void dxfDrawController::setMouseStatus(MouseStateInView mouseState)
 {
     m_polyPoints.clear();
     m_splinePoints.clear();
     m_currentState = mouseState;
 }
 
-void DxfDrawController::onMouseMove(QPointF scenePos)
+void dxfDrawController::onMouseMove(QPointF scenePos)
 {
     if (!m_scene) return;
 
     if (m_currentState == MouseStateInView::enumMouseState_Point)                    // 画点预览
     {
-        m_scene->ClearPreview();
-        m_scene->AddPreviewPoint(scenePos);
+        m_scene->clearPreview();
+        m_scene->addPreviewPoint(scenePos);
     }  
     else if (m_currentState == MouseStateInView::enumMouseState_Line)                // 画线预览
     {
         if (m_step == 1)
         {
             // 已选起点,画从起点到鼠标位置的预览线
-            m_scene->ClearPreview();
-            m_scene->AddPreviewLine(m_startPoint, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewLine(m_startPoint, scenePos);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_CircleCenterRadius)  // 圆心-半径画圆预览
@@ -54,8 +54,8 @@ void DxfDrawController::onMouseMove(QPointF scenePos)
         if (m_step == 1)
         {
             qreal radius = QLineF(m_startPoint, scenePos).length();
-            m_scene->ClearPreview();
-            m_scene->AddPreviewCircle(m_startPoint, radius);
+            m_scene->clearPreview();
+            m_scene->addPreviewCircle(m_startPoint, radius);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_CircleDiameter)      // 直径画圆预览
@@ -65,8 +65,8 @@ void DxfDrawController::onMouseMove(QPointF scenePos)
             QPointF center((m_startPoint.x() + scenePos.x()) / 2.0,
                 (m_startPoint.y() + scenePos.y()) / 2.0);
             qreal radius = QLineF(m_startPoint, scenePos).length() / 2.0;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewCircle(center, radius);
+            m_scene->clearPreview();
+            m_scene->addPreviewCircle(center, radius);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_ArcCenterEndpoint)    // 圆心-端点画弧预览
@@ -74,19 +74,19 @@ void DxfDrawController::onMouseMove(QPointF scenePos)
         if (m_step == 1)
         {
             // 已选圆心,画从圆心到鼠标位置的半径线 + 预览圆
-            m_scene->ClearPreview();
+            m_scene->clearPreview();
             qreal radius = QLineF(m_startPoint, scenePos).length();
-            m_scene->AddPreviewLine(m_startPoint, scenePos);
-            m_scene->AddPreviewCircle(m_startPoint, radius);
+            m_scene->addPreviewLine(m_startPoint, scenePos);
+            m_scene->addPreviewCircle(m_startPoint, radius);
         }
         else if (m_step == 2)
         {
             // 已选起点,画从起点到鼠标位置的弧预览
-            m_scene->ClearPreview();
+            m_scene->clearPreview();
             qreal radius = QLineF(m_startPoint, m_midPoint).length();
             qreal startAngle = atan2(m_midPoint.y() - m_startPoint.y(), m_midPoint.x() - m_startPoint.x());
             qreal endAngle = atan2(scenePos.y() - m_startPoint.y(), scenePos.x() - m_startPoint.x());
-            m_scene->AddPreviewArc(m_startPoint, radius, startAngle, endAngle);
+            m_scene->addPreviewArc(m_startPoint, radius, startAngle, endAngle);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_ArcThreePoints)       // 三点画弧预览
@@ -94,24 +94,24 @@ void DxfDrawController::onMouseMove(QPointF scenePos)
         if (m_step == 1)
         {
             // 已选第一点,画从第一点到鼠标位置的预览线
-            m_scene->ClearPreview();
-            m_scene->AddPreviewLine(m_startPoint, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewLine(m_startPoint, scenePos);
         }
         else if (m_step == 2)
         {
             // 已有两点,用三点计算弧并预览
-            m_scene->ClearPreview();
+            m_scene->clearPreview();
 
             QPointF center;
             qreal radius, startAngle, endAngle;
             if (ThreePointsToArc(m_startPoint, m_midPoint, scenePos, center, radius, startAngle, endAngle))
             {
-                m_scene->AddPreviewArc(center, radius, startAngle, endAngle);
+                m_scene->addPreviewArc(center, radius, startAngle, endAngle);
             }
             else
             {
                 // 三点共线,画一条预览线
-                m_scene->AddPreviewLine(m_startPoint, scenePos);
+                m_scene->addPreviewLine(m_startPoint, scenePos);
             }
         }
     }
@@ -119,8 +119,8 @@ void DxfDrawController::onMouseMove(QPointF scenePos)
     {
         if (m_step >= 1 && !m_polyPoints.isEmpty())
         {
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPolyline(m_polyPoints, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewPolyline(m_polyPoints, scenePos);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_EllipseCenterRadius)   // 中心-半径画椭圆预览
@@ -128,66 +128,66 @@ void DxfDrawController::onMouseMove(QPointF scenePos)
         if (m_step == 1)
         {
             // 已选中心,画中心到鼠标的预览线 + 预览圆(临时)
-            m_scene->ClearPreview();
+            m_scene->clearPreview();
             qreal radius = QLineF(m_startPoint, scenePos).length();
-            m_scene->AddPreviewLine(m_startPoint, scenePos);
-            m_scene->AddPreviewCircle(m_startPoint, radius);
+            m_scene->addPreviewLine(m_startPoint, scenePos);
+            m_scene->addPreviewCircle(m_startPoint, radius);
         }
         else if (m_step == 2)
         {
             // 已选第一轴端点,画完整椭圆预览
-            m_scene->ClearPreview();
+            m_scene->clearPreview();
             double majorLen = QLineF(m_startPoint, m_midPoint).length();
             double mouseDist = QLineF(m_startPoint, scenePos).length();
             double ratio = (majorLen > 1e-10) ? (mouseDist / majorLen) : 0.1;
             if (ratio > 1.0) ratio = 1.0;   // 短轴不能超过长轴
             if (ratio < 0.01) ratio = 0.01;
-            m_scene->AddPreviewEllipse(m_startPoint, m_midPoint, ratio);
+            m_scene->addPreviewEllipse(m_startPoint, m_midPoint, ratio);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_Rectangle)             // 矩形预览 
     {
         if (m_step == 1)
         {
-            m_scene->ClearPreview();
-            m_scene->AddPreviewRectangle(m_startPoint, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewRectangle(m_startPoint, scenePos);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_SplineFitPoint)        // 拟合点样条预览
     {
         if (m_step >= 1 && !m_splinePoints.isEmpty())
         {
-            m_scene->ClearPreview();
-            m_scene->AddPreviewSplineFit(m_splinePoints, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewSplineFit(m_splinePoints, scenePos);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_SplineControlPoint)    // 控制点样条预览
     {
         if (m_step >= 1 && !m_splinePoints.isEmpty())
         {
-            m_scene->ClearPreview();
-            m_scene->AddPreviewSplineControl(m_splinePoints, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewSplineControl(m_splinePoints, scenePos);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_Text)                   // 文本预览
     {
         if (m_step == 1)
         {
-            m_scene->ClearPreview();
-            m_scene->AddPreviewTextRect(m_startPoint, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewTextRect(m_startPoint, scenePos);
         }
     }
     else if (m_currentState == MouseStateInView::enumMouseState_MText)                  // 多行文本预览
     {
         if (m_step == 1)
         {
-            m_scene->ClearPreview();
-            m_scene->AddPreviewTextRect(m_startPoint, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewTextRect(m_startPoint, scenePos);
         }
     }
 }
 
-void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
+void dxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
 {
     if (!m_data || !m_scene) 
         return;
@@ -205,8 +205,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         pt.prop.color = 256;
         pt.point = scenePos;
         m_data->addEntity(layerName, pt);
-        m_scene->ClearPreview();
-        m_scene->DxfDraw(m_data->getLayers());
+        m_scene->clearPreview();
+        m_scene->dxfDraw(m_data->getLayers());
         break;
     }
     case MouseStateInView::enumMouseState_Line:                      // 画线
@@ -215,8 +215,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)                                            // 第二步:终点点击,创建实际线段
         {
@@ -229,8 +229,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             line.endPoint = scenePos;
             m_data->addEntity(layerName, line);
             // 清理预览,重绘场景
-            m_scene->ClearPreview();
-            m_scene->DxfDraw(m_data->getLayers());
+            m_scene->clearPreview();
+            m_scene->dxfDraw(m_data->getLayers());
             m_step = 0;
         }
         break;
@@ -241,8 +241,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)                                           // 第二步:点击确定半径,创建实际圆
         {
@@ -255,8 +255,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             circle.center = m_startPoint;
             circle.radius = radius;
             m_data->addEntity(layerName, circle);
-            m_scene->ClearPreview();
-            m_scene->DxfDraw(m_data->getLayers());
+            m_scene->clearPreview();
+            m_scene->dxfDraw(m_data->getLayers());
             m_step = 0;
         }
         break;
@@ -268,8 +268,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             // 第一步:记录直径起点
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)
         {
@@ -285,8 +285,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             circle.center = center;
             circle.radius = radius;
             m_data->addEntity(layerName, circle);
-            m_scene->ClearPreview();
-            m_scene->DxfDraw(m_data->getLayers());
+            m_scene->clearPreview();
+            m_scene->dxfDraw(m_data->getLayers());
             m_step = 0;
         }
         break;
@@ -297,17 +297,17 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;                                       // 第一步:点击圆心
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)
         {
             m_midPoint = scenePos;                                         // 第二步:点击起点,确定半径和起始角度
             m_step = 2;
             qreal radius = QLineF(m_startPoint, m_midPoint).length();
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_midPoint);
-            m_scene->AddPreviewCircle(m_startPoint, radius);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_midPoint);
+            m_scene->addPreviewCircle(m_startPoint, radius);
         }
         else if (m_step == 2)                                           // 第三步:点击终点,确定结束角度,创建弧
         {   
@@ -327,8 +327,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             arc.endAngle = endAngle;
             arc.isCCW = true; //实体弧中恒定为逆时针
             m_data->addEntity(layerName, arc);
-            m_scene->ClearPreview();
-            m_scene->DxfDraw(m_data->getLayers());
+            m_scene->clearPreview();
+            m_scene->dxfDraw(m_data->getLayers());
             m_step = 0;
         }
         break;
@@ -339,15 +339,15 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {   
             m_startPoint = scenePos;                                       // 第一步:点击第一点(起点)
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)
         {
             m_midPoint = scenePos;                                         // 第二步:点击第二点(弧上一点)
             m_step = 2;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_midPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_midPoint);
         }
         else if (m_step == 2)
         {
@@ -367,8 +367,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
                 arc.isCCW = 1;
                 m_data->addEntity(layerName, arc);
             }
-            m_scene->ClearPreview();
-            m_scene->DxfDraw(m_data->getLayers());
+            m_scene->clearPreview();
+            m_scene->dxfDraw(m_data->getLayers());
             m_step = 0;
         }
         break;
@@ -380,16 +380,16 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             m_polyPoints.clear();                                   // 第一步:点击第一个点
             m_polyPoints.append(scenePos);
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(scenePos);
         }
         else                                                           // 后续步骤:添加新顶点   
         {
             m_polyPoints.append(scenePos);
             m_step++;
             // 更新预览(画所有已确定的线段 + 新顶点十字)
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPolyline(m_polyPoints, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewPolyline(m_polyPoints, scenePos);
         }
         break;
     }
@@ -399,15 +399,15 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)                                            // 第二步:点击长轴端点
         {
             m_midPoint = scenePos;
             m_step = 2;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_midPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_midPoint);
         }
         else if (m_step == 2)                                            // 第三步:点击确定短轴比例
         {
@@ -421,8 +421,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)                                             // 第二步:点击对角点，完成矩形
         {
@@ -437,15 +437,15 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             m_splinePoints.clear();
             m_splinePoints.append(scenePos);
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(scenePos);
         }
         else
         {
             m_splinePoints.append(scenePos);
             m_step++;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewSplineFit(m_splinePoints, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewSplineFit(m_splinePoints, scenePos);
         }
         break;
     }
@@ -456,15 +456,15 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
             m_splinePoints.clear();
             m_splinePoints.append(scenePos);
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(scenePos);
         }
         else
         {
             m_splinePoints.append(scenePos);
             m_step++;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewSplineControl(m_splinePoints, scenePos);
+            m_scene->clearPreview();
+            m_scene->addPreviewSplineControl(m_splinePoints, scenePos);
         }
         break;
     }
@@ -474,8 +474,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)
         {
@@ -489,8 +489,8 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
         {
             m_startPoint = scenePos;
             m_step = 1;
-            m_scene->ClearPreview();
-            m_scene->AddPreviewPoint(m_startPoint);
+            m_scene->clearPreview();
+            m_scene->addPreviewPoint(m_startPoint);
         }
         else if (m_step == 1)                                               // 第二步:点击确定文本宽度，创建多行文本
         {
@@ -505,7 +505,7 @@ void DxfDrawController::onGraphicsViewLeftClick(QPointF scenePos)
 }
 
 
-void DxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
+void dxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
     switch (m_currentState)
@@ -545,7 +545,7 @@ void DxfDrawController::onGraphicsViewRightClick(QPointF scenePos)
     }
 }
 
-void DxfDrawController::finishPolyline()
+void dxfDrawController::finishPolyline()
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_Polyline)
@@ -576,23 +576,23 @@ void DxfDrawController::finishPolyline()
 
     m_data->addEntity(layerName, poly);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
 
     // 重置
     m_polyPoints.clear();
     m_step = 0;
 }
 
-void DxfDrawController::cancelPolyline()
+void dxfDrawController::cancelPolyline()
 {
     if (m_scene)
-        m_scene->ClearPreview();
+        m_scene->clearPreview();
     m_polyPoints.clear();
     m_step = 0;
 }
 
-void DxfDrawController::finishEllipse(QPointF scenePos)
+void dxfDrawController::finishEllipse(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_EllipseCenterRadius)
@@ -619,12 +619,12 @@ void DxfDrawController::finishEllipse(QPointF scenePos)
 
     m_data->addEntity(layerName, ellipse);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
     m_step = 0;
 }
 
-void DxfDrawController::finishRectangle(QPointF scenePos)
+void dxfDrawController::finishRectangle(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_Rectangle)
@@ -655,13 +655,13 @@ void DxfDrawController::finishRectangle(QPointF scenePos)
 
     m_data->addEntity(layerName, poly);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
     m_step = 0;
 }
 
 
-void DxfDrawController::finishSplineFit()
+void dxfDrawController::finishSplineFit()
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_SplineFitPoint)
@@ -713,14 +713,14 @@ void DxfDrawController::finishSplineFit()
 
     m_data->addEntity(layerName, spline);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
 
     m_splinePoints.clear();
     m_step = 0;
 }
 
-void DxfDrawController::finishSplineControl()
+void dxfDrawController::finishSplineControl()
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_SplineControlPoint)
@@ -764,22 +764,22 @@ void DxfDrawController::finishSplineControl()
 
     m_data->addEntity(layerName, spline);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
 
     m_splinePoints.clear();
     m_step = 0;
 }
 
-void DxfDrawController::cancelSpline()
+void dxfDrawController::cancelSpline()
 {
     if (m_scene)
-        m_scene->ClearPreview();
+        m_scene->clearPreview();
     m_splinePoints.clear();
     m_step = 0;
 }
 
-void DxfDrawController::finishText(QPointF scenePos)
+void dxfDrawController::finishText(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_Text)
@@ -805,12 +805,12 @@ void DxfDrawController::finishText(QPointF scenePos)
 
     m_data->addEntity(layerName, text);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
     m_step = 0;
 }
 
-void DxfDrawController::finishMText(QPointF scenePos)
+void dxfDrawController::finishMText(QPointF scenePos)
 {
     if (!m_data || !m_scene) return;
     if (m_currentState != MouseStateInView::enumMouseState_MText)
@@ -840,7 +840,7 @@ void DxfDrawController::finishMText(QPointF scenePos)
 
     m_data->addEntity(layerName, mtext);
 
-    m_scene->ClearPreview();
-    m_scene->DxfDraw(m_data->getLayers());
+    m_scene->clearPreview();
+    m_scene->dxfDraw(m_data->getLayers());
     m_step = 0;
 }

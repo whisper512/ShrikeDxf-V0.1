@@ -7,13 +7,13 @@
 #include "DxfData.h"
 #include "DxfGraphicsScene.h"
 
-class DxfDrawController : public QObject
+class dxfDrawController : public QObject
 {
     Q_OBJECT
 
 public:
-    DxfDrawController(DxfData* data, CDxfGraphicsScene* scene, QObject* parent = nullptr);
-    ~DxfDrawController();
+    dxfDrawController(DxfData* data, DxfGraphicsScene* scene, QObject* parent = nullptr);
+    ~dxfDrawController();
 
     // 获取当前图层
     const QString& getCurrentLayer() const;
@@ -60,6 +60,6 @@ private:
     QVector<QPointF> m_splinePoints;
 
     DxfData* m_data = nullptr;
-    CDxfGraphicsScene* m_scene = nullptr;
+    DxfGraphicsScene* m_scene = nullptr;
 signals:
 };

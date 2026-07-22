@@ -9,7 +9,7 @@
 #include <cmath>
 
 
-DxfEditController::DxfEditController(DxfData* data, CDxfGraphicsScene* scene,
+DxfEditController::DxfEditController(DxfData* data, DxfGraphicsScene* scene,
     CSelectionController* selection, DxfManager* manager, QObject* parent)
     : QObject(parent)
     , m_data(data)
@@ -151,7 +151,7 @@ void DxfEditController::refreshSceneWithGrips()
     const auto& layers = m_data->getLayers();
 
     // 全量重绘
-    m_scene->DxfDraw(layers);
+    m_scene->dxfDraw(layers);
 
     // 叠加夹点
     if (m_selectedIndex < 0 || m_selectedLayer.isEmpty())
@@ -170,7 +170,7 @@ void DxfEditController::refreshSceneWithGrips()
         }, entity);
 
     if (bb.isValid())
-        m_scene->ShowGrips(bb);
+        m_scene->showGrips(bb);
 }
 
 

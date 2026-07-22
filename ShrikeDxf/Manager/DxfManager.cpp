@@ -19,11 +19,11 @@ DxfManager::DxfManager(QWidget* pMainWnd)
     // 编辑控制器
     m_DxfEditController = std::make_unique<DxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, m_selectionController.get(), this, this);
     // 新建图元绘制控制器
-    m_DxfDrawController = std::make_unique<DxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_dxfDrawController = std::make_unique<dxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 交互控制
     m_pInteractionDispatcher = std::make_unique<CDxfInteractionDispatcher>(this);
     // 设置交互控制持有的控制器
-    m_pInteractionDispatcher->SetControllers(m_DxfDrawController.get(), m_DxfEditController.get(), m_selectionController.get());
+    m_pInteractionDispatcher->SetControllers(m_dxfDrawController.get(), m_DxfEditController.get(), m_selectionController.get());
     // 编辑类
     m_dxfEditor = std::make_unique<DxfEditor>(m_DxfData.get());
 
@@ -59,7 +59,7 @@ bool DxfManager::LoadDxfFile(const QString& strPath)
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     emit signalRefreshTreeviewAfterRead();
     // 更新graphicsview
-    m_DxfGraphicsScene.DxfDraw(m_DxfData->getLayers());
+    m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
     // 更新图层tableview
     m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfData->getLayers());
@@ -196,7 +196,7 @@ void DxfManager::ConnectSignals()
 
 void DxfManager::UpdateSelectionDisplay()
 {
-    m_DxfGraphicsScene.RemoveGrips();
+    m_DxfGraphicsScene.removeGrips();
     if (m_SelectedEntity.entityIndex < 0) return;
 
     const auto& layers = m_DxfData->getLayers();
@@ -209,7 +209,7 @@ void DxfManager::UpdateSelectionDisplay()
     const auto& entity = it->second.entities[m_SelectedEntity.entityIndex];
     QRectF bounds = std::visit([](const auto& e) { return e.boundingBox(1.0); }, entity);
     if (bounds.isValid())
-        m_DxfGraphicsScene.ShowGrips(bounds);
+        m_DxfGraphicsScene.showGrips(bounds);
 }
 
 
@@ -262,7 +262,7 @@ void DxfManager::SelectEntity(const QString& strLayer, int entityIndex)
 void DxfManager::DeselectEntity()
 {
     m_SelectedEntity = stuSelectedEntity();
-    m_DxfGraphicsScene.RemoveGrips();
+    m_DxfGraphicsScene.removeGrips();
 
     emit signalSelectedEntityChanged(m_SelectedEntity);
 }

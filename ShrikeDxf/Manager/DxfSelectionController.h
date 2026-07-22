@@ -4,14 +4,14 @@
 #include <QString>
 
 class DxfData;
-class CDxfGraphicsScene;
+class DxfGraphicsScene;
 
 // 选择控制器
 class CSelectionController : public QObject
 {
     Q_OBJECT
 public:
-    explicit CSelectionController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent = nullptr);
+    explicit CSelectionController(DxfData* pData, DxfGraphicsScene* pScene, QObject* parent = nullptr);
     ~CSelectionController();
 
     // 是否已选中图元
@@ -32,7 +32,7 @@ signals:
 
 private:
     DxfData* m_data = nullptr;
-    CDxfGraphicsScene* m_scene = nullptr;
+    DxfGraphicsScene* m_scene = nullptr;
     // 是否选中
     bool m_bEntitySelected = false;
     // 选中的图元图层

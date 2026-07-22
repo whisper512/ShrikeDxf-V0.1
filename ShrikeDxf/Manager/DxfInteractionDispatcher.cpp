@@ -1,5 +1,5 @@
 ﻿#include "DxfInteractionDispatcher.h"
-#include "DxfDrawController.h"
+#include "dxfDrawController.h"
 #include "DxfEditController.h"
 #include "DxfSelectionController.h"
 
@@ -14,7 +14,7 @@ CDxfInteractionDispatcher::~CDxfInteractionDispatcher()
     
 }
 
-void CDxfInteractionDispatcher::SetControllers(DxfDrawController* drawCtrl, DxfEditController* editCtrl, CSelectionController* selCtrl)
+void CDxfInteractionDispatcher::SetControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl, CSelectionController* selCtrl)
 {
     m_pDrawCtrl = drawCtrl;
     m_pEditCtrl = editCtrl;

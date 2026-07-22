@@ -3,7 +3,7 @@
 #include <QPointF>
 #include "Tools.h"
 
-class DxfDrawController;
+class dxfDrawController;
 class DxfEditController;
 class CSelectionController;
 
@@ -16,7 +16,7 @@ public:
     ~CDxfInteractionDispatcher();
 
     // 持有其他数据类
-    void SetControllers(DxfDrawController* drawCtrl, DxfEditController* editCtrl ,CSelectionController* selCtrl);
+    void SetControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl ,CSelectionController* selCtrl);
     // 设置当前工具,修改鼠标状态
     void SetMouseStatus(MouseStateInView state);
     // 发会鼠标状态
@@ -33,7 +33,7 @@ private:
     // 当前鼠标状态
     MouseStateInView m_eState = MouseStateInView::enumMouseState_None;
     // 绘制控制器
-    DxfDrawController* m_pDrawCtrl = nullptr;
+    dxfDrawController* m_pDrawCtrl = nullptr;
     // 编辑控制器
     DxfEditController* m_pEditCtrl = nullptr;
     // 选择控制器

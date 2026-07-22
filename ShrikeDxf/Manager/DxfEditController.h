@@ -6,7 +6,7 @@
 #include "Tools.h"
 
 class DxfData;
-class CDxfGraphicsScene;
+class DxfGraphicsScene;
 class CSelectionController;
 class DxfManager;
 
@@ -14,7 +14,7 @@ class DxfEditController : public QObject
 {
     Q_OBJECT
 public:
-    explicit DxfEditController(DxfData* data, CDxfGraphicsScene* scene,
+    explicit DxfEditController(DxfData* data, DxfGraphicsScene* scene,
         CSelectionController* selection, DxfManager* manager, QObject* parent = nullptr);
     ~DxfEditController();
 
@@ -49,7 +49,7 @@ private:
     void refreshSceneWithGrips();
 
     DxfData* m_data = nullptr;
-    CDxfGraphicsScene* m_scene = nullptr;
+    DxfGraphicsScene* m_scene = nullptr;
     CSelectionController* m_selection = nullptr;
     DxfManager* m_manager = nullptr;
 

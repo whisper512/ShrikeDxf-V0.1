@@ -6,27 +6,27 @@
 #include "DxfGraphicsScene.h"
 
 
-CDxfGraphicsScene::CDxfGraphicsScene(QObject* parent)
+DxfGraphicsScene::DxfGraphicsScene(QObject* parent)
     : QGraphicsScene(parent)
     ,  m_scale(1.0)
 {
 }
 
-CDxfGraphicsScene::~CDxfGraphicsScene()
+DxfGraphicsScene::~DxfGraphicsScene()
 {
 
 }
 
-void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
+void DxfGraphicsScene::dxfDraw(const std::map<std::string, stuLayer>& mapDxf)
 {
-    m_pCurrentLayersEntitiesData = &(mapDxf);
-    ClearScene();
-    QRectF bounds = CalculateSceneBounds(mapDxf);
+    m_currentLayersEntitiesData = &(mapDxf);
+    clearScene();
+    QRectF bounds = calculateSceneBounds(mapDxf);
     if (bounds.isNull() || bounds.width() == 0 || bounds.height() == 0)
     {
         bounds = QRectF(-250, -250, 500, 500);
     }
-    DrawSceneBackground(bounds);
+    drawSceneBackground(bounds);
     
     for (auto it = mapDxf.begin(); it != mapDxf.end(); ++it)
     {
@@ -40,35 +40,35 @@ void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
             case EntityType::Point:
             {
                 const auto& pt = std::get<EntityPoint>(entity);
-                DrawPoint(pt);
+                drawPoint(pt);
                 break;
             }
             case EntityType::Line:
-                DrawLine(std::get<EntityLine>(entity));
+                drawLine(std::get<EntityLine>(entity));
                 break;
             case EntityType::Circle:
-                DrawCircle(std::get<EntityCircle>(entity));
+                drawCircle(std::get<EntityCircle>(entity));
                 break;
             case EntityType::Arc:
-                DrawArc(std::get<EntityArc>(entity));
+                drawArc(std::get<EntityArc>(entity));
                 break;
             case EntityType::Ellipse:
-                DrawEllipse(std::get<EntityEllipse>(entity));
+                drawEllipse(std::get<EntityEllipse>(entity));
                 break;
             case EntityType::LWPolyline:
-                DrawLWPolyline(std::get<EntityLWPolyline>(entity));
+                drawLWPolyline(std::get<EntityLWPolyline>(entity));
                 break;
             case EntityType::Polyline:
-                DrawPolyline(std::get<EntityPolyline>(entity));
+                drawPolyline(std::get<EntityPolyline>(entity));
                 break;
             case EntityType::Spline:
-                DrawSpline(std::get<EntitySpline>(entity));
+                drawSpline(std::get<EntitySpline>(entity));
                 break;
             case EntityType::Text:
-                DrawText(std::get<EntityText>(entity));
+                drawText(std::get<EntityText>(entity));
                 break;
             case EntityType::MText:
-                DrawMText(std::get<EntityMText>(entity));
+                drawMText(std::get<EntityMText>(entity));
                 break;
             default:
                 break;
@@ -80,15 +80,15 @@ void CDxfGraphicsScene::DxfDraw(const std::map<std::string, stuLayer>& mapDxf)
 
 
 
-void CDxfGraphicsScene::ClearScene()
+void DxfGraphicsScene::clearScene()
 {
     clear();
     m_previewItems.clear();
     m_gripItems.clear();
-    m_pBoundingBox = nullptr;
+    m_boundingBox = nullptr;
 }
 
-void CDxfGraphicsScene::ClearPreview()
+void DxfGraphicsScene::clearPreview()
 {
     for (auto* item : m_previewItems)
     {
@@ -98,7 +98,7 @@ void CDxfGraphicsScene::ClearPreview()
     m_previewItems.clear();
 }
 
-void CDxfGraphicsScene::AddPreviewPoint(QPointF pos)
+void DxfGraphicsScene::addPreviewPoint(QPointF pos)
 {
     // 直接用红色虚线画一个预览十字
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
@@ -112,7 +112,7 @@ void CDxfGraphicsScene::AddPreviewPoint(QPointF pos)
     m_previewItems.append(addLine(x, y - s, x, y + s, pen));
 }
 
-void CDxfGraphicsScene::AddPreviewLine(QPointF p1, QPointF p2)
+void DxfGraphicsScene::addPreviewLine(QPointF p1, QPointF p2)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -120,7 +120,7 @@ void CDxfGraphicsScene::AddPreviewLine(QPointF p1, QPointF p2)
         addLine(p1.x(), p1.y(), p2.x(), p2.y(), pen));
 }
 
-void CDxfGraphicsScene::AddPreviewCircle(QPointF center, qreal radius)
+void DxfGraphicsScene::addPreviewCircle(QPointF center, qreal radius)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -129,7 +129,7 @@ void CDxfGraphicsScene::AddPreviewCircle(QPointF center, qreal radius)
             radius * 2, radius * 2, pen));
 }
 
-void CDxfGraphicsScene::AddPreviewArc(QPointF center, qreal radius, qreal startAngle, qreal endAngle)
+void DxfGraphicsScene::addPreviewArc(QPointF center, qreal radius, qreal startAngle, qreal endAngle)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -145,7 +145,7 @@ void CDxfGraphicsScene::AddPreviewArc(QPointF center, qreal radius, qreal startA
     m_previewItems.append(addPath(path, pen));
 }
 
-void CDxfGraphicsScene::AddPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos)
+void DxfGraphicsScene::addPreviewPolyline(const QVector<QPointF>& points, const QPointF& mousePos)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -174,7 +174,7 @@ void CDxfGraphicsScene::AddPreviewPolyline(const QVector<QPointF>& points, const
     }
 }
 
-void CDxfGraphicsScene::AddPreviewRectangle(QPointF p1, QPointF p2)
+void DxfGraphicsScene::addPreviewRectangle(QPointF p1, QPointF p2)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -189,7 +189,7 @@ void CDxfGraphicsScene::AddPreviewRectangle(QPointF p1, QPointF p2)
     m_previewItems.append(addLine(x1, y2, x1, y1, pen));
 }
 
-void CDxfGraphicsScene::AddPreviewEllipse(QPointF center, QPointF majorEnd, double ratio)
+void DxfGraphicsScene::addPreviewEllipse(QPointF center, QPointF majorEnd, double ratio)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -212,7 +212,7 @@ void CDxfGraphicsScene::AddPreviewEllipse(QPointF center, QPointF majorEnd, doub
     m_previewItems.append(addPath(path, pen));
 }
 
-void CDxfGraphicsScene::AddPreviewSplineFit(const QVector<QPointF>& fitPoints, const QPointF& mousePos)
+void DxfGraphicsScene::addPreviewSplineFit(const QVector<QPointF>& fitPoints, const QPointF& mousePos)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -223,7 +223,7 @@ void CDxfGraphicsScene::AddPreviewSplineFit(const QVector<QPointF>& fitPoints, c
     if (allPoints.size() < 2)
         return;
 
-    // Catmull-Rom 插值（同 DrawSpline 的拟合点逻辑）
+    // Catmull-Rom 插值（同 drawSpline 的拟合点逻辑）
     QPainterPath path;
     int n = static_cast<int>(allPoints.size());
     path.moveTo(allPoints[0].x(), allPoints[0].y());
@@ -252,7 +252,7 @@ void CDxfGraphicsScene::AddPreviewSplineFit(const QVector<QPointF>& fitPoints, c
     }
 }
 
-void CDxfGraphicsScene::AddPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos)
+void DxfGraphicsScene::addPreviewSplineControl(const QVector<QPointF>& ctrlPoints, const QPointF& mousePos)
 {
     QPen penCurve(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     penCurve.setCosmetic(true);
@@ -303,7 +303,7 @@ void CDxfGraphicsScene::AddPreviewSplineControl(const QVector<QPointF>& ctrlPoin
             double x = 0, y = 0;
             for (int j = 0; j < n; ++j)
             {
-                double basis = BSplineBasis(j, degree, u, knots);
+                double basis = bSplineBasis(j, degree, u, knots);
                 if (basis < 1e-15) continue;
                 x += allPoints[j].x() * basis;
                 y += allPoints[j].y() * basis;
@@ -337,7 +337,7 @@ void CDxfGraphicsScene::AddPreviewSplineControl(const QVector<QPointF>& ctrlPoin
     }
 }
 
-void CDxfGraphicsScene::AddPreviewTextRect(QPointF p1, QPointF p2)
+void DxfGraphicsScene::addPreviewTextRect(QPointF p1, QPointF p2)
 {
     QPen pen(QColor(255, 0, 0), 1.0 / m_scale, Qt::DotLine);
     pen.setCosmetic(true);
@@ -360,9 +360,9 @@ void CDxfGraphicsScene::AddPreviewTextRect(QPointF p1, QPointF p2)
     m_previewItems.append(addLine(cx, cy - s * 3, cx + s, cy - s * 2, pen));
 }
 
-void CDxfGraphicsScene::ShowGrips(const QRectF& bounds)
+void DxfGraphicsScene::showGrips(const QRectF& bounds)
 {
-    RemoveGrips();
+    removeGrips();
     qreal gripSize = 2.0 / m_scale;
     qreal halfSize = gripSize / 2.0;
     QPen boxPen(QColor(0, 100, 255), 1.0, Qt::DashLine);
@@ -371,8 +371,8 @@ void CDxfGraphicsScene::ShowGrips(const QRectF& bounds)
     QPen gripPen(QColor(255, 255, 255), 1.0);
     gripPen.setCosmetic(true);
     // 虚线框
-    m_pBoundingBox = addRect(bounds, boxPen);
-    m_pBoundingBox->setZValue(9998);
+    m_boundingBox = addRect(bounds, boxPen);
+    m_boundingBox->setZValue(9998);
     // 8个手柄：0=左上,1=上中,2=右上,3=右中,4=右下,5=下中,6=左下,7=左中
     qreal x1 = bounds.left(), y1 = bounds.top();
     qreal x2 = bounds.right(), y2 = bounds.bottom();
@@ -396,13 +396,13 @@ void CDxfGraphicsScene::ShowGrips(const QRectF& bounds)
         m_gripItems.append(grip);
     }
 }
-void CDxfGraphicsScene::RemoveGrips()
+void DxfGraphicsScene::removeGrips()
 {
-    if (m_pBoundingBox)
+    if (m_boundingBox)
     {
-        removeItem(m_pBoundingBox);
-        delete m_pBoundingBox;
-        m_pBoundingBox = nullptr;
+        removeItem(m_boundingBox);
+        delete m_boundingBox;
+        m_boundingBox = nullptr;
     }
     for (auto* grip : m_gripItems)
     {
@@ -411,7 +411,7 @@ void CDxfGraphicsScene::RemoveGrips()
     }
     m_gripItems.clear();
 }
-int CDxfGraphicsScene::GripAtPos(QPointF scenePos) const
+int DxfGraphicsScene::gripAtPos(QPointF scenePos) const
 {
     // 用 ItemAtPos 检测是否点到了手柄
     // 由于手柄很小，直接遍历检查距离
@@ -424,25 +424,25 @@ int CDxfGraphicsScene::GripAtPos(QPointF scenePos) const
     }
     return -1;
 }
-void CDxfGraphicsScene::UpdateGripRect(const QRectF& bounds)
+void DxfGraphicsScene::updateGripRect(const QRectF& bounds)
 {
-    if (m_pBoundingBox)
+    if (m_boundingBox)
     {
-        m_pBoundingBox->setRect(bounds);
+        m_boundingBox->setRect(bounds);
     }
 }
-QRectF CDxfGraphicsScene::GetGripBounds() const
+QRectF DxfGraphicsScene::getGripBounds() const
 {
-    if (m_pBoundingBox)
-        return m_pBoundingBox->rect();
+    if (m_boundingBox)
+        return m_boundingBox->rect();
     return QRectF();
 }
 
 
 
-void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
+void DxfGraphicsScene::drawPoint(const EntityPoint& point)
 {
-    QColor color = GetEntityColor(point.prop);
+    QColor color = getEntityColor(point.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true); //线宽不受缩放影响
     qreal x = point.point.x();
@@ -455,20 +455,20 @@ void CDxfGraphicsScene::DrawPoint(const EntityPoint& point)
     addLine(x, y - s, x, y + s, pen);
 }
 
-void CDxfGraphicsScene::DrawLine(const EntityLine& line)
+void DxfGraphicsScene::drawLine(const EntityLine& line)
 {
     if (!line.prop.visible) return;
-    QColor color = GetEntityColor(line.prop);
+    QColor color = getEntityColor(line.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     addLine(line.startPoint.x(), line.startPoint.y(),
         line.endPoint.x(), line.endPoint.y(), pen);
 }
 
-void CDxfGraphicsScene::DrawCircle(const EntityCircle& circle)
+void DxfGraphicsScene::drawCircle(const EntityCircle& circle)
 {
     if (!circle.prop.visible) return;
-    QColor color = GetEntityColor(circle.prop);
+    QColor color = getEntityColor(circle.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     qreal r = circle.radius;
@@ -476,10 +476,10 @@ void CDxfGraphicsScene::DrawCircle(const EntityCircle& circle)
         r * 2, r * 2, pen);
 }
 
-void CDxfGraphicsScene::DrawArc(const EntityArc& arc)
+void DxfGraphicsScene::drawArc(const EntityArc& arc)
 {
     if (!arc.prop.visible) return;
-    QColor color = GetEntityColor(arc.prop);
+    QColor color = getEntityColor(arc.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     QPainterPath path;
@@ -502,10 +502,10 @@ void CDxfGraphicsScene::DrawArc(const EntityArc& arc)
     addPath(path, pen);
 }
 
-void CDxfGraphicsScene::DrawEllipse(const EntityEllipse& ellipse)
+void DxfGraphicsScene::drawEllipse(const EntityEllipse& ellipse)
 {
     if (!ellipse.prop.visible) return;
-    QColor color = GetEntityColor(ellipse.prop);
+    QColor color = getEntityColor(ellipse.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     // majorAxisEndpoint 是长轴端点(相对于中心的向量)
@@ -540,17 +540,17 @@ void CDxfGraphicsScene::DrawEllipse(const EntityEllipse& ellipse)
     addPath(path, pen);
 }
 
-void CDxfGraphicsScene::DrawSolid(const EntitySolid& solid)
+void DxfGraphicsScene::drawSolid(const EntitySolid& solid)
 {
     // 画填充
 }
 
-void CDxfGraphicsScene::DrawHatch(const EntityHatch& hatch)
+void DxfGraphicsScene::drawHatch(const EntityHatch& hatch)
 {
     // 画填充
 }
 
-void CDxfGraphicsScene::DrawSceneBackground(QRectF& rect)
+void DxfGraphicsScene::drawSceneBackground(QRectF& rect)
 {
     QPen pen(QColor("#999999"), 0.5 / m_scale);
     pen.setCosmetic(true);
@@ -560,10 +560,10 @@ void CDxfGraphicsScene::DrawSceneBackground(QRectF& rect)
 
 
 
-void CDxfGraphicsScene::DrawLWPolyline(const EntityLWPolyline& polyline)
+void DxfGraphicsScene::drawLWPolyline(const EntityLWPolyline& polyline)
 {
     if (!polyline.prop.visible || polyline.vecVertices.empty()) return;
-    QColor color = GetEntityColor(polyline.prop);
+    QColor color = getEntityColor(polyline.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     pen.setJoinStyle(Qt::RoundJoin);
@@ -636,10 +636,10 @@ void CDxfGraphicsScene::DrawLWPolyline(const EntityLWPolyline& polyline)
 }
 
 
-void CDxfGraphicsScene::DrawPolyline(const EntityPolyline& polyline)
+void DxfGraphicsScene::drawPolyline(const EntityPolyline& polyline)
 {
     if (!polyline.prop.visible || polyline.vecVertices.empty()) return;
-    QColor color = GetEntityColor(polyline.prop);
+    QColor color = getEntityColor(polyline.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     pen.setJoinStyle(Qt::RoundJoin);
@@ -692,11 +692,11 @@ void CDxfGraphicsScene::DrawPolyline(const EntityPolyline& polyline)
     addPath(path, pen);
 }
 
-void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
+void DxfGraphicsScene::drawSpline(const EntitySpline& spline)
 {
     if (!spline.prop.visible ||(spline.controlPoints.empty() && spline.fitPoints.empty())) return;
 
-    QColor color = GetEntityColor(spline.prop);
+    QColor color = getEntityColor(spline.prop);
     QPen pen(color, 1.0 / m_scale);
     pen.setCosmetic(true);
     QPainterPath path;
@@ -766,7 +766,7 @@ void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
                     bool hasWeight = !spline.weights.empty();
                     for (int j = 0; j < n; ++j)
                     {
-                        double basis = BSplineBasis(j, degree, u, knots);
+                        double basis = bSplineBasis(j, degree, u, knots);
                         if (basis < 1e-15) continue;
                         double w = hasWeight ? spline.weights[j] : 1.0;
                         x += spline.controlPoints[j].x() * w * basis;
@@ -796,10 +796,10 @@ void CDxfGraphicsScene::DrawSpline(const EntitySpline& spline)
     addPath(path, pen);
 }
 
-void CDxfGraphicsScene::DrawText(const EntityText& text)
+void DxfGraphicsScene::drawText(const EntityText& text)
 {
     if (!text.prop.visible) return;
-    QColor color = GetEntityColor(text.prop);
+    QColor color = getEntityColor(text.prop);
     QFont font(QString::fromStdString(text.style));
     if (text.height < 1.0)
         font.setPixelSize(1);
@@ -823,10 +823,10 @@ void CDxfGraphicsScene::DrawText(const EntityText& text)
 }
 
 
-void CDxfGraphicsScene::DrawMText(const EntityMText& mtext)
+void DxfGraphicsScene::drawMText(const EntityMText& mtext)
 {
     if (!mtext.prop.visible) return;
-    QColor color = GetEntityColor(mtext.prop);
+    QColor color = getEntityColor(mtext.prop);
     QFont font(QString::fromStdString(mtext.style));
     if (mtext.height < 1.0)
         font.setPixelSize(1);
@@ -867,7 +867,7 @@ void CDxfGraphicsScene::DrawMText(const EntityMText& mtext)
 }
 
 
-QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf)
+QRectF DxfGraphicsScene::calculateSceneBounds(const std::map<std::string, stuLayer>& mapDxf)
 {
     if (mapDxf.empty())
         return QRectF();
@@ -1001,7 +1001,7 @@ QRectF CDxfGraphicsScene::CalculateSceneBounds(const std::map<std::string, stuLa
 }
 
 
-double CDxfGraphicsScene::BSplineBasis(int i, int k, double u, const std::vector<double>& knots)
+double DxfGraphicsScene::bSplineBasis(int i, int k, double u, const std::vector<double>& knots)
 {
     if (k == 0)
     {
@@ -1018,25 +1018,25 @@ double CDxfGraphicsScene::BSplineBasis(int i, int k, double u, const std::vector
 
         double denom1 = knots[i + k] - knots[i];
         if (std::abs(denom1) > 1e-15)
-            a = (u - knots[i]) / denom1 * BSplineBasis(i, k - 1, u, knots);
+            a = (u - knots[i]) / denom1 * bSplineBasis(i, k - 1, u, knots);
 
         double denom2 = knots[i + k + 1] - knots[i + 1];
         if (std::abs(denom2) > 1e-15)
-            b = (knots[i + k + 1] - u) / denom2 * BSplineBasis(i + 1, k - 1, u, knots);
+            b = (knots[i + k + 1] - u) / denom2 * bSplineBasis(i + 1, k - 1, u, knots);
 
         return a + b;
     }
 }
 
 
-QColor CDxfGraphicsScene::GetEntityColor(const EntityProp& prop) const
+QColor DxfGraphicsScene::getEntityColor(const EntityProp& prop) const
 {
-    if (!m_pCurrentLayersEntitiesData) return Qt::black;
+    if (!m_currentLayersEntitiesData) return Qt::black;
 
     if (prop.color == 256)
     {
-        auto it = m_pCurrentLayersEntitiesData->find(prop.layer);
-        if (it != m_pCurrentLayersEntitiesData->end())
+        auto it = m_currentLayersEntitiesData->find(prop.layer);
+        if (it != m_currentLayersEntitiesData->end())
         {
             QColor layerColor = it->second.color;
             // 如果图层颜色是白色或极浅色,在浅色背景下显示为黑色

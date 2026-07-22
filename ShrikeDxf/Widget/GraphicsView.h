@@ -120,7 +120,7 @@ signals:
 
 public slots:
 	// 类外交互
-	void handleRefreshGraphicsview(CDxfGraphicsScene* pScene,bool bResetViewRect);
+	void handleRefreshGraphicsview(DxfGraphicsScene* pScene,bool bResetViewRect);
 	// 正在复制图元
 	void handlelCopyintEntity();
 	// viewmenu动作
