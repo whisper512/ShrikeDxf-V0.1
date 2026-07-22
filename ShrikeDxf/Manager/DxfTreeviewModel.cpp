@@ -1,6 +1,6 @@
 ﻿#include "DxfTreeviewModel.h"
 
-CDxfTreeviewModel::CDxfTreeviewModel(QObject* parent)
+DxfTreeviewModel::DxfTreeviewModel(QObject* parent)
 {
     m_iconPoint = QIcon(":/ShrikeDxf/res/Point.png");
     m_iconLine = QIcon(":/ShrikeDxf/res/Line.png");
@@ -16,11 +16,11 @@ CDxfTreeviewModel::CDxfTreeviewModel(QObject* parent)
 
 }
 
-CDxfTreeviewModel::~CDxfTreeviewModel()
+DxfTreeviewModel::~DxfTreeviewModel()
 {
 }
 
-void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, Layer>& mapDxf)
+void DxfTreeviewModel::updateLayoutItemModel(const std::map<std::string, Layer>& mapDxf)
 {
 
     clearModel();
@@ -138,7 +138,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, Layer>
     }
 }
 
-void CDxfTreeviewModel::clearModel()
+void DxfTreeviewModel::clearModel()
 {
     clear();
 }

@@ -9,16 +9,16 @@
 
 
 //用于treeview的model
-class CDxfTreeviewModel : public QStandardItemModel
+class DxfTreeviewModel : public QStandardItemModel
 {
 	Q_OBJECT
 
 public:
-	explicit CDxfTreeviewModel(QObject* parent = nullptr);
-	~CDxfTreeviewModel();
+	explicit DxfTreeviewModel(QObject* parent = nullptr);
+	~DxfTreeviewModel();
 
 	// 更新model
-	void UpdateLayoutItemModel(const std::map<std::string, Layer>& mapDxf);
+	void updateLayoutItemModel(const std::map<std::string, Layer>& mapDxf);
 	void clearModel();
 
 private:

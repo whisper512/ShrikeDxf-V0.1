@@ -1,23 +1,23 @@
 ﻿#include "DxfWriter.h"
 
-CDxfWriter::CDxfWriter(DxfData* pData)
-    : m_data(pData)
+DxfWriter::DxfWriter(DxfData* data)
+    : m_data(data)
 {
 }
 
-bool CDxfWriter::SaveFile(const QString& strPath, DRW::Version ver, bool bin)
+bool DxfWriter::saveFile(const QString& path, DRW::Version ver, bool bin)
 {
     if (!m_data) return false;
 
-    dxfRW dxf(strPath.toStdString().c_str());
-    m_pDxfRW = &dxf;
+    dxfRW dxf(path.toStdString().c_str());
+    m_dxfRW = &dxf;
     bool ok = dxf.write(this, ver, bin);
-    m_pDxfRW = nullptr;
+    m_dxfRW = nullptr;
     return ok;
 }
 
 
-void CDxfWriter::writeHeader(DRW_Header& data)
+void DxfWriter::writeHeader(DRW_Header& data)
 {
     // 设置版本
     const QString& ver = m_data->getVersion();
@@ -45,12 +45,12 @@ void CDxfWriter::writeHeader(DRW_Header& data)
 }
 
 
-void CDxfWriter::writeLTypes()
+void DxfWriter::writeLTypes()
 {
     
 }
 
-void CDxfWriter::writeLayers()
+void DxfWriter::writeLayers()
 {
     for (const auto& [name, layer] : m_data->getLayers())
     {
@@ -64,47 +64,47 @@ void CDxfWriter::writeLayers()
         if (!layer.isVisible)
             drwLayer.color = -drwLayer.color;   // 负数为关闭
 
-        m_pDxfRW->writeLayer(&drwLayer);
+        m_dxfRW->writeLayer(&drwLayer);
     }
 }
 
-void CDxfWriter::writeTextstyles()
+void DxfWriter::writeTextstyles()
 {
     
 }
 
-void CDxfWriter::writeVports()
+void DxfWriter::writeVports()
 {
     
 }
 
-void CDxfWriter::writeDimstyles()
+void DxfWriter::writeDimstyles()
 {
     
 }
 
-void CDxfWriter::writeAppId()
-{
-    
-}
-
-
-void CDxfWriter::writeObjects()
+void DxfWriter::writeAppId()
 {
     
 }
 
 
-void CDxfWriter::writeBlockRecords()
+void DxfWriter::writeObjects()
+{
+    
+}
+
+
+void DxfWriter::writeBlockRecords()
 {
     // 注册块记录
     for (const auto& [name, block] : m_data->getDocument().blocks)
     {
-        m_pDxfRW->writeBlockRecord(name);
+        m_dxfRW->writeBlockRecord(name);
     }
 }
 
-void CDxfWriter::writeBlocks()
+void DxfWriter::writeBlocks()
 {
     for (const auto& [name, block] : m_data->getDocument().blocks)
     {
@@ -114,7 +114,7 @@ void CDxfWriter::writeBlocks()
             block.basePoint.y(),
             block.basePoint.z());
         drwBlock.flags = block.flags;
-        m_pDxfRW->writeBlock(&drwBlock);
+        m_dxfRW->writeBlock(&drwBlock);
 
         // 写入块内的图元
         for (const auto& entity : block.entities)
@@ -122,10 +122,10 @@ void CDxfWriter::writeBlocks()
             switch (GetEntityType(entity))
             {
             case EntityType::Point:
-                WritePoint(std::get<EntityPoint>(entity));
+                writePoint(std::get<EntityPoint>(entity));
                 break;
             case EntityType::Line:
-                WriteLine(std::get<EntityLine>(entity));
+                writeLine(std::get<EntityLine>(entity));
                 break;
                 
             default:
@@ -136,7 +136,7 @@ void CDxfWriter::writeBlocks()
 }
 
 
-void CDxfWriter::writeEntities()
+void DxfWriter::writeEntities()
 {
     for (const auto& [layerName, layer] : m_data->getLayers())
     {
@@ -147,43 +147,43 @@ void CDxfWriter::writeEntities()
             switch (GetEntityType(entity))
             {
             case EntityType::Point:
-                WritePoint(std::get<EntityPoint>(entity));
+                writePoint(std::get<EntityPoint>(entity));
                 break;
             case EntityType::Line:
-                WriteLine(std::get<EntityLine>(entity));
+                writeLine(std::get<EntityLine>(entity));
                 break;
             case EntityType::Circle:
-                WriteCircle(std::get<EntityCircle>(entity));
+                writeCircle(std::get<EntityCircle>(entity));
                 break;
             case EntityType::Arc:
-                WriteArc(std::get<EntityArc>(entity));
+                writeArc(std::get<EntityArc>(entity));
                 break;
             case EntityType::Ellipse:
-                WriteEllipse(std::get<EntityEllipse>(entity));
+                writeEllipse(std::get<EntityEllipse>(entity));
                 break;
             case EntityType::LWPolyline:
-                WriteLWPolyline(std::get<EntityLWPolyline>(entity));
+                writeLWPolyline(std::get<EntityLWPolyline>(entity));
                 break;
             case EntityType::Polyline:
-                WritePolyline(std::get<EntityPolyline>(entity));
+                writePolyline(std::get<EntityPolyline>(entity));
                 break;
             case EntityType::Spline:
-                WriteSpline(std::get<EntitySpline>(entity));
+                writeSpline(std::get<EntitySpline>(entity));
                 break;
             case EntityType::Text:
-                WriteText(std::get<EntityText>(entity));
+                writeText(std::get<EntityText>(entity));
                 break;
             case EntityType::MText:
-                WriteMText(std::get<EntityMText>(entity));
+                writeMText(std::get<EntityMText>(entity));
                 break;
             case EntityType::Insert:
-                WriteInsert(std::get<EntityInsert>(entity));
+                writeInsert(std::get<EntityInsert>(entity));
                 break;
             case EntityType::Solid:
-                WriteSolid(std::get<EntitySolid>(entity));
+                writeSolid(std::get<EntitySolid>(entity));
                 break;
             case EntityType::Hatch:
-                WriteHatch(std::get<EntityHatch>(entity));
+                writeHatch(std::get<EntityHatch>(entity));
                 break;
             default:
                 break;
@@ -194,7 +194,7 @@ void CDxfWriter::writeEntities()
 
 
 
-static void SetEntityCommon(DRW_Entity& drw, const EntityProp& prop)
+static void setEntityCommon(DRW_Entity& drw, const EntityProp& prop)
 {
     drw.layer = prop.layer;
     drw.lineType = prop.lineType;
@@ -207,51 +207,51 @@ static void SetEntityCommon(DRW_Entity& drw, const EntityProp& prop)
 }
 
 
-void CDxfWriter::WritePoint(const EntityPoint& pt)
+void DxfWriter::writePoint(const EntityPoint& pt)
 {
     DRW_Point drw;
-    SetEntityCommon(drw, pt.prop);
+    setEntityCommon(drw, pt.prop);
     drw.basePoint = DRW_Coord(pt.point.x(), pt.point.y(), pt.point.z());
-    m_pDxfRW->writePoint(&drw);
+    m_dxfRW->writePoint(&drw);
 }
 
 
-void CDxfWriter::WriteLine(const EntityLine& line)
+void DxfWriter::writeLine(const EntityLine& line)
 {
     DRW_Line drw;
-    SetEntityCommon(drw, line.prop);
+    setEntityCommon(drw, line.prop);
     drw.basePoint = DRW_Coord(line.startPoint.x(), line.startPoint.y(), line.startPoint.z());
     drw.secPoint = DRW_Coord(line.endPoint.x(), line.endPoint.y(), line.endPoint.z());
-    m_pDxfRW->writeLine(&drw);
+    m_dxfRW->writeLine(&drw);
 }
 
 
-void CDxfWriter::WriteCircle(const EntityCircle& circle)
+void DxfWriter::writeCircle(const EntityCircle& circle)
 {
     DRW_Circle drw;
-    SetEntityCommon(drw, circle.prop);
+    setEntityCommon(drw, circle.prop);
     drw.basePoint = DRW_Coord(circle.center.x(), circle.center.y(), circle.center.z());
     drw.radious = circle.radius;
-    m_pDxfRW->writeCircle(&drw);
+    m_dxfRW->writeCircle(&drw);
 }
 
 
-void CDxfWriter::WriteArc(const EntityArc& arc)
+void DxfWriter::writeArc(const EntityArc& arc)
 {
     DRW_Arc drw;
-    SetEntityCommon(drw, arc.prop);
+    setEntityCommon(drw, arc.prop);
     drw.basePoint = DRW_Coord(arc.center.x(), arc.center.y(), arc.center.z());
     drw.radious = arc.radius;
     drw.staangle = arc.startAngle;
     drw.endangle = arc.endAngle;
     drw.isccw = arc.isCCW ? 1 : 0;
-    m_pDxfRW->writeArc(&drw);
+    m_dxfRW->writeArc(&drw);
 }
 
-void CDxfWriter::WriteEllipse(const EntityEllipse& ellipse)
+void DxfWriter::writeEllipse(const EntityEllipse& ellipse)
 {
     DRW_Ellipse drw;
-    SetEntityCommon(drw, ellipse.prop);
+    setEntityCommon(drw, ellipse.prop);
     drw.basePoint = DRW_Coord(ellipse.center.x(), ellipse.center.y(), ellipse.center.z());
     drw.secPoint = DRW_Coord(ellipse.majorAxisEndpoint.x(),
         ellipse.majorAxisEndpoint.y(),
@@ -259,13 +259,13 @@ void CDxfWriter::WriteEllipse(const EntityEllipse& ellipse)
     drw.ratio = ellipse.ratio;
     drw.staparam = ellipse.startParam;
     drw.endparam = ellipse.endParam;
-    m_pDxfRW->writeEllipse(&drw);
+    m_dxfRW->writeEllipse(&drw);
 }
 
-void CDxfWriter::WriteLWPolyline(const EntityLWPolyline& polyline)
+void DxfWriter::writeLWPolyline(const EntityLWPolyline& polyline)
 {
     DRW_LWPolyline drw;
-    SetEntityCommon(drw, polyline.prop);
+    setEntityCommon(drw, polyline.prop);
     drw.flags = polyline.flags;
     drw.width = polyline.constantWidth;
     drw.elevation = polyline.elevation;
@@ -281,14 +281,14 @@ void CDxfWriter::WriteLWPolyline(const EntityLWPolyline& polyline)
         drw.vertlist.push_back(std::make_shared<DRW_Vertex2D>(vert));
     }
 
-    m_pDxfRW->writeLWPolyline(&drw);
+    m_dxfRW->writeLWPolyline(&drw);
 }
 
 
-void CDxfWriter::WritePolyline(const EntityPolyline& polyline)
+void DxfWriter::writePolyline(const EntityPolyline& polyline)
 {
     DRW_Polyline drw;
-    SetEntityCommon(drw, polyline.prop);
+    setEntityCommon(drw, polyline.prop);
     drw.flags = polyline.flags;
     drw.defstawidth = polyline.defStartWidth;
     drw.defendwidth = polyline.defEndWidth;
@@ -305,13 +305,13 @@ void CDxfWriter::WritePolyline(const EntityPolyline& polyline)
         drw.vertlist.push_back(std::make_shared<DRW_Vertex>(vert));
     }
 
-    m_pDxfRW->writePolyline(&drw);
+    m_dxfRW->writePolyline(&drw);
 }
 
-void CDxfWriter::WriteSpline(const EntitySpline& spline)
+void DxfWriter::writeSpline(const EntitySpline& spline)
 {
     DRW_Spline drw;
-    SetEntityCommon(drw, spline.prop);
+    setEntityCommon(drw, spline.prop);
     drw.flags = spline.flags;
     drw.degree = spline.degree;
     drw.nknots = static_cast<dint32>(spline.knots.size());
@@ -342,14 +342,14 @@ void CDxfWriter::WriteSpline(const EntitySpline& spline)
         drw.tgStart = DRW_Coord(spline.tgStart.x(), spline.tgStart.y(), spline.tgStart.z());
     if (spline.tgEnd != Vertex3D())
         drw.tgEnd = DRW_Coord(spline.tgEnd.x(), spline.tgEnd.y(), spline.tgEnd.z());
-    m_pDxfRW->writeSpline(&drw);
+    m_dxfRW->writeSpline(&drw);
 }
 
 
-void CDxfWriter::WriteText(const EntityText& text)
+void DxfWriter::writeText(const EntityText& text)
 {
     DRW_Text drw;
-    SetEntityCommon(drw, text.prop);
+    setEntityCommon(drw, text.prop);
     drw.basePoint = DRW_Coord(text.insertPoint.x(), text.insertPoint.y(), text.insertPoint.z());
     drw.secPoint = DRW_Coord(text.alignPoint.x(), text.alignPoint.y(), text.alignPoint.z());
     drw.text = text.text;
@@ -361,14 +361,14 @@ void CDxfWriter::WriteText(const EntityText& text)
     drw.textgen = text.textGen;
     drw.alignH = static_cast<DRW_Text::HAlign>(text.alignH);
     drw.alignV = static_cast<DRW_Text::VAlign>(text.alignV);
-    m_pDxfRW->writeText(&drw);
+    m_dxfRW->writeText(&drw);
 }
 
 
-void CDxfWriter::WriteMText(const EntityMText& mtext)
+void DxfWriter::writeMText(const EntityMText& mtext)
 {
     DRW_MText drw;
-    SetEntityCommon(drw, mtext.prop);
+    setEntityCommon(drw, mtext.prop);
     drw.basePoint = DRW_Coord(mtext.insertPoint.x(), mtext.insertPoint.y(), mtext.insertPoint.z());
     drw.secPoint = DRW_Coord(mtext.xAxisDir.x(), mtext.xAxisDir.y(), mtext.xAxisDir.z());
     drw.text = mtext.text;
@@ -379,14 +379,14 @@ void CDxfWriter::WriteMText(const EntityMText& mtext)
     drw.style = mtext.style;
     drw.alignV = static_cast<DRW_Text::VAlign>(mtext.attachPoint);
     drw.textgen = 1;
-    m_pDxfRW->writeMText(&drw);
+    m_dxfRW->writeMText(&drw);
 }
 
 
-void CDxfWriter::WriteInsert(const EntityInsert& insert)
+void DxfWriter::writeInsert(const EntityInsert& insert)
 {
     DRW_Insert drw;
-    SetEntityCommon(drw, insert.prop);
+    setEntityCommon(drw, insert.prop);
     drw.basePoint = DRW_Coord(insert.insertPoint.x(), insert.insertPoint.y(), insert.insertPoint.z());
     drw.name = insert.blockName;
     drw.xscale = insert.xScale;
@@ -397,26 +397,26 @@ void CDxfWriter::WriteInsert(const EntityInsert& insert)
     drw.rowcount = insert.rowCount; 
     drw.colspace = insert.colSpacing;
     drw.rowspace = insert.rowSpacing;
-    m_pDxfRW->writeInsert(&drw);
+    m_dxfRW->writeInsert(&drw);
 }
 
 
-void CDxfWriter::WriteSolid(const EntitySolid& solid)
+void DxfWriter::writeSolid(const EntitySolid& solid)
 {
     DRW_Solid drw;
-    SetEntityCommon(drw, solid.prop);
+    setEntityCommon(drw, solid.prop);
     drw.basePoint = DRW_Coord(solid.corner[0].x(), solid.corner[0].y(), solid.corner[0].z());
     drw.secPoint = DRW_Coord(solid.corner[1].x(), solid.corner[1].y(), solid.corner[1].z());
     drw.thirdPoint = DRW_Coord(solid.corner[2].x(), solid.corner[2].y(), solid.corner[2].z());
     drw.fourPoint = DRW_Coord(solid.corner[3].x(), solid.corner[3].y(), solid.corner[3].z());
-    m_pDxfRW->writeSolid(&drw);
+    m_dxfRW->writeSolid(&drw);
 }
 
 
-void CDxfWriter::WriteHatch(const EntityHatch& hatch)
+void DxfWriter::writeHatch(const EntityHatch& hatch)
 {
     DRW_Hatch drw;
-    SetEntityCommon(drw, hatch.prop);
+    setEntityCommon(drw, hatch.prop);
     drw.name = hatch.patternName;
     drw.solid = hatch.solidFill ? 1 : 0;
     drw.associative = hatch.associative;
@@ -504,5 +504,5 @@ void CDxfWriter::WriteHatch(const EntityHatch& hatch)
         }
         drw.looplist.push_back(drwLoop);
     }
-    m_pDxfRW->writeHatch(&drw);
+    m_dxfRW->writeHatch(&drw);
 }

@@ -27,7 +27,7 @@ public:
 	// 暴露数据对象连接信号用
 	DxfData* getDxfData() const { return m_dxfData.get(); }
 	DxfReader* getDxfReader() const { return m_dxfReader.get(); }
-	CDxfTreeviewModel* getTreeViewModel() { return &m_DxfTreeviewModel; }
+	DxfTreeviewModel* getTreeViewModel() { return &m_DxfTreeviewModel; }
     DxfLayerTableviewModel* getLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	DxfGraphicsScene* getScene() { return &m_DxfGraphicsScene; }
 	DxfEditController* getEditController() const { return m_dxfEditController.get(); } 
@@ -82,7 +82,7 @@ private:
 	std::unique_ptr<DxfReader> m_dxfReader;
 
 	// treeview的model
-	CDxfTreeviewModel m_DxfTreeviewModel;
+	DxfTreeviewModel m_DxfTreeviewModel;
 	// 图层tableview的model
 	DxfLayerTableviewModel m_DxfLayerTableviewModel;
 	// graphicview的model
@@ -120,7 +120,7 @@ public:
 
 signals:
 	// 通知树状图刷新
-	void signalRefreshTreeview(CDxfTreeviewModel* pModel);
+	void signalRefreshTreeview(DxfTreeviewModel* pModel);
 	void signalRefreshTreeviewAfterRead();
 	// 通知图层graphics刷新
 	void signalRefreshGraphicsview(DxfGraphicsScene* pScene, bool bResetViewRect);

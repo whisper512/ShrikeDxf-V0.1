@@ -160,7 +160,7 @@ void TreeViewManager::handleOnItemClicked(const QModelIndex& index)
 
 
 
-void TreeViewManager::handleRefreshTree(CDxfTreeviewModel* pModel)
+void TreeViewManager::handleRefreshTree(DxfTreeviewModel* pModel)
 {
 	//从映射类中取数据显示
 	if (pModel)

@@ -11,13 +11,13 @@
 #include "libdxfrw.h"
 
 
-class CDxfWriter : public DRW_Interface
+class DxfWriter : public DRW_Interface
 {
 public:
-    explicit CDxfWriter(DxfData* pData);
-    ~CDxfWriter() override = default;
+    explicit DxfWriter(DxfData* data);
+    ~DxfWriter() override = default;
 
-    bool SaveFile(const QString& strPath, DRW::Version ver = DRW::AC1021, bool bin = false);
+    bool saveFile(const QString& path, DRW::Version ver = DRW::AC1021, bool bin = false);
 
 private:
     
@@ -79,20 +79,20 @@ private:
 
 private:
     
-    void WritePoint(const EntityPoint& pt);
-    void WriteLine(const EntityLine& line);
-    void WriteCircle(const EntityCircle& circle);
-    void WriteArc(const EntityArc& arc);
-    void WriteEllipse(const EntityEllipse& ellipse);
-    void WriteLWPolyline(const EntityLWPolyline& polyline);
-    void WritePolyline(const EntityPolyline& polyline);
-    void WriteSpline(const EntitySpline& spline);
-    void WriteText(const EntityText& text);
-    void WriteMText(const EntityMText& mtext);
-    void WriteInsert(const EntityInsert& insert);
-    void WriteSolid(const EntitySolid& solid);
-    void WriteHatch(const EntityHatch& hatch);
+    void writePoint(const EntityPoint& pt);
+    void writeLine(const EntityLine& line);
+    void writeCircle(const EntityCircle& circle);
+    void writeArc(const EntityArc& arc);
+    void writeEllipse(const EntityEllipse& ellipse);
+    void writeLWPolyline(const EntityLWPolyline& polyline);
+    void writePolyline(const EntityPolyline& polyline);
+    void writeSpline(const EntitySpline& spline);
+    void writeText(const EntityText& text);
+    void writeMText(const EntityMText& mtext);
+    void writeInsert(const EntityInsert& insert);
+    void writeSolid(const EntitySolid& solid);
+    void writeHatch(const EntityHatch& hatch);
 
     DxfData* m_data = nullptr;
-    dxfRW* m_pDxfRW = nullptr;
+    dxfRW* m_dxfRW = nullptr;
 };

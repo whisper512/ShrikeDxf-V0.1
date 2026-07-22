@@ -55,7 +55,7 @@ bool DxfManager::loadDxfFile(const QString& strPath)
     }
 
     // 更新treeview
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_dxfData->getLayers());
+    m_DxfTreeviewModel.updateLayoutItemModel(m_dxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
     emit signalRefreshTreeviewAfterRead();
     // 更新graphicsview
@@ -74,8 +74,8 @@ bool DxfManager::loadDxfFile(const QString& strPath)
 
 bool DxfManager::saveDxfFile(const QString& strPath)
 {
-    CDxfWriter writer(m_dxfData.get());
-    bool ok = writer.SaveFile(strPath);
+    DxfWriter writer(m_dxfData.get());
+    bool ok = writer.saveFile(strPath);
     if (!ok)
     {
         QMessageBox::warning(m_mainWnd, QStringLiteral("保存失败"),
@@ -119,7 +119,7 @@ void DxfManager::deleteSelectedEntity()
 
     // 刷新所有视图（场景、树等）
     refreshScene();
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_dxfData->getLayers());
+    m_DxfTreeviewModel.updateLayoutItemModel(m_dxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
@@ -181,7 +181,7 @@ void DxfManager::pasteEntity(QPointF position)
 
     // 刷新视图和树
     refreshScene();
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_dxfData->getLayers());
+    m_DxfTreeviewModel.updateLayoutItemModel(m_dxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
@@ -367,7 +367,7 @@ void DxfManager::handleMouseLeftButtonClicked(QPointF pos)
     }
     
     // 更新tree的model刷新treeview
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_dxfData->getLayers());
+    m_DxfTreeviewModel.updateLayoutItemModel(m_dxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
@@ -379,7 +379,7 @@ void DxfManager::handleMouseRightButtonClicked(QPointF pos)
     }
 
     // 更新tree的model刷新treeview
-    m_DxfTreeviewModel.UpdateLayoutItemModel(m_dxfData->getLayers());
+    m_DxfTreeviewModel.updateLayoutItemModel(m_dxfData->getLayers());
     emit signalRefreshTreeview(&m_DxfTreeviewModel);
 }
 
