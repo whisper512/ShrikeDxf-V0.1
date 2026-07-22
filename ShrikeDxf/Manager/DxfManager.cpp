@@ -21,9 +21,9 @@ DxfManager::DxfManager(QWidget* pMainWnd)
     // 新建图元绘制控制器
     m_dxfDrawController = std::make_unique<dxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 交互控制
-    m_pInteractionDispatcher = std::make_unique<CDxfInteractionDispatcher>(this);
+    m_pInteractionDispatcher = std::make_unique<DxfInteractionDispatcher>(this);
     // 设置交互控制持有的控制器
-    m_pInteractionDispatcher->SetControllers(m_dxfDrawController.get(), m_DxfEditController.get(), m_selectionController.get());
+    m_pInteractionDispatcher->setControllers(m_dxfDrawController.get(), m_DxfEditController.get(), m_selectionController.get());
     // 编辑类
     m_dxfEditor = std::make_unique<DxfEditor>(m_DxfData.get());
 
@@ -38,7 +38,7 @@ DxfManager::~DxfManager()
 
 const MouseStateInView DxfManager::GetCurrentInteractionState()
 {
-    return m_pInteractionDispatcher->GetCurrentState();
+    return m_pInteractionDispatcher->getCurrentState();
 }
 
 
@@ -344,7 +344,7 @@ void DxfManager::handleOnMouseStatusChanged(MouseStateInView mouseState)
 {
     if (m_pInteractionDispatcher)
     {
-        m_pInteractionDispatcher->SetMouseStatus(mouseState);
+        m_pInteractionDispatcher->setMouseStatus(mouseState);
     }
     // 发送给graphicsview控制右键小菜单
     emit signalMouseStatusChanged(mouseState);
@@ -355,7 +355,7 @@ void DxfManager::handleMousePos(QPointF pos)
     if (m_pInteractionDispatcher)
     {
         // 交互调度类
-        m_pInteractionDispatcher->OnMouseMove(pos);
+        m_pInteractionDispatcher->onMouseMove(pos);
     }
 }
 
@@ -363,7 +363,7 @@ void DxfManager::handleMouseLeftButtonClicked(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
-        m_pInteractionDispatcher->OnLeftClick(pos);
+        m_pInteractionDispatcher->onLeftClick(pos);
     }
     
     // 更新tree的model刷新treeview
@@ -375,7 +375,7 @@ void DxfManager::handleMouseRightButtonClicked(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
-        m_pInteractionDispatcher->OnRightClick(pos);
+        m_pInteractionDispatcher->onRightClick(pos);
     }
 
     // 更新tree的model刷新treeview
@@ -387,7 +387,7 @@ void DxfManager::handleMouseLeftButtonPressed(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
-        m_pInteractionDispatcher->OnLeftPress(pos);
+        m_pInteractionDispatcher->onLeftPress(pos);
     }
 }
 
@@ -395,7 +395,7 @@ void DxfManager::handleMouseLeftButtonReleased(QPointF pos)
 {
     if (m_pInteractionDispatcher)
     {
-        m_pInteractionDispatcher->OnLeftRelease(pos);
+        m_pInteractionDispatcher->onLeftRelease(pos);
     }
 }
 
@@ -413,5 +413,5 @@ void DxfManager::handleEntityDeselected()
 void DxfManager::handleEndDrawingPreview()
 {
     if (m_pInteractionDispatcher)
-        m_pInteractionDispatcher->SetMouseStatus(MouseStateInView::enumMouseState_None);
+        m_pInteractionDispatcher->setMouseStatus(MouseStateInView::enumMouseState_None);
 }

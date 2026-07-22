@@ -4,83 +4,83 @@
 #include "DxfSelectionController.h"
 
 
-CDxfInteractionDispatcher::CDxfInteractionDispatcher(QObject* parent)
+DxfInteractionDispatcher::DxfInteractionDispatcher(QObject* parent)
     : QObject(parent)
 {
 }
 
-CDxfInteractionDispatcher::~CDxfInteractionDispatcher()
+DxfInteractionDispatcher::~DxfInteractionDispatcher()
 {
     
 }
 
-void CDxfInteractionDispatcher::SetControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl, CSelectionController* selCtrl)
+void DxfInteractionDispatcher::setControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl, CSelectionController* selCtrl)
 {
-    m_pDrawCtrl = drawCtrl;
-    m_pEditCtrl = editCtrl;
+    m_drawCtrl = drawCtrl;
+    m_editCtrl = editCtrl;
     m_selectionCtrl = selCtrl;
 }
 
-void CDxfInteractionDispatcher::SetMouseStatus(MouseStateInView state)
+void DxfInteractionDispatcher::setMouseStatus(MouseStateInView state)
 {
-    if (m_eState != state)
+    if (m_state != state)
     {
         // 从绘制状态退出 → 结束绘制预览
-        if (IsDrawState(m_eState) && !IsDrawState(state))
+        if (isDrawState(m_state) && !isDrawState(state))
         {
-            //if (m_pDrawCtrl) m_pDrawCtrl->Cancel(); // 需要一个 Cancel 方法
+            //if (m_drawCtrl) m_drawCtrl->Cancel(); // 需要一个 Cancel 方法
         }
         // 从编辑状态退出 → 结束编辑操作
-        if (IsEditState(m_eState) && !IsEditState(state))
+        if (isEditState(m_state) && !isEditState(state))
         {
-            //if (m_pEditCtrl) m_pEditCtrl->FinishOperation();
+            //if (m_editCtrl) m_editCtrl->FinishOperation();
         }
     }
 
-    m_eState = state;
+    m_state = state;
 
     // 进入状态时的初始化
-    if (IsDrawState(state) && m_pDrawCtrl)
+    if (isDrawState(state) && m_drawCtrl)
     {
-        m_pDrawCtrl->setMouseStatus(state);
+        m_drawCtrl->setMouseStatus(state);
     }
-    else if (IsEditState(state) && m_pEditCtrl)
+    else if (isEditState(state) && m_editCtrl)
     {
-        //m_pEditCtrl->BeginOperation(state);  // 编辑控制器开始操作
+        //m_editCtrl->BeginOperation(state);  // 编辑控制器开始操作
     }
 }
 
-void CDxfInteractionDispatcher::OnMouseMove(QPointF scenePos)
+void DxfInteractionDispatcher::onMouseMove(QPointF scenePos)
 {
     // 拉伸模式优先
-    if (m_pEditCtrl && m_pEditCtrl->isStretching())
+    if (m_editCtrl && m_editCtrl->isStretching())
     {
-        //m_pEditCtrl->updateStretch(scenePos);
+        //m_editCtrl->updateStretch(scenePos);
         return;
     }
 
-    if (m_eState == MouseStateInView::enumMouseState_None)
+    if (m_state == MouseStateInView::enumMouseState_None)
     {
         // 可以在这里加 hover 夹点高亮
     }
     else
     {
-        m_pDrawCtrl->onMouseMove(scenePos);
+        m_drawCtrl->onMouseMove(scenePos);
     }
 }
 
 
-void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
+void DxfInteractionDispatcher::onLeftClick(QPointF scenePos)
 {
-    if (!m_pDrawCtrl)
+    if (!m_drawCtrl)
         return;
 
-    if (m_eState == MouseStateInView::enumMouseState_None)
+    if (m_state == MouseStateInView::enumMouseState_None)
     {
         // 先检查是否命中了选中图元的夹点
-        if (m_pEditCtrl)
+        if (m_editCtrl)
         {
-            StretchGripInView grip = m_pEditCtrl->hitTestGrip(scenePos);
+            StretchGripInView grip = m_editCtrl->hitTestGrip(scenePos);
             if (grip != StretchGripInView::None)
                 return;
         }
@@ -91,55 +91,55 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
     }
     else
     {
-        m_pDrawCtrl->onGraphicsViewLeftClick(scenePos);
+        m_drawCtrl->onGraphicsViewLeftClick(scenePos);
     }
 }
 
 
-void CDxfInteractionDispatcher::OnRightClick(QPointF scenePos)
+void DxfInteractionDispatcher::onRightClick(QPointF scenePos)
 {
-    if (m_pDrawCtrl)
-        m_pDrawCtrl->onGraphicsViewRightClick(scenePos);
+    if (m_drawCtrl)
+        m_drawCtrl->onGraphicsViewRightClick(scenePos);
 
     // 如果以后编辑模式需要右键菜单，可在此扩展
 }
 
-void CDxfInteractionDispatcher::OnLeftPress(QPointF scenePos)
+void DxfInteractionDispatcher::onLeftPress(QPointF scenePos)
 {
     // 仅在光标模式(非工具模式)且编辑控制器存在时检测夹点
-    if (m_eState != MouseStateInView::enumMouseState_None)
+    if (m_state != MouseStateInView::enumMouseState_None)
         return;
-    if (!m_pEditCtrl)
+    if (!m_editCtrl)
         return;
 
-    StretchGripInView grip = m_pEditCtrl->hitTestGrip(scenePos);
+    StretchGripInView grip = m_editCtrl->hitTestGrip(scenePos);
     if (grip != StretchGripInView::None)
     {
-        m_pEditCtrl->startStretch(grip);
+        m_editCtrl->startStretch(grip);
     }
 }
 
 
-void CDxfInteractionDispatcher::OnLeftRelease(QPointF scenePos)
+void DxfInteractionDispatcher::onLeftRelease(QPointF scenePos)
 {
     Q_UNUSED(scenePos);
 
-    if (m_pEditCtrl && m_pEditCtrl->isStretching())
+    if (m_editCtrl && m_editCtrl->isStretching())
     {
-        m_pEditCtrl->endStretch(scenePos);
+        m_editCtrl->endStretch(scenePos);
     }
 }
 
 
 
 
-bool CDxfInteractionDispatcher::IsDrawState(MouseStateInView state) const
+bool DxfInteractionDispatcher::isDrawState(MouseStateInView state) const
 {
     return state >= MouseStateInView::enumMouseState_Point &&
         state <= MouseStateInView::enumMouseState_MText;
 }
 
-bool CDxfInteractionDispatcher::IsEditState(MouseStateInView state) const
+bool DxfInteractionDispatcher::isEditState(MouseStateInView state) const
 {
     // 或更精细的判断
     return state >= MouseStateInView::enumMouseState_Move;  

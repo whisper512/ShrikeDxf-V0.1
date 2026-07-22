@@ -13,7 +13,7 @@
 #include "dxfDrawController.h"
 #include "DxfEditController.h"
 
-class CDxfInteractionDispatcher;
+class DxfInteractionDispatcher;
 class CSelectionController;
 
 //dxf管理类
@@ -95,7 +95,7 @@ private:
 	// dxf编辑控制
 	std::unique_ptr<DxfEditController> m_DxfEditController;
 	// 交互控制调度
-	std::unique_ptr<CDxfInteractionDispatcher> m_pInteractionDispatcher;
+	std::unique_ptr<DxfInteractionDispatcher> m_pInteractionDispatcher;
 	// 选中控制
 	std::unique_ptr<CSelectionController> m_selectionController;
 	// 选中图元

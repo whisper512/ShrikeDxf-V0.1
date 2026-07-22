@@ -8,38 +8,38 @@ class DxfEditController;
 class CSelectionController;
 
 // graphicsView交互控制类
-class CDxfInteractionDispatcher : public QObject
+class DxfInteractionDispatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit CDxfInteractionDispatcher(QObject* parent = nullptr);
-    ~CDxfInteractionDispatcher();
+    explicit DxfInteractionDispatcher(QObject* parent = nullptr);
+    ~DxfInteractionDispatcher();
 
     // 持有其他数据类
-    void SetControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl ,CSelectionController* selCtrl);
+    void setControllers(dxfDrawController* drawCtrl, DxfEditController* editCtrl ,CSelectionController* selCtrl);
     // 设置当前工具,修改鼠标状态
-    void SetMouseStatus(MouseStateInView state);
+    void setMouseStatus(MouseStateInView state);
     // 发会鼠标状态
-    MouseStateInView GetCurrentState() const { return m_eState; }
+    MouseStateInView getCurrentState() const { return m_state; }
     // 鼠标事件
-    void OnMouseMove(QPointF scenePos);
-    void OnLeftClick(QPointF scenePos);
-    void OnRightClick(QPointF scenePos);
-    void OnLeftPress(QPointF scenePos);
-    void OnLeftRelease(QPointF scenePos);
+    void onMouseMove(QPointF scenePos);
+    void onLeftClick(QPointF scenePos);
+    void onRightClick(QPointF scenePos);
+    void onLeftPress(QPointF scenePos);
+    void onLeftRelease(QPointF scenePos);
 
 
 private:
     // 当前鼠标状态
-    MouseStateInView m_eState = MouseStateInView::enumMouseState_None;
+    MouseStateInView m_state = MouseStateInView::enumMouseState_None;
     // 绘制控制器
-    dxfDrawController* m_pDrawCtrl = nullptr;
+    dxfDrawController* m_drawCtrl = nullptr;
     // 编辑控制器
-    DxfEditController* m_pEditCtrl = nullptr;
+    DxfEditController* m_editCtrl = nullptr;
     // 选择控制器
     CSelectionController* m_selectionCtrl = nullptr;
 
 private:
-    bool IsDrawState(MouseStateInView state) const;
-    bool IsEditState(MouseStateInView state) const;
+    bool isDrawState(MouseStateInView state) const;
+    bool isEditState(MouseStateInView state) const;
 };
