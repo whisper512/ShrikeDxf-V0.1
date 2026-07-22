@@ -19,7 +19,7 @@ public:
 
 	// 更新model
 	void UpdateLayoutItemModel(const std::map<std::string, stuLayer>& mapDxf);
-	void ClearModel();
+	void clearModel();
 
 private:
 

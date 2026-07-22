@@ -62,7 +62,7 @@ void LayerTableViewManager::handleTableViewClicked(const QModelIndex& index)
 }
 
 
-void LayerTableViewManager::handleRefreshLayerTableview(CDxfLayerTableviewModel* pModel)
+void LayerTableViewManager::handleRefreshLayerTableview(DxfLayerTableviewModel* pModel)
 {
 	if (pModel)
 	{

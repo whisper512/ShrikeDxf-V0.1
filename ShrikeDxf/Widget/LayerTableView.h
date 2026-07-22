@@ -25,7 +25,7 @@ signals:
 	void signalChangeCurrentLayer(QString strCurLayer);
 
 public slots:
-	void handleRefreshLayerTableview(CDxfLayerTableviewModel* pModel);
+	void handleRefreshLayerTableview(DxfLayerTableviewModel* pModel);
 
 private slots:
 	void handleTableViewClicked(const QModelIndex& index);

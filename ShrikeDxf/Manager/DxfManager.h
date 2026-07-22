@@ -28,7 +28,7 @@ public:
 	DxfData* GetDxfData() const { return m_DxfData.get(); }
 	CDxfReader* GetDxfReader() const { return m_DxfReader.get(); }
 	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
-    CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
+    DxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	DxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
 	DxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
 	CSelectionController* GetSelectionController() const { return m_selectionController.get(); }
@@ -37,6 +37,8 @@ public:
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
 	// 获取交互鼠标状态
 	const MouseStateInView GetCurrentInteractionState();
+	// 获取当前工作图层
+	const QString& GetCurrentLayer() const { return m_strCurrentLayer; }
 
 	// 刷新scene重并重置graphicsview
 	void RefreshSceneResetview(){
@@ -48,9 +50,6 @@ public:
 		m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
 		emit signalRefreshGraphicsview(&m_DxfGraphicsScene, false);
 	}
-
-	// 获取当前工作图层
-	const QString& GetCurrentLayer() const { return m_strCurrentLayer; }
 
 
 public:
@@ -85,7 +84,7 @@ private:
 	// treeview的model
 	CDxfTreeviewModel m_DxfTreeviewModel;
 	// 图层tableview的model
-	CDxfLayerTableviewModel m_DxfLayerTableviewModel;
+	DxfLayerTableviewModel m_DxfLayerTableviewModel;
 	// graphicview的model
 	DxfGraphicsScene m_DxfGraphicsScene;
 	// dxf编辑类
@@ -130,7 +129,7 @@ signals:
 	// 更新dxf文件路径
 	void signalFileName(const QString& filePath);
 	// 更新图层属性
-	void signalRefreshLayerTable(CDxfLayerTableviewModel* pModel);
+	void signalRefreshLayerTable(DxfLayerTableviewModel* pModel);
 	// 通知当前工作图层
 	void signalCurrentLayerChanged(const QString& strLayer);
 	//通知graphicsview新建图元

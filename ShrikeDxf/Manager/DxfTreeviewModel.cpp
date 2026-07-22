@@ -23,7 +23,7 @@ CDxfTreeviewModel::~CDxfTreeviewModel()
 void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLayer>& mapDxf)
 {
 
-    ClearModel();
+    clearModel();
 
     this->setHorizontalHeaderLabels(QStringList() << "LAYER" << "ENTITIES");
     QString qstr;
@@ -138,7 +138,7 @@ void CDxfTreeviewModel::UpdateLayoutItemModel(const std::map<std::string, stuLay
     }
 }
 
-void CDxfTreeviewModel::ClearModel()
+void CDxfTreeviewModel::clearModel()
 {
     clear();
 }

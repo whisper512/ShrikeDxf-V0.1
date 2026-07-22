@@ -1,15 +1,15 @@
 ﻿#include "DxfLayerTableviewModel.h"
 
 
-CDxfLayerTableviewModel::CDxfLayerTableviewModel()
+DxfLayerTableviewModel::DxfLayerTableviewModel()
 {
 }
 
-CDxfLayerTableviewModel::~CDxfLayerTableviewModel()
+DxfLayerTableviewModel::~DxfLayerTableviewModel()
 {
 }
 
-void CDxfLayerTableviewModel::UpdateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf)
+void DxfLayerTableviewModel::updateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf)
 {
 	this->clear();
 	this->setHorizontalHeaderLabels({ "NO", "NAME", "COLOR" });
@@ -39,7 +39,7 @@ void CDxfLayerTableviewModel::UpdateLayerTableViewModel(const std::map<std::stri
 	}
 }
 
-void CDxfLayerTableviewModel::UpdateLayerChangedData(std::map<std::string, stuLayer>& mapDxf)
+void DxfLayerTableviewModel::updateLayerChangedData(std::map<std::string, stuLayer>& mapDxf)
 {
 	int rowCount = this->rowCount();
 
@@ -70,7 +70,7 @@ void CDxfLayerTableviewModel::UpdateLayerChangedData(std::map<std::string, stuLa
 	}
 }
 
-void CDxfLayerTableviewModel::ClearModel()
+void DxfLayerTableviewModel::clearModel()
 {
 	clear();
 }

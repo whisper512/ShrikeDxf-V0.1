@@ -62,7 +62,7 @@ bool DxfManager::LoadDxfFile(const QString& strPath)
     m_DxfGraphicsScene.dxfDraw(m_DxfData->getLayers());
     emit signalRefreshGraphicsview(&m_DxfGraphicsScene,true);
     // 更新图层tableview
-    m_DxfLayerTableviewModel.UpdateLayerTableViewModel(m_DxfData->getLayers());
+    m_DxfLayerTableviewModel.updateLayerTableViewModel(m_DxfData->getLayers());
     emit signalRefreshLayerTable(&m_DxfLayerTableviewModel);
     // 更新文件路径
     emit signalFileName(strPath);

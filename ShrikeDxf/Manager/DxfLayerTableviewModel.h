@@ -4,17 +4,17 @@
 #include "DxfStruct.h"
 
 
-class CDxfLayerTableviewModel : public QStandardItemModel
+class DxfLayerTableviewModel : public QStandardItemModel
 {
 public:
-	CDxfLayerTableviewModel();
-	~CDxfLayerTableviewModel();
+	DxfLayerTableviewModel();
+	~DxfLayerTableviewModel();
 
 	//更新model
-	void UpdateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf);
+	void updateLayerTableViewModel(const std::map<std::string, stuLayer>& mapDxf);
 	//table更新后,更新model
-	void UpdateLayerChangedData(std::map<std::string, stuLayer>& mapDxf);
-	void ClearModel();
+	void updateLayerChangedData(std::map<std::string, stuLayer>& mapDxf);
+	void clearModel();
 private:
 	
 
