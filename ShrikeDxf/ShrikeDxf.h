@@ -77,7 +77,7 @@ public:
 
 
     //界面通用数据管理
-    CommonDataManager* m_pDataManager;
+    CommonDataManager* m_dataManager;
     //Dxf数据管理
     DxfManager* m_dxfDataManager;
 

@@ -1,13 +1,13 @@
 ﻿#include "DxfWriter.h"
 
 CDxfWriter::CDxfWriter(DxfData* pData)
-    : m_pData(pData)
+    : m_data(pData)
 {
 }
 
 bool CDxfWriter::SaveFile(const QString& strPath, DRW::Version ver, bool bin)
 {
-    if (!m_pData) return false;
+    if (!m_data) return false;
 
     dxfRW dxf(strPath.toStdString().c_str());
     m_pDxfRW = &dxf;
@@ -20,7 +20,7 @@ bool CDxfWriter::SaveFile(const QString& strPath, DRW::Version ver, bool bin)
 void CDxfWriter::writeHeader(DRW_Header& data)
 {
     // 设置版本
-    const QString& ver = m_pData->getVersion();
+    const QString& ver = m_data->getVersion();
     DRW::Version dv = DRW::AC1021;
     if (ver == "AC1009") dv = DRW::AC1009;
     else if (ver == "AC1012") dv = DRW::AC1012;
@@ -33,15 +33,15 @@ void CDxfWriter::writeHeader(DRW_Header& data)
     else if (ver == "AC1032") dv = DRW::AC1032;
 
     data.addStr("$ACADVER", ver.toStdString(), 1);
-    data.addInt("$INSUNITS", static_cast<int>(m_pData->getInsUnits()), 70);
+    data.addInt("$INSUNITS", static_cast<int>(m_data->getInsUnits()), 70);
 
-    Vertex3D extMin = m_pData->getExtMin();
+    Vertex3D extMin = m_data->getExtMin();
     data.addCoord("$EXTMIN", DRW_Coord(extMin.x(), extMin.y(), extMin.z()), 10);
 
-    Vertex3D extMax = m_pData->getExtMax();
+    Vertex3D extMax = m_data->getExtMax();
     data.addCoord("$EXTMAX", DRW_Coord(extMax.x(), extMax.y(), extMax.z()), 10);
 
-    data.addDouble("$LTSCALE", m_pData->getLtScale(), 40);
+    data.addDouble("$LTSCALE", m_data->getLtScale(), 40);
 }
 
 
@@ -52,7 +52,7 @@ void CDxfWriter::writeLTypes()
 
 void CDxfWriter::writeLayers()
 {
-    for (const auto& [name, layer] : m_pData->getLayers())
+    for (const auto& [name, layer] : m_data->getLayers())
     {
         DRW_Layer drwLayer;
         drwLayer.name = name;
@@ -98,7 +98,7 @@ void CDxfWriter::writeObjects()
 void CDxfWriter::writeBlockRecords()
 {
     // 注册块记录
-    for (const auto& [name, block] : m_pData->getDocument().blocks)
+    for (const auto& [name, block] : m_data->getDocument().blocks)
     {
         m_pDxfRW->writeBlockRecord(name);
     }
@@ -106,7 +106,7 @@ void CDxfWriter::writeBlockRecords()
 
 void CDxfWriter::writeBlocks()
 {
-    for (const auto& [name, block] : m_pData->getDocument().blocks)
+    for (const auto& [name, block] : m_data->getDocument().blocks)
     {
         DRW_Block drwBlock;
         drwBlock.name = name;
@@ -138,7 +138,7 @@ void CDxfWriter::writeBlocks()
 
 void CDxfWriter::writeEntities()
 {
-    for (const auto& [layerName, layer] : m_pData->getLayers())
+    for (const auto& [layerName, layer] : m_data->getLayers())
     {
         if (!layer.isVisible) continue;
 

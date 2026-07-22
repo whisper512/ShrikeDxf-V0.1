@@ -3,18 +3,18 @@
 #include "DxfReader.h"
 
 CDxfReader::CDxfReader(DxfData* pData)
-    : m_pData(pData)
+    : m_data(pData)
 {
 }
 
 void CDxfReader::SetDataTarget(DxfData* pData)
 {
-    m_pData = pData;
+    m_data = pData;
 }
 
 bool CDxfReader::ReadFile(const QString& filePath)
 {
-    if (!m_pData) {
+    if (!m_data) {
         std::cerr << "[CDxfReader] No data target set!" << std::endl;
         return false;
     }
@@ -26,7 +26,7 @@ bool CDxfReader::ReadFile(const QString& filePath)
         return false;
     }
 
-    auto it = m_pData;
+    auto it = m_data;
 
     return true;
 }
@@ -58,38 +58,38 @@ void CDxfReader::FillEntityProp(const DRW_Entity& src, EntityProp& dst)
 
 void CDxfReader::StoreEntity(const variantDxfEntity& entity, const std::string& layer)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
 
     if (m_currentBlock.empty()) {
         // 存到图层
-        m_pData->ensureLayer(layer);
-        m_pData->addEntity(layer, entity);
+        m_data->ensureLayer(layer);
+        m_data->addEntity(layer, entity);
     }
     else {
         // 存入块定义
-        m_pData->addEntityToBlock(m_currentBlock, entity);
+        m_data->addEntityToBlock(m_currentBlock, entity);
     }
 }
 
 void CDxfReader::StoreLayer(const stuLayer& layer)
 {
-    if (!m_pData) return;
-    m_pData->addLayer(layer);
+    if (!m_data) return;
+    m_data->addLayer(layer);
 }
 
 
 void CDxfReader::addHeader(const DRW_Header* data)
 {
-    if (!m_pData || !data) return;
+    if (!m_data || !data) return;
     // $ACADVER
     auto itVer = data->vars.find("$ACADVER");
     if (itVer != data->vars.end() && itVer->second->type() == DRW_Variant::STRING) {
-        m_pData->setVersion(QString::fromStdString(*itVer->second->content.s));
+        m_data->setVersion(QString::fromStdString(*itVer->second->content.s));
     }
     // $INSUNITS
     auto itUnits = data->vars.find("$INSUNITS");
     if (itUnits != data->vars.end() && itUnits->second->type() == DRW_Variant::INTEGER) {
-        m_pData->setInsUnits(static_cast<double>(itUnits->second->content.i));
+        m_data->setInsUnits(static_cast<double>(itUnits->second->content.i));
     }
     // $EXTMIN / $EXTMAX — 需要取两个值后才调用 SetExtents
     Vertex3D extMin, extMax;
@@ -105,12 +105,12 @@ void CDxfReader::addHeader(const DRW_Header* data)
         if (c) { extMax = Vertex3D(c->x, c->y, c->z); hasExtMax = true; }
     }
     if (hasExtMin && hasExtMax) {
-        m_pData->setExtents(extMin, extMax);
+        m_data->setExtents(extMin, extMax);
     }
     // $LTSCALE
     auto itLtScale = data->vars.find("$LTSCALE");
     if (itLtScale != data->vars.end() && itLtScale->second->type() == DRW_Variant::DOUBLE) {
-        m_pData->setLtScale(itLtScale->second->content.d);
+        m_data->setLtScale(itLtScale->second->content.d);
     }
 }
 
@@ -120,7 +120,7 @@ void CDxfReader::addLType(const DRW_LType& data)
 
 void CDxfReader::addLayer(const DRW_Layer& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     stuLayer layer;
     // ACI 颜色转 QColor
     if (data.color24 >= 0) {
@@ -164,9 +164,9 @@ void CDxfReader::addAppId(const DRW_AppId& data)
 
 void CDxfReader::addBlock(const DRW_Block& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     // 注册块定义
-    m_pData->addBlock(data.name, Vertex3D(
+    m_data->addBlock(data.name, Vertex3D(
         data.basePoint.x, data.basePoint.y, data.basePoint.z));
     // 记录当前块名，后续图元会进入该块
     m_currentBlock = data.name;
@@ -190,7 +190,7 @@ void CDxfReader::endBlock()
 
 void CDxfReader::addPoint(const DRW_Point& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityPoint ent;
     FillEntityProp(data, ent.prop);
     ent.point = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -199,7 +199,7 @@ void CDxfReader::addPoint(const DRW_Point& data)
 
 void CDxfReader::addLine(const DRW_Line& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityLine ent;
     FillEntityProp(data, ent.prop);
     ent.startPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -219,7 +219,7 @@ void CDxfReader::addXline(const DRW_Xline& /*data*/)
 
 void CDxfReader::addCircle(const DRW_Circle& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityCircle ent;
     FillEntityProp(data, ent.prop);
     ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -229,7 +229,7 @@ void CDxfReader::addCircle(const DRW_Circle& data)
 
 void CDxfReader::addEllipse(const DRW_Ellipse& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityEllipse ent;
     FillEntityProp(data, ent.prop);
     ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -243,7 +243,7 @@ void CDxfReader::addEllipse(const DRW_Ellipse& data)
 
 void CDxfReader::addArc(const DRW_Arc& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityArc ent;
     FillEntityProp(data, ent.prop);
     ent.center = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -256,7 +256,7 @@ void CDxfReader::addArc(const DRW_Arc& data)
 
 void CDxfReader::addMText(const DRW_MText& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityMText ent;
     FillEntityProp(data, ent.prop);
     ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -274,7 +274,7 @@ void CDxfReader::addMText(const DRW_MText& data)
 
 void CDxfReader::addText(const DRW_Text& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityText ent;
     FillEntityProp(data, ent.prop);
     ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -326,7 +326,7 @@ void CDxfReader::addLeader(const DRW_Leader* /*data*/)
 
 void CDxfReader::addHatch(const DRW_Hatch* data)
 {
-    if (!m_pData || !data) return;
+    if (!m_data || !data) return;
     EntityHatch ent;
     FillEntityProp(*data, ent.prop);
     ent.patternName = data->name;
@@ -437,7 +437,7 @@ void CDxfReader::addPlotSettings(const DRW_PlotSettings* /*data*/)
 
 void CDxfReader::addLWPolyline(const DRW_LWPolyline& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityLWPolyline ent;
     FillEntityProp(data, ent.prop);
     ent.flags = data.flags;
@@ -457,7 +457,7 @@ void CDxfReader::addLWPolyline(const DRW_LWPolyline& data)
 
 void CDxfReader::addPolyline(const DRW_Polyline& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityPolyline ent;
     FillEntityProp(data, ent.prop);
     ent.flags = data.flags;
@@ -491,7 +491,7 @@ void CDxfReader::addPolyline(const DRW_Polyline& data)
 
 void CDxfReader::addSpline(const DRW_Spline* data)
 {
-    if (!m_pData || !data) return;
+    if (!m_data || !data) return;
     EntitySpline ent;
     FillEntityProp(*data, ent.prop);
     ent.flags = data->flags;
@@ -526,7 +526,7 @@ void CDxfReader::addKnot(const DRW_Entity& /*data*/)
 
 void CDxfReader::addInsert(const DRW_Insert& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntityInsert ent;
     FillEntityProp(data, ent.prop);
     ent.insertPoint = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);
@@ -554,7 +554,7 @@ void CDxfReader::add3dFace(const DRW_3Dface& /*data*/)
 
 void CDxfReader::addSolid(const DRW_Solid& data)
 {
-    if (!m_pData) return;
+    if (!m_data) return;
     EntitySolid ent;
     FillEntityProp(data, ent.prop);
     ent.corner[0] = Vertex3D(data.basePoint.x, data.basePoint.y, data.basePoint.z);

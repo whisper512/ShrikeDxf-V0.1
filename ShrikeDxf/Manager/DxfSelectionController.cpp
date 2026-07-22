@@ -6,7 +6,7 @@
 #include "DxfStruct.h"
 
 CSelectionController::CSelectionController(DxfData* pData, CDxfGraphicsScene* pScene, QObject* parent)
-    : QObject(parent), m_pData(pData), m_pScene(pScene)
+    : QObject(parent), m_data(pData), m_scene(pScene)
 {
 }
 
@@ -16,11 +16,11 @@ CSelectionController::~CSelectionController()
 
 void CSelectionController::HitTest(QPointF scenePos)
 {
-    ClearSelection();
-    if (!m_pData || !m_pScene) return;
+    clearSelection();
+    if (!m_data || !m_scene) return;
 
-    const auto& layers = m_pData->getLayers();
-    double threshold = 15.0 / m_pScene->GetScale();
+    const auto& layers = m_data->getLayers();
+    double threshold = 15.0 / m_scene->GetScale();
     if (threshold < 0.5) threshold = 0.5;
 
     QString hitLayer;
@@ -52,24 +52,24 @@ void CSelectionController::HitTest(QPointF scenePos)
     if (hitIndex >= 0)
     {
         m_bEntitySelected = true;
-        m_strSelectedLayer = hitLayer;
+        m_selectedLayer = hitLayer;
         m_nSelectedIndex = hitIndex;
         emit signalEntitySelected(hitLayer, hitIndex);
     }
     else
     {
-        ClearSelection();
+        clearSelection();
     }
 }
 
-void CSelectionController::ClearSelection()
+void CSelectionController::clearSelection()
 {
     if (m_bEntitySelected)
     {
         m_bEntitySelected = false;
-        m_strSelectedLayer.clear();
+        m_selectedLayer.clear();
         m_nSelectedIndex = -1;
         emit signalEntityDeselected();
     }
-    m_pScene->ClearPreview();
+    m_scene->ClearPreview();
 }

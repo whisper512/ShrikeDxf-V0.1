@@ -11,7 +11,7 @@ ShrikeDxf::ShrikeDxf(QWidget *parent)
 	m_labelPos(nullptr),
 	m_labelDocName(nullptr),
 	m_labelLayer(nullptr),
-    m_pDataManager(nullptr),
+    m_dataManager(nullptr),
 	m_dxfDataManager(nullptr),
 	m_moveBtnsWidget(nullptr),
 	m_createEntityWidget(nullptr)
@@ -62,7 +62,7 @@ void ShrikeDxf::initDataManagers()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
-		m_pDataManager = new CommonDataManager(this);
+		m_dataManager = new CommonDataManager(this);
 		m_dxfDataManager = new DxfManager(this);
 	});
 }

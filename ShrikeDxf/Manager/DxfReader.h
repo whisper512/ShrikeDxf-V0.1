@@ -87,7 +87,7 @@ private:
     // 图层存入DxfData
     void StoreLayer(const stuLayer& layer);
 
-    DxfData* m_pData = nullptr;
+    DxfData* m_data = nullptr;
     std::string m_currentBlock;                // 当前块名
     std::map<int, std::string> m_blockHandles; // handle块名
 };

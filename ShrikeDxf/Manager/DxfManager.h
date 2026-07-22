@@ -30,8 +30,8 @@ public:
 	CDxfTreeviewModel* GetTreeViewModel() { return &m_DxfTreeviewModel; }
     CDxfLayerTableviewModel* GetLayerTableviewModel() { return &m_DxfLayerTableviewModel; }
 	CDxfGraphicsScene* GetScene() { return &m_DxfGraphicsScene; }
-	CDxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
-	CSelectionController* GetSelectionController() const { return m_pSelectionController.get(); }
+	DxfEditController* GetEditController() const { return m_DxfEditController.get(); } 
+	CSelectionController* GetSelectionController() const { return m_selectionController.get(); }
 
 	// 获取选中图元
 	const stuSelectedEntity& GetSelectedEntity() const { return m_SelectedEntity; }
@@ -89,15 +89,15 @@ private:
 	// graphicview的model
 	CDxfGraphicsScene m_DxfGraphicsScene;
 	// dxf编辑类
-	std::unique_ptr<CDxfEditor> m_DxfEditor;
+	std::unique_ptr<DxfEditor> m_dxfEditor;
 	// dxf绘制控制和view选中
 	std::unique_ptr<DxfDrawController> m_DxfDrawController;
 	// dxf编辑控制
-	std::unique_ptr<CDxfEditController> m_DxfEditController;
+	std::unique_ptr<DxfEditController> m_DxfEditController;
 	// 交互控制调度
 	std::unique_ptr<CDxfInteractionDispatcher> m_pInteractionDispatcher;
 	// 选中控制
-	std::unique_ptr<CSelectionController> m_pSelectionController;
+	std::unique_ptr<CSelectionController> m_selectionController;
 	// 选中图元
 	stuSelectedEntity m_SelectedEntity;
 	// 当前工作图层

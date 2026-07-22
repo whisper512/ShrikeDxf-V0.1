@@ -4,7 +4,7 @@
 #include "Tools.h"
 
 class DxfDrawController;
-class CDxfEditController;
+class DxfEditController;
 class CSelectionController;
 
 // graphicsView交互控制类
@@ -16,7 +16,7 @@ public:
     ~CDxfInteractionDispatcher();
 
     // 持有其他数据类
-    void SetControllers(DxfDrawController* drawCtrl, CDxfEditController* editCtrl ,CSelectionController* selCtrl);
+    void SetControllers(DxfDrawController* drawCtrl, DxfEditController* editCtrl ,CSelectionController* selCtrl);
     // 设置当前工具,修改鼠标状态
     void SetMouseStatus(MouseStateInView state);
     // 发会鼠标状态
@@ -35,9 +35,9 @@ private:
     // 绘制控制器
     DxfDrawController* m_pDrawCtrl = nullptr;
     // 编辑控制器
-    CDxfEditController* m_pEditCtrl = nullptr;
+    DxfEditController* m_pEditCtrl = nullptr;
     // 选择控制器
-    CSelectionController* m_pSelectionCtrl = nullptr;
+    CSelectionController* m_selectionCtrl = nullptr;
 
 private:
     bool IsDrawState(MouseStateInView state) const;

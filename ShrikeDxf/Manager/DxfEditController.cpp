@@ -9,54 +9,54 @@
 #include <cmath>
 
 
-CDxfEditController::CDxfEditController(DxfData* pData, CDxfGraphicsScene* pScene,
-    CSelectionController* pSelection, DxfManager* pManager, QObject* parent)
+DxfEditController::DxfEditController(DxfData* data, CDxfGraphicsScene* scene,
+    CSelectionController* selection, DxfManager* manager, QObject* parent)
     : QObject(parent)
-    , m_pData(pData)
-    , m_pScene(pScene)
-    , m_pSelection(pSelection)
-    , m_pManager(pManager)
+    , m_data(data)
+    , m_scene(scene)
+    , m_selection(selection)
+    , m_manager(manager)
 {
 }
 
-CDxfEditController::~CDxfEditController()
+DxfEditController::~DxfEditController()
 {
 }
 
 
-void CDxfEditController::SetSelectedEntity(const QString& strLayer, int entityIndex)
+void DxfEditController::setSelectedEntity(const QString& strLayer, int entityIndex)
 {
-    m_strSelectedLayer = strLayer;
-    m_iSelectedIndex = entityIndex;
+    m_selectedLayer = strLayer;
+    m_selectedIndex = entityIndex;
     emit signalEntitySelected(strLayer, entityIndex);
 }
 
-void CDxfEditController::ClearSelection()
+void DxfEditController::clearSelection()
 {
-    m_strSelectedLayer.clear();
-    m_iSelectedIndex = -1;
+    m_selectedLayer.clear();
+    m_selectedIndex = -1;
     emit signalEntityDeselected();
 }
 
 
-StretchGripInView CDxfEditController::HitTestGrip(QPointF scenePos) const
+StretchGripInView DxfEditController::hitTestGrip(QPointF scenePos) const
 {
     // 无选中 → 无夹点
-    if (m_iSelectedIndex < 0 || m_strSelectedLayer.isEmpty() || !m_pData)
+    if (m_selectedIndex < 0 || m_selectedLayer.isEmpty() || !m_data)
         return StretchGripInView::None;
 
     // 查层
-    const auto& layers = m_pData->getLayers();
-    auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+    const auto& layers = m_data->getLayers();
+    auto itLayer = layers.find(m_selectedLayer.toStdString());
     if (itLayer == layers.end())
         return StretchGripInView::None;
 
     // 查实体
-    if (m_iSelectedIndex >= static_cast<int>(itLayer->second.entities.size()))
+    if (m_selectedIndex >= static_cast<int>(itLayer->second.entities.size()))
         return StretchGripInView::None;
 
     // 取 boundingBox
-    const auto& entity = itLayer->second.entities[m_iSelectedIndex];
+    const auto& entity = itLayer->second.entities[m_selectedIndex];
     QRectF bb = std::visit([](const auto& e) {
         return e.boundingBox(1.0);
         }, entity);
@@ -65,117 +65,117 @@ StretchGripInView CDxfEditController::HitTestGrip(QPointF scenePos) const
         return StretchGripInView::None;
 
     // 反查夹点
-    return GripFromPoint(scenePos, bb, kGripHitTol);
+    return gripFromPoint(scenePos, bb, kGripHitTol);
 }
 
 
-void CDxfEditController::StartStretch(StretchGripInView grip)
+void DxfEditController::startStretch(StretchGripInView grip)
 {
     if (grip == StretchGripInView::None)
         return;
-    if (m_iSelectedIndex < 0)
+    if (m_selectedIndex < 0)
         return;
 
-    m_bStretching = true;
-    m_eCurrentGrip = grip;
+    m_stretching = true;
+    m_currentGrip = grip;
 }
 
 
-void CDxfEditController::UpdateStretch(QPointF newPos)
+void DxfEditController::updateStretch(QPointF newPos)
 {
-    if (!m_bStretching || !m_pData)
+    if (!m_stretching || !m_data)
         return;
-    if (m_iSelectedIndex < 0 || m_strSelectedLayer.isEmpty())
+    if (m_selectedIndex < 0 || m_selectedLayer.isEmpty())
         return;
 
 
-    const auto& layers = m_pData->getLayers();
-    auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+    const auto& layers = m_data->getLayers();
+    auto itLayer = layers.find(m_selectedLayer.toStdString());
     if (itLayer == layers.end())
         return;
 
-    if (m_iSelectedIndex >= static_cast<int>(itLayer->second.entities.size()))
+    if (m_selectedIndex >= static_cast<int>(itLayer->second.entities.size()))
         return;
 
     // std::visit 调实体 stretch
-    auto& entity = itLayer->second.entities[m_iSelectedIndex];
+    auto& entity = itLayer->second.entities[m_selectedIndex];
     std::visit([this, newPos](auto& e) {
         using T = std::decay_t<decltype(e)>;
         T& mutableE = const_cast<T&>(e);
-        mutableE.stretch(static_cast<StretchGrip>(m_eCurrentGrip), newPos);
+        mutableE.stretch(static_cast<StretchGrip>(m_currentGrip), newPos);
         }, entity);
 
     // 实时刷新
-    RefreshSceneWithGrips();
+    refreshSceneWithGrips();
 }
 
 
 
-void CDxfEditController::EndStretch(QPointF finalPos)
+void DxfEditController::endStretch(QPointF finalPos)
 {
-    if (!m_bStretching)
+    if (!m_stretching)
         return;
 
     // 执行拉伸：直接访问图层数据修改选中图元
-    if (m_pData && m_iSelectedIndex >= 0 && !m_strSelectedLayer.isEmpty())
+    if (m_data && m_selectedIndex >= 0 && !m_selectedLayer.isEmpty())
     {
-        auto& layers = m_pData->getLayers();
-        auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+        auto& layers = m_data->getLayers();
+        auto itLayer = layers.find(m_selectedLayer.toStdString());
         if (itLayer != layers.end() &&
-            m_iSelectedIndex < static_cast<int>(itLayer->second.entities.size()))
+            m_selectedIndex < static_cast<int>(itLayer->second.entities.size()))
         {
-            auto& entity = itLayer->second.entities[m_iSelectedIndex];
+            auto& entity = itLayer->second.entities[m_selectedIndex];
             std::visit([this, finalPos](auto& e) {
-                e.stretch(static_cast<StretchGrip>(m_eCurrentGrip), finalPos);
+                e.stretch(static_cast<StretchGrip>(m_currentGrip), finalPos);
                 }, entity);
         }
     }
 
-    m_bStretching = false;
-    m_eCurrentGrip = StretchGripInView::None;
+    m_stretching = false;
+    m_currentGrip = StretchGripInView::None;
 
-    if (m_pManager)
-        m_pManager->RefreshScene();
+    if (m_manager)
+        m_manager->RefreshScene();
 
-    RefreshSceneWithGrips();
+    refreshSceneWithGrips();
     emit signalStretchFinished();
 }
 
 
 
-void CDxfEditController::RefreshSceneWithGrips()
+void DxfEditController::refreshSceneWithGrips()
 {
-    if (!m_pScene || !m_pData)
+    if (!m_scene || !m_data)
         return;
 
-    const auto& layers = m_pData->getLayers();
+    const auto& layers = m_data->getLayers();
 
     // 全量重绘
-    m_pScene->DxfDraw(layers);
+    m_scene->DxfDraw(layers);
 
     // 叠加夹点
-    if (m_iSelectedIndex < 0 || m_strSelectedLayer.isEmpty())
+    if (m_selectedIndex < 0 || m_selectedLayer.isEmpty())
         return;
 
-    auto itLayer = layers.find(m_strSelectedLayer.toStdString());
+    auto itLayer = layers.find(m_selectedLayer.toStdString());
     if (itLayer == layers.end())
         return;
 
-    if (m_iSelectedIndex >= static_cast<int>(itLayer->second.entities.size()))
+    if (m_selectedIndex >= static_cast<int>(itLayer->second.entities.size()))
         return;
 
-    const auto& entity = itLayer->second.entities[m_iSelectedIndex];
+    const auto& entity = itLayer->second.entities[m_selectedIndex];
     QRectF bb = std::visit([](const auto& e) {
         return e.boundingBox(1.0);
         }, entity);
 
     if (bb.isValid())
-        m_pScene->ShowGrips(bb);
+        m_scene->ShowGrips(bb);
 }
 
 
 
-StretchGripInView CDxfEditController::GripFromPoint(QPointF pt, const QRectF& bb, double tol)
+StretchGripInView DxfEditController::gripFromPoint(QPointF pt, const QRectF& bb, double tol)
 {
     const double l = bb.left();
     const double r = bb.right();

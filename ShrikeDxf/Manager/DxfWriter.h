@@ -93,6 +93,6 @@ private:
     void WriteSolid(const EntitySolid& solid);
     void WriteHatch(const EntityHatch& hatch);
 
-    DxfData* m_pData = nullptr;
+    DxfData* m_data = nullptr;
     dxfRW* m_pDxfRW = nullptr;
 };

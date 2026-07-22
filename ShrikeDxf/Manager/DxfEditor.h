@@ -1,14 +1,14 @@
 ﻿#pragma once
+#include <QObject>
 #include "DxfStruct.h"
 #include "DxfData.h"
-#include <QObject>
 
-class CDxfEditor : public QObject
+class DxfEditor : public QObject
 {
     Q_OBJECT
 public:
-    explicit CDxfEditor(DxfData* dxfData);
-    ~CDxfEditor();
+    explicit DxfEditor(DxfData* dxfData);
+    ~DxfEditor();
 
 
 public:
@@ -27,7 +27,7 @@ public:
 
 private:
     // dxf数据类
-    DxfData* m_DxfData;
+    DxfData* m_dxfData;
 public slots:
     
 

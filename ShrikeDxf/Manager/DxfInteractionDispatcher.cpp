@@ -14,11 +14,11 @@ CDxfInteractionDispatcher::~CDxfInteractionDispatcher()
     
 }
 
-void CDxfInteractionDispatcher::SetControllers(DxfDrawController* drawCtrl, CDxfEditController* editCtrl, CSelectionController* selCtrl)
+void CDxfInteractionDispatcher::SetControllers(DxfDrawController* drawCtrl, DxfEditController* editCtrl, CSelectionController* selCtrl)
 {
     m_pDrawCtrl = drawCtrl;
     m_pEditCtrl = editCtrl;
-    m_pSelectionCtrl = selCtrl;
+    m_selectionCtrl = selCtrl;
 }
 
 void CDxfInteractionDispatcher::SetMouseStatus(MouseStateInView state)
@@ -53,9 +53,9 @@ void CDxfInteractionDispatcher::SetMouseStatus(MouseStateInView state)
 void CDxfInteractionDispatcher::OnMouseMove(QPointF scenePos)
 {
     // 拉伸模式优先
-    if (m_pEditCtrl && m_pEditCtrl->IsStretching())
+    if (m_pEditCtrl && m_pEditCtrl->isStretching())
     {
-        //m_pEditCtrl->UpdateStretch(scenePos);
+        //m_pEditCtrl->updateStretch(scenePos);
         return;
     }
 
@@ -80,14 +80,14 @@ void CDxfInteractionDispatcher::OnLeftClick(QPointF scenePos)
         // 先检查是否命中了选中图元的夹点
         if (m_pEditCtrl)
         {
-            StretchGripInView grip = m_pEditCtrl->HitTestGrip(scenePos);
+            StretchGripInView grip = m_pEditCtrl->hitTestGrip(scenePos);
             if (grip != StretchGripInView::None)
                 return;
         }
 
         // 没有命中夹点才进行选择
-        if (m_pSelectionCtrl)
-            m_pSelectionCtrl->HitTest(scenePos);
+        if (m_selectionCtrl)
+            m_selectionCtrl->HitTest(scenePos);
     }
     else
     {
@@ -112,10 +112,10 @@ void CDxfInteractionDispatcher::OnLeftPress(QPointF scenePos)
     if (!m_pEditCtrl)
         return;
 
-    StretchGripInView grip = m_pEditCtrl->HitTestGrip(scenePos);
+    StretchGripInView grip = m_pEditCtrl->hitTestGrip(scenePos);
     if (grip != StretchGripInView::None)
     {
-        m_pEditCtrl->StartStretch(grip);
+        m_pEditCtrl->startStretch(grip);
     }
 }
 
@@ -124,9 +124,9 @@ void CDxfInteractionDispatcher::OnLeftRelease(QPointF scenePos)
 {
     Q_UNUSED(scenePos);
 
-    if (m_pEditCtrl && m_pEditCtrl->IsStretching())
+    if (m_pEditCtrl && m_pEditCtrl->isStretching())
     {
-        m_pEditCtrl->EndStretch(scenePos);
+        m_pEditCtrl->endStretch(scenePos);
     }
 }
 

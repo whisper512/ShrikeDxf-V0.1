@@ -15,17 +15,17 @@ DxfManager::DxfManager(QWidget* pMainWnd)
     // 读取器
     m_DxfReader = std::make_unique<CDxfReader>(m_DxfData.get());
     // 选择控制
-    m_pSelectionController = std::make_unique<CSelectionController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
+    m_selectionController = std::make_unique<CSelectionController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 编辑控制器
-    m_DxfEditController = std::make_unique<CDxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, m_pSelectionController.get(), this, this);
+    m_DxfEditController = std::make_unique<DxfEditController>(m_DxfData.get(), &m_DxfGraphicsScene, m_selectionController.get(), this, this);
     // 新建图元绘制控制器
     m_DxfDrawController = std::make_unique<DxfDrawController>(m_DxfData.get(), &m_DxfGraphicsScene, this);
     // 交互控制
     m_pInteractionDispatcher = std::make_unique<CDxfInteractionDispatcher>(this);
     // 设置交互控制持有的控制器
-    m_pInteractionDispatcher->SetControllers(m_DxfDrawController.get(), m_DxfEditController.get(), m_pSelectionController.get());
+    m_pInteractionDispatcher->SetControllers(m_DxfDrawController.get(), m_DxfEditController.get(), m_selectionController.get());
     // 编辑类
-    m_DxfEditor = std::make_unique<CDxfEditor>(m_DxfData.get());
+    m_dxfEditor = std::make_unique<DxfEditor>(m_DxfData.get());
 
 
     ConnectSignals();
@@ -189,8 +189,8 @@ void DxfManager::PasteEntity(QPointF position)
 void DxfManager::ConnectSignals()
 {
     QTimer::singleShot(0, this, [this]() {
-        connect(m_pSelectionController.get(), &CSelectionController::signalEntitySelected, this, &DxfManager::handleEntitySelected);
-        connect(m_pSelectionController.get(), &CSelectionController::signalEntityDeselected, this, &DxfManager::handleEntityDeselected);
+        connect(m_selectionController.get(), &CSelectionController::signalEntitySelected, this, &DxfManager::handleEntitySelected);
+        connect(m_selectionController.get(), &CSelectionController::signalEntityDeselected, this, &DxfManager::handleEntityDeselected);
         });
 }
 
@@ -251,7 +251,7 @@ void DxfManager::SelectEntity(const QString& strLayer, int entityIndex)
     }
 
     if (m_DxfEditController)
-        m_DxfEditController->SetSelectedEntity(strLayer, entityIndex);
+        m_DxfEditController->setSelectedEntity(strLayer, entityIndex);
     // 更新选中框
     UpdateSelectionDisplay();
 
@@ -271,66 +271,66 @@ void DxfManager::DeselectEntity()
 
 void DxfManager::handlePointAttributeChanged(const EntityPoint& point)
 {
-    m_DxfEditor->editPoint(&m_SelectedEntity, point);
+    m_dxfEditor->editPoint(&m_SelectedEntity, point);
     RefreshScene();
 }
 
 void DxfManager::handleLineAttributeChanged(const EntityLine& line)
 {
-    m_DxfEditor->editLine(&m_SelectedEntity, line);
+    m_dxfEditor->editLine(&m_SelectedEntity, line);
     RefreshScene();
 }
 
 void DxfManager::handleCircleAttributeChanged(const EntityCircle& circle)
 {
-    m_DxfEditor->editCircle(&m_SelectedEntity, circle);
+    m_dxfEditor->editCircle(&m_SelectedEntity, circle);
     RefreshScene();
 }
 
 void DxfManager::handleArcAttributeChanged(const EntityArc& arc)
 {
-    m_DxfEditor->editArc(&m_SelectedEntity, arc);
+    m_dxfEditor->editArc(&m_SelectedEntity, arc);
     RefreshScene();
 }
 
 void DxfManager::handleEllipseAttributeChanged(const EntityEllipse& ellipse)
 {
-    m_DxfEditor->editEllipse(&m_SelectedEntity, ellipse);
+    m_dxfEditor->editEllipse(&m_SelectedEntity, ellipse);
     RefreshScene();
 }
 
 void DxfManager::handleSplineAttributeChanged(const EntitySpline& spline)
 {
-    m_DxfEditor->editSpline(&m_SelectedEntity, spline);
+    m_dxfEditor->editSpline(&m_SelectedEntity, spline);
     RefreshScene();
 }
 
 void DxfManager::handlePolylineAttributeChanged(const EntityPolyline& polyline)
 {
-    m_DxfEditor->editPolyline(&m_SelectedEntity, polyline);
+    m_dxfEditor->editPolyline(&m_SelectedEntity, polyline);
     RefreshScene();
 }
 
 void DxfManager::handleLwpolylineAttributeChanged(const EntityLWPolyline& lwpolyline)
 {
-    m_DxfEditor->editLwpolyline(&m_SelectedEntity, lwpolyline);
+    m_dxfEditor->editLwpolyline(&m_SelectedEntity, lwpolyline);
     RefreshScene();
 }
 void DxfManager::handleTextAttributeChanged(const EntityText& text)
 {
-    m_DxfEditor->editText(&m_SelectedEntity, text);
+    m_dxfEditor->editText(&m_SelectedEntity, text);
     RefreshScene();
 }
 
 void DxfManager::handleMTextAttributeChanged(const EntityMText& mtext)
 {
-    m_DxfEditor->editMText(&m_SelectedEntity, mtext);
+    m_dxfEditor->editMText(&m_SelectedEntity, mtext);
     RefreshScene();
 }
 
 void DxfManager::handleHatchAttributeChanged(const EntityHatch& hatch)
 {
-    m_DxfEditor->editHatch(&m_SelectedEntity, hatch);
+    m_dxfEditor->editHatch(&m_SelectedEntity, hatch);
     RefreshScene();
 }
 
