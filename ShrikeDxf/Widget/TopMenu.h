@@ -12,8 +12,8 @@ class MenuManager : public QWidget
 	explicit MenuManager(QWidget* parent = nullptr);
 	~MenuManager();
 	
-	void InitMenuBar();
-	void InitMenu();
+	void initMenuBar();
+	void initMenu();
 	void InitAction();
 	void AddToBar();
 	void ConnectSolt();

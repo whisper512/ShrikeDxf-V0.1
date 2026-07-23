@@ -13,39 +13,39 @@ GraphicsView::~GraphicsView()
 {
 }
 
-GraphicsView::GraphicsView(QWidget* pMainwnd , DxfManager* pDxfManager):
-    m_mainWnd(pMainwnd),
-    m_pGraphicsViewMenu(nullptr),
-    m_pGraphicsOperateMenu(nullptr),
-    m_pGraphicsPreviewMenu(nullptr),
-    m_pActionLockZoom(nullptr),
-    m_pActionFilpX(nullptr),
-    m_pActionFilpY(nullptr),
-    m_pActionResetView(nullptr),
-    m_pActionDrag(nullptr),
-    m_pActionDeleteEntity(nullptr),
-    m_pActionCopyEntity(nullptr),
-    m_pActionpasteEntity(nullptr),
-    m_pActionCutEntity(nullptr),
-    m_pActionXFile(nullptr),
-    m_pActionYFile(nullptr),
-    m_pActionEndDrawing(nullptr),
-    m_pRulerH(nullptr),
-    m_pRulerV(nullptr),
-    m_bLockZoom(false),
-    m_bFilpAlongX(false),
-    m_bFilpAlongY(false),
-    m_bShowPosCross(false),
-    m_bDrag(false),
-    m_bCopyingEntity(false),
-    m_bDrawingPreview(false),
-    m_bSelectingEntity(false),
+GraphicsView::GraphicsView(QWidget* mainWnd, DxfManager* dxfManager):
+    m_mainWnd(mainWnd),
+    m_graphicsViewMenu(nullptr),
+    m_graphicsOperateMenu(nullptr),
+    m_graphicsPreviewMenu(nullptr),
+    m_actionLockZoom(nullptr),
+    m_actionFilpX(nullptr),
+    m_actionFilpY(nullptr),
+    m_actionResetView(nullptr),
+    m_actionDrag(nullptr),
+    m_actionDeleteEntity(nullptr),
+    m_actionCopyEntity(nullptr),
+    m_actionPasteEntity(nullptr),
+    m_actionCutEntity(nullptr),
+    m_actionXFile(nullptr),
+    m_actionYFile(nullptr),
+    m_actionEndDrawing(nullptr),
+    m_rulerH(nullptr),
+    m_rulerV(nullptr),
+    m_lockZoom(false),
+    m_filpAlongX(false),
+    m_filpAlongY(false),
+    m_showPosCross(false),
+    m_drag(false),
+    m_copyingEntity(false),
+    m_drawingPreview(false),
+    m_selectingEntity(false),
     m_tranformInitial(1, 0, 0, -1, 0, 0),
     m_rectInitialScene(0, 0, 0, 0),
-    m_pointLastPos(0, 0),
+    m_lastPos(0, 0),
     m_rectLastScene(0, 0, 0, 0),
-    m_pointRightClickPos(0, 0),
-    m_pDxfManager(pDxfManager)
+    m_rightClickPos(0, 0),
+    m_dxfManager(dxfManager)
 {
     //添加graphicsview到layout
     ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
@@ -63,152 +63,152 @@ GraphicsView::GraphicsView(QWidget* pMainwnd , DxfManager* pDxfManager):
     }
     //开启鼠标追踪
     setMouseTracking(true);
-    InitMenu(this);
-    InitRuler();
-    InitScene();
+    initMenu(this);
+    initRuler();
+    initScene();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void GraphicsView::InitMenu(QWidget* pParent)
+void GraphicsView::initMenu(QWidget* pParent)
 {
-    m_pGraphicsViewMenu = new QMenu();
-    m_pGraphicsOperateMenu = new QMenu();
-    m_pGraphicsPreviewMenu = new QMenu();
+    m_graphicsViewMenu = new QMenu();
+    m_graphicsOperateMenu = new QMenu();
+    m_graphicsPreviewMenu = new QMenu();
 
     setContextMenuPolicy(Qt::CustomContextMenu);
-    InitGraphicsViewAction();
-    connect(this, &QWidget::customContextMenuRequested, this, &GraphicsView::ShowMenu);
+    initGraphicsViewAction();
+    connect(this, &QWidget::customContextMenuRequested, this, &GraphicsView::showMenu);
 }
 
-void GraphicsView::InitRuler()
+void GraphicsView::initRuler()
 {
     // 创建标尺
-    m_pRulerH = new CRulerH(this);
-    m_pRulerH->setFixedHeight(20);
-    m_pRulerH->setGeometry(20, 0, width() - 20, 20);
-    m_pRulerH->raise();
-    m_pRulerH->show();
+    m_rulerH = new CRulerH(this);
+    m_rulerH->setFixedHeight(20);
+    m_rulerH->setGeometry(20, 0, width() - 20, 20);
+    m_rulerH->raise();
+    m_rulerH->show();
 
-    m_pRulerV = new CRulerV(this);
-    m_pRulerV->setFixedWidth(20);
-    m_pRulerV->setGeometry(0, 0, 20, height());
-    m_pRulerV->raise();
-    m_pRulerV->show();
+    m_rulerV = new CRulerV(this);
+    m_rulerV->setFixedWidth(20);
+    m_rulerV->setGeometry(0, 0, 20, height());
+    m_rulerV->raise();
+    m_rulerV->show();
 }
 
-void GraphicsView::ShowMenu(const QPoint& pos)
+void GraphicsView::showMenu(const QPoint& pos)
 {
-    m_pointRightClickPos = pos;
-    m_pointRightClickPos = pos;
+    m_rightClickPos = pos;
+    m_rightClickPos = pos;
     // 获取交互控制的状态
-    MouseStateInView state = m_pDxfManager->getCurrentInteractionState();
+    MouseStateInView state = m_dxfManager->getCurrentInteractionState();
 
     if (state >= MouseStateInView::Point &&
         state <= MouseStateInView::MText)
     {
         // 正在绘制,显示“结束绘制”
-        m_pGraphicsPreviewMenu->popup(mapToGlobal(pos));
+        m_graphicsPreviewMenu->popup(mapToGlobal(pos));
     }
     else if (state >= MouseStateInView::Move)
     {
         // 编辑状态(拉伸/移动等)
-        m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
+        m_graphicsOperateMenu->popup(mapToGlobal(pos));
     }
     else if (state == MouseStateInView::None)
     {
-        bool hasSelection = (m_pDxfManager->getSelectedEntity().entityIndex >= 0);
-        bool hasClipboard = m_pDxfManager->hasClipboard();
+        bool hasSelection = (m_dxfManager->getSelectedEntity().entityIndex >= 0);
+        bool hasClipboard = m_dxfManager->hasClipboard();
 
         if (hasSelection || hasClipboard)
         {
             // 根据状态启用 / 禁用菜单项
-            m_pActionDeleteEntity->setEnabled(hasSelection);
-            m_pActionCopyEntity->setEnabled(hasSelection);
-            m_pActionCutEntity->setEnabled(hasSelection);
-            m_pActionpasteEntity->setEnabled(hasClipboard);
+            m_actionDeleteEntity->setEnabled(hasSelection);
+            m_actionCopyEntity->setEnabled(hasSelection);
+            m_actionCutEntity->setEnabled(hasSelection);
+            m_actionPasteEntity->setEnabled(hasClipboard);
 
-            m_pGraphicsOperateMenu->popup(mapToGlobal(pos));
+            m_graphicsOperateMenu->popup(mapToGlobal(pos));
         }
         else
         {
-            m_pGraphicsViewMenu->popup(mapToGlobal(pos));
+            m_graphicsViewMenu->popup(mapToGlobal(pos));
         }
     }
 }
 
 
-void GraphicsView::InitGraphicsViewAction()
+void GraphicsView::initGraphicsViewAction()
 {
-    m_pActionDrag = new QAction("Drag", this);
-    m_pActionDrag->setCheckable(true);
-    m_pActionDrag->setChecked(false);
-    m_pActionLockZoom = new QAction("Lock Zoom", this);
-    m_pActionLockZoom->setCheckable(true);
-    m_pActionLockZoom->setChecked(false);
-    m_pActionFilpX = new QAction("Horizontal Flip", this);
-    m_pActionFilpX->setCheckable(true);
-    m_pActionFilpX->setChecked(false);
-    m_pActionFilpY = new QAction("Vertical Flip", this);
-    m_pActionFilpY->setCheckable(true);
-    m_pActionFilpY->setChecked(false);
-    m_pActionResetView = new QAction("Reset View", this);
+    m_actionDrag = new QAction("Drag", this);
+    m_actionDrag->setCheckable(true);
+    m_actionDrag->setChecked(false);
+    m_actionLockZoom = new QAction("Lock Zoom", this);
+    m_actionLockZoom->setCheckable(true);
+    m_actionLockZoom->setChecked(false);
+    m_actionFilpX = new QAction("Horizontal Flip", this);
+    m_actionFilpX->setCheckable(true);
+    m_actionFilpX->setChecked(false);
+    m_actionFilpY = new QAction("Vertical Flip", this);
+    m_actionFilpY->setCheckable(true);
+    m_actionFilpY->setChecked(false);
+    m_actionResetView = new QAction("Reset View", this);
 
-    m_pGraphicsViewMenu->addAction(m_pActionDrag);
-    m_pGraphicsViewMenu->addAction(m_pActionLockZoom);
-    m_pGraphicsViewMenu->addAction(m_pActionFilpX);
-    m_pGraphicsViewMenu->addAction(m_pActionFilpY);
-    m_pGraphicsViewMenu->addAction(m_pActionResetView);
+    m_graphicsViewMenu->addAction(m_actionDrag);
+    m_graphicsViewMenu->addAction(m_actionLockZoom);
+    m_graphicsViewMenu->addAction(m_actionFilpX);
+    m_graphicsViewMenu->addAction(m_actionFilpY);
+    m_graphicsViewMenu->addAction(m_actionResetView);
 
-    connect(m_pActionDrag, &QAction::toggled, this, &GraphicsView::handleDrag);
-    connect(m_pActionLockZoom, &QAction::toggled, this, &GraphicsView::handleLockZoom);
-    connect(m_pActionFilpX, &QAction::toggled, this, &GraphicsView::handleFilpAlongX);
-    connect(m_pActionFilpY, &QAction::toggled, this, &GraphicsView::handleFilpAlongY);
-    connect(m_pActionResetView, &QAction::triggered, this, &GraphicsView::handleResetView);
+    connect(m_actionDrag, &QAction::toggled, this, &GraphicsView::handleDrag);
+    connect(m_actionLockZoom, &QAction::toggled, this, &GraphicsView::handleLockZoom);
+    connect(m_actionFilpX, &QAction::toggled, this, &GraphicsView::handleFilpAlongX);
+    connect(m_actionFilpY, &QAction::toggled, this, &GraphicsView::handleFilpAlongY);
+    connect(m_actionResetView, &QAction::triggered, this, &GraphicsView::handleResetView);
 
-    m_pActionEndDrawing = new QAction(QStringLiteral("End Drawing"), this);
-    m_pGraphicsPreviewMenu->addAction(m_pActionEndDrawing);
+    m_actionEndDrawing = new QAction(QStringLiteral("End Drawing"), this);
+    m_graphicsPreviewMenu->addAction(m_actionEndDrawing);
 
-    connect(m_pActionEndDrawing, &QAction::triggered, this, [this]() { emit signalEndDrawingPreview();});
+    connect(m_actionEndDrawing, &QAction::triggered, this, [this]() { emit signalEndDrawingPreview();});
 
-    m_pActionDeleteEntity = new QAction(QStringLiteral("Delete"), this);
-    m_pActionCopyEntity = new QAction(QStringLiteral("Copy"), this);
-    m_pActionCutEntity = new QAction(QStringLiteral("Cut"), this);
-    m_pActionpasteEntity = new QAction(QStringLiteral("Paste"), this);
+    m_actionDeleteEntity = new QAction(QStringLiteral("Delete"), this);
+    m_actionCopyEntity = new QAction(QStringLiteral("Copy"), this);
+    m_actionCutEntity = new QAction(QStringLiteral("Cut"), this);
+    m_actionPasteEntity = new QAction(QStringLiteral("Paste"), this);
 
-    m_pGraphicsOperateMenu->addAction(m_pActionDeleteEntity);
-    m_pGraphicsOperateMenu->addAction(m_pActionCopyEntity);
-    m_pGraphicsOperateMenu->addAction(m_pActionCutEntity);
-    m_pGraphicsOperateMenu->addAction(m_pActionpasteEntity);
+    m_graphicsOperateMenu->addAction(m_actionDeleteEntity);
+    m_graphicsOperateMenu->addAction(m_actionCopyEntity);
+    m_graphicsOperateMenu->addAction(m_actionCutEntity);
+    m_graphicsOperateMenu->addAction(m_actionPasteEntity);
 
         // 删除
-        connect(m_pActionDeleteEntity, &QAction::triggered, this, [this]() {
-            if (m_pDxfManager)
-                m_pDxfManager->deleteSelectedEntity();
+        connect(m_actionDeleteEntity, &QAction::triggered, this, [this]() {
+            if (m_dxfManager)
+                m_dxfManager->deleteSelectedEntity();
             });
 
         // 复制
-        connect(m_pActionCopyEntity, &QAction::triggered, this, [this]() {
-            if (m_pDxfManager)
-                m_pDxfManager->copySelectedEntity();
+        connect(m_actionCopyEntity, &QAction::triggered, this, [this]() {
+            if (m_dxfManager)
+                m_dxfManager->copySelectedEntity();
             });
 
         // 剪切
-        connect(m_pActionCutEntity, &QAction::triggered, this, [this]() {
-            if (m_pDxfManager)
-                m_pDxfManager->cutSelectedEntity();
+        connect(m_actionCutEntity, &QAction::triggered, this, [this]() {
+            if (m_dxfManager)
+                m_dxfManager->cutSelectedEntity();
             });
 
-        // 粘贴（场景坐标已在右键时记录为 m_pointRightClickPos）
-        connect(m_pActionpasteEntity, &QAction::triggered, this, [this]() {
-            if (m_pDxfManager)
-                m_pDxfManager->pasteEntity(mapToScene(m_pointRightClickPos));
+        // 粘贴（场景坐标已在右键时记录为 m_rightClickPos）
+        connect(m_actionPasteEntity, &QAction::triggered, this, [this]() {
+            if (m_dxfManager)
+                m_dxfManager->pasteEntity(mapToScene(m_rightClickPos));
             });
 }
 
 
-void GraphicsView::InitScene()
+void GraphicsView::initScene()
 {
     //在没有加载scene的情况下，初始化一个scene
     if (!scene())
@@ -218,27 +218,27 @@ void GraphicsView::InitScene()
         pScene->setSceneRect(500, 500,500, 500);
         setScene(pScene);
     }
-    UpdateRulers();
+    updateRulers();
 }
 
-void GraphicsView::FilpView()
+void GraphicsView::filpView()
 {
     QTransform curTransform = transform();
     // 当前缩放比例,只取绝对值
     double curScale = std::abs(curTransform.m11());
 
     QTransform transform;
-    if (m_bFilpAlongX && m_bFilpAlongY)
+    if (m_filpAlongX && m_filpAlongY)
     {
         // x轴和y轴都翻转
         transform = QTransform(-curScale, 0, 0, curScale, 0, 0);
     }
-    else if (m_bFilpAlongX)
+    else if (m_filpAlongX)
     {
         // 只翻转x轴
         transform = QTransform(-curScale, 0, 0, -curScale, 0, 0);
     }
-    else if (m_bFilpAlongY)
+    else if (m_filpAlongY)
     {
         // 只翻转y轴（双重翻转，相当于恢复到正常方向）
         transform = QTransform(curScale, 0, 0, curScale, 0, 0);
@@ -254,38 +254,38 @@ void GraphicsView::FilpView()
 
 void GraphicsView::handlelCopyintEntity()
 {
-    m_bCopyingEntity = true;
+    m_copyingEntity = true;
 }
 
 void GraphicsView::handleFilpAlongX(bool bChecked)
 {
-    m_bFilpAlongX = bChecked;
-    FilpView();
+    m_filpAlongX = bChecked;
+    filpView();
 }
 
 void GraphicsView::handleFilpAlongY(bool bChecked)
 {
-    m_bFilpAlongY = bChecked;
-    FilpView();
+    m_filpAlongY = bChecked;
+    filpView();
 }
 
 
 void GraphicsView::handleLockZoom(bool bChecked)
 {
-    m_bLockZoom = bChecked;
+    m_lockZoom = bChecked;
 }
 
 
 void GraphicsView::handleMouseStatusChanged(MouseStateInView mouseState)
 {
-    m_bDrawingPreview = (mouseState != MouseStateInView::None);
+    m_drawingPreview = (mouseState != MouseStateInView::None);
 }
 
 
 
 void GraphicsView::wheelEvent(QWheelEvent* pEvent)
 {
-    if (m_bLockZoom)
+    if (m_lockZoom)
     {
         return;
     }
@@ -309,7 +309,7 @@ void GraphicsView::wheelEvent(QWheelEvent* pEvent)
     centerOn(newCenter);
 
     // 更新标尺
-    UpdateRulers();
+    updateRulers();
 }
 
 void GraphicsView::handleResetView()
@@ -318,14 +318,14 @@ void GraphicsView::handleResetView()
     if (scene())
     {
         fitInView(m_rectInitialScene, Qt::KeepAspectRatio);
-        UpdateRulers();
+        updateRulers();
     }
 }
 
 
 void GraphicsView::handleDrag(bool bChecked)
 {
-    m_bDrag = bChecked;
+    m_drag = bChecked;
 }
 
 
@@ -347,7 +347,7 @@ void GraphicsView::handleRefreshGraphicsview(DxfGraphicsScene* pScene, bool bRes
             m_rectLastScene = pScene->sceneRect();
             QTimer::singleShot(0, [this, pScene]() {
                 fitInView(pScene->sceneRect(), Qt::KeepAspectRatio);
-                UpdateRulers();
+                updateRulers();
                 });
         }
         else
@@ -357,7 +357,7 @@ void GraphicsView::handleRefreshGraphicsview(DxfGraphicsScene* pScene, bool bRes
             
             horizontalScrollBar()->setValue(hValue);
             verticalScrollBar()->setValue(vValue);
-            UpdateRulers();
+            updateRulers();
         }
         // 强制更新视图
         update();
@@ -375,33 +375,33 @@ void GraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
     emit signalMousePos(posScene);
     emit signalGraphicsViewMouseMove(posScene);
 
-    if (m_bDrag && (pEvent->buttons() & Qt::LeftButton))
+    if (m_drag && (pEvent->buttons() & Qt::LeftButton))
     {
-        QPoint delta = pEvent->pos() - m_pointLastPos;
+        QPoint delta = pEvent->pos() - m_lastPos;
         QScrollBar* hBar = horizontalScrollBar();
         QScrollBar* vBar = verticalScrollBar();
         hBar->setValue(hBar->value() - delta.x());
         vBar->setValue(vBar->value() - delta.y());
-        m_pointLastPos = pEvent->pos();
+        m_lastPos = pEvent->pos();
     }
 
     //传递scene中的坐标
     QPointF scenePos = mapToScene(pEvent->pos());
-    if (m_pRulerH)
+    if (m_rulerH)
     {
-        m_pRulerH->SetMousePos(scenePos.x());
+        m_rulerH->SetMousePos(scenePos.x());
     }
-    if (m_pRulerV)
+    if (m_rulerV)
     {
-        m_pRulerV->SetMousePos(scenePos.y());
+        m_rulerV->SetMousePos(scenePos.y());
     }
 }
 
 void GraphicsView::mousePressEvent(QMouseEvent* pEvent)
 {
-    if (pEvent->button() == Qt::LeftButton && m_bDrag)
+    if (pEvent->button() == Qt::LeftButton && m_drag)
     {
-        m_pointLastPos = pEvent->pos();
+        m_lastPos = pEvent->pos();
         setCursor(Qt::ClosedHandCursor);
     }
     if (pEvent->button() == Qt::LeftButton)
@@ -421,7 +421,7 @@ void GraphicsView::mousePressEvent(QMouseEvent* pEvent)
 
 void GraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
 {
-    if (pEvent->button() == Qt::LeftButton && m_bDrag)
+    if (pEvent->button() == Qt::LeftButton && m_drag)
     {
         setCursor(Qt::ArrowCursor);
     }
@@ -433,7 +433,7 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent* pEvent)
     QGraphicsView::mouseReleaseEvent(pEvent);
 }
 
-void GraphicsView::UpdateRulers()
+void GraphicsView::updateRulers()
 {
     // 获取当前视图在场景中的矩形
     QRectF sceneRect;
@@ -442,28 +442,28 @@ void GraphicsView::UpdateRulers()
     
     QTransform transform = this->transform();
     // 设置标尺的范围为视图的X范围
-    if (m_pRulerH)
+    if (m_rulerH)
     {
-        m_pRulerH->SetRange(sceneRect.left(), sceneRect.right());
-        m_pRulerH->SetOrigin(sceneRect.left());
+        m_rulerH->SetRange(sceneRect.left(), sceneRect.right());
+        m_rulerH->SetOrigin(sceneRect.left());
 
         double scaleX = transform.m11();
         // 设置标尺的缩放比例
-        m_pRulerH->SetRulerZoom(scaleX);
-        m_pRulerH->update();
+        m_rulerH->SetRulerZoom(scaleX);
+        m_rulerH->update();
     }
 
-    if (m_pRulerV)
+    if (m_rulerV)
     {
         double rulerTop = sceneRect.top();
         double rulerBottom = sceneRect.bottom();
 
-        m_pRulerV->SetRange(rulerTop, rulerBottom);
-        m_pRulerV->SetOrigin(rulerTop);
+        m_rulerV->SetRange(rulerTop, rulerBottom);
+        m_rulerV->SetOrigin(rulerTop);
         double scaleY = transform.m22();
         // 设置标尺的缩放比例
-        m_pRulerV->SetRulerZoom(scaleY);
-        m_pRulerV->update();
+        m_rulerV->SetRulerZoom(scaleY);
+        m_rulerV->update();
     }
 }
 
@@ -472,29 +472,29 @@ void GraphicsView::resizeEvent(QResizeEvent* pEvent)
 {
     QGraphicsView::resizeEvent(pEvent);
 
-    if (m_pRulerH)
+    if (m_rulerH)
     {
         // 设置视口边距，为标尺预留空间
         setViewportMargins(20, 20, 0, 0);
 
         // 设置标尺位置
-        m_pRulerH->setGeometry(20, 0, width()- 20, 20);
-        m_pRulerH->raise();
-        m_pRulerH->show();
+        m_rulerH->setGeometry(20, 0, width()- 20, 20);
+        m_rulerH->raise();
+        m_rulerH->show();
 
-        m_pRulerV->setGeometry(0, 0, 20, height());
-        m_pRulerV->raise();
-        m_pRulerV->show();
+        m_rulerV->setGeometry(0, 0, 20, height());
+        m_rulerV->raise();
+        m_rulerV->show();
 
         // 更新标尺
-        UpdateRulers();
+        updateRulers();
     }
 }
 
 void GraphicsView::drawForeground(QPainter* pPainter, const QRectF& rect)
 {
     QGraphicsView::drawForeground(pPainter, rect);
-    if (m_bShowPosCross)
+    if (m_showPosCross)
     {
 
     }

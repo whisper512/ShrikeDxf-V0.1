@@ -73,7 +73,7 @@ void ShrikeDxf::initAndCreateMenuBar()
 	m_menuManger = new MenuManager(this);
 	if (m_menuManger)
 	{
-		m_menuManger->InitMenuBar();
+		m_menuManger->initMenuBar();
 	}
 }
 

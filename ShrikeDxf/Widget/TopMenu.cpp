@@ -31,15 +31,15 @@ MenuManager::~MenuManager()
 	delete m_pActionAbout;
 }
 
-void MenuManager::InitMenuBar()
+void MenuManager::initMenuBar()
 {
-	InitMenu();
+	initMenu();
 	InitAction();
 	AddToBar();
 	ConnectSolt();
 }
 
-void MenuManager::InitMenu()
+void MenuManager::initMenu()
 {
 	m_pMenuFile = new QMenu("File", this);
 	m_pMenuSetting = new QMenu("Setting", this);

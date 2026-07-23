@@ -23,71 +23,71 @@ public:
 	explicit GraphicsView(QWidget* mainWnd, DxfManager* pDxfManager = nullptr);
 
 private:
-	DxfManager* m_pDxfManager;
+	DxfManager* m_dxfManager;
 	// 右键菜单
-	QMenu* m_pGraphicsViewMenu;
+	QMenu* m_graphicsViewMenu;
 	// 图元操作
-	QMenu* m_pGraphicsOperateMenu;
+	QMenu* m_graphicsOperateMenu;
 	// 预览图元操作
-	QMenu* m_pGraphicsPreviewMenu;
+	QMenu* m_graphicsPreviewMenu;
 
 	// view的操作
-	QAction* m_pActionLockZoom;
-	QAction* m_pActionFilpX;
-	QAction* m_pActionFilpY;
-	QAction* m_pActionResetView;
-	QAction* m_pActionDrag;
+	QAction* m_actionLockZoom;
+	QAction* m_actionFilpX;
+	QAction* m_actionFilpY;
+	QAction* m_actionResetView;
+	QAction* m_actionDrag;
 	// 针对view中图元的操作
-    QAction* m_pActionDeleteEntity;
-	QAction* m_pActionCopyEntity;
-	QAction* m_pActionpasteEntity;
-	QAction* m_pActionCutEntity;
-	QAction* m_pActionXFile;
-    QAction* m_pActionYFile;
+    QAction* m_actionDeleteEntity;
+	QAction* m_actionCopyEntity;
+	QAction* m_actionPasteEntity;
+	QAction* m_actionCutEntity;
+	QAction* m_actionXFile;
+    QAction* m_actionYFile;
 	// 针对view中预览图元的操作
-	QAction* m_pActionEndDrawing;
+	QAction* m_actionEndDrawing;
 	// 尺子
-	CRulerH* m_pRulerH;
-	CRulerV* m_pRulerV;
+	CRulerH* m_rulerH;
+	CRulerV* m_rulerV;
 
 
 	// 右键鼠标显示的针对view的操作
 	// 锁定缩放
-	bool m_bLockZoom;
+	bool m_lockZoom;
 	// 沿x轴翻转
-	bool m_bFilpAlongX;
+	bool m_filpAlongX;
 	// 沿y轴翻转
-	bool m_bFilpAlongY;
+	bool m_filpAlongY;
 	// 显示鼠标位置十字线
-	bool m_bShowPosCross;
+	bool m_showPosCross;
 	// 左键拖拽
-	bool m_bDrag;
+	bool m_drag;
 
 	// 右键鼠标显示的针对图元的操作 
 	// 右键正在绘制预览的操作
-	bool m_bDrawingPreview;
+	bool m_drawingPreview;
 	// 开启复制图元中
-	bool m_bCopyingEntity;
+	bool m_copyingEntity;
 	// 右键正在选中图元
-	bool m_bSelectingEntity;
+	bool m_selectingEntity;
 
 	// 初始transform
 	QTransform m_tranformInitial;
 	// 初始场景矩阵
 	QRectF m_rectInitialScene;
-	QPoint m_pointLastPos;
+	QPoint m_lastPos;
 	// 上次的场景矩阵
     QRectF m_rectLastScene;
 	// 右键鼠标位置
-    QPoint m_pointRightClickPos;
+    QPoint m_rightClickPos;
 	
 
-	void InitMenu(QWidget* pParent);
-	void InitRuler();
-	void InitGraphicsViewAction();
-	void InitScene();
-	void FilpView();
-	void UpdateRulers();
+	void initMenu(QWidget* pParent);
+	void initRuler();
+	void initGraphicsViewAction();
+	void initScene();
+	void filpView();
+	void updateRulers();
 
 public:
 	QWidget* m_mainWnd;
@@ -128,7 +128,7 @@ public slots:
     void handleFilpAlongY(bool bChecked);
 	void handleResetView();
 	void handleDrag(bool bChecked);
-	void ShowMenu(const QPoint& pos);
+	void showMenu(const QPoint& pos);
 	void handleLockZoom(bool bChecked);
 	// operate动作
 	// 在绘制预览新图元
