@@ -1,23 +1,23 @@
-#pragma once
+﻿#pragma once
 #include <QWidget>
 
 #include "ui_EllipseAttritubeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CEllipseAttritubeWidget : public QWidget
+class EllipseAttritubeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CEllipseAttritubeWidget(QWidget* parent = nullptr);
-    ~CEllipseAttritubeWidget();
+    EllipseAttritubeWidget(QWidget* parent = nullptr);
+    ~EllipseAttritubeWidget();
 
 private:
     Ui::CEllipesAttributeWidget ui;
     EntityEllipse m_ellipse;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void OnSpinBoxChanged();
+    void onSpinBoxChanged();
 
 signals:
     void signalEllipseAttributeChanged(const EntityEllipse& ellipse);

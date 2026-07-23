@@ -62,7 +62,7 @@ void StackedWidgetManager::AddPages()
 	m_pStackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[1] = STR_LINE_LOWERCASE;
 
-    m_pCircleAttributeWidget = new CCircleAttributeWidget(m_pStackedWidget);
+    m_pCircleAttributeWidget = new CircleAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pCircleAttributeWidget);
 	m_pCircleAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(2)->setContentsMargins(0, 0, 0, 0);
@@ -80,7 +80,7 @@ void StackedWidgetManager::AddPages()
 	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[4] = STR_LWPOLYLINE_LOWERCASE;
 
-	m_pEllipseAttributeWidget = new CEllipseAttritubeWidget(m_pStackedWidget);
+	m_pEllipseAttributeWidget = new EllipseAttritubeWidget(m_pStackedWidget);
     m_pStackedWidget->addWidget(m_pEllipseAttributeWidget);
 	m_pEllipseAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_pStackedWidget->widget(5)->setContentsMargins(0, 0, 0, 0);
@@ -134,8 +134,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 圆
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalCircleAttribute, m_pCircleAttributeWidget, &CCircleAttributeWidget::handleNoticeCircleAttribute);
-				connect(m_pCircleAttributeWidget, &CCircleAttributeWidget::signalCircleAttributeChanged, this, &StackedWidgetManager::signalCircleChanged);
+				connect(this, &StackedWidgetManager::signalCircleAttribute, m_pCircleAttributeWidget, &CircleAttributeWidget::handleNoticeCircleAttribute);
+				connect(m_pCircleAttributeWidget, &CircleAttributeWidget::signalCircleAttributeChanged, this, &StackedWidgetManager::signalCircleChanged);
 			} // 圆弧
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
@@ -149,8 +149,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 椭圆
 			if (m_pStackedWidget && m_pEllipseAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalEllipseAttribute, m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::handleNoticeEllipseAttribute);
-				connect(m_pEllipseAttributeWidget, &CEllipseAttritubeWidget::signalEllipseAttributeChanged, this, &StackedWidgetManager::signalEllipseChanged);
+				connect(this, &StackedWidgetManager::signalEllipseAttribute, m_pEllipseAttributeWidget, &EllipseAttritubeWidget::handleNoticeEllipseAttribute);
+				connect(m_pEllipseAttributeWidget, &EllipseAttritubeWidget::signalEllipseAttributeChanged, this, &StackedWidgetManager::signalEllipseChanged);
 			} // 文本
 			if (m_pStackedWidget && m_pTextAttributeWidget)
 			{

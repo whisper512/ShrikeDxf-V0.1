@@ -4,7 +4,7 @@
 CreateEntityWidget::CreateEntityWidget(QWidget* parent)
 	: QWidget(parent),
 	m_mainWnd(parent),
-	m_eSlectedIndex(MouseStateInView::None)
+	m_slectedIndex(MouseStateInView::None)
 {
 	ui.setupUi(this);
 }
@@ -13,7 +13,7 @@ CreateEntityWidget::~CreateEntityWidget()
 {
 }
 
-void CreateEntityWidget::InitWidgetAndAddToLayout()
+void CreateEntityWidget::initWidgetAndAddToLayout()
 {
 	if (m_mainWnd)
 	{
@@ -21,13 +21,13 @@ void CreateEntityWidget::InitWidgetAndAddToLayout()
 		pWnd->ui.verticalLayout_Newentity->addWidget(this);
 	}
 
-	SetIconAndTip();
-	ConnectBtnSignals();
-	AdjustBtn();
-	RefreshBtn();
+	setIconAndTip();
+	connectBtnSignals();
+	adjustBtn();
+	refreshBtn();
 }
 
-void CreateEntityWidget::SetIconAndTip()
+void CreateEntityWidget::setIconAndTip()
 {
 	ui.toolButton_Mouse->setIcon(QIcon(":/ShrikeDxf/res/Mouse.png"));
 	ui.toolButton_Point->setIcon(QIcon(":/ShrikeDxf/res/Point.png"));
@@ -60,29 +60,29 @@ void CreateEntityWidget::SetIconAndTip()
     ui.toolButton_Mtext->setToolTip("Mtext");
 }
 
-void CreateEntityWidget::ConnectBtnSignals()
+void CreateEntityWidget::connectBtnSignals()
 {
-	connect(ui.toolButton_Mouse, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Point, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Line, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Center_Radius_Circle,&QToolButton::clicked,this, &CreateEntityWidget::OnToolBtnClicked);
-	connect(ui.toolButton_Center_Diameter_Circle, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Center_Endpoint_Arc, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_ThreePoint_Arc, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Polyline, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Ellipse, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Rectangle, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_SplineFitPoint, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_SplineControlPoint, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-    connect(ui.toolButton_Text, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
-	connect(ui.toolButton_Mtext, &QToolButton::clicked, this, &CreateEntityWidget::OnToolBtnClicked);
+	connect(ui.toolButton_Mouse, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Point, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Line, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Center_Radius_Circle,&QToolButton::clicked,this, &CreateEntityWidget::onToolBtnClicked);
+	connect(ui.toolButton_Center_Diameter_Circle, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Center_Endpoint_Arc, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_ThreePoint_Arc, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Polyline, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Ellipse, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Rectangle, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_SplineFitPoint, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_SplineControlPoint, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+    connect(ui.toolButton_Text, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
+	connect(ui.toolButton_Mtext, &QToolButton::clicked, this, &CreateEntityWidget::onToolBtnClicked);
 }
 
-void CreateEntityWidget::RefreshBtn()
+void CreateEntityWidget::refreshBtn()
 {
 }
 
-void CreateEntityWidget::AdjustBtn()
+void CreateEntityWidget::adjustBtn()
 {
 	if (m_mainWnd)
 	{
@@ -119,74 +119,74 @@ void CreateEntityWidget::AdjustBtn()
 void CreateEntityWidget::resizeEvent(QResizeEvent* event)
 {
 	QWidget::resizeEvent(event);
-	AdjustBtn();
+	adjustBtn();
 }
 
 
-void CreateEntityWidget::OnToolBtnClicked()
+void CreateEntityWidget::onToolBtnClicked()
 {
 	QToolButton* pBtn = qobject_cast<QToolButton*>(sender());
 	if(!pBtn) return;
 
 	if (pBtn == ui.toolButton_Mouse)
 	{
-		m_eSlectedIndex = MouseStateInView::None;
+		m_slectedIndex = MouseStateInView::None;
 	}
 	else if (pBtn == ui.toolButton_Point)
 	{
-        m_eSlectedIndex = MouseStateInView::Point;
+        m_slectedIndex = MouseStateInView::Point;
 	}
 	else if (pBtn == ui.toolButton_Line)
 	{
-        m_eSlectedIndex = MouseStateInView::Line;
+        m_slectedIndex = MouseStateInView::Line;
 	}
 	else if(pBtn == ui.toolButton_Center_Radius_Circle)
 	{
-		m_eSlectedIndex = MouseStateInView::CircleCenterRadius;
+		m_slectedIndex = MouseStateInView::CircleCenterRadius;
 	}
 	else if (pBtn == ui.toolButton_Center_Diameter_Circle)
 	{
-		m_eSlectedIndex = MouseStateInView::CircleDiameter;
+		m_slectedIndex = MouseStateInView::CircleDiameter;
 	}
 	else if (pBtn == ui.toolButton_Center_Endpoint_Arc)
 	{
-		m_eSlectedIndex = MouseStateInView::ArcCenterEndpoint;
+		m_slectedIndex = MouseStateInView::ArcCenterEndpoint;
 	}
 	else if (pBtn == ui.toolButton_ThreePoint_Arc)
 	{
-        m_eSlectedIndex = MouseStateInView::ArcThreePoints;
+        m_slectedIndex = MouseStateInView::ArcThreePoints;
 	}
 	else if (pBtn == ui.toolButton_Polyline)
 	{
-        m_eSlectedIndex = MouseStateInView::Polyline;
+        m_slectedIndex = MouseStateInView::Polyline;
 	}
 	else if (pBtn == ui.toolButton_Ellipse)
 	{
-		m_eSlectedIndex = MouseStateInView::EllipseCenterRadius;
+		m_slectedIndex = MouseStateInView::EllipseCenterRadius;
 	}
 	else if (pBtn == ui.toolButton_Rectangle)
 	{
-        m_eSlectedIndex = MouseStateInView::Rectangle;
+        m_slectedIndex = MouseStateInView::Rectangle;
 	}
 	else if (pBtn == ui.toolButton_SplineFitPoint)
 	{
-        m_eSlectedIndex = MouseStateInView::SplineFitPoint;
+        m_slectedIndex = MouseStateInView::SplineFitPoint;
 	}
 	else if (pBtn == ui.toolButton_SplineControlPoint)
 	{
-        m_eSlectedIndex = MouseStateInView::SplineControlPoint;
+        m_slectedIndex = MouseStateInView::SplineControlPoint;
 	}
 	else if (pBtn == ui.toolButton_Text)
 	{
-        m_eSlectedIndex = MouseStateInView::Text;
+        m_slectedIndex = MouseStateInView::Text;
 	}
 	else if (pBtn == ui.toolButton_Mtext)
 	{
-        m_eSlectedIndex = MouseStateInView::MText;
+        m_slectedIndex = MouseStateInView::MText;
 	}
 
-	emit signalMouseStatus(m_eSlectedIndex);
-	RefreshBtn();
+	emit signalMouseStatus(m_slectedIndex);
+	refreshBtn();
 }
 
 

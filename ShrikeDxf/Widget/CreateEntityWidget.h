@@ -13,25 +13,25 @@ public:
 	CreateEntityWidget(QWidget *parent = nullptr);
 	~CreateEntityWidget();
 
-	void InitWidgetAndAddToLayout();
+	void initWidgetAndAddToLayout();
 	
 
 private:
 	Ui::CCreateEntityWidgetClass ui;
 	QWidget* m_mainWnd;
 	//当前选择的按钮
-	MouseStateInView m_eSlectedIndex;
+	MouseStateInView m_slectedIndex;
 
-	void SetIconAndTip();
-	void AdjustBtn();
-	void ConnectBtnSignals();
-	void RefreshBtn();
+	void setIconAndTip();
+	void adjustBtn();
+	void connectBtnSignals();
+	void refreshBtn();
 
 signals:
 	void signalMouseStatus(MouseStateInView state);
 
 private slots:
-	void OnToolBtnClicked();
+	void onToolBtnClicked();
 
 public slots:
 	

@@ -1,26 +1,26 @@
-#include "EllipseAttritube.h"
+﻿#include "EllipseAttritube.h"
 
-CEllipseAttritubeWidget::CEllipseAttritubeWidget(QWidget* parent)
+EllipseAttritubeWidget::EllipseAttritubeWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
 
-    connect(ui.doubleSpinBox_x, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_y, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_majorAxisX, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_majorAxisY, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_minorAxis, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_strartAngle, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_endAngle, &QDoubleSpinBox::editingFinished, this, &CEllipseAttritubeWidget::OnSpinBoxChanged);
+    connect(ui.doubleSpinBox_x, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_y, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_majorAxisX, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_majorAxisY, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_minorAxis, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_strartAngle, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_endAngle, &QDoubleSpinBox::editingFinished, this, &EllipseAttritubeWidget::onSpinBoxChanged);
 }
 
-CEllipseAttritubeWidget::~CEllipseAttritubeWidget()
+EllipseAttritubeWidget::~EllipseAttritubeWidget()
 {
 }
 
-void CEllipseAttritubeWidget::OnSpinBoxChanged()
+void EllipseAttritubeWidget::onSpinBoxChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
     m_ellipse.center.setX(ui.doubleSpinBox_x->value());
     m_ellipse.center.setY(ui.doubleSpinBox_y->value());
@@ -33,9 +33,9 @@ void CEllipseAttritubeWidget::OnSpinBoxChanged()
     emit signalEllipseAttributeChanged(m_ellipse);
 }
 
-void CEllipseAttritubeWidget::handleNoticeEllipseAttribute(EntityEllipse ellipse)
+void EllipseAttritubeWidget::handleNoticeEllipseAttribute(EntityEllipse ellipse)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_ellipse = ellipse;
     ui.doubleSpinBox_x->setValue(ellipse.center.x());
@@ -46,5 +46,5 @@ void CEllipseAttritubeWidget::handleNoticeEllipseAttribute(EntityEllipse ellipse
     ui.doubleSpinBox_strartAngle->setValue(ellipse.startParam);
     ui.doubleSpinBox_endAngle->setValue(ellipse.endParam);
 
-    m_bUpdating = false;
+    m_updating = false;
 }

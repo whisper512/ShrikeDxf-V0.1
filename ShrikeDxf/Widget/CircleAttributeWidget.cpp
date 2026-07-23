@@ -1,38 +1,38 @@
 ﻿#include "CircleAttributeWidget.h"
 
-CCircleAttributeWidget::CCircleAttributeWidget(QWidget* parent)
-    : QWidget(parent), m_cirlce()
+CircleAttributeWidget::CircleAttributeWidget(QWidget* parent)
+    : QWidget(parent), m_circle()
 {
     ui.setupUi(this);
 
-    connect(ui.doubleSpinBox_CenterX, &QDoubleSpinBox::editingFinished, this, &CCircleAttributeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_CenterY, &QDoubleSpinBox::editingFinished, this, &CCircleAttributeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_Radius, &QDoubleSpinBox::editingFinished, this, &CCircleAttributeWidget::OnSpinBoxChanged);
+    connect(ui.doubleSpinBox_CenterX, &QDoubleSpinBox::editingFinished, this, &CircleAttributeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_CenterY, &QDoubleSpinBox::editingFinished, this, &CircleAttributeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_Radius, &QDoubleSpinBox::editingFinished, this, &CircleAttributeWidget::onSpinBoxChanged);
 }
 
-CCircleAttributeWidget::~CCircleAttributeWidget()
+CircleAttributeWidget::~CircleAttributeWidget()
 {
 }
 
-void CCircleAttributeWidget::OnSpinBoxChanged()
+void CircleAttributeWidget::onSpinBoxChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
-    m_cirlce.center.setX(ui.doubleSpinBox_CenterX->value());
-    m_cirlce.center.setY(ui.doubleSpinBox_CenterY->value());
-    m_cirlce.radius = ui.doubleSpinBox_Radius->value();
+    m_circle.center.setX(ui.doubleSpinBox_CenterX->value());
+    m_circle.center.setY(ui.doubleSpinBox_CenterY->value());
+    m_circle.radius = ui.doubleSpinBox_Radius->value();
 
-    emit signalCircleAttributeChanged(m_cirlce);
+    emit signalCircleAttributeChanged(m_circle);
 }
 
-void CCircleAttributeWidget::handleNoticeCircleAttribute(EntityCircle circle)
+void CircleAttributeWidget::handleNoticeCircleAttribute(EntityCircle circle)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
-    m_cirlce = circle;
+    m_circle = circle;
     ui.doubleSpinBox_CenterX->setValue(circle.center.x());
     ui.doubleSpinBox_CenterY->setValue(circle.center.y());
     ui.doubleSpinBox_Radius->setValue(circle.radius);
 
-    m_bUpdating = false;
+    m_updating = false;
 }

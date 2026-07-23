@@ -1,24 +1,23 @@
 ﻿#pragma once
-
 #include <QWidget>
 
 #include "ui_CircleAttributeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CCircleAttributeWidget : public QWidget
+class CircleAttributeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CCircleAttributeWidget(QWidget* parent = nullptr);
-    ~CCircleAttributeWidget();
+    CircleAttributeWidget(QWidget* parent = nullptr);
+    ~CircleAttributeWidget();
 
 private:
     Ui::CCircleAttributeWidgetClass ui;
-    EntityCircle m_cirlce;
-    bool m_bUpdating = false;
+    EntityCircle m_circle;
+    bool m_updating = false;
 
-    void OnSpinBoxChanged();
+    void onSpinBoxChanged();
 
 signals:
     void signalCircleAttributeChanged(const EntityCircle& circle);

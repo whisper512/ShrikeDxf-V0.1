@@ -37,10 +37,10 @@ public:
 	QStackedWidget* m_pStackedWidget;
 	CPointAttributeWidget* m_pPointAttributeWidget;
 	CLineAttributeWidget* m_pLineAttributeWidget;
-	CCircleAttributeWidget* m_pCircleAttributeWidget;
+	CircleAttributeWidget* m_pCircleAttributeWidget;
 	ArcAttritubeWidget* m_pArcAttributeWidget;
 	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
-	CEllipseAttritubeWidget* m_pEllipseAttributeWidget;
+	EllipseAttritubeWidget* m_pEllipseAttributeWidget;
 	CTextAttritubeWidget* m_pTextAttributeWidget;
 	CMTextAttritubeWidget* m_pMTextAttributeWidget;
 	CPolylineAttributeWidget* m_pPolylineAttributeWidget;

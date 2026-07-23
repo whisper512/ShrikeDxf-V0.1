@@ -118,7 +118,7 @@ void ShrikeDxf::initAndCreateCreateEntityWidget()
 	m_createEntityWidget =  new CreateEntityWidget(this);
 	if (m_createEntityWidget)
 	{
-        m_createEntityWidget->InitWidgetAndAddToLayout();
+        m_createEntityWidget->initWidgetAndAddToLayout();
 		ui.horizontalLayout_FileStructure->setStretch(9, 1);
 	}
 }
