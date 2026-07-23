@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Form Files">
       <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
       <Extensions>ui</Extensions>
@@ -20,24 +8,6 @@
     <Filter Include="Translation Files">
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Dxf">
-      <UniqueIdentifier>{d7f73fa0-ac41-4d62-bbac-940fc00206d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Common">
-      <UniqueIdentifier>{39053a6e-2d8a-4734-b899-23c0f8a119bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\WeightView">
-      <UniqueIdentifier>{8ed44daa-96d3-415f-908d-8e1346ae4f59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Dxf">
-      <UniqueIdentifier>{45d6405f-2bb1-4396-9614-1377c212bf1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Common">
-      <UniqueIdentifier>{18e25ea0-807b-441d-85b7-4a57ed9478f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\WeightView">
-      <UniqueIdentifier>{945372ab-f294-404f-9005-8fd91583feb0}</UniqueIdentifier>
     </Filter>
     <Filter Include="EntitiesLib">
       <UniqueIdentifier>{725a9d6d-f176-4d0e-8f65-0e69c5eda564}</UniqueIdentifier>
@@ -57,10 +27,40 @@
     <Filter Include="Clipper2\Source">
       <UniqueIdentifier>{2401b1c8-89d0-4ad9-bb65-ef6b8898d794}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShrikeDxf Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="ShrikeDxf Header Files\Dxf">
+      <UniqueIdentifier>{d7f73fa0-ac41-4d62-bbac-940fc00206d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShrikeDxf Header Files\Common">
+      <UniqueIdentifier>{39053a6e-2d8a-4734-b899-23c0f8a119bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShrikeDxf Header Files\WeightView">
+      <UniqueIdentifier>{8ed44daa-96d3-415f-908d-8e1346ae4f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShrikeDxf Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ShrikeDxf Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ShrikeDxf Source Files\Dxf">
+      <UniqueIdentifier>{45d6405f-2bb1-4396-9614-1377c212bf1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShrikeDxf Source Files\Common">
+      <UniqueIdentifier>{18e25ea0-807b-441d-85b7-4a57ed9478f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShrikeDxf Source Files\WeightView">
+      <UniqueIdentifier>{945372ab-f294-404f-9005-8fd91583feb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc">
-      <Filter>Resource Files</Filter>
+      <Filter>ShrikeDxf Resource Files</Filter>
     </QtRcc>
     <QtUic Include="ShrikeDxf.ui">
       <Filter>Form Files</Filter>
@@ -113,34 +113,34 @@
       <Filter>EntitiesLib\Header</Filter>
     </ClInclude>
     <ClInclude Include="Manager\DxfData.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\DxfLayerTableviewModel.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\DxfReader.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\DxfStruct.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\DxfWriter.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\EntityMath.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\Tools.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </ClInclude>
     <ClInclude Include="Manager\CommonDataManager.h">
-      <Filter>Header Files\Common</Filter>
+      <Filter>ShrikeDxf Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="Widget\StyleSheet.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </ClInclude>
     <ClInclude Include="Widget\TopMenu.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </ClInclude>
     <ClInclude Include="..\EntitiesLib\EntityMath.h">
       <Filter>EntitiesLib\Header</Filter>
@@ -175,93 +175,93 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Manager\DxfDrawController.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfEditController.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfEditor.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfGraphicsScene.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfInteractionDispatcher.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfManager.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfSelectionController.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="Manager\DxfTreeviewModel.h">
-      <Filter>Header Files\Dxf</Filter>
+      <Filter>ShrikeDxf Header Files\Dxf</Filter>
     </QtMoc>
     <QtMoc Include="ShrikeDxf.h">
-      <Filter>Header Files\Common</Filter>
+      <Filter>ShrikeDxf Header Files\Common</Filter>
     </QtMoc>
     <QtMoc Include="Widget\ArcAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\CircleAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\CreateEntityWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\EllipseAttritube.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\GraphicsView.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\HatchAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\LayerTableView.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\LineAttribute.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\LWPolylineAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\MoveBtnsWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\MTextAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\PointAttribute.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\PolylineAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\Ruler.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\SplineAttributeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\StackedWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\TextAttritubeWidget.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
     <QtMoc Include="Widget\TreeView.h">
-      <Filter>Header Files\WeightView</Filter>
+      <Filter>ShrikeDxf Header Files\WeightView</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShrikeDxf.cpp">
-      <Filter>Source Files\Common</Filter>
+      <Filter>ShrikeDxf Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files\Common</Filter>
+      <Filter>ShrikeDxf Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\EntitiesLib\Arc.cpp">
       <Filter>EntitiesLib\Source</Filter>
@@ -303,106 +303,106 @@
       <Filter>EntitiesLib\Source</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfWriter.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfTreeviewModel.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfStruct.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfSelectionController.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfReader.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfManager.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfLayerTableviewModel.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfInteractionDispatcher.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfGraphicsScene.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfEditor.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfEditController.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfDrawController.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\DxfData.cpp">
-      <Filter>Source Files\Dxf</Filter>
+      <Filter>ShrikeDxf Source Files\Dxf</Filter>
     </ClCompile>
     <ClCompile Include="Manager\CommonDataManager.cpp">
-      <Filter>Source Files\Common</Filter>
+      <Filter>ShrikeDxf Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="Widget\ArcAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\CircleAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\CreateEntityWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\EllipseAttritube.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\GraphicsView.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\HatchAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\LayerTableView.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\LineAttribute.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\LWPolylineAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\MoveBtnsWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\MTextAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\PointAttribute.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\PolylineAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\Ruler.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\SplineAttributeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\StackedWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\StyleSheet.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\TextAttritubeWidget.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\TopMenu.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="Widget\TreeView.cpp">
-      <Filter>Source Files\WeightView</Filter>
+      <Filter>ShrikeDxf Source Files\WeightView</Filter>
     </ClCompile>
     <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.engine.cpp">
       <Filter>Clipper2\Source</Filter>
