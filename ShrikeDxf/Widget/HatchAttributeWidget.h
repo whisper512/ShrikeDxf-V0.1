@@ -1,23 +1,23 @@
-#pragma once
+﻿#pragma once
 #include <QWidget>
 
 #include "ui_HatchAttributeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CHatchAttributeWidget : public QWidget
+class HatchAttributeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CHatchAttributeWidget(QWidget* parent = nullptr);
-    ~CHatchAttributeWidget();
+    HatchAttributeWidget(QWidget* parent = nullptr);
+    ~HatchAttributeWidget();
 
 private:
     Ui::HatchAttributeWidget ui;
     EntityHatch m_hatch;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void OnValueChanged();
+    void onValueChanged();
 
 signals:
     void signalHatchAtttributeChanged(const EntityHatch& hatch);

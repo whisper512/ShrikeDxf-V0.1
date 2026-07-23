@@ -105,7 +105,7 @@ void ShrikeDxf::initAndCreateLayerTableView()
 	m_layerTableViewManager = new LayerTableViewManager(this);
 	if (m_layerTableViewManager)
 	{
-		m_layerTableViewManager->CreateTableView();
+		m_layerTableViewManager->createTableView();
 	}
 }
 

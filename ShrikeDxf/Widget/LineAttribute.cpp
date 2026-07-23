@@ -1,26 +1,26 @@
 ﻿#include "LineAttribute.h"
 
-CLineAttributeWidget::CLineAttributeWidget(QWidget* parent)
+LineAttributeWidget::LineAttributeWidget(QWidget* parent)
     : QWidget(parent), m_line()
 {
     ui.setupUi(this);
 
-    connect(ui.doubleSpinBox_StartX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
-    connect(ui.doubleSpinBox_StartY, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
-    connect(ui.doubleSpinBox_EndX, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
-    connect(ui.doubleSpinBox_EndY, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
-    connect(ui.doubleSpinBox_Length, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
-    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CLineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_StartX, &QDoubleSpinBox::editingFinished, this, &LineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_StartY, &QDoubleSpinBox::editingFinished, this, &LineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_EndX, &QDoubleSpinBox::editingFinished, this, &LineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_EndY, &QDoubleSpinBox::editingFinished, this, &LineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_Length, &QDoubleSpinBox::editingFinished, this, &LineAttributeWidget::onAnySpinChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &LineAttributeWidget::onAnySpinChanged);
 }
 
-CLineAttributeWidget::~CLineAttributeWidget()
+LineAttributeWidget::~LineAttributeWidget()
 {
 }
 
-void CLineAttributeWidget::onAnySpinChanged()
+void LineAttributeWidget::onAnySpinChanged()
 {
-    if (m_bUpdating) return;
-    m_bUpdating = true;
+    if (m_updating) return;
+    m_updating = true;
 
     double startX = ui.doubleSpinBox_StartX->value();
     double startY = ui.doubleSpinBox_StartY->value();
@@ -56,13 +56,13 @@ void CLineAttributeWidget::onAnySpinChanged()
         ui.doubleSpinBox_Angle->setValue(m_line.angle());
     }
 
-    m_bUpdating = false;
+    m_updating = false;
     emit signalLineAttributeChanged(m_line);
 }
 
-void CLineAttributeWidget::handleNoticeLineAttribute(EntityLine line)
+void LineAttributeWidget::handleNoticeLineAttribute(EntityLine line)
 {
-    m_bUpdating = true;     // 阻止信号递归
+    m_updating = true;     // 阻止信号递归
 
     m_line = line;
     ui.doubleSpinBox_StartX->setValue(line.startPoint.x());
@@ -72,5 +72,5 @@ void CLineAttributeWidget::handleNoticeLineAttribute(EntityLine line)
     ui.doubleSpinBox_Length->setValue(line.length());
     ui.doubleSpinBox_Angle->setValue(line.angle());
 
-    m_bUpdating = false;
+    m_updating = false;
 }

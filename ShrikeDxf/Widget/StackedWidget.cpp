@@ -56,7 +56,7 @@ void StackedWidgetManager::AddPages()
 	m_pStackedWidget->widget(0)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[0] = STR_POINT_LOWERCASE;
 
-	m_pLineAttributeWidget = new CLineAttributeWidget(m_pStackedWidget);
+	m_pLineAttributeWidget = new LineAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
 	m_pLineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
@@ -110,7 +110,7 @@ void StackedWidgetManager::AddPages()
     m_pStackedWidget->widget(9)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[9] = STR_SPLINE_LOWERCASE;
 
-	m_pHatchAttributeWidget = new CHatchAttributeWidget(m_pStackedWidget);
+	m_pHatchAttributeWidget = new HatchAttributeWidget(m_pStackedWidget);
     m_pStackedWidget->addWidget(m_pHatchAttributeWidget);
     m_pHatchAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_pStackedWidget->widget(10)->setContentsMargins(0, 0, 0, 0);
@@ -129,8 +129,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 线
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalLineAttribute, m_pLineAttributeWidget, &CLineAttributeWidget::handleNoticeLineAttribute);
-				connect(m_pLineAttributeWidget, &CLineAttributeWidget::signalLineAttributeChanged, this, &StackedWidgetManager::signalLineChanged);
+				connect(this, &StackedWidgetManager::signalLineAttribute, m_pLineAttributeWidget, &LineAttributeWidget::handleNoticeLineAttribute);
+				connect(m_pLineAttributeWidget, &LineAttributeWidget::signalLineAttributeChanged, this, &StackedWidgetManager::signalLineChanged);
 			} // 圆
 			if (m_pStackedWidget && m_pCircleAttributeWidget)
 			{
@@ -175,8 +175,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 填充
 			if (m_pStackedWidget && m_pHatchAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalHatchAttribute, m_pHatchAttributeWidget, &CHatchAttributeWidget::handleNoticeHatchAtttribute);
-				connect(m_pHatchAttributeWidget, &CHatchAttributeWidget::signalHatchAtttributeChanged, this, &StackedWidgetManager::signalHatchChanged);
+				connect(this, &StackedWidgetManager::signalHatchAttribute, m_pHatchAttributeWidget, &HatchAttributeWidget::handleNoticeHatchAtttribute);
+				connect(m_pHatchAttributeWidget, &HatchAttributeWidget::signalHatchAtttributeChanged, this, &StackedWidgetManager::signalHatchChanged);
 			}
 			
 	});

@@ -4,18 +4,18 @@
 #include "ui_LineAttribute.h"
 #include "Manager/DxfStruct.h"
 
-class CLineAttributeWidget : public QWidget
+class LineAttributeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CLineAttributeWidget(QWidget* parent = nullptr);
-    ~CLineAttributeWidget();
+    LineAttributeWidget(QWidget* parent = nullptr);
+    ~LineAttributeWidget();
 
 private:
     Ui::CLineAttribute ui;
     EntityLine m_line;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
     void onAnySpinChanged();
 

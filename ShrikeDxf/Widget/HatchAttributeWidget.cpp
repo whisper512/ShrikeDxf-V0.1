@@ -1,29 +1,29 @@
-#include "HatchAttributeWidget.h"
+﻿#include "HatchAttributeWidget.h"
 
-CHatchAttributeWidget::CHatchAttributeWidget(QWidget* parent)
+HatchAttributeWidget::HatchAttributeWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
 
     
-    connect(ui.spinBox_Associative, &QSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
-    connect(ui.spinBox_Style, &QSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
-    connect(ui.spinBox_PatternType, &QSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
-    connect(ui.spinBox_DoubleFlag, &QSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
-    connect(ui.spinBox_LoopCount, &QSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_Scale, &QDoubleSpinBox::editingFinished, this, &CHatchAttributeWidget::OnValueChanged);
+    connect(ui.spinBox_Associative, &QSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
+    connect(ui.spinBox_Style, &QSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
+    connect(ui.spinBox_PatternType, &QSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
+    connect(ui.spinBox_DoubleFlag, &QSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
+    connect(ui.spinBox_LoopCount, &QSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Scale, &QDoubleSpinBox::editingFinished, this, &HatchAttributeWidget::onValueChanged);
 
-    connect(ui.checkBox_soildFill, &QCheckBox::clicked, this, &CHatchAttributeWidget::OnValueChanged);
+    connect(ui.checkBox_soildFill, &QCheckBox::clicked, this, &HatchAttributeWidget::onValueChanged);
 }
 
-CHatchAttributeWidget::~CHatchAttributeWidget()
+HatchAttributeWidget::~HatchAttributeWidget()
 {
 }
 
-void CHatchAttributeWidget::OnValueChanged()
+void HatchAttributeWidget::onValueChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
     m_hatch.solidFill = ui.checkBox_soildFill->isChecked();
     m_hatch.associative = ui.spinBox_Associative->value();
@@ -37,9 +37,9 @@ void CHatchAttributeWidget::OnValueChanged()
     emit signalHatchAtttributeChanged(m_hatch);
 }
 
-void CHatchAttributeWidget::handleNoticeHatchAtttribute(EntityHatch hatch)
+void HatchAttributeWidget::handleNoticeHatchAtttribute(EntityHatch hatch)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_hatch = hatch;
     ui.checkBox_soildFill->setChecked(hatch.solidFill);
@@ -51,5 +51,5 @@ void CHatchAttributeWidget::handleNoticeHatchAtttribute(EntityHatch hatch)
     ui.doubleSpinBox_Angle->setValue(hatch.angle);
     ui.doubleSpinBox_Scale->setValue(hatch.scale);
 
-    m_bUpdating = false;
+    m_updating = false;
 }

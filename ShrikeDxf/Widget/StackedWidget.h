@@ -36,7 +36,7 @@ public:
 	QGridLayout* m_pLayout;
 	QStackedWidget* m_pStackedWidget;
 	CPointAttributeWidget* m_pPointAttributeWidget;
-	CLineAttributeWidget* m_pLineAttributeWidget;
+	LineAttributeWidget* m_pLineAttributeWidget;
 	CircleAttributeWidget* m_pCircleAttributeWidget;
 	ArcAttritubeWidget* m_pArcAttributeWidget;
 	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
@@ -45,7 +45,7 @@ public:
 	CMTextAttritubeWidget* m_pMTextAttributeWidget;
 	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
 	CSplineAttributeWidget* m_pSplineAttributeWidget;
-	CHatchAttributeWidget* m_pHatchAttributeWidget;
+	HatchAttributeWidget* m_pHatchAttributeWidget;
 
 	EntityType m_entityType = EntityType::None;
 

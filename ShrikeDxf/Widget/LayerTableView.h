@@ -8,17 +8,17 @@ class LayerTableViewManager : public QObject
 {
 	Q_OBJECT
 public:
-	LayerTableViewManager(QWidget* pMainwnd);
+	LayerTableViewManager(QWidget* mainWnd);
 	~LayerTableViewManager();
 
-	void CreateTableView();
+	void createTableView();
 
 private:
-	void InitTableView();
+	void initTableView();
 
 private:
 	QWidget* m_mainWnd;
-	QTableView* m_pTableView;
+	QTableView* m_tableView;
 
 signals:
 	void signalLayerModelChanged();
