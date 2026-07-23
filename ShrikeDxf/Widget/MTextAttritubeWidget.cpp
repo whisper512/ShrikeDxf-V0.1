@@ -1,37 +1,37 @@
-#include "MTextAttritubeWidget.h"
+﻿#include "MTextAttritubeWidget.h"
 
-CMTextAttritubeWidget::CMTextAttritubeWidget(QWidget* parent)
+MTextAttritubeWidget::MTextAttritubeWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
 
     // DoubleSpinBox
-    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_xAxisDirX, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_xAxisDirY, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_LineSpacing, &QDoubleSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_xAxisDirX, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_xAxisDirY, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_LineSpacing, &QDoubleSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
 
     // SpinBox
-    connect(ui.spinBox_AttachPoint, &QSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.spinBox_textDir, &QSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.spinBox_LineSpaceStyle, &QSpinBox::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
+    connect(ui.spinBox_AttachPoint, &QSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_textDir, &QSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_LineSpaceStyle, &QSpinBox::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
 
     // LineEdit
-    connect(ui.textEdit,&QTextEdit::textChanged, this, &CMTextAttritubeWidget::OnValueChanged);
-    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &CMTextAttritubeWidget::OnValueChanged);
+    connect(ui.textEdit,&QTextEdit::textChanged, this, &MTextAttritubeWidget::onValueChanged);
+    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &MTextAttritubeWidget::onValueChanged);
 }
 
-CMTextAttritubeWidget::~CMTextAttritubeWidget()
+MTextAttritubeWidget::~MTextAttritubeWidget()
 {
 }
 
-void CMTextAttritubeWidget::OnValueChanged()
+void MTextAttritubeWidget::onValueChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
     m_Mtext.insertPoint.setX(ui.doubleSpinBox_InsertPtX->value());
     m_Mtext.insertPoint.setY(ui.doubleSpinBox_InsertPtY->value());
@@ -52,9 +52,9 @@ void CMTextAttritubeWidget::OnValueChanged()
     emit signalMTextAttributeChanged(m_Mtext);
 }
 
-void CMTextAttritubeWidget::handleNoticeMTextAttribute(EntityMText Mtext)
+void MTextAttritubeWidget::handleNoticeMTextAttribute(EntityMText Mtext)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_Mtext = Mtext;
     ui.doubleSpinBox_InsertPtX->setValue(Mtext.insertPoint.x());
@@ -73,5 +73,5 @@ void CMTextAttritubeWidget::handleNoticeMTextAttribute(EntityMText Mtext)
     ui.textEdit->setPlainText(displayText);
     ui.lineEdit_Style->setText(QString::fromStdString(Mtext.style));
 
-    m_bUpdating = false;
+    m_updating = false;
 }

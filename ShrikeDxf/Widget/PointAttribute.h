@@ -4,20 +4,20 @@
 #include "ui_PointAttribute.h"
 #include "Manager/DxfStruct.h"
 
-class CPointAttributeWidget : public QWidget
+class PointAttributeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CPointAttributeWidget(QWidget* parent = nullptr);
-    ~CPointAttributeWidget();
+    PointAttributeWidget(QWidget* parent = nullptr);
+    ~PointAttributeWidget();
 
 private:
     EntityPoint m_EntityPoint;
     Ui::CPointAttribute ui;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void OnSpinBoxChanged();
+    void onSpinBoxChanged();
 
 signals:
     void signalPointAttributeChanged(const EntityPoint& point);

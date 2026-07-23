@@ -1,35 +1,35 @@
 ﻿#include "PointAttribute.h"
 
-CPointAttributeWidget::CPointAttributeWidget(QWidget* parent)
+PointAttributeWidget::PointAttributeWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    connect(ui.doubleSpinBox_X, &QDoubleSpinBox::editingFinished, this, &CPointAttributeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_Y, &QDoubleSpinBox::editingFinished, this, &CPointAttributeWidget::OnSpinBoxChanged);
+    connect(ui.doubleSpinBox_X, &QDoubleSpinBox::editingFinished, this, &PointAttributeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_Y, &QDoubleSpinBox::editingFinished, this, &PointAttributeWidget::onSpinBoxChanged);
 }
 
-CPointAttributeWidget::~CPointAttributeWidget()
+PointAttributeWidget::~PointAttributeWidget()
 {
 }
 
-void CPointAttributeWidget::OnSpinBoxChanged()
+void PointAttributeWidget::onSpinBoxChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
     m_EntityPoint.point.setX(ui.doubleSpinBox_X->value());
     m_EntityPoint.point.setY(ui.doubleSpinBox_Y->value());
     emit signalPointAttributeChanged(m_EntityPoint);
 }
 
-void CPointAttributeWidget::handleNoticePointAttribute(EntityPoint point)
+void PointAttributeWidget::handleNoticePointAttribute(EntityPoint point)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_EntityPoint = point;
     ui.doubleSpinBox_X->setValue(point.point.x());
     ui.doubleSpinBox_Y->setValue(point.point.y());
 
-    m_bUpdating = false;
+    m_updating = false;
 }

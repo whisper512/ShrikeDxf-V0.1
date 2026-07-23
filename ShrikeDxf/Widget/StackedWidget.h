@@ -35,14 +35,14 @@ public:
 	QWidget* m_pMainwnd;
 	QGridLayout* m_pLayout;
 	QStackedWidget* m_pStackedWidget;
-	CPointAttributeWidget* m_pPointAttributeWidget;
+	PointAttributeWidget* m_pPointAttributeWidget;
 	LineAttributeWidget* m_pLineAttributeWidget;
 	CircleAttributeWidget* m_pCircleAttributeWidget;
 	ArcAttritubeWidget* m_pArcAttributeWidget;
-	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
+	LWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
 	EllipseAttritubeWidget* m_pEllipseAttributeWidget;
 	CTextAttritubeWidget* m_pTextAttributeWidget;
-	CMTextAttritubeWidget* m_pMTextAttributeWidget;
+	MTextAttritubeWidget* m_pMTextAttributeWidget;
 	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
 	CSplineAttributeWidget* m_pSplineAttributeWidget;
 	HatchAttributeWidget* m_pHatchAttributeWidget;

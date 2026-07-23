@@ -1,23 +1,23 @@
-#pragma once
+﻿#pragma once
 #include <QWidget>
 
 #include "ui_MTextAttritubeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CMTextAttritubeWidget : public QWidget
+class MTextAttritubeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CMTextAttritubeWidget(QWidget* parent = nullptr);
-    ~CMTextAttritubeWidget();
+    MTextAttritubeWidget(QWidget* parent = nullptr);
+    ~MTextAttritubeWidget();
 
 private:
     Ui::MTextAttritubeWidget ui;
     EntityMText m_Mtext;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void OnValueChanged();
+    void onValueChanged();
 
 signals:
     void signalMTextAttributeChanged(const EntityMText& Mtext);

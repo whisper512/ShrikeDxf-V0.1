@@ -5,21 +5,21 @@
 #include "ui_LWPolylineAttributeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CLWPolylineAttributeWidget : public QWidget
+class LWPolylineAttributeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CLWPolylineAttributeWidget(QWidget* parent = nullptr);
-    ~CLWPolylineAttributeWidget();
+    LWPolylineAttributeWidget(QWidget* parent = nullptr);
+    ~LWPolylineAttributeWidget();
 
 private:
     Ui::CLWPolylineAttributeWidgetClass ui;
     EntityLWPolyline m_polyline;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void RefreshTable();
-    void OnTableValueChanged();
+    void refreshTable();
+    void onTableValueChanged();
 
 signals:
     void signalLWPolylineAttributeChanged(const EntityLWPolyline& polyline);

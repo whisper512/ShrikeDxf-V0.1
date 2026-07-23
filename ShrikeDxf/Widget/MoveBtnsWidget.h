@@ -11,16 +11,16 @@ public:
 	MoveBtnsWidget(QWidget *parent = nullptr);
 	~MoveBtnsWidget();
 
-	void InitWidgetAndAddToLayout();
+	void initWidgetAndAddToLayout();
 	
 
 signals:
-	void signalOnBtnUpClicked();
-    void signalOnBtnDownClicked();
-    void signalOnBtnLeftClicked();
-    void signalOnBtnRightClicked();
-	void signalOnBtnCWClicked();
-	void signalOnBtnCCWClicked();
+	void signalonBtnUpClicked();
+    void signalonBtnDownClicked();
+    void signalonBtnLeftClicked();
+    void signalonBtnRightClicked();
+	void signalonBtnCWClicked();
+	void signalonBtnCCWClicked();
 	void signalOnStepLengthOrAngleChanged(double dStepLength, double dRotationAngle);
 
 public slots:
@@ -31,18 +31,18 @@ private:
 	Ui::CMoveBtnsWidgetClass ui;
 	QWidget* m_mainWnd;
 
-	double m_dStepLength;
-    double m_dRotationAngle;
+	double m_stepLength;
+    double m_rotationAngle;
 
 private:
-	void OnBtnUpClicked();
-    void OnBtnDownClicked();
-	void OnBtnLeftClicked();
-    void OnBtnRightClicked();
-    void OnBtnCWClicked();
-    void OnBtnCCWClicked();
+	void onBtnUpClicked();
+    void onBtnDownClicked();
+	void onBtnLeftClicked();
+    void onBtnRightClicked();
+    void onBtnCWClicked();
+    void onBtnCCWClicked();
 
-	void OnStepLengthChanged();
-	void OnRotationAngleChanged();
+	void onStepLengthChanged();
+	void onRotationAngleChanged();
 };
 

@@ -50,7 +50,7 @@ void StackedWidgetManager::CreateStackedWidget()
 void StackedWidgetManager::AddPages()
 {
 
-	m_pPointAttributeWidget = new CPointAttributeWidget(m_pStackedWidget);
+	m_pPointAttributeWidget = new PointAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pPointAttributeWidget);
 	m_pPointAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(0)->setContentsMargins(0, 0, 0, 0);
@@ -74,7 +74,7 @@ void StackedWidgetManager::AddPages()
 	m_pStackedWidget->widget(3)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[3] = STR_ARC_LOWERCASE;
 
-	m_pLWPolylineAttributeWidget = new CLWPolylineAttributeWidget(m_pStackedWidget);
+	m_pLWPolylineAttributeWidget = new LWPolylineAttributeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pLWPolylineAttributeWidget);
 	m_pLWPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
@@ -92,7 +92,7 @@ void StackedWidgetManager::AddPages()
     m_pStackedWidget->widget(6)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[6] = STR_TEXT_LOWERCASE;
 
-	m_pMTextAttributeWidget = new CMTextAttritubeWidget(m_pStackedWidget);
+	m_pMTextAttributeWidget = new MTextAttritubeWidget(m_pStackedWidget);
     m_pStackedWidget->addWidget(m_pMTextAttributeWidget);
     m_pMTextAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_pStackedWidget->widget(7)->setContentsMargins(0, 0, 0, 0);
@@ -124,8 +124,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			  // 点
 			if (m_pStackedWidget && m_pPointAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalPointAttribute, m_pPointAttributeWidget, &CPointAttributeWidget::handleNoticePointAttribute);
-				connect(m_pPointAttributeWidget, &CPointAttributeWidget::signalPointAttributeChanged, this, &StackedWidgetManager::signalPointChanged);
+				connect(this, &StackedWidgetManager::signalPointAttribute, m_pPointAttributeWidget, &PointAttributeWidget::handleNoticePointAttribute);
+				connect(m_pPointAttributeWidget, &PointAttributeWidget::signalPointAttributeChanged, this, &StackedWidgetManager::signalPointChanged);
 			} // 线
 			if (m_pStackedWidget && m_pLineAttributeWidget)
 			{
@@ -144,8 +144,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 轻量多段线
 			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
-				connect(m_pLWPolylineAttributeWidget, &CLWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &StackedWidgetManager::signalLWPolylineChanged);
+				connect(this, &StackedWidgetManager::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &LWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
+				connect(m_pLWPolylineAttributeWidget, &LWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &StackedWidgetManager::signalLWPolylineChanged);
 			} // 椭圆
 			if (m_pStackedWidget && m_pEllipseAttributeWidget)
 			{
@@ -159,8 +159,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 多行文本
 			if (m_pStackedWidget && m_pMTextAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalMTextAttribute, m_pMTextAttributeWidget, &CMTextAttritubeWidget::handleNoticeMTextAttribute);
-                connect(m_pMTextAttributeWidget, &CMTextAttritubeWidget::signalMTextAttributeChanged, this, &StackedWidgetManager::signalMTextChanged);
+				connect(this, &StackedWidgetManager::signalMTextAttribute, m_pMTextAttributeWidget, &MTextAttritubeWidget::handleNoticeMTextAttribute);
+                connect(m_pMTextAttributeWidget, &MTextAttritubeWidget::signalMTextAttributeChanged, this, &StackedWidgetManager::signalMTextChanged);
 			} // 多段线
 			if (m_pStackedWidget && m_pPolylineAttributeWidget)
 			{

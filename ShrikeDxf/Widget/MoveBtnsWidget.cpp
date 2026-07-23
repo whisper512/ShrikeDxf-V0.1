@@ -4,22 +4,22 @@
 MoveBtnsWidget::MoveBtnsWidget(QWidget *parent): 
 	QWidget(parent),
 	m_mainWnd(parent),
-	m_dStepLength(1.0),
-    m_dRotationAngle(1.0)
+	m_stepLength(1.0),
+    m_rotationAngle(1.0)
 {
 	ui.setupUi(this);
 
-	connect(ui.toolButton_UP,&QToolButton::clicked, this, &MoveBtnsWidget::OnBtnUpClicked);
-	connect(ui.toolButton_DOWN, &QToolButton::clicked, this, &MoveBtnsWidget::OnBtnDownClicked);
-    connect(ui.toolButton_LEFT, &QToolButton::clicked, this, &MoveBtnsWidget::OnBtnLeftClicked);
-	connect(ui.toolButton_RIGHT, &QToolButton::clicked, this, &MoveBtnsWidget::OnBtnRightClicked);
-	connect(ui.toolButton_CW, &QToolButton::clicked, this, &MoveBtnsWidget::OnBtnCWClicked);
-    connect(ui.toolButton_CCW, &QToolButton::clicked, this, &MoveBtnsWidget::OnBtnCCWClicked);
+	connect(ui.toolButton_UP,&QToolButton::clicked, this, &MoveBtnsWidget::onBtnUpClicked);
+	connect(ui.toolButton_DOWN, &QToolButton::clicked, this, &MoveBtnsWidget::onBtnDownClicked);
+    connect(ui.toolButton_LEFT, &QToolButton::clicked, this, &MoveBtnsWidget::onBtnLeftClicked);
+	connect(ui.toolButton_RIGHT, &QToolButton::clicked, this, &MoveBtnsWidget::onBtnRightClicked);
+	connect(ui.toolButton_CW, &QToolButton::clicked, this, &MoveBtnsWidget::onBtnCWClicked);
+    connect(ui.toolButton_CCW, &QToolButton::clicked, this, &MoveBtnsWidget::onBtnCCWClicked);
 
-	connect(ui.doubleSpinBox_stepLength, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MoveBtnsWidget::OnStepLengthChanged);
-	connect(ui.doubleSpinBox_stepLength, &QDoubleSpinBox::editingFinished, this, &MoveBtnsWidget::OnStepLengthChanged);
-	connect(ui.doubleSpinBox_rotateAngle, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MoveBtnsWidget::OnRotationAngleChanged);
-	connect(ui.doubleSpinBox_rotateAngle, &QDoubleSpinBox::editingFinished, this, &MoveBtnsWidget::OnRotationAngleChanged);
+	connect(ui.doubleSpinBox_stepLength, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MoveBtnsWidget::onStepLengthChanged);
+	connect(ui.doubleSpinBox_stepLength, &QDoubleSpinBox::editingFinished, this, &MoveBtnsWidget::onStepLengthChanged);
+	connect(ui.doubleSpinBox_rotateAngle, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MoveBtnsWidget::onRotationAngleChanged);
+	connect(ui.doubleSpinBox_rotateAngle, &QDoubleSpinBox::editingFinished, this, &MoveBtnsWidget::onRotationAngleChanged);
 }
 
 MoveBtnsWidget::~MoveBtnsWidget()
@@ -27,7 +27,7 @@ MoveBtnsWidget::~MoveBtnsWidget()
 }
 
 
-void MoveBtnsWidget::InitWidgetAndAddToLayout()
+void MoveBtnsWidget::initWidgetAndAddToLayout()
 {
 	if (m_mainWnd)
 	{
@@ -41,49 +41,49 @@ void MoveBtnsWidget::InitWidgetAndAddToLayout()
 		                "QDoubleSpinBox { background-color: #d0d0d0; }");*/
 }
 
-void MoveBtnsWidget::OnBtnUpClicked()
+void MoveBtnsWidget::onBtnUpClicked()
 {
-	emit signalOnBtnUpClicked();
+	emit signalonBtnUpClicked();
 }
 
-void MoveBtnsWidget::OnBtnDownClicked()
+void MoveBtnsWidget::onBtnDownClicked()
 {
-	emit signalOnBtnDownClicked();
+	emit signalonBtnDownClicked();
 }
 
-void MoveBtnsWidget::OnBtnLeftClicked()
+void MoveBtnsWidget::onBtnLeftClicked()
 {
-	emit signalOnBtnLeftClicked();
+	emit signalonBtnLeftClicked();
 }
 
-void MoveBtnsWidget::OnBtnRightClicked()
+void MoveBtnsWidget::onBtnRightClicked()
 {
-	emit signalOnBtnRightClicked();
+	emit signalonBtnRightClicked();
 }
 
-void MoveBtnsWidget::OnBtnCWClicked()
+void MoveBtnsWidget::onBtnCWClicked()
 {
-	emit signalOnBtnCWClicked();
+	emit signalonBtnCWClicked();
 }
 
-void MoveBtnsWidget::OnBtnCCWClicked()
+void MoveBtnsWidget::onBtnCCWClicked()
 {
-    emit signalOnBtnCCWClicked();
+    emit signalonBtnCCWClicked();
 }
 
-void MoveBtnsWidget::OnStepLengthChanged()
+void MoveBtnsWidget::onStepLengthChanged()
 {
 	ui.doubleSpinBox_stepLength->blockSignals(true);
-    m_dStepLength = ui.doubleSpinBox_stepLength->value();
-	emit  signalOnStepLengthOrAngleChanged(m_dStepLength, m_dRotationAngle);
+    m_stepLength = ui.doubleSpinBox_stepLength->value();
+	emit  signalOnStepLengthOrAngleChanged(m_stepLength, m_rotationAngle);
     ui.doubleSpinBox_stepLength->blockSignals(false);
 }
 
-void MoveBtnsWidget::OnRotationAngleChanged()
+void MoveBtnsWidget::onRotationAngleChanged()
 {
 	ui.doubleSpinBox_rotateAngle->blockSignals(true);
-    m_dRotationAngle = ui.doubleSpinBox_rotateAngle->value();
-	emit  signalOnStepLengthOrAngleChanged(m_dStepLength, m_dRotationAngle);
+    m_rotationAngle = ui.doubleSpinBox_rotateAngle->value();
+	emit  signalOnStepLengthOrAngleChanged(m_stepLength, m_rotationAngle);
 	ui.doubleSpinBox_rotateAngle->blockSignals(false);
 }
 
@@ -92,10 +92,10 @@ void MoveBtnsWidget::handleSetStepLengthAndAngle(const double& dStepLength, cons
 	ui.doubleSpinBox_stepLength->blockSignals(true);
     ui.doubleSpinBox_rotateAngle->blockSignals(true);
 	//弧度转角度
-	m_dStepLength = dStepLength;
-	m_dRotationAngle = qRadiansToDegrees(dRotationAngle);
-	ui.doubleSpinBox_stepLength->setValue(m_dStepLength);
-    ui.doubleSpinBox_rotateAngle->setValue(m_dRotationAngle);
+	m_stepLength = dStepLength;
+	m_rotationAngle = qRadiansToDegrees(dRotationAngle);
+	ui.doubleSpinBox_stepLength->setValue(m_stepLength);
+    ui.doubleSpinBox_rotateAngle->setValue(m_rotationAngle);
 
 
 	ui.doubleSpinBox_stepLength->blockSignals(false);

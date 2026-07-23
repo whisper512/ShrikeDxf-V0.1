@@ -1,6 +1,6 @@
 ﻿#include "LWPolylineAttributeWidget.h"
 
-CLWPolylineAttributeWidget::CLWPolylineAttributeWidget(QWidget* parent)
+LWPolylineAttributeWidget::LWPolylineAttributeWidget(QWidget* parent)
     : QWidget(parent), m_polyline()
 {
     ui.setupUi(this);
@@ -8,14 +8,14 @@ CLWPolylineAttributeWidget::CLWPolylineAttributeWidget(QWidget* parent)
     ui.spinBox_Linenum->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
     connect(ui.tableWidget, &QTableWidget::itemChanged,
-        this, &CLWPolylineAttributeWidget::OnTableValueChanged);
+        this, &LWPolylineAttributeWidget::onTableValueChanged);
 }
 
-CLWPolylineAttributeWidget::~CLWPolylineAttributeWidget()
+LWPolylineAttributeWidget::~LWPolylineAttributeWidget()
 {
 }
 
-void CLWPolylineAttributeWidget::RefreshTable()
+void LWPolylineAttributeWidget::refreshTable()
 {
     ui.tableWidget->setRowCount(m_polyline.numVertices());
     ui.tableWidget->setColumnCount(2);
@@ -34,9 +34,9 @@ void CLWPolylineAttributeWidget::RefreshTable()
     ui.tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-void CLWPolylineAttributeWidget::OnTableValueChanged()
+void LWPolylineAttributeWidget::onTableValueChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
     m_polyline.vecVertices.clear();
     for (int i = 0; i < ui.tableWidget->rowCount(); i++)
@@ -52,14 +52,14 @@ void CLWPolylineAttributeWidget::OnTableValueChanged()
 }
 
 
-void CLWPolylineAttributeWidget::handleNoticeLWPolylineAttribute(EntityLWPolyline lwpolyline)
+void LWPolylineAttributeWidget::handleNoticeLWPolylineAttribute(EntityLWPolyline lwpolyline)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_polyline = lwpolyline;
     ui.spinBox_Vertices->setValue(m_polyline.numVertices());
     ui.spinBox_Linenum->setValue(m_polyline.numVertices() - 1);
-    RefreshTable();
+    refreshTable();
 
-    m_bUpdating = false;
+    m_updating = false;
 }
