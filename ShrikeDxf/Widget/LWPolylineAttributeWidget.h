@@ -14,7 +14,7 @@ public:
     ~LWPolylineAttributeWidget();
 
 private:
-    Ui::CLWPolylineAttributeWidgetClass ui;
+    Ui::LWPolylineAttributeWidgetClass ui;
     EntityLWPolyline m_polyline;
     bool m_updating = false;
 
