@@ -85,13 +85,13 @@ void GraphicsView::initMenu(QWidget* pParent)
 void GraphicsView::initRuler()
 {
     // 创建标尺
-    m_rulerH = new CRulerH(this);
+    m_rulerH = new RulerH(this);
     m_rulerH->setFixedHeight(20);
     m_rulerH->setGeometry(20, 0, width() - 20, 20);
     m_rulerH->raise();
     m_rulerH->show();
 
-    m_rulerV = new CRulerV(this);
+    m_rulerV = new RulerV(this);
     m_rulerV->setFixedWidth(20);
     m_rulerV->setGeometry(0, 0, 20, height());
     m_rulerV->raise();
@@ -389,11 +389,11 @@ void GraphicsView::mouseMoveEvent(QMouseEvent* pEvent)
     QPointF scenePos = mapToScene(pEvent->pos());
     if (m_rulerH)
     {
-        m_rulerH->SetMousePos(scenePos.x());
+        m_rulerH->setMousePos(scenePos.x());
     }
     if (m_rulerV)
     {
-        m_rulerV->SetMousePos(scenePos.y());
+        m_rulerV->setMousePos(scenePos.y());
     }
 }
 
@@ -444,12 +444,12 @@ void GraphicsView::updateRulers()
     // 设置标尺的范围为视图的X范围
     if (m_rulerH)
     {
-        m_rulerH->SetRange(sceneRect.left(), sceneRect.right());
-        m_rulerH->SetOrigin(sceneRect.left());
+        m_rulerH->setRange(sceneRect.left(), sceneRect.right());
+        m_rulerH->setOrigin(sceneRect.left());
 
         double scaleX = transform.m11();
         // 设置标尺的缩放比例
-        m_rulerH->SetRulerZoom(scaleX);
+        m_rulerH->setRulerZoom(scaleX);
         m_rulerH->update();
     }
 
@@ -458,11 +458,11 @@ void GraphicsView::updateRulers()
         double rulerTop = sceneRect.top();
         double rulerBottom = sceneRect.bottom();
 
-        m_rulerV->SetRange(rulerTop, rulerBottom);
-        m_rulerV->SetOrigin(rulerTop);
+        m_rulerV->setRange(rulerTop, rulerBottom);
+        m_rulerV->setOrigin(rulerTop);
         double scaleY = transform.m22();
         // 设置标尺的缩放比例
-        m_rulerV->SetRulerZoom(scaleY);
+        m_rulerV->setRulerZoom(scaleY);
         m_rulerV->update();
     }
 }

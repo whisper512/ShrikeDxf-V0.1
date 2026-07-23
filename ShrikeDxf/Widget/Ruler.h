@@ -4,75 +4,75 @@
 #include <QPaintEvent>
 #include <QPainter>
 
-class CRulerH : public QWidget
+class RulerH : public QWidget
 {
     Q_OBJECT
 
 private:
     //尺子的左边起始
-    double m_dOrigin;
+    double m_origin;
     //缩放因子
-    double m_dRulerZoom;
+    double m_rulerZoom;
     //尺子起始值
-    double m_dStart;
+    double m_start;
     //尺子结束值
-    double m_dEnd;
+    double m_end;
     //刻度最小值
-    double m_dStepMin;
+    double m_stepMin;
     //刻度最大值
-    double m_dStepMax;
+    double m_stepMax;
     //graphicsview中scene的鼠标位置
-    double m_dMouseXPos;
+    double m_mouseXPos;
 
 public:
-    explicit CRulerH(QWidget* parent = nullptr);
-    ~CRulerH();
-    void SetOrigin(double origin);
-    void SetRulerZoom(double zoom);
-    void SetRange(double min, double max);
-    void SetMousePos(double pos);
+    explicit RulerH(QWidget* parent = nullptr);
+    ~RulerH();
+    void setOrigin(double origin);
+    void setRulerZoom(double zoom);
+    void setRange(double min, double max);
+    void setMousePos(double pos);
     //计算尺子间隔
-    double CalculateStepSize() const;
+    double calculateStepSize() const;
     //判断是否为主刻度
-    bool IsMajorTickMark(long long count, double step) const;
-    QString FormatTickValue(double value, int decimalPlaces) const;
-    int CalculateDecimalPlaces(double step) const;
+    bool isMajorTickMark(long long count, double step) const;
+    QString formatTickValue(double value, int decimalPlaces) const;
+    int calculateDecimalPlaces(double step) const;
 protected:
     void paintEvent(QPaintEvent* event) override;
 
 };
 
-class CRulerV : public QWidget
+class RulerV : public QWidget
 {
     Q_OBJECT
 
 private:
     //尺子的上方起始
-    double m_dOrigin;
+    double m_origin;
     //缩放因子
-    double m_dRulerZoom;
+    double m_rulerZoom;
     //尺子起始值
-    double m_dStart;
+    double m_start;
     //尺子结束值
-    double m_dEnd;
+    double m_end;
     //刻度最小值
-    double m_dStepMin;
+    double m_stepMin;
     //刻度最大值
-    double m_dStepMax;
-    double m_dMouseYPos;
+    double m_stepMax;
+    double m_mouseYPos;
 
 public:
-    explicit CRulerV(QWidget* parent = nullptr);
-    ~CRulerV();
-    void SetOrigin(double origin);
-    void SetRulerZoom(double zoom);
-    void SetRange(double min, double max);
-    void SetMousePos(double pos);
+    explicit RulerV(QWidget* parent = nullptr);
+    ~RulerV();
+    void setOrigin(double origin);
+    void setRulerZoom(double zoom);
+    void setRange(double min, double max);
+    void setMousePos(double pos);
 
-    double CalculateStepSize() const;
-    bool IsMajorTickMark(long long count, double step) const;
-    QString FormatTickValue(double value, int decimalPlaces) const;
-    int CalculateDecimalPlaces(double step) const;
+    double calculateStepSize() const;
+    bool isMajorTickMark(long long count, double step) const;
+    QString formatTickValue(double value, int decimalPlaces) const;
+    int calculateDecimalPlaces(double step) const;
 protected:
     void paintEvent(QPaintEvent* event) override;
 };

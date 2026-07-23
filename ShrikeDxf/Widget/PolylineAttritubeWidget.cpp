@@ -1,16 +1,16 @@
-#include "PolylineAttritubeWidget.h"
+﻿#include "PolylineAttritubeWidget.h"
 
-CPolylineAttributeWidget::CPolylineAttributeWidget(QWidget* parent)
+PolylineAttributeWidget::PolylineAttributeWidget(QWidget* parent)
 	: QWidget(parent)
 {
 	
 }
 
-CPolylineAttributeWidget::~CPolylineAttributeWidget()
+PolylineAttributeWidget::~PolylineAttributeWidget()
 {
 }
 
-void CPolylineAttributeWidget::RefreshTable()
+void PolylineAttributeWidget::refreshTable()
 {
 	ui.tableWidget->setRowCount(m_polyline.vertexCount);
 	ui.tableWidget->setColumnCount(2);
@@ -30,14 +30,14 @@ void CPolylineAttributeWidget::RefreshTable()
 }
 
 
-void CPolylineAttributeWidget::handleNoticePolylineAttribute(EntityPolyline polyline)
+void PolylineAttributeWidget::handleNoticePolylineAttribute(EntityPolyline polyline)
 {
 	ui.tableWidget->blockSignals(true);
 
 	m_polyline = polyline;
 	ui.spinBox_Vertices->setValue(m_polyline.vertexCount);
 	ui.spinBox_Linenum->setValue(m_polyline.vertexCount - 1);
-	RefreshTable();
+	refreshTable();
 
 	ui.tableWidget->blockSignals(false);
 }

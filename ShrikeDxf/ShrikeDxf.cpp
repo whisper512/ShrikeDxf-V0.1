@@ -37,7 +37,7 @@ void ShrikeDxf::initWindowComponents()
 		initAndCreateMenuBar();
 		initAndCreateTreeView();
 		initAndCreateGraphicsView();
-		initAndCreateStackedWidget();
+		initAndcreateStackedWidget();
 		initAndCreateMoveBtnsWidget();
 		initAndCreateLayerTableView();
 		initAndCreateCreateEntityWidget();
@@ -91,12 +91,12 @@ void ShrikeDxf::initAndCreateGraphicsView()
 	m_graphicsView = new GraphicsView(this, m_dxfDataManager);
 }
 
-void ShrikeDxf::initAndCreateStackedWidget()
+void ShrikeDxf::initAndcreateStackedWidget()
 {
 	m_stackedWidgetManager = new StackedWidgetManager(this);
 	if (m_stackedWidgetManager)
 	{
-        m_stackedWidgetManager->CreateStackedWidget();
+        m_stackedWidgetManager->createStackedWidget();
 	}
 }
 

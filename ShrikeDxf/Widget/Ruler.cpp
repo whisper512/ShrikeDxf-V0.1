@@ -6,86 +6,86 @@
 #include <QTransform>
 #include <QtMath>
 
-CRulerH::CRulerH(QWidget* parent) : QWidget(parent),
-    m_dOrigin(0.0),
-    m_dRulerZoom(1.0),
-    m_dStart(0.0),
-    m_dEnd(5000.0),
-    m_dStepMin(1.0),
-    m_dStepMax(500.0)
+RulerH::RulerH(QWidget* parent) : QWidget(parent),
+    m_origin(0.0),
+    m_rulerZoom(1.0),
+    m_start(0.0),
+    m_end(5000.0),
+    m_stepMin(1.0),
+    m_stepMax(500.0)
 {
 }
 
-CRulerH::~CRulerH()
+RulerH::~RulerH()
 {
 }
 
-CRulerV::CRulerV(QWidget* parent) : QWidget(parent),
-    m_dOrigin(0.0),
-    m_dRulerZoom(1.0),
-    m_dStart(0.0),
-    m_dEnd(5000.0),
-    m_dStepMin(1.0),
-    m_dStepMax(500.0)
+RulerV::RulerV(QWidget* parent) : QWidget(parent),
+    m_origin(0.0),
+    m_rulerZoom(1.0),
+    m_start(0.0),
+    m_end(5000.0),
+    m_stepMin(1.0),
+    m_stepMax(500.0)
 {
 }
 
-CRulerV::~CRulerV()
+RulerV::~RulerV()
 {
 }
 
-void CRulerH::SetOrigin(double origin)
+void RulerH::setOrigin(double origin)
 {
-    m_dOrigin = origin;
+    m_origin = origin;
     update();
 }
 
-void CRulerV::SetOrigin(double origin)
+void RulerV::setOrigin(double origin)
 {
-    m_dOrigin = origin;
+    m_origin = origin;
     update();
 }
 
-void CRulerH::SetRulerZoom(double zoom)
+void RulerH::setRulerZoom(double zoom)
 {
-    m_dRulerZoom = zoom;
+    m_rulerZoom = zoom;
     update();
 }
 
-void CRulerV::SetRulerZoom(double zoom)
+void RulerV::setRulerZoom(double zoom)
 {
     //view的Y轴翻转
-    m_dRulerZoom = zoom;
+    m_rulerZoom = zoom;
     update();
 }
 
-void CRulerH::SetRange(double min, double max)
+void RulerH::setRange(double min, double max)
 {
-    m_dStart = min;
-    m_dEnd = max;
+    m_start = min;
+    m_end = max;
     update();
 }
 
-void CRulerV::SetRange(double min, double max)
+void RulerV::setRange(double min, double max)
 {
-    m_dStart = min;
-    m_dEnd = max;
+    m_start = min;
+    m_end = max;
     update();
 }
 
-void CRulerH::SetMousePos(double pos)
+void RulerH::setMousePos(double pos)
 {
-    m_dMouseXPos = pos;
+    m_mouseXPos = pos;
     update();
 }
 
-void CRulerV::SetMousePos(double pos)
+void RulerV::setMousePos(double pos)
 {
-    m_dMouseYPos = pos;
+    m_mouseYPos = pos;
     update();
 }
 
-double CRulerH::CalculateStepSize() const
+double RulerH::calculateStepSize() const
 {
     if (width() <= 0)
     {
@@ -93,7 +93,7 @@ double CRulerH::CalculateStepSize() const
     }
 
     // 视图范围
-    double dViewRange = width() / m_dRulerZoom;
+    double dViewRange = width() / m_rulerZoom;
     double TargetStep = dViewRange / 35.0;
 
     // 使用对数计算最接近的标准步长
@@ -109,13 +109,13 @@ double CRulerH::CalculateStepSize() const
     else return 1.0 * base;
 }
 
-double CRulerV::CalculateStepSize() const
+double RulerV::calculateStepSize() const
 {
     if (height() <= 0)
     {
         return 1.0;
     }
-    double dViewRange = height() / (-m_dRulerZoom);
+    double dViewRange = height() / (-m_rulerZoom);
     double TargetStep = dViewRange / 35.0;
     double logStep = std::log10(TargetStep);
     double power = std::floor(logStep);
@@ -129,7 +129,7 @@ double CRulerV::CalculateStepSize() const
     else return 1.0 * base;
 }
 
-int CRulerH::CalculateDecimalPlaces(double step) const
+int RulerH::calculateDecimalPlaces(double step) const
 {
     if (step >= 1.0) return 0;
     // 计算需要的小数位数
@@ -139,7 +139,7 @@ int CRulerH::CalculateDecimalPlaces(double step) const
     return qMin(places, 6);
 }
 
-int CRulerV::CalculateDecimalPlaces(double step) const
+int RulerV::calculateDecimalPlaces(double step) const
 {
     if (step >= 1.0) return 0;
     double logStep = std::log10(step);
@@ -147,17 +147,17 @@ int CRulerV::CalculateDecimalPlaces(double step) const
     return qMin(places, 6);
 }
 
-bool CRulerH::IsMajorTickMark(long long count, double step) const
+bool RulerH::isMajorTickMark(long long count, double step) const
 {
     return (count % 10 == 0);
 }
 
-bool CRulerV::IsMajorTickMark(long long count, double step) const
+bool RulerV::isMajorTickMark(long long count, double step) const
 {
     return (count % 10 == 0);
 }
 
-QString CRulerH::FormatTickValue(double value, int decimalPlaces) const
+QString RulerH::formatTickValue(double value, int decimalPlaces) const
 {
     // 格式化刻度值，避免科学计数法
     QString text = QString::number(value, 'f', decimalPlaces);
@@ -177,7 +177,7 @@ QString CRulerH::FormatTickValue(double value, int decimalPlaces) const
     return text;
 }
 
-QString CRulerV::FormatTickValue(double value, int decimalPlaces) const
+QString RulerV::formatTickValue(double value, int decimalPlaces) const
 {
     QString text = QString::number(value, 'f', decimalPlaces);
     if (decimalPlaces > 0)
@@ -194,7 +194,7 @@ QString CRulerV::FormatTickValue(double value, int decimalPlaces) const
     return text;
 }
 
-void CRulerH::paintEvent(QPaintEvent* event)
+void RulerH::paintEvent(QPaintEvent* event)
 {
     Q_UNUSED(event);
 
@@ -202,13 +202,13 @@ void CRulerH::paintEvent(QPaintEvent* event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.fillRect(rect(), QColor("#FFFFFF"));
     
-    double step = CalculateStepSize();
+    double step = calculateStepSize();
 
     // 计算需要的小数位数
-    int decimalPlaces = CalculateDecimalPlaces(step);
+    int decimalPlaces = calculateDecimalPlaces(step);
 
     // 计算第一个刻度的位置
-    double startValue = std::ceil(m_dStart / step) * step;
+    double startValue = std::ceil(m_start / step) * step;
 
     QPen pen = painter.pen();
     pen.setWidth(1);
@@ -218,16 +218,16 @@ void CRulerH::paintEvent(QPaintEvent* event)
     font.setPointSize(8);
     painter.setFont(font);;
 
-    for (double value = startValue; value <= m_dEnd; value += step)
+    for (double value = startValue; value <= m_end; value += step)
     {
         // 将场景坐标转换为视图坐标
-        double xPos = (value - m_dOrigin) * m_dRulerZoom;
+        double xPos = (value - m_origin) * m_rulerZoom;
         // 只绘制在视图范围内的刻度
         if (xPos < 0 || xPos > width())
             continue;
 
         long long count = qRound64(value / step);
-        bool isMajor = IsMajorTickMark(count, step);
+        bool isMajor = isMajorTickMark(count, step);
 
         //刻度的长度
         int iTickHeight;
@@ -245,7 +245,7 @@ void CRulerH::paintEvent(QPaintEvent* event)
         //主刻度
         if (isMajor)
         {
-            QString text = FormatTickValue(value, decimalPlaces);
+            QString text = formatTickValue(value, decimalPlaces);
             QRectF textRect = painter.boundingRect(QRectF(), Qt::AlignLeft | Qt::AlignTop, text);
 
             // 调整文本位置，确保不超出边界
@@ -268,11 +268,11 @@ void CRulerH::paintEvent(QPaintEvent* event)
     QPen redPen(Qt::red);
     redPen.setWidth(1);
     painter.setPen(redPen);
-    double widgetMouseX = (m_dMouseXPos - m_dOrigin) * m_dRulerZoom;
+    double widgetMouseX = (m_mouseXPos - m_origin) * m_rulerZoom;
     painter.drawLine(QPointF(widgetMouseX, 0), QPointF(widgetMouseX, height()));
 }
 
-void CRulerV::paintEvent(QPaintEvent* event)
+void RulerV::paintEvent(QPaintEvent* event)
 {
     Q_UNUSED(event);
 
@@ -280,9 +280,9 @@ void CRulerV::paintEvent(QPaintEvent* event)
     painter.setRenderHint(QPainter::Antialiasing);
     painter.fillRect(rect(), QColor("#FFFFFF"));
 
-    double step = CalculateStepSize();
-    int decimalPlaces = CalculateDecimalPlaces(step);
-    double startValue = std::ceil(m_dStart / step) * step;
+    double step = calculateStepSize();
+    int decimalPlaces = calculateDecimalPlaces(step);
+    double startValue = std::ceil(m_start / step) * step;
 
     QPen pen = painter.pen();
     pen.setWidth(1);
@@ -292,15 +292,15 @@ void CRulerV::paintEvent(QPaintEvent* event)
     font.setPointSize(8);
     painter.setFont(font);
 
-    for (double value = startValue; value <= m_dEnd; value += step)
+    for (double value = startValue; value <= m_end; value += step)
     {
-        double yPos =height() - ((value - m_dOrigin) * (-m_dRulerZoom));
+        double yPos =height() - ((value - m_origin) * (-m_rulerZoom));
         if (yPos < 0 || yPos > height())
         {
             continue;
         }
         long long count = qRound64(value / step);
-        bool isMajor = IsMajorTickMark(count, step);
+        bool isMajor = isMajorTickMark(count, step);
 
         int tickHeight;
         if (count % 2 == 0) 
@@ -316,7 +316,7 @@ void CRulerV::paintEvent(QPaintEvent* event)
         // 绘制主刻度值
         if (isMajor)
         {
-            QString text = FormatTickValue(value, decimalPlaces);
+            QString text = formatTickValue(value, decimalPlaces);
             QRectF textRect = painter.boundingRect(QRectF(), Qt::AlignLeft | Qt::AlignTop, text);
 
             double textY = yPos;
@@ -341,6 +341,6 @@ void CRulerV::paintEvent(QPaintEvent* event)
     QPen redPen(Qt::red);
     redPen.setWidth(1);
     painter.setPen(redPen);
-    double WidgetMouseY = height() - ((m_dMouseYPos - m_dOrigin) * (-m_dRulerZoom));
+    double WidgetMouseY = height() - ((m_mouseYPos - m_origin) * (-m_rulerZoom));
     painter.drawLine(QPointF(0, WidgetMouseY), QPointF(width(), WidgetMouseY));
 }

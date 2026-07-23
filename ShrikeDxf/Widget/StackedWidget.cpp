@@ -4,21 +4,21 @@
 #include "ShrikeDxf.h"
 
 
-StackedWidgetManager::StackedWidgetManager(QWidget* pMainwnd) :
-	m_pMainwnd(pMainwnd),
-	m_pLayout(nullptr),
-	m_pStackedWidget(nullptr),
-	m_pPointAttributeWidget(nullptr),
-	m_pLineAttributeWidget(nullptr),
-	m_pCircleAttributeWidget(nullptr),
-	m_pArcAttributeWidget(nullptr),
-	m_pLWPolylineAttributeWidget(nullptr),
-	m_pEllipseAttributeWidget(nullptr),
-	m_pTextAttributeWidget(nullptr),
-	m_pMTextAttributeWidget(nullptr),
-	m_pPolylineAttributeWidget(nullptr),
-	m_pSplineAttributeWidget(nullptr),
-    m_pHatchAttributeWidget(nullptr)
+StackedWidgetManager::StackedWidgetManager(QWidget* mainWnd) :
+	m_mainWnd(mainWnd),
+	m_layout(nullptr),
+	m_stackedWidget(nullptr),
+	m_pointAttributeWidget(nullptr),
+	m_lineAttributeWidget(nullptr),
+	m_circleAttributeWidget(nullptr),
+	m_arcAttributeWidget(nullptr),
+	m_lwPolylineAttributeWidget(nullptr),
+	m_ellipseAttributeWidget(nullptr),
+	m_textAttributeWidget(nullptr),
+	m_mTextAttributeWidget(nullptr),
+	m_polylineAttributeWidget(nullptr),
+	m_splineAttributeWidget(nullptr),
+    m_hatchAttributeWidget(nullptr)
 {
 	
 }
@@ -27,162 +27,162 @@ StackedWidgetManager::~StackedWidgetManager()
 {
 }
 
-void StackedWidgetManager::CreateStackedWidget()
+void StackedWidgetManager::createStackedWidget()
 {
-	m_pStackedWidget = new QStackedWidget(m_pMainwnd);
-	if (m_pMainwnd)
+	m_stackedWidget = new QStackedWidget(m_mainWnd);
+	if (m_mainWnd)
 	{
-		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
-		pWnd->ui.verticalLayout_Layer->addWidget(m_pStackedWidget);
+		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
+		pWnd->ui.verticalLayout_Layer->addWidget(m_stackedWidget);
 	}
 	else
 	{
-		QMessageBox::information(m_pStackedWidget, "TreeView Error", "MainWnd is null");
+		QMessageBox::information(m_stackedWidget, "TreeView Error", "MainWnd is null");
 		return;
 	}
 
-	m_pStackedWidget->setStyleSheet("background-color: #FFFFFF;");
-	AddPages();
+	m_stackedWidget->setStyleSheet("background-color: #FFFFFF;");
+	addPages();
 	
-	ConnectSignalAndSlot();
+	connectSignalAndSlot();
 }
 
-void StackedWidgetManager::AddPages()
+void StackedWidgetManager::addPages()
 {
 
-	m_pPointAttributeWidget = new PointAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pPointAttributeWidget);
-	m_pPointAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	m_pStackedWidget->widget(0)->setContentsMargins(0, 0, 0, 0);
+	m_pointAttributeWidget = new PointAttributeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_pointAttributeWidget);
+	m_pointAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_stackedWidget->widget(0)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[0] = STR_POINT_LOWERCASE;
 
-	m_pLineAttributeWidget = new LineAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pLineAttributeWidget);
-	m_pLineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	m_pStackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
+	m_lineAttributeWidget = new LineAttributeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_lineAttributeWidget);
+	m_lineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_stackedWidget->widget(1)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[1] = STR_LINE_LOWERCASE;
 
-    m_pCircleAttributeWidget = new CircleAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pCircleAttributeWidget);
-	m_pCircleAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	m_pStackedWidget->widget(2)->setContentsMargins(0, 0, 0, 0);
+    m_circleAttributeWidget = new CircleAttributeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_circleAttributeWidget);
+	m_circleAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_stackedWidget->widget(2)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[2] = STR_CIRCLE_LOWERCASE;
 
-	m_pArcAttributeWidget = new ArcAttritubeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pArcAttributeWidget);
-	m_pArcAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	m_pStackedWidget->widget(3)->setContentsMargins(0, 0, 0, 0);
+	m_arcAttributeWidget = new ArcAttritubeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_arcAttributeWidget);
+	m_arcAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_stackedWidget->widget(3)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[3] = STR_ARC_LOWERCASE;
 
-	m_pLWPolylineAttributeWidget = new LWPolylineAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pLWPolylineAttributeWidget);
-	m_pLWPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	m_pStackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
+	m_lwPolylineAttributeWidget = new LWPolylineAttributeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_lwPolylineAttributeWidget);
+	m_lwPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_stackedWidget->widget(4)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[4] = STR_LWPOLYLINE_LOWERCASE;
 
-	m_pEllipseAttributeWidget = new EllipseAttritubeWidget(m_pStackedWidget);
-    m_pStackedWidget->addWidget(m_pEllipseAttributeWidget);
-	m_pEllipseAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(5)->setContentsMargins(0, 0, 0, 0);
+	m_ellipseAttributeWidget = new EllipseAttritubeWidget(m_stackedWidget);
+    m_stackedWidget->addWidget(m_ellipseAttributeWidget);
+	m_ellipseAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_stackedWidget->widget(5)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[5] = STR_ELLIPSE_LOWERCASE;
 
-	m_pTextAttributeWidget = new CTextAttritubeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pTextAttributeWidget);
-    m_pTextAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(6)->setContentsMargins(0, 0, 0, 0);
+	m_textAttributeWidget = new CTextAttritubeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_textAttributeWidget);
+    m_textAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_stackedWidget->widget(6)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[6] = STR_TEXT_LOWERCASE;
 
-	m_pMTextAttributeWidget = new MTextAttritubeWidget(m_pStackedWidget);
-    m_pStackedWidget->addWidget(m_pMTextAttributeWidget);
-    m_pMTextAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(7)->setContentsMargins(0, 0, 0, 0);
+	m_mTextAttributeWidget = new MTextAttritubeWidget(m_stackedWidget);
+    m_stackedWidget->addWidget(m_mTextAttributeWidget);
+    m_mTextAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_stackedWidget->widget(7)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[7] = STR_MTEXT_LOWERCASE;
 
-	m_pPolylineAttributeWidget = new CPolylineAttributeWidget(m_pStackedWidget);
-	m_pStackedWidget->addWidget(m_pPolylineAttributeWidget);
-    m_pPolylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(8)->setContentsMargins(0, 0, 0, 0);
+	m_polylineAttributeWidget = new PolylineAttributeWidget(m_stackedWidget);
+	m_stackedWidget->addWidget(m_polylineAttributeWidget);
+    m_polylineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_stackedWidget->widget(8)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[8] = STR_POLYLINE_LOWERCASE;
 
-	m_pSplineAttributeWidget = new CSplineAttributeWidget(m_pStackedWidget);
-    m_pStackedWidget->addWidget(m_pSplineAttributeWidget);
-	m_pSplineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(9)->setContentsMargins(0, 0, 0, 0);
+	m_splineAttributeWidget = new SplineAttributeWidget(m_stackedWidget);
+    m_stackedWidget->addWidget(m_splineAttributeWidget);
+	m_splineAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_stackedWidget->widget(9)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[9] = STR_SPLINE_LOWERCASE;
 
-	m_pHatchAttributeWidget = new HatchAttributeWidget(m_pStackedWidget);
-    m_pStackedWidget->addWidget(m_pHatchAttributeWidget);
-    m_pHatchAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_pStackedWidget->widget(10)->setContentsMargins(0, 0, 0, 0);
+	m_hatchAttributeWidget = new HatchAttributeWidget(m_stackedWidget);
+    m_stackedWidget->addWidget(m_hatchAttributeWidget);
+    m_hatchAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_stackedWidget->widget(10)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[10] = STR_HATCH_LOWERCASE;
 }
 
-void StackedWidgetManager::ConnectSignalAndSlot()
+void StackedWidgetManager::connectSignalAndSlot()
 {
 	QTimer::singleShot(0, this, [this]()
 	{
 			  // 点
-			if (m_pStackedWidget && m_pPointAttributeWidget)
+			if (m_stackedWidget && m_pointAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalPointAttribute, m_pPointAttributeWidget, &PointAttributeWidget::handleNoticePointAttribute);
-				connect(m_pPointAttributeWidget, &PointAttributeWidget::signalPointAttributeChanged, this, &StackedWidgetManager::signalPointChanged);
+				connect(this, &StackedWidgetManager::signalPointAttribute, m_pointAttributeWidget, &PointAttributeWidget::handleNoticePointAttribute);
+				connect(m_pointAttributeWidget, &PointAttributeWidget::signalPointAttributeChanged, this, &StackedWidgetManager::signalPointChanged);
 			} // 线
-			if (m_pStackedWidget && m_pLineAttributeWidget)
+			if (m_stackedWidget && m_lineAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalLineAttribute, m_pLineAttributeWidget, &LineAttributeWidget::handleNoticeLineAttribute);
-				connect(m_pLineAttributeWidget, &LineAttributeWidget::signalLineAttributeChanged, this, &StackedWidgetManager::signalLineChanged);
+				connect(this, &StackedWidgetManager::signalLineAttribute, m_lineAttributeWidget, &LineAttributeWidget::handleNoticeLineAttribute);
+				connect(m_lineAttributeWidget, &LineAttributeWidget::signalLineAttributeChanged, this, &StackedWidgetManager::signalLineChanged);
 			} // 圆
-			if (m_pStackedWidget && m_pCircleAttributeWidget)
+			if (m_stackedWidget && m_circleAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalCircleAttribute, m_pCircleAttributeWidget, &CircleAttributeWidget::handleNoticeCircleAttribute);
-				connect(m_pCircleAttributeWidget, &CircleAttributeWidget::signalCircleAttributeChanged, this, &StackedWidgetManager::signalCircleChanged);
+				connect(this, &StackedWidgetManager::signalCircleAttribute, m_circleAttributeWidget, &CircleAttributeWidget::handleNoticeCircleAttribute);
+				connect(m_circleAttributeWidget, &CircleAttributeWidget::signalCircleAttributeChanged, this, &StackedWidgetManager::signalCircleChanged);
 			} // 圆弧
-			if (m_pStackedWidget && m_pArcAttributeWidget)
+			if (m_stackedWidget && m_arcAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalArcAttribute, m_pArcAttributeWidget, &ArcAttritubeWidget::handleNoticeArcAttribute);
-                connect(m_pArcAttributeWidget, &ArcAttritubeWidget::signalArcAttributeChanged, this, &StackedWidgetManager::signalArcChanged);
+				connect(this, &StackedWidgetManager::signalArcAttribute, m_arcAttributeWidget, &ArcAttritubeWidget::handleNoticeArcAttribute);
+                connect(m_arcAttributeWidget, &ArcAttritubeWidget::signalArcAttributeChanged, this, &StackedWidgetManager::signalArcChanged);
 			} // 轻量多段线
-			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
+			if (m_stackedWidget && m_lwPolylineAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalLWPolylineAttribute, m_pLWPolylineAttributeWidget, &LWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
-				connect(m_pLWPolylineAttributeWidget, &LWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &StackedWidgetManager::signalLWPolylineChanged);
+				connect(this, &StackedWidgetManager::signalLWPolylineAttribute, m_lwPolylineAttributeWidget, &LWPolylineAttributeWidget::handleNoticeLWPolylineAttribute);
+				connect(m_lwPolylineAttributeWidget, &LWPolylineAttributeWidget::signalLWPolylineAttributeChanged, this, &StackedWidgetManager::signalLWPolylineChanged);
 			} // 椭圆
-			if (m_pStackedWidget && m_pEllipseAttributeWidget)
+			if (m_stackedWidget && m_ellipseAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalEllipseAttribute, m_pEllipseAttributeWidget, &EllipseAttritubeWidget::handleNoticeEllipseAttribute);
-				connect(m_pEllipseAttributeWidget, &EllipseAttritubeWidget::signalEllipseAttributeChanged, this, &StackedWidgetManager::signalEllipseChanged);
+				connect(this, &StackedWidgetManager::signalEllipseAttribute, m_ellipseAttributeWidget, &EllipseAttritubeWidget::handleNoticeEllipseAttribute);
+				connect(m_ellipseAttributeWidget, &EllipseAttritubeWidget::signalEllipseAttributeChanged, this, &StackedWidgetManager::signalEllipseChanged);
 			} // 文本
-			if (m_pStackedWidget && m_pTextAttributeWidget)
+			if (m_stackedWidget && m_textAttributeWidget)
 			{
-				connect(this , &StackedWidgetManager::signalTextAttribute, m_pTextAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
-                connect(m_pTextAttributeWidget, &CTextAttritubeWidget::signalTextAttributeChanged, this, &StackedWidgetManager::signalTextChanged);
+				connect(this , &StackedWidgetManager::signalTextAttribute, m_textAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
+                connect(m_textAttributeWidget, &CTextAttritubeWidget::signalTextAttributeChanged, this, &StackedWidgetManager::signalTextChanged);
 			} // 多行文本
-			if (m_pStackedWidget && m_pMTextAttributeWidget)
+			if (m_stackedWidget && m_mTextAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalMTextAttribute, m_pMTextAttributeWidget, &MTextAttritubeWidget::handleNoticeMTextAttribute);
-                connect(m_pMTextAttributeWidget, &MTextAttritubeWidget::signalMTextAttributeChanged, this, &StackedWidgetManager::signalMTextChanged);
+				connect(this, &StackedWidgetManager::signalMTextAttribute, m_mTextAttributeWidget, &MTextAttritubeWidget::handleNoticeMTextAttribute);
+                connect(m_mTextAttributeWidget, &MTextAttritubeWidget::signalMTextAttributeChanged, this, &StackedWidgetManager::signalMTextChanged);
 			} // 多段线
-			if (m_pStackedWidget && m_pPolylineAttributeWidget)
+			if (m_stackedWidget && m_polylineAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalPolylineAttribute, m_pPolylineAttributeWidget, &CPolylineAttributeWidget::handleNoticePolylineAttribute);
-				connect(m_pPolylineAttributeWidget, &CPolylineAttributeWidget::signalPolylineAttributeChanged, this, &StackedWidgetManager::signalPolylineChanged);
+				connect(this, &StackedWidgetManager::signalPolylineAttribute, m_polylineAttributeWidget, &PolylineAttributeWidget::handleNoticePolylineAttribute);
+				connect(m_polylineAttributeWidget, &PolylineAttributeWidget::signalPolylineAttributeChanged, this, &StackedWidgetManager::signalPolylineChanged);
 
 			} // 样条曲线
-			if (m_pStackedWidget && m_pSplineAttributeWidget)
+			if (m_stackedWidget && m_splineAttributeWidget)
 			{
-                connect(this, &StackedWidgetManager::signalSplineAttribute, m_pSplineAttributeWidget, &CSplineAttributeWidget::handleNoticeSplineAttribute);
-				connect(m_pSplineAttributeWidget, &CSplineAttributeWidget::signalSplineAttributeChanged, this, &StackedWidgetManager::signalSplineChanged);
+                connect(this, &StackedWidgetManager::signalSplineAttribute, m_splineAttributeWidget, &SplineAttributeWidget::handleNoticeSplineAttribute);
+				connect(m_splineAttributeWidget, &SplineAttributeWidget::signalSplineAttributeChanged, this, &StackedWidgetManager::signalSplineChanged);
 			} // 填充
-			if (m_pStackedWidget && m_pHatchAttributeWidget)
+			if (m_stackedWidget && m_hatchAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalHatchAttribute, m_pHatchAttributeWidget, &HatchAttributeWidget::handleNoticeHatchAtttribute);
-				connect(m_pHatchAttributeWidget, &HatchAttributeWidget::signalHatchAtttributeChanged, this, &StackedWidgetManager::signalHatchChanged);
+				connect(this, &StackedWidgetManager::signalHatchAttribute, m_hatchAttributeWidget, &HatchAttributeWidget::handleNoticeHatchAtttribute);
+				connect(m_hatchAttributeWidget, &HatchAttributeWidget::signalHatchAtttributeChanged, this, &StackedWidgetManager::signalHatchChanged);
 			}
 			
 	});
 }
 
-void StackedWidgetManager::ChangeWidgets()
+void StackedWidgetManager::changeWidgets()
 {
 	int nIndex = -1;
 	switch (m_entityType)
@@ -225,9 +225,9 @@ void StackedWidgetManager::ChangeWidgets()
 	default:
 		break;
 	}
-	if (nIndex >= 0 && nIndex < m_pStackedWidget->count())
+	if (nIndex >= 0 && nIndex < m_stackedWidget->count())
 	{
-		m_pStackedWidget->setCurrentIndex(nIndex);
+		m_stackedWidget->setCurrentIndex(nIndex);
 	}
 }
 
@@ -235,7 +235,7 @@ void StackedWidgetManager::handleRefreshStackedWidget(const SelectedEntity& Sele
 {
 	m_entityType = SelectedEntity.type;
 
-	ChangeWidgets();
+	changeWidgets();
 
 	
 	if (SelectedEntity.entityIndex < 0) return;

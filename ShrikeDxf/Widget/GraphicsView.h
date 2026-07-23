@@ -47,8 +47,8 @@ private:
 	// 针对view中预览图元的操作
 	QAction* m_actionEndDrawing;
 	// 尺子
-	CRulerH* m_rulerH;
-	CRulerV* m_rulerV;
+	RulerH* m_rulerH;
+	RulerV* m_rulerV;
 
 
 	// 右键鼠标显示的针对view的操作

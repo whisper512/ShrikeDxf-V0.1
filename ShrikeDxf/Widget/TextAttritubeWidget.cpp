@@ -1,4 +1,4 @@
-#include "TextAttritubeWidget.h"
+﻿#include "TextAttritubeWidget.h"
 
 CTextAttritubeWidget::CTextAttritubeWidget(QWidget* parent)
     : QWidget(parent)
@@ -6,32 +6,32 @@ CTextAttritubeWidget::CTextAttritubeWidget(QWidget* parent)
     ui.setupUi(this);
 
     // DoubleSpinBox
-    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_alignPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_alignPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.doubleSpinBox_ObliqueAngle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_alignPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_alignPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_ObliqueAngle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
 
     // SpinBox
-    connect(ui.spinBox_TextGen, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.spinBox_alignH, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.spinBox_alignV, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.spinBox_TextGen, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_alignH, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_alignV, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
 
     // LineEdit
-    connect(ui.lineEdit_Text, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
-    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::OnValueChanged);
+    connect(ui.lineEdit_Text, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
 }
 
 CTextAttritubeWidget::~CTextAttritubeWidget()
 {
 }
 
-void CTextAttritubeWidget::OnValueChanged()
+void CTextAttritubeWidget::onValueChanged()
 {
-    if (m_bUpdating) return;
+    if (m_updating) return;
 
     m_text.insertPoint.setX(ui.doubleSpinBox_InsertPtX->value());
     m_text.insertPoint.setY(ui.doubleSpinBox_InsertPtY->value());
@@ -52,7 +52,7 @@ void CTextAttritubeWidget::OnValueChanged()
 
 void CTextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_text = text;
     ui.doubleSpinBox_InsertPtX->setValue(text.insertPoint.x());
@@ -69,5 +69,5 @@ void CTextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
     ui.lineEdit_Text->setText(QString::fromStdString(text.text));
     ui.lineEdit_Style->setText(QString::fromStdString(text.style));
 
-    m_bUpdating = false;
+    m_updating = false;
 }

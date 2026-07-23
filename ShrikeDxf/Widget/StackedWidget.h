@@ -21,31 +21,31 @@ class StackedWidgetManager : public QObject
 {
 	Q_OBJECT
 public:
-	StackedWidgetManager(QWidget* pMainwnd);
+	StackedWidgetManager(QWidget* mainWnd);
 	~StackedWidgetManager();
 
-	void CreateStackedWidget();
+	void createStackedWidget();
 
 private:
-	void AddPages();
-	void ConnectSignalAndSlot();
-	void ChangeWidgets();
+	void addPages();
+	void connectSignalAndSlot();
+	void changeWidgets();
 
 public:
-	QWidget* m_pMainwnd;
-	QGridLayout* m_pLayout;
-	QStackedWidget* m_pStackedWidget;
-	PointAttributeWidget* m_pPointAttributeWidget;
-	LineAttributeWidget* m_pLineAttributeWidget;
-	CircleAttributeWidget* m_pCircleAttributeWidget;
-	ArcAttritubeWidget* m_pArcAttributeWidget;
-	LWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
-	EllipseAttritubeWidget* m_pEllipseAttributeWidget;
-	CTextAttritubeWidget* m_pTextAttributeWidget;
-	MTextAttritubeWidget* m_pMTextAttributeWidget;
-	CPolylineAttributeWidget* m_pPolylineAttributeWidget;
-	CSplineAttributeWidget* m_pSplineAttributeWidget;
-	HatchAttributeWidget* m_pHatchAttributeWidget;
+	QWidget* m_mainWnd;
+	QGridLayout* m_layout;
+	QStackedWidget* m_stackedWidget;
+	PointAttributeWidget* m_pointAttributeWidget;
+	LineAttributeWidget* m_lineAttributeWidget;
+	CircleAttributeWidget* m_circleAttributeWidget;
+	ArcAttritubeWidget* m_arcAttributeWidget;
+	LWPolylineAttributeWidget* m_lwPolylineAttributeWidget;
+	EllipseAttritubeWidget* m_ellipseAttributeWidget;
+	CTextAttritubeWidget* m_textAttributeWidget;
+	MTextAttritubeWidget* m_mTextAttributeWidget;
+	PolylineAttributeWidget* m_polylineAttributeWidget;
+	SplineAttributeWidget* m_splineAttributeWidget;
+	HatchAttributeWidget* m_hatchAttributeWidget;
 
 	EntityType m_entityType = EntityType::None;
 

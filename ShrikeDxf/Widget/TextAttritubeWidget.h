@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QWidget>
 
 #include "ui_TextAttritubeWidget.h"
@@ -15,9 +15,9 @@ public:
 private:
     Ui::TextAttritubeWidget ui;
     EntityText m_text;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void OnValueChanged();
+    void onValueChanged();
 
 signals:
     void signalTextAttributeChanged(const EntityText& text);

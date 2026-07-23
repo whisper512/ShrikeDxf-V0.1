@@ -1,21 +1,21 @@
-#pragma once
+﻿#pragma once
 #include <QWidget>
 
 #include "ui_PloylineAttributeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CPolylineAttributeWidget : public QWidget
+class PolylineAttributeWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	CPolylineAttributeWidget(QWidget* parent = nullptr);
-    ~CPolylineAttributeWidget();
+	PolylineAttributeWidget(QWidget* parent = nullptr);
+    ~PolylineAttributeWidget();
 
 private:
 	Ui::PolylineAttritubeWidget ui;
 	EntityPolyline m_polyline;
 
-	void RefreshTable();
+	void refreshTable();
 
 signals:
 	void signalPolylineAttributeChanged(const EntityPolyline& polyline);

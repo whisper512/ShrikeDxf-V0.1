@@ -5,29 +5,29 @@
 #include "ui_SplineAttributeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CSplineAttributeWidget : public QWidget
+class SplineAttributeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CSplineAttributeWidget(QWidget* parent = nullptr);
-    ~CSplineAttributeWidget();
+    SplineAttributeWidget(QWidget* parent = nullptr);
+    ~SplineAttributeWidget();
 
 private:
     Ui::SplineAttributeWidget ui;
-    EntitySpline m_pSpline;
-    bool m_bUpdating = false;
+    EntitySpline m_spline;
+    bool m_updating = false;
 
-    void InitSplineAttributeWidget();
-    void OnValueChanged();
-    void OnTableValueChanged();
-    void RefreshTable();
+    void initSplineAttributeWidget();
+    void onValueChanged();
+    void onTableValueChanged();
+    void refreshTable();
 
 signals:
     void signalSplineAttributeChanged(const EntitySpline& spline);
 
 private slots:
-    void OnTabChanged(int index);
+    void onTabChanged(int index);
 
 public slots:
     void handleNoticeSplineAttribute(EntitySpline spline);

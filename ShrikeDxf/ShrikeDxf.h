@@ -38,7 +38,7 @@ public:
     //初始化graphicsView
     void initAndCreateGraphicsView();
     //初始化stackedWidget
-    void initAndCreateStackedWidget();
+    void initAndcreateStackedWidget();
     //初始化tableView
     void initAndCreateLayerTableView();
     //初始化移动按钮
