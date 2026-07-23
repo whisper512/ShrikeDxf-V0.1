@@ -1,6 +1,6 @@
 ﻿#include "StyleSheet.h"
 
-QPalette StyleSheet::CreatePaletteLigth()
+QPalette StyleSheet::createPaletteLigth()
 {
 	QPalette paletteLight;
 	paletteLight.setColor(QPalette::Window, QColor(240, 240, 240));
@@ -19,7 +19,7 @@ QPalette StyleSheet::CreatePaletteLigth()
 	return paletteLight;
 }
 
-QPalette StyleSheet::CreatePaletteDark()
+QPalette StyleSheet::createPaletteDark()
 {
 	QPalette paletteDark;
 	paletteDark.setColor(QPalette::Window, QColor(53, 53, 53));

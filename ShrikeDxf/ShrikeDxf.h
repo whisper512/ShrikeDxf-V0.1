@@ -34,7 +34,7 @@ public:
     //初始化menu
     void initAndCreateMenuBar();
     //初始化treeview
-    void initAndCreateTreeView();
+    void initAndcreateTreeView();
     //初始化graphicsView
     void initAndCreateGraphicsView();
     //初始化stackedWidget

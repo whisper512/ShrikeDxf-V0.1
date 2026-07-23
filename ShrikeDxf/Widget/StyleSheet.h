@@ -15,8 +15,8 @@ enum eThremColor
 
 namespace StyleSheet
 {
-    QPalette CreatePaletteLigth();
-	QPalette CreatePaletteDark();
+    QPalette createPaletteLigth();
+	QPalette createPaletteDark();
 }
 
 

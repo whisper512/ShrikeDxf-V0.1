@@ -26,13 +26,13 @@ public:
 	//获取浅色主题样式表
 	static const QPalette& getPaletteLight()
 	{
-		static const QPalette paletteLight = StyleSheet::CreatePaletteLigth();
+		static const QPalette paletteLight = StyleSheet::createPaletteLigth();
 		return paletteLight;
 	};
 	//获取深色主题样式表
 	static const QPalette& getPaletteDark()
 	{
-		static const QPalette paletteDark = StyleSheet::CreatePaletteDark();
+		static const QPalette paletteDark = StyleSheet::createPaletteDark();
 		return paletteDark;
 	};
 	//Qstring转std::string

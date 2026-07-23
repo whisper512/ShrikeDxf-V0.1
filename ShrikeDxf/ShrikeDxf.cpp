@@ -35,7 +35,7 @@ void ShrikeDxf::initWindowComponents()
 	QTimer::singleShot(0, this, [this]()
 	{
 		initAndCreateMenuBar();
-		initAndCreateTreeView();
+		initAndcreateTreeView();
 		initAndCreateGraphicsView();
 		initAndcreateStackedWidget();
 		initAndCreateMoveBtnsWidget();
@@ -77,12 +77,12 @@ void ShrikeDxf::initAndCreateMenuBar()
 	}
 }
 
-void ShrikeDxf::initAndCreateTreeView()
+void ShrikeDxf::initAndcreateTreeView()
 {
 	m_treeViewManger = new TreeViewManager(this);
 	if (m_treeViewManger)
 	{
-		m_treeViewManger->CreateTreeView();
+		m_treeViewManger->createTreeView();
 	}
 }
 
@@ -192,8 +192,8 @@ void ShrikeDxf::connectSignalsAndSlots()
 			if (this && m_graphicsView)
 			{
 				connect(m_graphicsView, &GraphicsView::signalMousePosString, this, &ShrikeDxf::handleMousePos);
-				//connect(m_pGraphicsView, &CGraphicsView::signalDeleteEntity, this, &CDxfManager::deleteSelectedEntity);
-				//connect(m_pGraphicsView, &CGraphicsView::signalCopyEntity, this, &CDxfManager::copySelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signaldeleteEntity, this, &CDxfManager::deleteSelectedEntity);
+				//connect(m_pGraphicsView, &CGraphicsView::signalcopyEntity, this, &CDxfManager::copySelectedEntity);
 				//connect(m_pGraphicsView, &CGraphicsView::signalCutEntity, this, &CDxfManager::cutSelectedEntity);
 				//connect(m_pGraphicsView, &CGraphicsView::signalPaste, this, &CDxfManager::pasteEntityAt);
 			}

@@ -1,35 +1,35 @@
 ﻿#include "TextAttritubeWidget.h"
 
-CTextAttritubeWidget::CTextAttritubeWidget(QWidget* parent)
+TextAttritubeWidget::TextAttritubeWidget(QWidget* parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
 
     // DoubleSpinBox
-    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_alignPtX, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_alignPtY, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.doubleSpinBox_ObliqueAngle, &QDoubleSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_InsertPtX, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_InsertPtY, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_alignPtX, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_alignPtY, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Angle, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_Height, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_WidthFactor, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.doubleSpinBox_ObliqueAngle, &QDoubleSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
 
     // SpinBox
-    connect(ui.spinBox_TextGen, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.spinBox_alignH, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.spinBox_alignV, &QSpinBox::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_TextGen, &QSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_alignH, &QSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.spinBox_alignV, &QSpinBox::editingFinished, this, &TextAttritubeWidget::onValueChanged);
 
     // LineEdit
-    connect(ui.lineEdit_Text, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
-    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &CTextAttritubeWidget::onValueChanged);
+    connect(ui.lineEdit_Text, &QLineEdit::editingFinished, this, &TextAttritubeWidget::onValueChanged);
+    connect(ui.lineEdit_Style, &QLineEdit::editingFinished, this, &TextAttritubeWidget::onValueChanged);
 }
 
-CTextAttritubeWidget::~CTextAttritubeWidget()
+TextAttritubeWidget::~TextAttritubeWidget()
 {
 }
 
-void CTextAttritubeWidget::onValueChanged()
+void TextAttritubeWidget::onValueChanged()
 {
     if (m_updating) return;
 
@@ -50,7 +50,7 @@ void CTextAttritubeWidget::onValueChanged()
     emit signalTextAttributeChanged(m_text);
 }
 
-void CTextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
+void TextAttritubeWidget::handleNoticeTextAttribute(EntityText text)
 {
     m_updating = true;
 

@@ -8,127 +8,127 @@
 
 MenuManager::MenuManager(QWidget* parent) : 
 	QWidget(parent),
-	m_pMenuFile(nullptr),
-	m_pMenuHelp(nullptr),
-	m_pMenuSetting(nullptr),
-	m_pMenuView(nullptr),
-	m_pActionOpen(nullptr),
-	m_pActionSave(nullptr),
-	m_pActionClose(nullptr),
-	m_pActionAbout(nullptr)
+	m_menuFile(nullptr),
+	m_menuHelp(nullptr),
+	m_menuSetting(nullptr),
+	m_menuView(nullptr),
+	m_actionOpen(nullptr),
+	m_actionSave(nullptr),
+	m_actionClose(nullptr),
+	m_actionAbout(nullptr)
 {
-	m_pParent = this->parentWidget();
+	m_parent = this->parentWidget();
 }
 
 MenuManager::~MenuManager()
 {
-	delete m_pMenuFile;
-	delete m_pMenuHelp;
-	delete m_pMenuView;
-	delete m_pActionOpen;
-	delete m_pActionSave;
-	delete m_pActionClose;
-	delete m_pActionAbout;
+	delete m_menuFile;
+	delete m_menuHelp;
+	delete m_menuView;
+	delete m_actionOpen;
+	delete m_actionSave;
+	delete m_actionClose;
+	delete m_actionAbout;
 }
 
 void MenuManager::initMenuBar()
 {
 	initMenu();
-	InitAction();
-	AddToBar();
-	ConnectSolt();
+	initAction();
+	addToBar();
+	connectSlot();
 }
 
 void MenuManager::initMenu()
 {
-	m_pMenuFile = new QMenu("File", this);
-	m_pMenuSetting = new QMenu("Setting", this);
-	m_pMenuView = new QMenu("View", this);
+	m_menuFile = new QMenu("File", this);
+	m_menuSetting = new QMenu("Setting", this);
+	m_menuView = new QMenu("View", this);
 }
 
-void MenuManager::InitAction()
+void MenuManager::initAction()
 {
-	if (m_pMenuFile)
+	if (m_menuFile)
 	{
-		if (m_pMenuFile->actions().isEmpty())
+		if (m_menuFile->actions().isEmpty())
 		{
-			m_pActionNew = new QAction("New", this);
-			m_pActionNew->setShortcut(QKeySequence::New);
-			m_pMenuFile->addAction(m_pActionNew);
-			m_pActionOpen = new QAction("Open", this);
-			m_pActionOpen->setShortcut(QKeySequence::Open);
-			m_pMenuFile->addAction(m_pActionOpen);
-			m_pActionSave = new QAction("Save", this);
-			m_pActionSave->setShortcut(QKeySequence::Save);
-			m_pMenuFile->addAction(m_pActionSave);
-            m_pActionSaveAs = new QAction("Save As", this);
-            m_pActionSaveAs->setShortcut(QKeySequence::SaveAs);
-            m_pMenuFile->addAction(m_pActionSaveAs);
-			m_pActionClose = new QAction("Close", this);
-			m_pActionClose->setShortcut(QKeySequence::Close);
-			m_pMenuFile->addAction(m_pActionClose);
+			m_actionNew = new QAction("New", this);
+			m_actionNew->setShortcut(QKeySequence::New);
+			m_menuFile->addAction(m_actionNew);
+			m_actionOpen = new QAction("Open", this);
+			m_actionOpen->setShortcut(QKeySequence::Open);
+			m_menuFile->addAction(m_actionOpen);
+			m_actionSave = new QAction("Save", this);
+			m_actionSave->setShortcut(QKeySequence::Save);
+			m_menuFile->addAction(m_actionSave);
+            m_actionSaveAs = new QAction("Save As", this);
+            m_actionSaveAs->setShortcut(QKeySequence::SaveAs);
+            m_menuFile->addAction(m_actionSaveAs);
+			m_actionClose = new QAction("Close", this);
+			m_actionClose->setShortcut(QKeySequence::Close);
+			m_menuFile->addAction(m_actionClose);
 		}
 	}
 
-	if (m_pMenuView)
+	if (m_menuView)
 	{
-		if (m_pMenuView->actions().isEmpty())
+		if (m_menuView->actions().isEmpty())
 		{
 			
 		}
 	}
 
-	if (m_pMenuHelp)
+	if (m_menuHelp)
 	{
-		if (m_pMenuHelp->actions().isEmpty())
+		if (m_menuHelp->actions().isEmpty())
 		{
-            m_pActionAbout = new QAction("About", this);
-			m_pMenuHelp->addAction(m_pActionAbout);
+            m_actionAbout = new QAction("About", this);
+			m_menuHelp->addAction(m_actionAbout);
 		}
 	}
 }
 
-void MenuManager::AddToBar()
+void MenuManager::addToBar()
 {
-	if (m_pParent)
+	if (m_parent)
 	{
-		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_parent);
 		if(pShrikeDxf)
 		{
-			pShrikeDxf->menuBar()->addMenu(m_pMenuFile);
-			pShrikeDxf->menuBar()->addMenu(m_pMenuSetting);
-			pShrikeDxf->menuBar()->addMenu(m_pMenuView);
+			pShrikeDxf->menuBar()->addMenu(m_menuFile);
+			pShrikeDxf->menuBar()->addMenu(m_menuSetting);
+			pShrikeDxf->menuBar()->addMenu(m_menuView);
 		}
 	}
 }
 
-void MenuManager::ConnectSolt()
+void MenuManager::connectSlot()
 {
-	if (m_pActionOpen)
+	if (m_actionOpen)
 	{
-		connect(m_pActionOpen, &QAction::triggered,this, &MenuManager::OnOpen);
+		connect(m_actionOpen, &QAction::triggered,this, &MenuManager::onOpen);
 	}
-	if (m_pActionSave)
+	if (m_actionSave)
 	{
-		connect(m_pActionSave, &QAction::triggered, this, &MenuManager::OnSave);
+		connect(m_actionSave, &QAction::triggered, this, &MenuManager::onSave);
 	}
-	if (m_pActionClose)
+	if (m_actionClose)
 	{
-		connect(m_pActionClose, &QAction::triggered, this, &MenuManager::OnClose);
+		connect(m_actionClose, &QAction::triggered, this, &MenuManager::onClose);
 	}
-	if (m_pActionSaveAs)
+	if (m_actionSaveAs)
 	{
-        connect(m_pActionSaveAs, &QAction::triggered, this, &MenuManager::OnSaveAs);
+        connect(m_actionSaveAs, &QAction::triggered, this, &MenuManager::onSaveAs);
 	}
-	if(m_pActionNew)
+	if(m_actionNew)
 	{
-        connect(m_pActionNew, &QAction::triggered, this, &MenuManager::OnNew);
+        connect(m_actionNew, &QAction::triggered, this, &MenuManager::onNew);
 	}
 }
 
-void MenuManager::OnOpen()
+void MenuManager::onOpen()
 {
-	if (m_pParent)
+	if (m_parent)
 	{
 		QString filePath = QFileDialog::getOpenFileName(
 			this,
@@ -138,46 +138,46 @@ void MenuManager::OnOpen()
 		);
 		if (!filePath.isEmpty())
 		{
-			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+			ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_parent);
 			pShrikeDxf->m_dataManager->m_dxfPath = filePath;
 			pShrikeDxf->m_dxfDataManager->loadDxfFile(filePath);
 		}
 	}
 }
 
-void MenuManager::OnSave()
+void MenuManager::onSave()
 {
-	if (m_pParent)
+	if (m_parent)
 	{
-		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_parent);
 		QString filePath = pShrikeDxf->m_dataManager->m_dxfPath;
 		pShrikeDxf->m_dxfDataManager->saveDxfFile(filePath);
 	}
 }
 
-void MenuManager::OnClose()
+void MenuManager::onClose()
 {
-	if (m_pParent)
+	if (m_parent)
 	{
-		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_parent);
         pShrikeDxf->m_dxfDataManager->closeDxfFile();
 	}
 }
 
-void MenuManager::OnNew()
+void MenuManager::onNew()
 {
-	if (m_pParent)
+	if (m_parent)
 	{
-        ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+        ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_parent);
         pShrikeDxf->m_dxfDataManager->newDxfFile();
 	}
 }
 
-void MenuManager::OnSaveAs()
+void MenuManager::onSaveAs()
 {
-	if (m_pParent)
+	if (m_parent)
 	{
-		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_pParent);
+		ShrikeDxf* pShrikeDxf = dynamic_cast<ShrikeDxf*>(m_parent);
 
 		QString filePath = QFileDialog::getSaveFileName(
 			this,

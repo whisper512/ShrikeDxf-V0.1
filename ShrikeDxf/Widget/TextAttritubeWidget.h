@@ -4,13 +4,13 @@
 #include "ui_TextAttritubeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CTextAttritubeWidget : public QWidget
+class TextAttritubeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CTextAttritubeWidget(QWidget* parent = nullptr);
-    ~CTextAttritubeWidget();
+    TextAttritubeWidget(QWidget* parent = nullptr);
+    ~TextAttritubeWidget();
 
 private:
     Ui::TextAttritubeWidget ui;

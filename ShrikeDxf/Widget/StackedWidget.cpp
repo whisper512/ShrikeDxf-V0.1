@@ -86,7 +86,7 @@ void StackedWidgetManager::addPages()
     m_stackedWidget->widget(5)->setContentsMargins(0, 0, 0, 0);
     m_mapPages[5] = STR_ELLIPSE_LOWERCASE;
 
-	m_textAttributeWidget = new CTextAttritubeWidget(m_stackedWidget);
+	m_textAttributeWidget = new TextAttritubeWidget(m_stackedWidget);
 	m_stackedWidget->addWidget(m_textAttributeWidget);
     m_textAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_stackedWidget->widget(6)->setContentsMargins(0, 0, 0, 0);
@@ -154,8 +154,8 @@ void StackedWidgetManager::connectSignalAndSlot()
 			} // 文本
 			if (m_stackedWidget && m_textAttributeWidget)
 			{
-				connect(this , &StackedWidgetManager::signalTextAttribute, m_textAttributeWidget, &CTextAttritubeWidget::handleNoticeTextAttribute);
-                connect(m_textAttributeWidget, &CTextAttritubeWidget::signalTextAttributeChanged, this, &StackedWidgetManager::signalTextChanged);
+				connect(this , &StackedWidgetManager::signalTextAttribute, m_textAttributeWidget, &TextAttritubeWidget::handleNoticeTextAttribute);
+                connect(m_textAttributeWidget, &TextAttritubeWidget::signalTextAttributeChanged, this, &StackedWidgetManager::signalTextChanged);
 			} // 多行文本
 			if (m_stackedWidget && m_mTextAttributeWidget)
 			{

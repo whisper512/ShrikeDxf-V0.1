@@ -7,29 +7,29 @@ class TreeViewManager : public QObject
 {
 	Q_OBJECT
 public:
-	TreeViewManager(QWidget* pMainwnd);
+	TreeViewManager(QWidget* mainWnd);
 	~TreeViewManager();
 
-	void CreateTreeView();
+	void createTreeView();
 
 private:
 	//不要delete这个指针,指向父窗口,会导致析构错误
-	QWidget* m_pMainwnd;
-	QTreeView* m_pTreeView;
+	QWidget* m_mainWnd;
+	QTreeView* m_treeView;
 
-	QMenu *m_pContextMenu;
-	QAction* m_pActionDelete;
-	QAction* m_pActionCopy;
+	QMenu *m_contextMenu;
+	QAction* m_actionDelete;
+	QAction* m_actionCopy;
 
 private:
-	void DeleteEntity();
-	void CopyEntity();
+	void deleteEntity();
+	void copyEntity();
 
 
 signals:
 	void signalEntitySelected(const QString& strLayer, int entityIndex);
-	void signalDeleteEntityData(const QString& strLayer, const QString& strEntity);
-	void signalCopyEntityData();
+	void signaldeleteEntityData(const QString& strLayer, const QString& strEntity);
+	void signalcopyEntityData();
 
 public slots:
 	//获取模型用于刷新
@@ -41,7 +41,7 @@ public slots:
 	//获取左键选取的行
 	void handleOnItemClicked(const QModelIndex& index);
 	//初始化右键menu
-	void InitContextMenu();
+	void initContextMenu();
 	//读完图第一次刷新
     void handleRefreshTreeviewAfterRead();
 };

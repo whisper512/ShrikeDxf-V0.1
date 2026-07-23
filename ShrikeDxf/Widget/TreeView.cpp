@@ -4,85 +4,85 @@
 #include <QHeaderView>
 #include <QMessageBox>
 
-TreeViewManager::TreeViewManager(QWidget* pMainwnd) :
-	m_pMainwnd(pMainwnd),
-	m_pContextMenu(nullptr),
-	m_pActionDelete(nullptr),
-	m_pActionCopy(nullptr),
-	m_pTreeView(nullptr)
+TreeViewManager::TreeViewManager(QWidget* mainWnd) :
+	m_mainWnd(mainWnd),
+	m_contextMenu(nullptr),
+	m_actionDelete(nullptr),
+	m_actionCopy(nullptr),
+	m_treeView(nullptr)
 {
 }
 
 TreeViewManager::~TreeViewManager()
 {
-	delete m_pTreeView;
+	delete m_treeView;
 }
 
-void TreeViewManager::CreateTreeView()
+void TreeViewManager::createTreeView()
 {
-	m_pTreeView = new QTreeView(m_pMainwnd);
-	m_pTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	m_treeView = new QTreeView(m_mainWnd);
+	m_treeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	if (m_pMainwnd)
+	if (m_mainWnd)
 	{
-		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_pMainwnd);
-		pWnd->ui.verticalLayout_Tree->addWidget(m_pTreeView);
+		ShrikeDxf* pWnd = dynamic_cast<ShrikeDxf*>(m_mainWnd);
+		pWnd->ui.verticalLayout_Tree->addWidget(m_treeView);
 	}
 	else
 	{
-		QMessageBox::information(m_pTreeView, "TreeView Error", "MainWnd is null");
+		QMessageBox::information(m_treeView, "TreeView Error", "MainWnd is null");
 		return;
 	}
 
 	//设置临时模型来显示列名
-	QStandardItemModel* pHeaderModel = new QStandardItemModel(0, 2, m_pTreeView);
+	QStandardItemModel* pHeaderModel = new QStandardItemModel(0, 2, m_treeView);
 	pHeaderModel->setHeaderData(0, Qt::Horizontal, "LAYER");
 	pHeaderModel->setHeaderData(1, Qt::Horizontal, "ENTITIES");
 
 
-	m_pTreeView->setModel(pHeaderModel);
-	QHeaderView* pHeader = m_pTreeView->header();
+	m_treeView->setModel(pHeaderModel);
+	QHeaderView* pHeader = m_treeView->header();
 	pHeader->setSectionResizeMode(0, QHeaderView::Stretch);
 	pHeader->setSectionResizeMode(1, QHeaderView::Stretch);
 
 	//添加menu右键
-	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(m_pTreeView, &QTreeView::customContextMenuRequested, this, &TreeViewManager::handleShowContextMenu);
+	m_treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(m_treeView, &QTreeView::customContextMenuRequested, this, &TreeViewManager::handleShowContextMenu);
 	//左键选择
-	connect(m_pTreeView, &QTreeView::clicked, this, &TreeViewManager::handleOnItemClicked);
+	connect(m_treeView, &QTreeView::clicked, this, &TreeViewManager::handleOnItemClicked);
 }
 
 
 void TreeViewManager::handleShowContextMenu(const QPoint& pos)
 {
-	//InitContextMenu();
+	//initContextMenu();
 
-	//m_pContextMenu->exec(m_pTreeView->viewport()->mapToGlobal(pos));
+	//m_contextMenu->exec(m_treeView->viewport()->mapToGlobal(pos));
 }
 
-void TreeViewManager::InitContextMenu()
+void TreeViewManager::initContextMenu()
 {
-	if (m_pTreeView)
+	if (m_treeView)
 	{
-		m_pContextMenu = new QMenu(m_pTreeView);
+		m_contextMenu = new QMenu(m_treeView);
 
-		m_pActionCopy = new QAction("Copy", this);
-		m_pContextMenu->addAction(m_pActionCopy);
-		connect(m_pActionCopy, &QAction::triggered, this, &TreeViewManager::CopyEntity);
-		m_pActionDelete = new QAction("Delete", this);
-		m_pContextMenu->addAction(m_pActionDelete);
-		connect(m_pActionDelete,&QAction::triggered, this, &TreeViewManager::DeleteEntity);
+		m_actionCopy = new QAction("Copy", this);
+		m_contextMenu->addAction(m_actionCopy);
+		connect(m_actionCopy, &QAction::triggered, this, &TreeViewManager::copyEntity);
+		m_actionDelete = new QAction("Delete", this);
+		m_contextMenu->addAction(m_actionDelete);
+		connect(m_actionDelete,&QAction::triggered, this, &TreeViewManager::deleteEntity);
 	}
 }
 
 void TreeViewManager::handleRefreshTreeviewAfterRead()
 {
-	if (!m_pTreeView || !m_pTreeView->model())
+	if (!m_treeView || !m_treeView->model())
 	{
 		return;
 	}
 
-	QAbstractItemModel* model = m_pTreeView->model();
+	QAbstractItemModel* model = m_treeView->model();
 
 	QModelIndex firstLayerIndex = model->index(0, 0);
 
@@ -100,12 +100,12 @@ void TreeViewManager::handleRefreshTreeviewAfterRead()
 	QString strEntity = model->data(firstEntityIndex.sibling(firstEntityIndex.row(), 1), Qt::DisplayRole).toString();	
 }
 
-void TreeViewManager::DeleteEntity()
+void TreeViewManager::deleteEntity()
 {
-	QModelIndex index = m_pTreeView->currentIndex();
+	QModelIndex index = m_treeView->currentIndex();
 	if (index.isValid())
 	{
-		QAbstractItemModel* model = m_pTreeView->model();
+		QAbstractItemModel* model = m_treeView->model();
 		QModelIndex ParentIndex = index.parent();
 		QString strLayer;
 
@@ -118,26 +118,26 @@ void TreeViewManager::DeleteEntity()
 			//选择到了图层本身
 		}
 		QString strEntity = model->data(index.sibling(index.row(), 1), Qt::DisplayRole).toString();
-		emit signalDeleteEntityData(strLayer, strEntity);
+		emit signaldeleteEntityData(strLayer, strEntity);
 	}
 }
 
-void TreeViewManager::CopyEntity()
+void TreeViewManager::copyEntity()
 {
-	emit signalCopyEntityData();
+	emit signalcopyEntityData();
 }
 
 
 void TreeViewManager::handleReturnEntityInfo(QString strInfo)
 {
-    QMessageBox::information(m_pTreeView, "Entity Data", strInfo);
+    QMessageBox::information(m_treeView, "Entity Data", strInfo);
 }
 
 void TreeViewManager::handleOnItemClicked(const QModelIndex& index)
 {
 	if (!index.isValid()) return;
 
-	QAbstractItemModel* model = m_pTreeView->model();
+	QAbstractItemModel* model = m_treeView->model();
 	QModelIndex parentIndex = index.parent();
 
 	if (parentIndex.isValid())
@@ -165,10 +165,10 @@ void TreeViewManager::handleRefreshTree(DxfTreeviewModel* pModel)
 	//从映射类中取数据显示
 	if (pModel)
 	{
-		m_pTreeView->setModel(pModel);
-		QHeaderView* pHeader = m_pTreeView->header();
+		m_treeView->setModel(pModel);
+		QHeaderView* pHeader = m_treeView->header();
 		pHeader->setSectionResizeMode(0, QHeaderView::Stretch);
 		pHeader->setSectionResizeMode(1, QHeaderView::Stretch);
-		m_pTreeView->expandAll();
+		m_treeView->expandAll();
 	}
 }

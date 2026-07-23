@@ -14,29 +14,29 @@ class MenuManager : public QWidget
 	
 	void initMenuBar();
 	void initMenu();
-	void InitAction();
-	void AddToBar();
-	void ConnectSolt();
+	void initAction();
+	void addToBar();
+	void connectSlot();
 
 private:
-	QWidget* m_pParent;
+	QWidget* m_parent;
 
 	//menu
-	QMenu* m_pMenuFile, * m_pMenuHelp, * m_pMenuSetting, * m_pMenuView;
+	QMenu* m_menuFile, * m_menuHelp, * m_menuSetting, * m_menuView;
 	//文件action
-	QAction* m_pActionOpen, * m_pActionSave, * m_pActionClose, * m_pActionNew, * m_pActionSaveAs;
+	QAction* m_actionOpen, * m_actionSave, * m_actionClose, * m_actionNew, * m_actionSaveAs;
 	//外观action
 	//QAction* m_pActionLightTheme, *m_pActionDarkTheme;
 	//帮助action
-	QAction* m_pActionAbout;
+	QAction* m_actionAbout;
 
 private:
 	//槽函数
-	void OnOpen();
-	void OnSave();
-    void OnClose();
-    void OnNew();
-    void OnSaveAs();
+	void onOpen();
+	void onSave();
+    void onClose();
+    void onNew();
+    void onSaveAs();
 };
 
 #endif // !_MENU_H

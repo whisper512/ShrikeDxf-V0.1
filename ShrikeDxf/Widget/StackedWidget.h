@@ -41,7 +41,7 @@ public:
 	ArcAttritubeWidget* m_arcAttributeWidget;
 	LWPolylineAttributeWidget* m_lwPolylineAttributeWidget;
 	EllipseAttritubeWidget* m_ellipseAttributeWidget;
-	CTextAttritubeWidget* m_textAttributeWidget;
+	TextAttritubeWidget* m_textAttributeWidget;
 	MTextAttritubeWidget* m_mTextAttributeWidget;
 	PolylineAttributeWidget* m_polylineAttributeWidget;
 	SplineAttributeWidget* m_splineAttributeWidget;
