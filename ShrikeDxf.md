@@ -9,6 +9,26 @@
 - [x] 考虑每个图元新建 cpp 文件用来完成函数的实现
 - [ ] 曲线的包围盒不准确,通过控制点画出的线会把控制点的位置也加入包围盒
 
+## 图元 boundingBox 问题清单
+- [ ] Text — 居中/右对齐时包围盒偏移：忽略 `alignH`/`alignV`，需根据对齐值计算文本盒相对 `insertPoint` 的偏移
+- [ ] Text — 旋转文本包围盒偏小：忽略 `rotation`，需用 `QTransform::rotateRadians` 包裹文本盒
+- [ ] Text — 字宽影响未计入：忽略 `widthFactor`，文本宽度需 × widthFactor
+- [ ] MText — 同上 rotation 问题
+- [ ] LWPolyline — 圆弧段(bulge)超出包围盒：只取顶点未采样弧上点，需对 bulge≠0 的段沿弧采样 4~8 个中间点
+
+## 图元 stretch 问题清单
+- [ ] Spline — 方向向量异常缩放：`normalVec`/`tgStart`/`tgEnd` 被当作位置点乘以 `s`，应缩放后归一化保持方向
+- [ ] LWPolyline — 圆弧段变形：`bulge` 未重算，缩放顶点后需重新计算 bulge
+- [ ] LWPolyline — 线宽不变：`constantWidth`/`startWidth`/`endWidth` 未缩放，需 × `s`
+- [ ] 全部 — 四边中点夹点无单轴拉伸：只实现了四角均匀缩放，需分 X/Y 轴分别计算比例因子
+
+## Clipper2 技术分工
+- [ ] boundingBox 计算 → 不用 Clipper2：纯几何/字体计算，无多边形处理
+- [ ] 8 点拉伸 → 不用 Clipper2：仿射变换，非多边形布尔运算
+- [ ] HitTest 命中检测 → 用 Clipper2：`PointInPolygon` 替代手写距离
+- [ ] Hatch 填充 → 用 Clipper2：`Triangulate` + `BooleanOp`
+- [ ] 图元裁剪/修剪 → 用 Clipper2：`BooleanOp` 多段线布尔
+
 # 图元属性修复
 - [x] 旧多段线，曲线，填充
 - [x] 属性编辑修改实际数据
@@ -60,29 +80,57 @@
 - [x] 拆分总管理类
 - [ ] 修改命名，舍弃匈牙利命名,修改完成除了widget的其他管理类
 
+
+
+
 # 技术备忘录
-DXF / libdxfrw
+
+```
+双管线架构
+一套参数数据 → 两条处理管线：
+参数数据（knots / bulge / radius / center / controlPoints）
       │
-      ▼
-EntitySpline / EntityArc / EntityLWPolyline
+      ├── 显示管线（编辑期实时）
+      │     BSplineBasis 离散化（~100 采样点）
+      │       ↓
+      │     Clipper2（PointInPolygon / GetBounds / 布尔）
+      │       ↓
+      │     QPainterPath 渲染
+      │     精度：1 像素，关注帧率 + 交互响应
       │
-      ├─ 原始曲线计算：OCCT
-      │    ├─ 样条求值、包围盒
-      │    ├─ 最近点 / 捕捉
-      │    ├─ 曲线相交、裁剪
-      │    └─ 将曲线按容差离散为折线
-      │
-      └─ 区域计算：Clipper2
-           ├─ Union / Difference / Intersect
-           ├─ Offset
-           ├─ Hatch 边界清理
-           └─ 生成填充三角形
-		   
-		   
-原始曲线（Spline / Arc / Ellipse）
-   ↓ 按几何容差自适应离散
-Polyline 点列
-   ↓ Clipper2
-布尔、Offset、清理自交
-   ↓
-结果轮廓（新的 Polyline / Hatch 边界）
+      └── 轨迹管线（输出期离线）
+            参数原生值
+              ↓
+            轨迹生成器
+              ├─ Arc/Circle → G02/G03 圆弧插补
+              ├─ Line → G01 直线走刀
+              ├─ Spline → 按精度自适应 G01 多段短线段
+              └─ 精度：0.01mm
+
+
+**核心原则：** 参数永远不从折线反推。编辑 stretch 直接改参数值，重新离散化显示。输出端始终读取原始参数，不做二次拟合。
+
+## 离散化策略
+
+| 图元类型 | 显示采样 | 用途 |
+|----------|---------|------|
+| Line | 2 点 | — |
+| Circle/Arc | 32~64 点 | bulge 弧段同理 |
+| Ellipse | 64 点 | 参数弧也采样 |
+| LWPolyline (bulge=0) | 顶点 | — |
+| LWPolyline (bulge≠0) | 每弧段 8 点 | 补包围盒缺口 |
+| Spline | 100~200 点 | BSplineBasis 等距采样 |
+| Text/MText | Qt 字体测量 | 补 align + rotation |
+
+## Clipper2 职责
+
+``
+BSplineBasis (已有) → 离散折线 → Clipper2 (新增)
+                                    ├─ PointInPolygon → HitTest
+                                    ├─ GetBounds → boundingBox
+                                    ├─ InflatePaths → Offset
+                                    ├─ BooleanOp → 裁剪/修剪
+                                    └─ Triangulate → Hatch 填充
+``
+
+**不用 Clipper2 的场景：** boundingBox（纯几何计算）、stretch（仿射变换改参数）
