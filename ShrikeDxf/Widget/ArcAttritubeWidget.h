@@ -5,20 +5,20 @@
 #include "ui_ArcAttritubeWidget.h"
 #include "Manager/DxfStruct.h"
 
-class CArcAttritubeWidget : public QWidget
+class ArcAttritubeWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CArcAttritubeWidget(QWidget* parent = nullptr);
-    ~CArcAttritubeWidget();
+    ArcAttritubeWidget(QWidget* parent = nullptr);
+    ~ArcAttritubeWidget();
 
 private:
     Ui::ArcAttritubeWidgetClass ui;
     EntityArc m_arc;
-    bool m_bUpdating = false;
+    bool m_updating = false;
 
-    void OnSpinBoxChanged();
+    void onSpinBoxChanged();
 
 signals:
     void signalArcAttributeChanged(const EntityArc& arc);

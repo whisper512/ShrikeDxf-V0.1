@@ -68,7 +68,7 @@ void StackedWidgetManager::AddPages()
 	m_pStackedWidget->widget(2)->setContentsMargins(0, 0, 0, 0);
 	m_mapPages[2] = STR_CIRCLE_LOWERCASE;
 
-	m_pArcAttributeWidget = new CArcAttritubeWidget(m_pStackedWidget);
+	m_pArcAttributeWidget = new ArcAttritubeWidget(m_pStackedWidget);
 	m_pStackedWidget->addWidget(m_pArcAttributeWidget);
 	m_pArcAttributeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	m_pStackedWidget->widget(3)->setContentsMargins(0, 0, 0, 0);
@@ -139,8 +139,8 @@ void StackedWidgetManager::ConnectSignalAndSlot()
 			} // 圆弧
 			if (m_pStackedWidget && m_pArcAttributeWidget)
 			{
-				connect(this, &StackedWidgetManager::signalArcAttribute, m_pArcAttributeWidget, &CArcAttritubeWidget::handleNoticeArcAttribute);
-                connect(m_pArcAttributeWidget, &CArcAttritubeWidget::signalArcAttributeChanged, this, &StackedWidgetManager::signalArcChanged);
+				connect(this, &StackedWidgetManager::signalArcAttribute, m_pArcAttributeWidget, &ArcAttritubeWidget::handleNoticeArcAttribute);
+                connect(m_pArcAttributeWidget, &ArcAttritubeWidget::signalArcAttributeChanged, this, &StackedWidgetManager::signalArcChanged);
 			} // 轻量多段线
 			if (m_pStackedWidget && m_pLWPolylineAttributeWidget)
 			{

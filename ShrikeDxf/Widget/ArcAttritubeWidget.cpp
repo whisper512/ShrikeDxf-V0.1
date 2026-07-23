@@ -1,28 +1,28 @@
 ﻿#include "ArcAttritubeWidget.h"
 
-CArcAttritubeWidget::CArcAttritubeWidget(QWidget* parent)
+ArcAttritubeWidget::ArcAttritubeWidget(QWidget* parent)
     : QWidget(parent), m_arc()
 {
     ui.setupUi(this);
 
     
-    connect(ui.doubleSpinBox_X, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_Y, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_Radius, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_StartAngle_RAD, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_EndAngle_RAD, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_StartAngle_DEG, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
-    connect(ui.doubleSpinBox_EndAngle_DEG, &QDoubleSpinBox::editingFinished, this, &CArcAttritubeWidget::OnSpinBoxChanged);
+    connect(ui.doubleSpinBox_X, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_Y, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_Radius, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_StartAngle_RAD, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_EndAngle_RAD, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_StartAngle_DEG, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
+    connect(ui.doubleSpinBox_EndAngle_DEG, &QDoubleSpinBox::editingFinished, this, &ArcAttritubeWidget::onSpinBoxChanged);
 }
 
-CArcAttritubeWidget::~CArcAttritubeWidget()
+ArcAttritubeWidget::~ArcAttritubeWidget()
 {
 }
 
-void CArcAttritubeWidget::OnSpinBoxChanged()
+void ArcAttritubeWidget::onSpinBoxChanged()
 {
-    if (m_bUpdating) return;
-    m_bUpdating = true;
+    if (m_updating) return;
+    m_updating = true;
 
     QDoubleSpinBox* sender = qobject_cast<QDoubleSpinBox*>(QObject::sender());
 
@@ -52,13 +52,13 @@ void CArcAttritubeWidget::OnSpinBoxChanged()
         ui.doubleSpinBox_EndAngle_DEG->setValue(m_arc.endAngle * 180.0 / M_PI);
     }
 
-    m_bUpdating = false;
+    m_updating = false;
     emit signalArcAttributeChanged(m_arc);
 }
 
-void CArcAttritubeWidget::handleNoticeArcAttribute(EntityArc arc)
+void ArcAttritubeWidget::handleNoticeArcAttribute(EntityArc arc)
 {
-    m_bUpdating = true;
+    m_updating = true;
 
     m_arc = arc;
     ui.doubleSpinBox_X->setValue(arc.center.x());
@@ -69,5 +69,5 @@ void CArcAttritubeWidget::handleNoticeArcAttribute(EntityArc arc)
     ui.doubleSpinBox_StartAngle_DEG->setValue(arc.startAngle * 180.0 / M_PI);
     ui.doubleSpinBox_EndAngle_DEG->setValue(arc.endAngle * 180.0 / M_PI);
 
-    m_bUpdating = false;
+    m_updating = false;
 }

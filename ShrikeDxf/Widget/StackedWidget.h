@@ -38,7 +38,7 @@ public:
 	CPointAttributeWidget* m_pPointAttributeWidget;
 	CLineAttributeWidget* m_pLineAttributeWidget;
 	CCircleAttributeWidget* m_pCircleAttributeWidget;
-	CArcAttritubeWidget* m_pArcAttributeWidget;
+	ArcAttritubeWidget* m_pArcAttributeWidget;
 	CLWPolylineAttributeWidget* m_pLWPolylineAttributeWidget;
 	CEllipseAttritubeWidget* m_pEllipseAttributeWidget;
 	CTextAttritubeWidget* m_pTextAttributeWidget;
