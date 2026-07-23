@@ -48,6 +48,15 @@
     <Filter Include="EntitiesLib\Source">
       <UniqueIdentifier>{ea1af7ed-bdb7-4fd7-9fdc-b108cf0bc27c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Clipper2">
+      <UniqueIdentifier>{6a7c751c-702a-4ed7-be07-a1ba7e469f76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Clipper2\Header">
+      <UniqueIdentifier>{23317866-2905-4daa-8238-02bd04be99c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Clipper2\Source">
+      <UniqueIdentifier>{2401b1c8-89d0-4ad9-bb65-ef6b8898d794}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ShrikeDxf.qrc">
@@ -135,6 +144,33 @@
     </ClInclude>
     <ClInclude Include="..\EntitiesLib\EntityMath.h">
       <Filter>EntitiesLib\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.core.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.engine.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.export.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.minkowski.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.offset.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.rectclip.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.triangulation.h">
+      <Filter>Clipper2\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.version.h">
+      <Filter>Clipper2\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +403,18 @@
     </ClCompile>
     <ClCompile Include="Widget\TreeView.cpp">
       <Filter>Source Files\WeightView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.engine.cpp">
+      <Filter>Clipper2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.offset.cpp">
+      <Filter>Clipper2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.rectclip.cpp">
+      <Filter>Clipper2\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.triangulation.cpp">
+      <Filter>Clipper2\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

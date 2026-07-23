@@ -69,7 +69,7 @@
       <AdditionalDependencies>libdxfrw.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\libdxfrw\libdxfrw-master\src;..\dxflib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Clipper2\CPP\Clipper2Lib\include;..\libdxfrw\libdxfrw-master\src;..\dxflib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
@@ -120,6 +120,15 @@
     <QtUic Include="Widget\TextAttritubeWidget.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.core.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.engine.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.export.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.minkowski.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.offset.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.rectclip.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.triangulation.h" />
+    <ClInclude Include="..\Clipper2\CPP\Clipper2Lib\include\clipper2\clipper.version.h" />
     <ClInclude Include="..\EntitiesLib\Arc.h" />
     <ClInclude Include="..\EntitiesLib\Circle.h" />
     <ClInclude Include="..\EntitiesLib\Ellipse.h" />
@@ -175,6 +184,10 @@
     <QtMoc Include="ShrikeDxf.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.engine.cpp" />
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.offset.cpp" />
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.rectclip.cpp" />
+    <ClCompile Include="..\Clipper2\CPP\Clipper2Lib\src\clipper.triangulation.cpp" />
     <ClCompile Include="..\EntitiesLib\Arc.cpp" />
     <ClCompile Include="..\EntitiesLib\Circle.cpp" />
     <ClCompile Include="..\EntitiesLib\Ellipse.cpp" />
